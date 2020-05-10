@@ -15,7 +15,8 @@ class ProductModel extends Model {
 
         }, {
             tableName: 'products',
-            sequelize: connection
+            sequelize: connection,
+            paranoid: true
         });
     }
 
