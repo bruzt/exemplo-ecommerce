@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "celebrate": "^12.0.1",
+    "celebrate": "^12.1.1",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
@@ -25,21 +25,21 @@
     "nodemailer-express-handlebars": "^4.0.0",
     "pg": "^7.18.2",
     "pg-hstore": "^2.3.3",
-    "pm2": "^4.2.3",
-    "sequelize": "^5.21.6"
+    "pm2": "^4.4.0",
+    "sequelize": "^5.21.8"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
     "@types/jest": "^25.2.1",
     "eslint": "^6.8.0",
-    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jest": "^23.10.0",
     "eslint-plugin-jsdoc": "^24.0.0",
     "factory-girl": "^5.0.4",
     "faker": "^4.1.0",
-    "jest": "^25.3.0",
-    "nodemon": "^2.0.2",
+    "jest": "^25.5.4",
+    "nodemon": "^2.0.3",
     "sequelize-cli": "^5.5.1",
-    "sqlite3": "^4.1.1",
+    "sqlite3": "^4.2.0",
     "supertest": "^4.0.2"
   }
 }
