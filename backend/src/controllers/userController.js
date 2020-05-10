@@ -47,6 +47,7 @@ module.exports = {
                         attributes: ['id', 'name'],
                         through: { attributes: ['quantity_buyed', 'product_price'] },
                         required: false,
+                        paranoid: false
                     }]
                 }]
             });
