@@ -54,9 +54,16 @@ module.exports = {
 
         try {
 
-            const user = await UserModel.findByPk(user_id);
+            let user = await UserModel.findByPk(user_id, {
+                include: {
+                    association: 'addresses',
+                    where: { user_id },
+                    required: false
+                },
+            });
 
             if(!user) return res.status(400).json({ message: 'user not found' });
+            if(user.addresses.length == 0) return res.status(400).json({ message: 'address not found' });
 
             let products = [];
             let missingProduct;
