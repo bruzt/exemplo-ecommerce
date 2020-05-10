@@ -1,0 +1,4 @@
+node_modules
+.env
+_tests/coverage
+_tests/database.sqlite
