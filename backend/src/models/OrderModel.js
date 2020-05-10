@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
+const OrdersProducts = require('./OrdersProductsModel');
+
 class OrderModel extends Model {
 
     static init(connection){
@@ -28,7 +30,7 @@ class OrderModel extends Model {
         });
 
         this.belongsToMany(models.ProductModel, {
-            through: 'orders_products',
+            through: { model: OrdersProducts },
             foreignKey: 'order_id',
             as: 'products'
         });
