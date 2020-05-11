@@ -1,7 +1,6 @@
 const express = require('express');
 
 const CategoryModel = require('../models/CategoryModel');
-const UserModel = require('../models/UserModel');
 
 module.exports = {
 
