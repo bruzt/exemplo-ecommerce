@@ -11,8 +11,6 @@ module.exports = {
 
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
-
-        console.log(req.files)
         
         const { id } = req.params;
         const files = req.files;
@@ -25,12 +23,15 @@ module.exports = {
 
                 files.forEach( async (file) => {
 
-                    await unlinkAsync(file.path);
+                    if(process.env.IMG_STORAGE_LOCATION == 'local'){
+
+                        await unlinkAsync(file.path);
+                    }
                 });
 
                 return res.status(400).json({ message: 'product not found' });
             } 
-                
+            
             files.forEach( async (file) => {
 
                 await ImageModel.create({
@@ -57,8 +58,6 @@ module.exports = {
             const image = await ImageModel.findByPk(id);
 
             if(!image) return res.status(400).json({ message: 'image not found' });
-
-            await unlinkAsync(image.url);
 
             await image.destroy();
 

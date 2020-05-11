@@ -53,7 +53,7 @@ module.exports = {
 
     dest: path.resolve(__dirname, '../../tmp/uploads'),
 
-    storage: storageTypes[process.env.STORAGE_LOCATION],
+    storage: storageTypes[process.env.IMG_STORAGE_LOCATION],
 
     limits: {
         fileSize: 2 * 1024 * 1024 // 2MB
@@ -74,7 +74,7 @@ module.exports = {
 
         } else {
 
-            callback(new Error('Invalid file type'));
+            callback('Invalid file type', false);
         }
     }
 };

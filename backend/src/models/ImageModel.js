@@ -1,4 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
+const { unlink } = require('fs');
+const { promisify } = require('util');
+
+const unlinkAsync = promisify(unlink);
 
 class ImageModel extends Model {
 
@@ -10,7 +14,16 @@ class ImageModel extends Model {
 
         }, {
             tableName: 'images',
-            sequelize: connection
+            sequelize: connection,
+            hooks: {
+                beforeDestroy: async (image) => {
+
+                    if(process.env.IMG_STORAGE_LOCATION == 'local'){
+
+                        await unlinkAsync(image.url);
+                    }
+                }
+            }
         });
     }
 
