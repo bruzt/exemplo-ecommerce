@@ -12,7 +12,6 @@ class ProductModel extends Model {
             description: DataTypes.STRING,
             price: DataTypes.DECIMAL,
             quantity: DataTypes.INTEGER,
-            category: DataTypes.STRING,
             discount_percent: DataTypes.DECIMAL
 
         }, {
@@ -25,9 +24,14 @@ class ProductModel extends Model {
     static associate(models){
 
         this.belongsToMany(models.OrderModel, {
-            through: { model: OrdersProducts },
+            through: OrdersProducts,
             foreignKey: 'product_id',
             as: 'orders'
+        });
+
+        this.belongsTo(models.CategoryModel, {
+            foreignKey: 'category_id',
+            as: 'category'
         });
     }
 }

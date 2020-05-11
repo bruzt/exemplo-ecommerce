@@ -10,7 +10,13 @@ module.exports = {
 
         try {
 
-            const products = await ProductModel.findAll();
+            const products = await ProductModel.findAll({
+                attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
+                include: {
+                    association: 'category',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            });
 
             return res.json(products);
             
@@ -28,7 +34,13 @@ module.exports = {
 
         try {
 
-            const product = await ProductModel.findByPk(id);
+            const product = await ProductModel.findByPk(id, {
+                attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
+                include: {
+                    association: 'category',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            });
 
             if(!product) return res.status(400).json({ message: 'product not found' });
 
@@ -43,13 +55,7 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
 
-        const { id } = req.tokenPayload; 
-
         try {
-
-            const user = await UserModel.findByPk(id);
-            
-            if(!user.admin) return res.status(400).json({ message: 'not allowed' });
 
             const product = await ProductModel.create(req.body);
 
@@ -66,13 +72,8 @@ module.exports = {
     update: async (req, res) => {
 
         const { id } = req.params;
-        const userId = req.tokenPayload.id;
 
         try {
-
-            const user = await UserModel.findByPk(userId);
-
-            if(!user.admin) return res.status(400).json({ message: 'not allowed' });
 
             const [ updated ] = await ProductModel.update(req.body, { where: { id }});
 
@@ -90,13 +91,8 @@ module.exports = {
     destroy: async (req, res) => {
 
         const { id } = req.params;
-        const userId = req.tokenPayload.id;
 
         try {
-
-            const user = await UserModel.findByPk(userId);
-
-            if(!user.admin) return res.status(400).json({ message: 'not allowed' });
 
             const product = await ProductModel.destroy({ where: { id }});
 

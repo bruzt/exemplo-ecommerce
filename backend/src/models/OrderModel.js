@@ -30,7 +30,7 @@ class OrderModel extends Model {
         });
 
         this.belongsToMany(models.ProductModel, {
-            through: { model: OrdersProducts },
+            through: OrdersProducts,
             foreignKey: 'order_id',
             as: 'products'
         });

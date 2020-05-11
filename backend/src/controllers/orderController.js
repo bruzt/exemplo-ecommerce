@@ -108,13 +108,8 @@ module.exports = {
 
         const { id } = req.params;
         const { status } = req.body;
-        const userId = req.tokenPayload.id;
 
         try {
-
-            const user = await UserModel.findByPk(userId);
-
-            if(!user.admin) return res.status(400).json({ message: 'not allowed' });
 
             const [ updated ] = await OrderModel.update({ status }, { where: { id }});
 
@@ -132,13 +127,8 @@ module.exports = {
     destroy: async (req, res) => {
 
         const { id } = req.params;
-        const userId = req.tokenPayload.id;
 
         try {
-
-            const user = await UserModel.findByPk(userId);
-
-            if(!user.admin) return res.status(400).json({ message: 'not allowed' });
 
             const order = await OrderModel.findByPk(id);
 

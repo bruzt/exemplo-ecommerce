@@ -27,7 +27,7 @@ class AddressModel extends Model {
             as: 'user'
         });
 
-        this.hasOne(models.OrderModel, {
+        this.hasMany(models.OrderModel, {
             foreignKey: 'address_id',
             as: 'orders'
         });

@@ -2,6 +2,7 @@ const express = require('express');
 
 const autoRequireAll = require('./util/autoRequireAll');
 const verifyJwt = require('./middlewares/verifyJwt');
+const adminOnly = require('./middlewares/adminOnly');
 
 const controllers = autoRequireAll(__dirname, './controllers');
 const validators = autoRequireAll(__dirname, './middlewares/validators');
@@ -25,8 +26,8 @@ router.delete('/addresses/:id', validators.addressValidators.destroy, verifyJwt,
 router.get('/orders', validators.orderValidators.index, verifyJwt, controllers.orderController.index);
 router.get('/orders/:id', validators.orderValidators.show, controllers.orderController.show);
 router.post('/orders', validators.orderValidators.store, verifyJwt, controllers.orderController.store);
-router.put('/orders/:id', validators.orderValidators.update, verifyJwt, controllers.orderController.update);
-router.delete('/orders/:id', validators.orderValidators.destroy, verifyJwt, controllers.orderController.destroy);
+router.put('/orders/:id', validators.orderValidators.update, verifyJwt, adminOnly, controllers.orderController.update);
+router.delete('/orders/:id', validators.orderValidators.destroy, verifyJwt, adminOnly, controllers.orderController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
 router.post('/reset-password', validators.userResetPasswordValidator.store, controllers.userResetPasswordController.store);
@@ -38,8 +39,14 @@ router.post('/sessions', validators.sessionValidators.store, controllers.session
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
 router.get('/products', controllers.productController.index);
 router.get('/products/:id', controllers.productController.show);
-router.post('/products', validators.productValidators.store, verifyJwt, controllers.productController.store);
-router.put('/products/:id', validators.productValidators.update, verifyJwt, controllers.productController.update);
-router.delete('/products/:id', validators.productValidators.destroy, verifyJwt, controllers.productController.destroy);
+router.post('/products', validators.productValidators.store, verifyJwt, adminOnly, controllers.productController.store);
+router.put('/products/:id', validators.productValidators.update, verifyJwt, adminOnly, controllers.productController.update);
+router.delete('/products/:id', validators.productValidators.destroy, verifyJwt, adminOnly, controllers.productController.destroy);
+
+// BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
+router.get('/categories', controllers.categoryController.index);
+router.get('/categories/:id', controllers.categoryController.show);
+router.post('/categories', validators.categoryValidators.store, verifyJwt, adminOnly, controllers.categoryController.store);
+router.put('/categories/:id', validators.categoryValidators.update, verifyJwt, adminOnly, controllers.categoryController.update);
 
 module.exports = router;

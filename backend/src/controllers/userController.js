@@ -27,7 +27,7 @@ module.exports = {
         try {
             
             let user = await UserModel.findByPk(id, { 
-                attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'reset_password_token', 'reset_password_expires'] },
+                attributes: ['id', 'name', 'email', 'admin'],
                 include: [{
                     association: 'addresses',
                     attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -35,11 +35,11 @@ module.exports = {
                 },
                 {
                     association: 'orders',
-                    attributes: { exclude: 'updatedAt' },
+                    attributes: { exclude: ['updatedAt', 'address_id', 'user_id'] },
                     required: false,
                     include: [{
                         association: 'address',
-                        attributes: { exclude: ['createdAt', 'updatedAt']},
+                        attributes: { exclude: ['createdAt', 'updatedAt', 'user_id']},
                         required: false
                     },
                     {
