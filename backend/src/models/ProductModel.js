@@ -33,6 +33,11 @@ class ProductModel extends Model {
             foreignKey: 'category_id',
             as: 'category'
         });
+
+        this.hasMany(models.ImageModel, {
+            foreignKey: 'product_id',
+            as: 'images'
+        });
     }
 }
 
