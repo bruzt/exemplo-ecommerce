@@ -1,8 +1,8 @@
 const express = require('express');
 
 const autoRequireAll = require('./util/autoRequireAll');
-const verifyJwt = require('./middlewares/verifyJwt');
-const adminOnly = require('./middlewares/adminOnly');
+const jwtAuthentication = require('./middlewares/jwtAuthentication');
+const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 
 const controllers = autoRequireAll(__dirname, './controllers');
 const validators = autoRequireAll(__dirname, './middlewares/validators');
@@ -13,21 +13,21 @@ const router = express.Router();
 router.get('/users', controllers.userController.index);
 router.get('/users/:id', validators.userValidators.show, controllers.userController.show);
 router.post('/users', validators.userValidators.store, controllers.userController.store);
-router.put('/users', validators.userValidators.update, verifyJwt, controllers.userController.update);
-router.delete('/users', validators.userValidators.destroy, verifyJwt, controllers.userController.destroy);
+router.put('/users', validators.userValidators.update, jwtAuthentication, controllers.userController.update);
+router.delete('/users', validators.userValidators.destroy, jwtAuthentication, controllers.userController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE ENDEREÇOS DE UM USUÁRIO
-router.get('/addresses', validators.addressValidators.index, verifyJwt, controllers.addressController.index);
-router.post('/addresses', validators.addressValidators.store, verifyJwt, controllers.addressController.store);
-router.put('/addresses/:id', validators.addressValidators.update, verifyJwt, controllers.addressController.update);
-router.delete('/addresses/:id', validators.addressValidators.destroy, verifyJwt, controllers.addressController.destroy);
+router.get('/addresses', validators.addressValidators.index, jwtAuthentication, controllers.addressController.index);
+router.post('/addresses', validators.addressValidators.store, jwtAuthentication, controllers.addressController.store);
+router.put('/addresses/:id', validators.addressValidators.update, jwtAuthentication, controllers.addressController.update);
+router.delete('/addresses/:id', validators.addressValidators.destroy, jwtAuthentication, controllers.addressController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
-router.get('/orders', validators.orderValidators.index, verifyJwt, controllers.orderController.index);
+router.get('/orders', validators.orderValidators.index, jwtAuthentication, controllers.orderController.index);
 router.get('/orders/:id', validators.orderValidators.show, controllers.orderController.show);
-router.post('/orders', validators.orderValidators.store, verifyJwt, controllers.orderController.store);
-router.put('/orders/:id', validators.orderValidators.update, verifyJwt, adminOnly, controllers.orderController.update);
-router.delete('/orders/:id', validators.orderValidators.destroy, verifyJwt, adminOnly, controllers.orderController.destroy);
+router.post('/orders', validators.orderValidators.store, jwtAuthentication, controllers.orderController.store);
+router.put('/orders/:id', validators.orderValidators.update, adminJwtAuthentication, controllers.orderController.update);
+router.delete('/orders/:id', validators.orderValidators.destroy, adminJwtAuthentication, controllers.orderController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
 router.post('/reset-password', validators.userResetPasswordValidator.store, controllers.userResetPasswordController.store);
@@ -39,14 +39,14 @@ router.post('/sessions', validators.sessionValidators.store, controllers.session
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
 router.get('/products', controllers.productController.index);
 router.get('/products/:id', controllers.productController.show);
-router.post('/products', validators.productValidators.store, verifyJwt, adminOnly, controllers.productController.store);
-router.put('/products/:id', validators.productValidators.update, verifyJwt, adminOnly, controllers.productController.update);
-router.delete('/products/:id', validators.productValidators.destroy, verifyJwt, adminOnly, controllers.productController.destroy);
+router.post('/products', validators.productValidators.store, adminJwtAuthentication, controllers.productController.store);
+router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, controllers.productController.update);
+router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, controllers.productController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
 router.get('/categories', controllers.categoryController.index);
 router.get('/categories/:id', controllers.categoryController.show);
-router.post('/categories', validators.categoryValidators.store, verifyJwt, adminOnly, controllers.categoryController.store);
-router.put('/categories/:id', validators.categoryValidators.update, verifyJwt, adminOnly, controllers.categoryController.update);
+router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, controllers.categoryController.store);
+router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, controllers.categoryController.update);
 
 module.exports = router;

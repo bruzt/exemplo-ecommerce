@@ -53,6 +53,7 @@ class UserModel extends Model {
 
         return jwt.sign({ 
             id: this.id, 
+            admin: this.admin
         }, process.env.APP_SECRET);
     }
 }
