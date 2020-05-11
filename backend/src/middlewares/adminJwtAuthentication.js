@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
     
             //const user = await UserModel.findByPk(id);
             
-            if(!admin) return res.status(400).json({ message: 'admin not found' });
+            if(!admin) return res.status(400).json({ message: 'not an admin' });
             //if(!user.admin) return res.status(400).json({ message: 'you are not allowed to do that' });
     
             return next();

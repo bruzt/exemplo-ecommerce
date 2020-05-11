@@ -1,7 +1,6 @@
 const express = require('express');
 
 const ProductModel = require('../models/ProductModel');
-const UserModel = require('../models/UserModel');
 
 module.exports = {
 
@@ -12,10 +11,15 @@ module.exports = {
 
             const products = await ProductModel.findAll({
                 attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
-                include: {
+                include: [{
+                    association: 'images',
+                    attributes: ['id', 'url'],
+                    required: false
+                },                    
+                {
                     association: 'category',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                }
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                }]
             });
 
             return res.json(products);
@@ -36,10 +40,15 @@ module.exports = {
 
             const product = await ProductModel.findByPk(id, {
                 attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
-                include: {
+                include: [{
+                    association: 'images',
+                    attributes: ['id', 'url'],
+                    required: false
+                },
+                {
                     association: 'category',
                     attributes: { exclude: ['createdAt', 'updatedAt'] }
-                }
+                }]
             });
 
             if(!product) return res.status(400).json({ message: 'product not found' });

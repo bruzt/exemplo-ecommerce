@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+
+const multerConfig = require('./util/multerConfig');
 
 const autoRequireAll = require('./util/autoRequireAll');
 const jwtAuthentication = require('./middlewares/jwtAuthentication');
@@ -42,6 +45,10 @@ router.get('/products/:id', controllers.productController.show);
 router.post('/products', validators.productValidators.store, adminJwtAuthentication, controllers.productController.store);
 router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, controllers.productController.update);
 router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, controllers.productController.destroy);
+
+// ADICIONA, ALTERA OU REMOVE UMA IMAGEM DO PRODUTO
+router.post('/products/:id/images', validators.imageValidators.store, adminJwtAuthentication, multer(multerConfig).any(), controllers.imageController.store);
+router.delete('/products/images/:id', validators.imageValidators.destroy, adminJwtAuthentication, controllers.imageController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
 router.get('/categories', controllers.categoryController.index);
