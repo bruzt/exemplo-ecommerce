@@ -1,6 +1,7 @@
 const express = require('express');
 
 const ProductModel = require('../models/ProductModel');
+const CategoryModel = require('../models/CategoryModel');
 
 module.exports = {
 
@@ -65,6 +66,10 @@ module.exports = {
     store: async (req, res) => {
 
         try {
+
+            const category = await CategoryModel.findByPk(req.body.category_id);
+
+            if(!category) return res.status(400).json({ message: 'category not found' });
 
             const product = await ProductModel.create(req.body);
 
