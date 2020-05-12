@@ -45,7 +45,7 @@ module.exports = {
                     {
                         association: 'products',
                         attributes: ['id', 'name'],
-                        through: { attributes: ['quantity_buyed', 'product_price'] },
+                        through: { attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] },
                         required: false,
                         paranoid: false,
                         include: {
