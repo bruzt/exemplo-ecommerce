@@ -9,7 +9,7 @@ const express = require('express');
 module.exports = (err, req, res, next) => {
 
     if (err) {
-        return res.status(400).send({ message: err })
+        return res.status(400).json({ message: err })
     }
 
     return next();
