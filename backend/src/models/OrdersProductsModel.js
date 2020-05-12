@@ -7,7 +7,8 @@ class OrdersProductsModel extends Model {
         super.init({
 
             quantity_buyed: DataTypes.INTEGER,
-            product_price: DataTypes.DECIMAL
+            product_price: DataTypes.DECIMAL,
+            product_discount_percent: DataTypes.DECIMAL,
 
         }, {
             tableName: 'orders_products',
