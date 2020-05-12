@@ -1,9 +1,9 @@
 'use strict';
-const { QueryInterface, DataTypes } = require('sequelize');
+const Sequelize = require('sequelize');
 
 module.exports = {
 
-    /** @param {QueryInterface} queryInterface * @param {DataTypes} Sequelize */
+    /** @param {Sequelize.QueryInterface} queryInterface * @param {Sequelize.DataTypes} Sequelize */
     up: (queryInterface, Sequelize) => {
 
         return queryInterface.createTable('products', {
@@ -62,7 +62,7 @@ module.exports = {
         });
     },
 
-    /** @param {QueryInterface} queryInterface * @param {DataTypes} Sequelize */
+    /** @param {Sequelize.QueryInterface} queryInterface * @param {Sequelize.DataTypes} Sequelize */
     down: (queryInterface, Sequelize) => {
 
         return queryInterface.dropTable('products');

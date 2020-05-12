@@ -80,6 +80,11 @@ module.exports = {
             }
             
             if(missingProduct) return res.status(400).json({ message: `product id ${missingProduct} not found`});
+
+            /*const prices = products.map( (product) => {
+
+                return product.price - (product.price * (product.discount_percent/100));
+            })*/
             
             const order = await OrderModel.create({ user_id, total_price, status, address_id });
             
@@ -88,7 +93,8 @@ module.exports = {
                 await order.addProduct(products[i], {
                     through: {
                         quantity_buyed: quantity_buyed[i],
-                        product_price: products[i].price
+                        product_price: products[i].price,
+                        product_discount_percent: products[i].discount_percent
                     }
                 });
             }
