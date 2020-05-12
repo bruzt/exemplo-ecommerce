@@ -35,7 +35,7 @@ module.exports = {
                 references: { model: 'categories', key: 'id' }
             },  
 
-            quantity: {
+            quantity_stock: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0,
                 allowNull: false

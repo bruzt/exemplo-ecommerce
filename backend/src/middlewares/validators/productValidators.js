@@ -12,7 +12,7 @@ module.exports = {
             name: Joi.string().required(),
             description: Joi.string().required(),
             price: Joi.number().required(),
-            quantity: Joi.number().required(),
+            quantity_stock: Joi.number().required(),
             category_id: Joi.number().required(),
             discount_percent: Joi.number()
         })

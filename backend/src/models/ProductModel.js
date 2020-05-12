@@ -11,7 +11,7 @@ class ProductModel extends Model {
             name: DataTypes.STRING,
             description: DataTypes.STRING,
             price: DataTypes.DECIMAL,
-            quantity: DataTypes.INTEGER,
+            quantity_stock: DataTypes.INTEGER,
             discount_percent: DataTypes.DECIMAL
 
         }, {
