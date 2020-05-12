@@ -49,15 +49,16 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
 
-        const { quantity_buyed, total_price, status, products_id, address_id } = req.body;
+        const { quantity_buyed, status, products_id, address_id } = req.body;
         const user_id = req.tokenPayload.id;
 
         try {
 
+            // verify if user and his address exists
             let user = await UserModel.findByPk(user_id, {
                 include: {
                     association: 'addresses',
-                    where: { user_id },
+                    where: { id: address_id },
                     required: false
                 },
             });
@@ -65,29 +66,39 @@ module.exports = {
             if(!user) return res.status(400).json({ message: 'user not found' });
             if(user.addresses.length == 0) return res.status(400).json({ message: 'address not found' });
 
+            // verify if all products exists and have enough stock 
             let products = [];
-            let missingProduct;
+            let errorProduct;
             for(let i = 0; i < products_id.length; i++){
 
                 const product = await ProductModel.findByPk(products_id[i]);
 
                 if(!product) {
-                    missingProduct = products_id[i];
+                    errorProduct = 'product id ' + products_id[i] + ' not found';
+                    break;
+                }
+
+                if(product.quantity_stock < quantity_buyed[i]){
+                    errorProduct = 'product id ' + products_id[i] + ' dont have enough stock';
                     break;
                 }
 
                 products.push(product);
             }
             
-            if(missingProduct) return res.status(400).json({ message: `product id ${missingProduct} not found`});
+            if(errorProduct) return res.status(400).json({ message: errorProduct });
 
-            /*const prices = products.map( (product) => {
+            // calculates total price with discounts
+            let total_price = 0;
+            for(let i = 0; i < products.length; i++){
 
-                return product.price - (product.price * (product.discount_percent/100));
-            })*/
+                total_price += products[i].price - (products[i].price * (products[i].discount_percent/100));
+            }    
             
+            // create order
             const order = await OrderModel.create({ user_id, total_price, status, address_id });
             
+            // add products to order and subtract from stock
             for(let i = 0; i < products.length; i++){
                 
                 await order.addProduct(products[i], {
@@ -97,6 +108,9 @@ module.exports = {
                         product_discount_percent: products[i].discount_percent
                     }
                 });
+
+                products[i].quantity_stock -= quantity_buyed[i];
+                await products[i].save();
             }
 
             return res.json(order);
