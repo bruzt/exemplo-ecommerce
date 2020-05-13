@@ -9,12 +9,6 @@ module.exports = {
         .unknown(),
     }),
 
-    show: celebrate({
-        [Segments.PARAMS]: Joi.object().keys({
-            id: Joi.number().required()
-        }),
-    }),
-
     store: celebrate({
         [Segments.HEADERS]: Joi.object().keys({
             authorization: Joi.string().required()
