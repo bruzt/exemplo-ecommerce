@@ -95,7 +95,7 @@ module.exports = {
 
         const { id } = req.tokenPayload;
 
-        if(Object.keys(req.body).length === 0) return res.status(400).json({ message: 'empty object not allowed'});
+        //if(Object.keys(req.body).length === 0) return res.status(400).json({ message: 'empty object not allowed'});
 
         try {
 
