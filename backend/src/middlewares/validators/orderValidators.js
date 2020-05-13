@@ -35,7 +35,7 @@ module.exports = {
 
         [Segments.BODY]: Joi.object().keys({
             status: Joi.string()
-        })
+        }).min(1)
     }),
 
     destroy: celebrate({

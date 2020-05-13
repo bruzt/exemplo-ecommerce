@@ -26,7 +26,7 @@ module.exports = {
             name: Joi.string(), 
             email: Joi.string().email(),
             password: Joi.string()
-        }),
+        }).min(1)
     }),
 
     destroy: celebrate({

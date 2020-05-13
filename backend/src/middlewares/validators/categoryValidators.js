@@ -33,7 +33,7 @@ module.exports = {
         [Segments.BODY]: Joi.object().keys({
             name: Joi.string(),
             parent: Joi.number()
-        })
+        }).min(1)
     }),
     
     destroy: celebrate({

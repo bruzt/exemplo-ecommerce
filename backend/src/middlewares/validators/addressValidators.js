@@ -42,7 +42,7 @@ module.exports = {
             district: Joi.string(),
             city: Joi.string(),
             state: Joi.string(),
-        })
+        }).min(1)
     }),
 
     destroy: celebrate({

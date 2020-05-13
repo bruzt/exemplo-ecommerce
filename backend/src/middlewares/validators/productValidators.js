@@ -31,7 +31,7 @@ module.exports = {
             quantity: Joi.number(),
             category_id: Joi.number(),
             discount_percent: Joi.number()
-        })
+        }).min(1)
     }),
 
     destroy: celebrate({
