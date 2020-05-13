@@ -45,7 +45,7 @@ describe('addressController Test Suit', () => {
         .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe("user not found");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should add a address to an user', async () => {
@@ -58,7 +58,10 @@ describe('addressController Test Suit', () => {
         .send({
             zipcode: '21119624',
             street: 'rua tal do tal',
-            number: '15'
+            number: '15',
+            district: 'halala',
+            city: 'zuz du seu',
+            state: 'sp',
         });
 
         expect(response.status).toBe(200);
@@ -71,7 +74,10 @@ describe('addressController Test Suit', () => {
         .send({
             zipcode: '21119624',
             street: 'rua tal do tal',
-            number: '15'
+            number: '15',
+            district: 'halala',
+            city: 'zuz du seu',
+            state: 'sp',
         });
 
         expect(response.status).toBe(400);
@@ -87,13 +93,16 @@ describe('addressController Test Suit', () => {
         const response = await supertest(app).post(`/addresses`)
         .set('authorization', 'Bearer ' + token)
         .send({
-            zipcode: "447484",
-            street: "hahaha ha",
-            number: "55"
+            zipcode: '21119624',
+            street: 'rua tal do tal',
+            number: '15',
+            district: 'halala',
+            city: 'zuz du seu',
+            state: 'sp',
         });
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe("user not found");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should update a address', async () => {
@@ -138,7 +147,7 @@ describe('addressController Test Suit', () => {
         });
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe("user not found");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should return code 400 for "address not found" - update', async () => {
@@ -153,7 +162,22 @@ describe('addressController Test Suit', () => {
         });
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe("address not found");
+        expect(response.body.message).toBe("address not found");
+    });
+
+    it('should return code 400 for "no update has been made" - update', async () => {
+
+        const user = await factories.create('User');
+        const token = user.generateToken();
+        const address = await factories.create('Address', {
+            user_id: user.id
+        });
+
+        const response = await supertest(app).put(`/addresses/${address.id}`)
+        .set('authorization', 'Bearer ' + token);      
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("no update has been made");
     });
 
     it('should erase a address from a user', async () => {
@@ -189,7 +213,7 @@ describe('addressController Test Suit', () => {
         .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe("user not found");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should return code 400 for "address not found" - delete', async () => {
@@ -201,6 +225,6 @@ describe('addressController Test Suit', () => {
         .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty("error");
+        expect(response.body.message).toBe("address not found");
     });
 });
