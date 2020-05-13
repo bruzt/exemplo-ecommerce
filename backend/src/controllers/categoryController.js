@@ -9,7 +9,9 @@ module.exports = {
 
         try {
 
-            const categories = await CategoryModel.findAll();
+            const categories = await CategoryModel.findAll({
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            });
 
             return res.json(categories);
             
@@ -20,7 +22,7 @@ module.exports = {
     },
 
     /** @param {express.Request} req * @param {express.Response} res */
-    show: async (req, res) => {
+    /*show: async (req, res) => {
 
         const { id } = req.params;
 
@@ -36,12 +38,19 @@ module.exports = {
             console.error(error);
             return res.status(500).json({ message: 'internal error' });
         }
-    },
+    },*/
     
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
 
         try {
+
+            if(req.body.parent){
+
+                const parent = await CategoryModel.findByPk(req.body.parent);
+
+                if(!parent) return res.status(400).json({ message: 'parent category id not found' });
+            }
 
             const category = await CategoryModel.create(req.body);
 
