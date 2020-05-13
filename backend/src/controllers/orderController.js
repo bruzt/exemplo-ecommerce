@@ -9,22 +9,7 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     index: async (req, res) => {
 
-        try {
-
-            const orders = await OrderModel.findAll();
-
-            return res.json(orders);
-            
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: 'internal error' });
-        }
-    },
-
-    /** @param {express.Request} req * @param {express.Response} res */
-    show: async (req, res) => {
-
-        const { id } = req.params;
+        const { id } = req.tokenPayload;
 
         try {
 
@@ -124,7 +109,7 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     update: async (req, res) => {
 
-        if(Object.keys(req.body).length === 0) return res.status(400).json({ message: 'empty object not allowed'});
+        //if(Object.keys(req.body).length === 0) return res.status(400).json({ message: 'empty object not allowed'});
 
         const { id } = req.params;
         const { status } = req.body;
@@ -133,7 +118,7 @@ module.exports = {
 
             const [ updated ] = await OrderModel.update({ status }, { where: { id }});
 
-            if(updated == 0) return res.status(400).json({ message: 'order not found'});
+            if(updated == 0) return res.status(400).json({ message: 'no update has been made'});
 
             return res.sendStatus(200);
             
