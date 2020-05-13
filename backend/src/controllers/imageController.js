@@ -20,9 +20,9 @@ module.exports = {
             const product = await ProductModel.findByPk(id);
 
             if(!product){
-
+                
                 files.forEach( async (file) => {
-
+                
                     if(process.env.IMG_STORAGE_LOCATION == 'local'){
 
                         await unlinkAsync(file.path);
@@ -32,15 +32,18 @@ module.exports = {
                 return res.status(400).json({ message: 'product not found' });
             } 
             
+            const images = []
             files.forEach( async (file) => {
+
+                images.push(file.path);
 
                 await ImageModel.create({
                     product_id: id,
                     url: file.path
-                })
+                });
             });
             
-            return res.sendStatus(200);
+            return res.status(200).json(images);
 
         } catch (error) {
             console.error(error);
