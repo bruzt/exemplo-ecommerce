@@ -12,7 +12,7 @@ module.exports = function verifyJwt(req, res, next) {
 
     const splitBearer = authorization.split(' ');
 
-    if(splitBearer.length !== 2 || splitBearer[0] !== "Bearer") return res.status(400).json({ error: 'invalid credentials' });
+    if(splitBearer.length !== 2 || splitBearer[0] !== "Bearer") return res.status(400).json({ message: 'invalid credentials' });
 
     try {
         
@@ -22,6 +22,6 @@ module.exports = function verifyJwt(req, res, next) {
 
     } catch(error){
         
-        return res.status(400).json({ error: 'invalid credentials' });
+        return res.status(400).json({ message: 'invalid credentials' });
     }
 }
