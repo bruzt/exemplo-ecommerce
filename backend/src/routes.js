@@ -28,7 +28,6 @@ router.delete('/addresses/:id', validators.addressValidators.destroy, jwtAuthent
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
 router.get('/orders', validators.orderValidators.index, jwtAuthentication, controllers.orderController.index);
-router.get('/orders/:id', validators.orderValidators.show, controllers.orderController.show);
 router.post('/orders', validators.orderValidators.store, jwtAuthentication, controllers.orderController.store);
 router.put('/orders/:id', validators.orderValidators.update, adminJwtAuthentication, controllers.orderController.update);
 router.delete('/orders/:id', validators.orderValidators.destroy, adminJwtAuthentication, controllers.orderController.destroy);
@@ -53,7 +52,7 @@ router.delete('/products/images/:id', validators.imageValidators.destroy, adminJ
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
 router.get('/categories', controllers.categoryController.index);
-router.get('/categories/:id', controllers.categoryController.show);
+//router.get('/categories/:id', controllers.categoryController.show);
 router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, controllers.categoryController.store);
 router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, controllers.categoryController.update);
 
