@@ -96,10 +96,12 @@ describe('categoryController Test Suit', () => {
         const user = await factories.create('User');
         user.admin = true;
         const token = user.generateToken();
-        const category = await factories.create('Category');
 
-        const response = await supertest(app).put(`/categories/${category.id}`)
-        .set('authorization', `Bearer ${token}`);
+        const response = await supertest(app).put(`/categories/44`)
+        .set('authorization', `Bearer ${token}`)
+        .send({
+            name: 'testecat'
+        });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('no update has been made');

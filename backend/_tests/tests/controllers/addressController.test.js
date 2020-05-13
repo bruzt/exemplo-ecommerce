@@ -165,21 +165,6 @@ describe('addressController Test Suit', () => {
         expect(response.body.message).toBe("address not found");
     });
 
-    it('should return code 400 for "no update has been made" - update', async () => {
-
-        const user = await factories.create('User');
-        const token = user.generateToken();
-        const address = await factories.create('Address', {
-            user_id: user.id
-        });
-
-        const response = await supertest(app).put(`/addresses/${address.id}`)
-        .set('authorization', 'Bearer ' + token);      
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("no update has been made");
-    });
-
     it('should erase a address from a user', async () => {
 
         const user = await factories.create('User');

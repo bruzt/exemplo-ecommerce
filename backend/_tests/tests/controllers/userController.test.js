@@ -3,7 +3,6 @@ const supertest = require('supertest');
 const truncate = require('../../utils/truncate');
 const factories = require('../../utils/factories');
 const app = require('../../../src/app');
-const UserModel = require('../../../src/models/UserModel');
 
 describe('userController Test Suit', () => {
 
@@ -42,7 +41,7 @@ describe('userController Test Suit', () => {
         const response = await supertest(app).get(`/users/22`);
 
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty("error");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should return code 400 for "id must be a number" - show', async () => {
@@ -78,7 +77,7 @@ describe('userController Test Suit', () => {
         });
 
         expect(response.status).toBe(400);
-        expect(response.body.error).toBe('email already in use');
+        expect(response.body.message).toBe('email already in use');
     });
 
     it('should update a user on db', async () => {
@@ -95,7 +94,7 @@ describe('userController Test Suit', () => {
         expect(response.status).toBe(200);
     });
 
-    it('should return code 400 for "user not found" - update', async () => {
+    it('should return code 400 for "no update has been made" - update', async () => {
 
         const user = await factories.create('User');
         const token = user.generateToken();
@@ -108,7 +107,7 @@ describe('userController Test Suit', () => {
         });
         
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty("error");
+        expect(response.body.message).toBe("no update has been made");
     });
 
     it('should erase a user from db', async () => {

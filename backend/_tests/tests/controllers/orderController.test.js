@@ -115,6 +115,25 @@ describe('orderController Test Suit', () => {
         expect(response.body.message).toBe("address not found");
     });
 
+    it('should return code 400 for "must have at least one product"', async () => {
+
+        const user = await factories.create('User');
+        const address = await factories.create('Address', { user_id: user.id });
+        const token = user.generateToken();
+
+        const response = await supertest(app).post(`/orders`)
+        .set('authorization', 'Bearer ' + token)
+        .send({
+            address_id: address.id,
+            status: "awaiting payment",
+            products_id: [],
+            quantity_buyed: [2],
+        });
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("\"products_id\" does not contain 1 required value(s)");
+    });
+
     it('should return code 400 for "product id not found" - store', async () => {
 
         const user = await factories.create('User');

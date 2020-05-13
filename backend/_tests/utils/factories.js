@@ -9,7 +9,6 @@ factory.define('User', models.UserModel, {
     name: faker.name.findName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-    admin: true,
 });
 
 factory.define('Address', models.AddressModel, {

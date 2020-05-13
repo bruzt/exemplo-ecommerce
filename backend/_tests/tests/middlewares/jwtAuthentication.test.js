@@ -1,8 +1,8 @@
 const factories = require('../../utils/factories');
-const verifyJwt = require('../../../src/middlewares/verifyJwt'); 
+const jwtAuthentication = require('../../../src/middlewares/jwtAuthentication'); 
 const truncate = require('../../utils/truncate');
 
-describe('Middleware verifyJwt Test Suit', () => {
+describe('Middleware jwtAuthentication Test Suit', () => {
 
     beforeEach( () => {
        
@@ -25,7 +25,7 @@ describe('Middleware verifyJwt Test Suit', () => {
                 if(!err) return resolve(req);
             };
 
-            verifyJwt(req, {}, next);
+            jwtAuthentication(req, {}, next);
         });
 
         expect(result).toHaveProperty('tokenPayload');
@@ -49,17 +49,17 @@ describe('Middleware verifyJwt Test Suit', () => {
                     res['code'] = code;
                     return res;
                 },
-                json: (error) => {
-                    res['data'] = error;
+                json: (message) => {
+                    res['data'] = message;
                     return resolve(res);
                 }
             }
 
-            verifyJwt(req, res, {});
+            jwtAuthentication(req, res, {});
         });
 
         expect(result.code).toBe(400);
-        expect(result.data).toHaveProperty('error');
+        expect(result.data.message).toBe('invalid credentials');
     });
 
     it('should return error for token not valid', async () => {
@@ -75,16 +75,16 @@ describe('Middleware verifyJwt Test Suit', () => {
                     res['code'] = code;
                     return res;
                 },
-                json: (error) => {
-                    res['data'] = error;
+                json: (message) => {
+                    res['data'] = message;
                     return resolve(res);
                 }
             }
 
-            verifyJwt(req, res, {});
+            jwtAuthentication(req, res, {});
         });
 
         expect(result.code).toBe(400);
-        expect(result.data).toHaveProperty('error');
+        expect(result.data.message).toBe('invalid credentials');
     });
 });
