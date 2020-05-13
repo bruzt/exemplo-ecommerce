@@ -66,9 +66,7 @@ module.exports = {
             if(! user) return res.status(400).json({ message: "user not found" });
             if(user.addresses.length < 1) return res.status(400).json({ message: "address not found" });
 
-            const [ updated ] = await AddressModel.update(req.body, { where: { id } });
-
-            if(updated == 0) return res.status(400).json({ message: 'no update has been made' });
+            await AddressModel.update(req.body, { where: { id } });
 
             return res.sendStatus(200);
             
