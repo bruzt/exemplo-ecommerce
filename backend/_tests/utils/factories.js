@@ -27,19 +27,25 @@ factory.define('Category', models.CategoryModel, {
 });
 
 factory.define('Product', models.ProductModel, {
-    name: faker.commerce.product(),
-    description: faker.commerce.productAdjective(),
+    name: faker.commerce.productName(),
+    description: faker.commerce.product(),
     price: faker.commerce.price(),
-    quantity: faker.random.number(),
-    discount_percent: 0    
+    quantity_stock: faker.random.number({ min: 10, max: 50 }),
+    discount_percent: faker.random.number(90)
 });
 
-/*factory.define('Order', models.OrderModel, {
+factory.define('Image', models.ImageModel, {
+    url: faker.image.imageUrl(),
+});
+
+factory.define('Order', models.OrderModel, {
     total_price: faker.commerce.price(),
-    description: faker.commerce.productAdjective(),
-    price: faker.commerce.price(),
-    quantity: faker.random.number(),
-    discount_percent: 0    
-});*/
+    status: faker.commerce.color(), 
+});
+
+factory.define('OrdersProducts', models.OrdersProductsModel, {
+    total_price: faker.commerce.price(),
+    status: faker.commerce.color(), 
+});
 
 module.exports = factory;
