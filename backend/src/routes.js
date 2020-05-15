@@ -56,4 +56,7 @@ router.get('/categories', controllers.categoryController.index);
 router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, controllers.categoryController.store);
 router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, controllers.categoryController.update);
 
+// CORREIOS
+router.post('/freight', validators.freightValidators.store, controllers.freightController.store);
+
 module.exports = router;
