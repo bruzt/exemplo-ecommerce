@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { FaBan } from 'react-icons/fa';
 
 import api from '../../services/api';
 import { useCart } from '../../context/cartContext';
@@ -94,6 +95,7 @@ export default function Product({ product }) {
     function addToCartButton(){
 
         cartContext.addToCart({ id: productState.id, qtd: qtdState });
+        alert('Item adicionado ao carrinho');
     }
 
     return (
@@ -144,7 +146,9 @@ export default function Product({ product }) {
                             <p>Qtd: <input type="number" id="qtd" value={qtdState} onChange={(event) => verifyQtd(event.target.value)} /></p> 
                             <p>Disponível: {productState.quantity_stock}</p>
                             <p className='total'>Total: R$ {(finalPrice * qtdState).toFixed(2)}</p>
-                            <button type='button' onClick={addToCartButton} disabled={buyButtonDisabledState}>Adicionar ao carrinho</button>
+                            <button type='button' onClick={addToCartButton} disabled={buyButtonDisabledState}>
+                                {(buyButtonDisabledState) ? <p><FaBan size={30} /></p> : <p>Adicionar ao carrinho</p>}
+                            </button>
                         </div>
                     </div>
 
@@ -226,12 +230,17 @@ export default function Product({ product }) {
                     font-weight: bold;
                 }
 
+
+                .buy button p {
+                    margin: 5px 0 0 0;
+                }
+
                 .buy button:hover {
                     background: ${(buyButtonDisabledState) ? '#bf2232' : '#41A933'};
                 }
 
                 .buy button:active {
-                    background: #3E8C34;
+                    background: ${(buyButtonDisabledState) ? '#a32e39' : '#3E8C34'};
                 }
 
                 .description {
