@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 import api from '../../services/api';
+import { useCart } from '../../context/cartContext';
 
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -38,6 +39,33 @@ export default function Product({ product }) {
 
     const [qtdState, setQtd] = useState(1);
     const [buyButtonDisabledState, setBuyButtonDisabled] = useState(false);
+    const [productState, setProduct] = useState({});
+
+    const cartContext = useCart();
+
+    const finalPrice = (productState.discount_percent == 0) 
+        ? Number(productState.price).toFixed(2)
+        : (productState.price - (productState.price * (productState.discount_percent/100))).toFixed(2);
+
+    useEffect( () => {
+
+        getProduct();
+
+    }, []);
+
+    async function getProduct(){
+
+        try {
+
+            const response = await api.get(`/products/${product.id}`);
+
+            setProduct(response.data);
+            
+        } catch (error) {
+            console.error(error);
+            alert('Erro, recarregue a página');
+        }
+    }
 
     function verifyQtd(value){
 
@@ -51,9 +79,9 @@ export default function Product({ product }) {
             setBuyButtonDisabled(true);
             setQtd(0);  
     
-        } else if(value > product.quantity_stock){
+        } else if(value > productState.quantity_stock){
 
-            setQtd(product.quantity_stock);
+            setQtd(productState.quantity_stock);
             setBuyButtonDisabled(false);
 
         } else {
@@ -61,6 +89,11 @@ export default function Product({ product }) {
             setQtd(value);
             setBuyButtonDisabled(false);
         }
+    }
+
+    function addToCartButton(){
+
+        cartContext.addToCart({ id: productState.id, qtd: qtdState });
     }
 
     return (
@@ -106,11 +139,12 @@ export default function Product({ product }) {
 
                         <div className='buy'>
                             <h2>Preço</h2>
-                            <p className='price'>R$ {(product.discount_percent != 0) ? (product.price - (product.price * (product.discount_percent/100))).toFixed(2) : Number(product.price).toFixed(2)}</p>
-                            {(product.discount_percent != 0) && <p className='discount'>-{product.discount_percent}%</p>}
+                            <p className='price'>R$ {finalPrice} a unidade</p>
+                            {(productState.discount_percent != 0) && <p className='discount'>-{productState.discount_percent}%</p>}
                             <p>Qtd: <input type="number" id="qtd" value={qtdState} onChange={(event) => verifyQtd(event.target.value)} /></p> 
-                            <p>Disponível: {product.quantity_stock}</p>
-                            <button type='button' onClick={() => {}} disabled={buyButtonDisabledState}>Adicionar ao carrinho</button>
+                            <p>Disponível: {productState.quantity_stock}</p>
+                            <p className='total'>Total: R$ {(finalPrice * qtdState).toFixed(2)}</p>
+                            <button type='button' onClick={addToCartButton} disabled={buyButtonDisabledState}>Adicionar ao carrinho</button>
                         </div>
                     </div>
 
@@ -162,6 +196,11 @@ export default function Product({ product }) {
                 }
 
                 .buy .price {
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+                .buy .total {
                     font-size: 30px;
                     font-weight: bold;
                 }
@@ -188,7 +227,11 @@ export default function Product({ product }) {
                 }
 
                 .buy button:hover {
-                    background:${(buyButtonDisabledState) ? '#bf2232' : '#41A933'};
+                    background: ${(buyButtonDisabledState) ? '#bf2232' : '#41A933'};
+                }
+
+                .buy button:active {
+                    background: #3E8C34;
                 }
 
                 .description {
