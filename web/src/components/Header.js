@@ -2,7 +2,11 @@ import React from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import Link from 'next/link';
 
+import { useCart } from '../context/cartContext';
+
 export default function Header() {
+
+    const cartContext = useCart();
   
     return (
         <>
@@ -41,10 +45,13 @@ export default function Header() {
 
                     <div className='icon' title='Carrinho de compras'>
                         <Link href='/order'>
-                            <div>
+                            <a>
+                                <div className='cart-number'>
+                                    <p>{cartContext.cart.length}</p>
+                                </div>
                                 <FaShoppingCart size={40} />
                                 <p>Carrinho</p>
-                            </div>
+                            </a>
                         </Link>
                     </div>
                 </div>
@@ -56,7 +63,7 @@ export default function Header() {
                     border-bottom: 1px solid black;
                 }
 
-                .limit-center {
+                header .limit-center {
                     width: 100%;
                     max-width: 1300px;
                     margin: 0 auto;
@@ -65,20 +72,31 @@ export default function Header() {
                     justify-content: space-between;
                 }
 
-                img {
+                header img {
                     max-width: 100%;
                     height: 90px;
                     align-self: center;
                     cursor: pointer;
                 }
 
-                .icon {
-                    /*float: right;*/
+                header .icon {
                     margin: 35px 10px 0 0;
-                    cursor: pointer;
                     text-align: center;
                 }
-            
+
+                header .cart-number {
+                    position: absolute;
+                    margin: 0 0 0 40px;
+                    background: #8f182a;
+                    padding: 1px 5px;
+                    border-radius: 20px;
+                    z-index: 10;
+                }
+
+                header .cart-number p {
+                    padding: 0;
+                    margin: 0;
+                }
             `}</style>
         </>
     );
