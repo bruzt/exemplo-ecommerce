@@ -10,7 +10,7 @@ export default function Header() {
   
     return (
         <>
-            <style global jsx>{`
+            <style jsx global>{`
                 * {
                     margin: 0;
                     padding: 0;
