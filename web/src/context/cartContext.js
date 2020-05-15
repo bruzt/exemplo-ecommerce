@@ -8,7 +8,7 @@ export function CartContextProvider({ children }){
 
     useEffect( () => {
         
-        const storedCart = JSON.parse(localStorage.getItem('cart'));
+        const storedCart = JSON.parse(sessionStorage.getItem('cart'));
 
         if(storedCart) setCart(storedCart);
 
@@ -43,12 +43,20 @@ export function CartContextProvider({ children }){
             cart.push(newProduct);
         }
            
-        localStorage.setItem('cart', JSON.stringify(cart));
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+        setCart(cart);
+    }
+
+    function removeFromCart(id){
+
+        const cart = cartState.filter( (product) => product.id != id);
+        
+        sessionStorage.setItem('cart', JSON.stringify(cart));
         setCart(cart);
     }
 
     return (
-        <Context.Provider value={{ cart: cartState, addToCart }}>
+        <Context.Provider value={{ cart: cartState, addToCart, removeFromCart }}>
             {children}
         </Context.Provider>
     );
