@@ -17,18 +17,20 @@ describe('userResetPasswordController Test Suit', () => {
             email: 'um@dois.tres'
         });
 
-        const response = await supertest(app).post('/reset-password').send({
-            email: user.email
-        });
+        const response = await supertest(app).post('/reset-password')
+            .send({
+                email: user.email
+            });
 
         expect(response.status).toBe(200);
     });
 
     it('should return code 400 for "user not found" - store', async () => {
 
-        const response = await supertest(app).post('/reset-password').send({
-            email: 'um@dois.tres'
-        });
+        const response = await supertest(app).post('/reset-password')
+            .send({
+                email: 'um@dois.tres'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -47,20 +49,22 @@ describe('userResetPasswordController Test Suit', () => {
 
         await user.save();
 
-        const response = await supertest(app).put('/reset-password').send({
-            token: user.id + '#' + token,
-            password: '123456'
-        });
+        const response = await supertest(app).put('/reset-password')
+            .send({
+                token: user.id + '#' + token,
+                password: '123456'
+            });
 
         expect(response.status).toBe(200);
     });
 
     it('should return code 400 for "user not found" - update', async () => {
 
-        const response = await supertest(app).put('/reset-password').send({
-            token: '2#df95h495df4h9dh',
-            password: '123456'
-        });
+        const response = await supertest(app).put('/reset-password')
+            .send({
+                token: '2#df95h495df4h9dh',
+                password: '123456'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('user not found');
@@ -79,10 +83,11 @@ describe('userResetPasswordController Test Suit', () => {
 
         await user.save();
 
-        const response = await supertest(app).put('/reset-password').send({
-            token: user.id + '#df4gd54g',
-            password: '123456'
-        });
+        const response = await supertest(app).put('/reset-password')
+            .send({
+                token: user.id + '#df4gd54g',
+                password: '123456'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('invalid token');
@@ -90,10 +95,11 @@ describe('userResetPasswordController Test Suit', () => {
 
     it('should return code 400 for "invalid token" (invalid id)', async () => {
 
-        const response = await supertest(app).put('/reset-password').send({
-            token: 'a#df4gd54g',
-            password: '123456'
-        });
+        const response = await supertest(app).put('/reset-password')
+            .send({
+                token: 'a#df4gd54g',
+                password: '123456'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('invalid token');
@@ -112,10 +118,11 @@ describe('userResetPasswordController Test Suit', () => {
 
         await user.save();
 
-        const response = await supertest(app).put('/reset-password').send({
-            token: user.id + '#' + token,
-            password: '123456'
-        });
+        const response = await supertest(app).put('/reset-password')
+            .send({
+                token: user.id + '#' + token,
+                password: '123456'
+            });
         
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('token expired');

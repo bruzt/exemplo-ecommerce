@@ -30,8 +30,8 @@ describe('imageController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post(`/products/${product.id}/images`)
-        .set('authorization', 'Bearer ' + token)
-        .attach('file', filePath);
+            .set('authorization', 'Bearer ' + token)
+            .attach('file', filePath);
         
         await unlinkAsync(response.body[0]);
 
@@ -45,8 +45,8 @@ describe('imageController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post(`/products/40/images`)
-        .set('authorization', 'Bearer ' + token)
-        .attach('file', filePath);
+            .set('authorization', 'Bearer ' + token)
+            .attach('file', filePath);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("product not found");
@@ -70,7 +70,7 @@ describe('imageController Test Suit', () => {
         }
 
         const response = await supertest(app).delete(`/products/images/${image.id}`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(200);
     });
@@ -82,7 +82,7 @@ describe('imageController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete(`/products/images/5`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("image not found");

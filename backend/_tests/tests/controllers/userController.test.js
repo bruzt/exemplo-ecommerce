@@ -54,11 +54,12 @@ describe('userController Test Suit', () => {
 
     it('should add a user on db', async () => {
 
-        const response = await supertest(app).post('/users').send({
-            name: 'teste',
-            email: 'teste@teste.com',
-            password: 'bla123'
-        });
+        const response = await supertest(app).post('/users')
+            .send({
+                name: 'teste',
+                email: 'teste@teste.com',
+                password: 'bla123'
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('teste');
@@ -70,11 +71,12 @@ describe('userController Test Suit', () => {
             email: 'teste@teste.com'
         })
 
-        const response = await supertest(app).post('/users').send({
-            name: 'teste',
-            email: 'teste@teste.com',
-            password: 'bla123'
-        });
+        const response = await supertest(app).post('/users')
+            .send({
+                name: 'teste',
+                email: 'teste@teste.com',
+                password: 'bla123'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('email already in use');
@@ -86,10 +88,10 @@ describe('userController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put('/users')
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            name: 'test'
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                name: 'test'
+            });
         
         expect(response.status).toBe(200);
     });
@@ -101,10 +103,10 @@ describe('userController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
 
         const response = await supertest(app).put('/users')
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            name: 'test'
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                name: 'test'
+            });
         
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("no update has been made");
@@ -116,7 +118,7 @@ describe('userController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete('/users')
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(200);
     });
@@ -128,7 +130,7 @@ describe('userController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
 
         const response = await supertest(app).delete('/users')
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(400);
     });

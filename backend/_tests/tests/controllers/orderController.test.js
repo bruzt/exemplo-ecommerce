@@ -32,7 +32,7 @@ describe('orderController Test Suit', () => {
         }
 
         const response = await supertest(app).get(`/orders`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
@@ -45,7 +45,7 @@ describe('orderController Test Suit', () => {
         await user.destroy();
 
         const response = await supertest(app).get(`/orders`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('user not found');
@@ -60,13 +60,13 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: address.id,
-            status: "awaiting payment",
-            products_id: [product.id],
-            quantity_buyed: [2],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: address.id,
+                status: "awaiting payment",
+                products_id: [product.id],
+                quantity_buyed: [2],
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.user_id).toBe(user.id);
@@ -82,13 +82,13 @@ describe('orderController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id });
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: 1,
-            status: "awaiting payment",
-            products_id: [product.id],
-            quantity_buyed: [2],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: 1,
+                status: "awaiting payment",
+                products_id: [product.id],
+                quantity_buyed: [2],
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -103,13 +103,13 @@ describe('orderController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id });
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: 1,
-            status: "awaiting payment",
-            products_id: [product.id],
-            quantity_buyed: [2],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: 1,
+                status: "awaiting payment",
+                products_id: [product.id],
+                quantity_buyed: [2],
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("address not found");
@@ -122,13 +122,13 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: address.id,
-            status: "awaiting payment",
-            products_id: [],
-            quantity_buyed: [2],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: address.id,
+                status: "awaiting payment",
+                products_id: [],
+                quantity_buyed: [2],
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("\"products_id\" does not contain 1 required value(s)");
@@ -141,13 +141,13 @@ describe('orderController Test Suit', () => {
         const address = await factories.create('Address', { user_id: user.id });
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: address.id,
-            status: "awaiting payment",
-            products_id: [1],
-            quantity_buyed: [2],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: address.id,
+                status: "awaiting payment",
+                products_id: [1],
+                quantity_buyed: [2],
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("product id 1 not found");
@@ -163,13 +163,13 @@ describe('orderController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id, quantity_stock: 2 });
 
         const response = await supertest(app).post(`/orders`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            address_id: address.id,
-            status: "awaiting payment",
-            products_id: [1],
-            quantity_buyed: [5],
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                address_id: address.id,
+                status: "awaiting payment",
+                products_id: [1],
+                quantity_buyed: [5],
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe(`product id ${product.id} dont have enough stock`);
@@ -191,8 +191,8 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put(`/orders/${order.id}`)
-        .set('authorization', 'Bearer ' + token)
-        .send({ status: "payment confirmed" });
+            .set('authorization', 'Bearer ' + token)
+            .send({ status: "payment confirmed" });
 
         expect(response.status).toBe(200);
     });
@@ -204,8 +204,8 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put(`/orders/1`)
-        .set('authorization', 'Bearer ' + token)
-        .send({ status: "payment confirmed" });
+            .set('authorization', 'Bearer ' + token)
+            .send({ status: "payment confirmed" });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("no update has been made");
@@ -227,7 +227,7 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete(`/orders/${order.id}`)
-        .set('authorization', 'Bearer ' + token)
+            .set('authorization', 'Bearer ' + token)
     
         expect(response.status).toBe(200);
     });
@@ -239,7 +239,7 @@ describe('orderController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete(`/orders/5`)
-        .set('authorization', 'Bearer ' + token)
+            .set('authorization', 'Bearer ' + token)
     
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("order not found");

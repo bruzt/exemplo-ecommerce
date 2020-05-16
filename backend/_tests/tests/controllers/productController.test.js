@@ -54,14 +54,14 @@ describe('productController Test Suit', () => {
         const category = await factories.create('Category');
 
         const response = await supertest(app).post(`/products`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            category_id: category.id,
-            name: 'prod test',
-            description: 'llalal lal lal al alala',
-            price: 1.99,
-            quantity_stock: 0,
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                category_id: category.id,
+                name: 'prod test',
+                description: 'llalal lal lal al alala',
+                price: 1.99,
+                quantity_stock: 0,
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('prod test');
@@ -74,14 +74,14 @@ describe('productController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post(`/products`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            category_id: 10,
-            name: 'prod test',
-            description: 'llalal lal lal al alala',
-            price: 1.99,
-            quantity_stock: 0,
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                category_id: 10,
+                name: 'prod test',
+                description: 'llalal lal lal al alala',
+                price: 1.99,
+                quantity_stock: 0,
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('category not found');
@@ -97,10 +97,10 @@ describe('productController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id });
 
         const response = await supertest(app).put(`/products/${product.id}`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            name: 'prod teste 2',
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                name: 'prod teste 2',
+            });
 
         expect(response.status).toBe(200);
     });
@@ -112,10 +112,10 @@ describe('productController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put(`/products/33`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            name: "xablau"
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                name: "xablau"
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('no update has been made');
@@ -131,7 +131,7 @@ describe('productController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id });
 
         const response = await supertest(app).delete(`/products/${product.id}`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(200);
     });
@@ -143,7 +143,7 @@ describe('productController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete(`/products/50`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("product not found");

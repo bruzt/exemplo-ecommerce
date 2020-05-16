@@ -20,10 +20,11 @@ describe('sessionController Test Suit', () => {
             password: 'passtest'
         });
 
-        const response = await supertest(app).post('/sessions').send({
-            email: 'test@test.com',
-            password: 'passtest'
-        });
+        const response = await supertest(app).post('/sessions')
+            .send({
+                email: 'test@test.com',
+                password: 'passtest'
+            });
 
         const { id } = jwt.verify(response.body.token, process.env.APP_SECRET);
 
@@ -33,9 +34,10 @@ describe('sessionController Test Suit', () => {
 
     it('should return code 400 for "one or more fields are missing"', async () => {
 
-        const response = await supertest(app).post('/sessions').send({
-            email: 'test@test.com',
-        });
+        const response = await supertest(app).post('/sessions')
+            .send({
+                email: 'test@test.com',
+            });
 
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("error");
@@ -43,10 +45,11 @@ describe('sessionController Test Suit', () => {
 
     it('should not authenticated if user not exists', async () => {
 
-        const response = await supertest(app).post('/sessions').send({
-            email: 'test@test.com',
-            password: 'passtest'
-        });
+        const response = await supertest(app).post('/sessions')
+            .send({
+                email: 'test@test.com',
+                password: 'passtest'
+            });
 
         expect(response.status).toBe(400);
     });
@@ -58,10 +61,11 @@ describe('sessionController Test Suit', () => {
             password: 'passtest'
         });
 
-        const response = await supertest(app).post('/sessions').send({
-            email: 'test@test.com',
-            password: 'testpass'
-        });
+        const response = await supertest(app).post('/sessions')
+            .send({
+                email: 'test@test.com',
+                password: 'testpass'
+            });
 
         expect(response.status).toBe(400);
     });

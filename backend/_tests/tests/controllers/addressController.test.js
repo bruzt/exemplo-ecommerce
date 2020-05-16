@@ -21,7 +21,7 @@ describe('addressController Test Suit', () => {
         });
 
         const response = await supertest(app).get(`/addresses`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(200);
         expect(response.body[0].user_id).toBe(user.id);
@@ -42,7 +42,7 @@ describe('addressController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
         
         const response = await supertest(app).get(`/addresses`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -54,15 +54,15 @@ describe('addressController Test Suit', () => {
         const token = user.generateToken();
         
         const response = await supertest(app).post(`/addresses`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            zipcode: '21119624',
-            street: 'rua tal do tal',
-            number: '15',
-            district: 'halala',
-            city: 'zuz du seu',
-            state: 'sp',
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                zipcode: '21119624',
+                street: 'rua tal do tal',
+                number: '15',
+                district: 'halala',
+                city: 'zuz du seu',
+                state: 'sp',
+            });
 
         expect(response.status).toBe(200);
         expect(parseInt(response.body.user_id)).toBe(user.id);
@@ -71,14 +71,14 @@ describe('addressController Test Suit', () => {
     it('should return code 400 for "authorization is required" - store', async () => {
         
         const response = await supertest(app).post(`/addresses`)
-        .send({
-            zipcode: '21119624',
-            street: 'rua tal do tal',
-            number: '15',
-            district: 'halala',
-            city: 'zuz du seu',
-            state: 'sp',
-        });
+            .send({
+                zipcode: '21119624',
+                street: 'rua tal do tal',
+                number: '15',
+                district: 'halala',
+                city: 'zuz du seu',
+                state: 'sp',
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.validation.keys[0]).toBe("authorization");
@@ -91,15 +91,15 @@ describe('addressController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
         
         const response = await supertest(app).post(`/addresses`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            zipcode: '21119624',
-            street: 'rua tal do tal',
-            number: '15',
-            district: 'halala',
-            city: 'zuz du seu',
-            state: 'sp',
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                zipcode: '21119624',
+                street: 'rua tal do tal',
+                number: '15',
+                district: 'halala',
+                city: 'zuz du seu',
+                state: 'sp',
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -115,10 +115,10 @@ describe('addressController Test Suit', () => {
         });
 
         const response = await supertest(app).put(`/addresses/${userAddr.id}`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            street: 'rua test'
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                street: 'rua test'
+            });
 
         expect(response.status).toBe(200);
     });
@@ -126,9 +126,9 @@ describe('addressController Test Suit', () => {
     it('should return code 400 for "authorization is required" - update', async () => {
 
         const response = await supertest(app).put(`/addresses/5`)
-        .send({
-            street: 'rua test'
-        });
+            .send({
+                street: 'rua test'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.validation.keys[0]).toBe("authorization");
@@ -141,10 +141,10 @@ describe('addressController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
         
         const response = await supertest(app).put(`/addresses/2`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            number: "55"
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                number: "55"
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -156,10 +156,10 @@ describe('addressController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put(`/addresses/5`)
-        .set('authorization', 'Bearer ' + token)
-        .send({
-            street: 'rua test'
-        });
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                street: 'rua test'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("address not found");
@@ -175,7 +175,7 @@ describe('addressController Test Suit', () => {
         });
 
         const response = await supertest(app).delete(`/addresses/${userAddr.id}`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(200);
     });
@@ -195,7 +195,7 @@ describe('addressController Test Suit', () => {
         await user.destroy({ where: { id: user.id }});
         
         const response = await supertest(app).delete(`/addresses/2`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("user not found");
@@ -207,7 +207,7 @@ describe('addressController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).delete(`/addresses/2`)
-        .set('authorization', 'Bearer ' + token);
+            .set('authorization', 'Bearer ' + token);
         
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("address not found");

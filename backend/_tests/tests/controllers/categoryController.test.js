@@ -31,10 +31,10 @@ describe('categoryController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post('/categories')
-        .set('authorization', `Bearer ${token}`)
-        .send({
-            name: 'Eletronicos'
-        })
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                name: 'Eletronicos'
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.name).toBe('Eletronicos');
@@ -48,11 +48,11 @@ describe('categoryController Test Suit', () => {
         const category = await factories.create('Category');
 
         const response = await supertest(app).post('/categories')
-        .set('authorization', `Bearer ${token}`)
-        .send({
-            name: 'Eletronicos',
-            parent: category.id
-        })
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                name: 'Eletronicos',
+                parent: category.id
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.parent).toBe(category.id);
@@ -65,11 +65,11 @@ describe('categoryController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).post('/categories')
-        .set('authorization', `Bearer ${token}`)
-        .send({
-            name: 'Eletronicos',
-            parent: 5
-        })
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                name: 'Eletronicos',
+                parent: 5
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('parent category id not found');
@@ -83,10 +83,10 @@ describe('categoryController Test Suit', () => {
         const category = await factories.create('Category');
 
         const response = await supertest(app).put(`/categories/${category.id}`)
-        .set('authorization', `Bearer ${token}`)
-        .send({
-            name: 'Jogos'
-        })
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                name: 'Jogos'
+            })
 
         expect(response.status).toBe(200);
     });
@@ -98,10 +98,10 @@ describe('categoryController Test Suit', () => {
         const token = user.generateToken();
 
         const response = await supertest(app).put(`/categories/44`)
-        .set('authorization', `Bearer ${token}`)
-        .send({
-            name: 'testecat'
-        });
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                name: 'testecat'
+            });
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe('no update has been made');
