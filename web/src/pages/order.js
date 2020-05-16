@@ -5,9 +5,7 @@ import Link from 'next/link';
 
 import { useCart } from '../context/cartContext';
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import MainLayout from '../components/MainLayout';
+import PageLayout from '../components/PageLayout';
 
 export default function Order() {
 
@@ -102,9 +100,7 @@ export default function Order() {
                 <meta name="robots" content="noindex" />
             </Head>
 
-            <Header />
-
-            <MainLayout>
+            <PageLayout>
 
                 <section>
 
@@ -114,9 +110,9 @@ export default function Order() {
                             <tr>
                                 <th className='th-image'>Imagem</th>
                                 <th className='th-product'>Produto</th>
-                                <th className='th-price'>Preço</th>
+                                <th className='th-price'>Preço unitário</th>
                                 <th className='th-qtd'>Quantidade</th>
-                                <th className='th-total'>Total</th>
+                                <th className='th-total'>Preço total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,7 +121,7 @@ export default function Order() {
                                     <td className='td-image'>
                                         <p>
                                             <img 
-                                                src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
+                                                src='https://picsum.photos/800/400'
                                                 /*src={product.images[0] && product.images[0].url} */
                                                 alt={'imagem-' + product.name.split(' ').join('-')} 
                                             />
@@ -134,8 +130,12 @@ export default function Order() {
                                     <td className='td-name'>
                                         <p>
                                             <Link href={`/product/${product.id}`}>
-                                                <a className='over-hidden'>
-                                                    {product.name}
+                                                <a>
+                                                    <span className='over-hidden'>{product.name}</span>
+                                                    {(product.discount_percent != 0) 
+                                                        ? <span className='order-discount'>-{product.discount_percent}%</span>
+                                                        : null
+                                                    }
                                                 </a>
                                             </Link>
                                         </p>
@@ -153,7 +153,7 @@ export default function Order() {
                                             <button type="button" id='less' onClick={() => verifyQtd({ id: product.id, qtd: -1 })} title='Remover 1'>
                                                 -
                                             </button>
-                                            <p className='cart-qtd'>{cartContext.cart[index].qtd}</p>
+                                            <span className='cart-qtd'>{cartContext.cart[index].qtd}</span>
                                             <button type="button" id='plus' onClick={() => verifyQtd({ id: product.id, qtd: 1 })} title='Adicionar 1'>
                                                 +
                                             </button>
@@ -174,9 +174,7 @@ export default function Order() {
                     
                 </section>
 
-            </MainLayout>
-
-            <Footer />
+            </PageLayout>
 
             <style jsx>{`
                 section {
@@ -222,12 +220,24 @@ export default function Order() {
                     height: 50px;
                 }
 
-                .over-hidden {
+                .td-name .over-hidden {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 1;
                     -webkit-box-orient: vertical;
+                    /*padding: 10px 0 0 0;*/
+                }
+
+                .td-name a {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .td-name .order-discount {
+                    background: #3E8C34;
+                    padding: 5px 10px;
+                    margin: 0 0 0 10px;
                 }
 
                 .td-price {
@@ -254,6 +264,7 @@ export default function Order() {
                     margin: 0 10px;
                     border: 0;
                     border-radius: 2px;
+                    font-weight: bold;
                 }
 
                 .td-qtd button:active {

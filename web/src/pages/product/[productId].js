@@ -5,9 +5,7 @@ import { FaBan } from 'react-icons/fa';
 import api from '../../services/api';
 import { useCart } from '../../context/cartContext';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import MainLayout from '../../components/MainLayout';
+import PageLayout from '../../components/PageLayout';
 
 export async function getStaticPaths() {
 
@@ -95,7 +93,7 @@ export default function Product({ product }) {
     function addToCartButton(){
 
         cartContext.addToCart({ id: productState.id, qtd: qtdState });
-        alert('Item adicionado ao carrinho');
+        //alert('Item adicionado ao carrinho');
     }
 
     return (
@@ -124,20 +122,20 @@ export default function Product({ product }) {
                 <meta property="article:published_time" content={new Date()} />
             </Head>
 
-            <Header />
-
-            <MainLayout>
+            <PageLayout>
 
                 <section>
 
                     <h1>{product.name}</h1>
 
                     <div className='img-buy'>
-                        <img 
-                            src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
-                            /*src={product.images[0] && product.images[0].url} */
-                            alt={'imagem-' + product.name.split(' ').join('-')} 
-                        />
+                        <div className='img-container'>
+                            <img 
+                                src='https://picsum.photos/800/400'
+                                /*src={product.images[0] && product.images[0].url} */
+                                alt={'imagem-' + product.name.split(' ').join('-')} 
+                            />
+                        </div>
 
                         <div className='buy'>
                             <h2>Preço</h2>
@@ -153,14 +151,20 @@ export default function Product({ product }) {
                     </div>
 
                     <div className='description'>
-                        <p>{product.description}</p>
+                        <p>Descrição: {product.description}</p>
+                        <p>Peso: {product.weight}g</p>
+                        <p>Comprimento: {product.length}cm</p>
+                        <p>Altura: {product.height}cm</p>
+                        <p>Largura: {product.width}cm</p>
+                        <p>Diametro: {product.diameter}cm</p>
+                    </div>
+                    <div className='product-body'>
+                        {product.html_body}
                     </div>
 
                 </section>
                 
-            </MainLayout>
-
-            <Footer />
+            </PageLayout>
 
             <style jsx>{`
                 section {
@@ -179,15 +183,23 @@ export default function Product({ product }) {
                     justify-content: space-between;
                 }
 
-                img {
+                .img-container {
                     width: 100%;
-                    max-width: 800px;
-                    height: 100%;
-                    max-height: 400px;
+                    height: 400px;
+                    
+                    display: flex;
+                    justify-content: center;
+                }
+
+                img {
+                    width: auto;
+                    max-width: 100%;
+                    height: auto;
+                    max-height: 100%;
                 }
 
                 .buy {
-                    width: 100%;
+                    width: 600px;
                     height: 400px;
                     border: 1px solid black;
                     padding: 10px;
@@ -230,7 +242,6 @@ export default function Product({ product }) {
                     font-weight: bold;
                 }
 
-
                 .buy button p {
                     margin: 5px 0 0 0;
                 }
@@ -244,9 +255,8 @@ export default function Product({ product }) {
                 }
 
                 .description {
-                    border: 1px solid black;
-                    margin: 10px 0 10px 0;
-                    text-align: center;
+                    margin: 10px 0;
+                    line-height: 25px;
                 }
 
                 @media (max-width: 1285px) {
@@ -256,13 +266,15 @@ export default function Product({ product }) {
                         flex-direction: column;
                         align-items: center;
                     }
+
+                    .buy {
+                        margin: 10px 0 0 0;
+                    }
                 }
 
                 @media (max-width: 800px) {
 
-                    .buy {
-                        margin: 0;
-                    }
+                    
                 }
             `}</style>
         </>

@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
 import Link from 'next/link';
 
 import api from '../services/api';
 
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import MainLayout from '../components/MainLayout';
+import PageLayout from '../components/PageLayout';
 
-export default function Home() {
+export async function getStaticProps() {
 
+    const response = await api.get('/products');
+
+    //const props = response.filter( (data) => data.id == params.itemId )[0];
+
+    return {
+        props: { products: response.data }
+    }
+}
+
+export default function Home({ products }) {
+
+    /*
     const [productsState, setProducts] = useState([]);
 
     useEffect( () => {
@@ -31,24 +41,23 @@ export default function Home() {
             alert('Erro, tente de novo');
         }
     }
+    */
 
     return (
         <>
             <Head>
-                <title>E-commerce</title>
+                <title>Exemplo E-commerce</title>
                 <meta name="description" content="Exemplo de e-coomerce, página inicial"/>
                 <meta name="keywords" content="exemplo, e-commerce"/>
                 <meta name="author" content="Bruno Zutim" />
             </Head>
 
-            <Header />
-
-            <MainLayout>
+            <PageLayout>
 
                 <section>
                     <div className="p-grid">
 
-                        {productsState.map( (product) => {
+                        {products.map( (product) => {
 
                             const discount = (product.discount_percent != 0) 
                                 ? '-' + product.discount_percent + '%' 
@@ -63,7 +72,7 @@ export default function Home() {
                                         <div className='p-card'>
                                             <div className='img-container'>
                                                 <img 
-                                                    src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
+                                                    src={`https://picsum.photos/800/400`}
                                                     /*src={product.images[0] && product.images[0].url} */
                                                     alt={'imagem-' + product.name.split(' ').join('-')} 
                                                 />
@@ -84,9 +93,7 @@ export default function Home() {
                     </div>
                 </section>
 
-            </MainLayout>
-
-            <Footer />
+            </PageLayout>
 
             <style jsx>{`
                 section {
@@ -110,7 +117,8 @@ export default function Home() {
                 }
 
                 .p-grid .p-card img {
-                    width: 100%;
+                    width: auto;
+                    max-width: 100%;
                     max-height: 200px;
                 }
 
