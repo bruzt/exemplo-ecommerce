@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import api from '../services/api';
 import Link from 'next/link';
+import { FaSearchLocation } from 'react-icons/fa'
 
 import { useCart } from '../context/cartContext';
 
@@ -14,25 +15,25 @@ export default function Order() {
 
     const cartContext = useCart();
 
-    useEffect( () => {
+    useEffect(() => {
 
         getProducts();
-        
+
     }, []);
 
-    useEffect( () => {
+    useEffect(() => {
 
         calcTotalPrice();
-        
+
     }, [productsState, cartContext.cart]);
 
-    function calcTotalPrice(){
+    function calcTotalPrice() {
 
         let totalPrice = 0;
 
-        for(let i = 0; i < cartContext.cart.length; i++){
-            
-            if(productsState.length > 0){
+        for (let i = 0; i < cartContext.cart.length; i++) {
+
+            if (productsState.length > 0) {
 
                 totalPrice += productsState[i].finalPrice * cartContext.cart[i].qtd;
             }
@@ -41,11 +42,11 @@ export default function Order() {
         setTotalPrice(totalPrice.toFixed(2));
     }
 
-    async function getProducts(){
+    async function getProducts() {
 
         const products = []
 
-        for(let i = 0; i < cartContext.cart.length; i++){
+        for (let i = 0; i < cartContext.cart.length; i++) {
 
             try {
 
@@ -53,9 +54,10 @@ export default function Order() {
 
                 const finalPrice = (response.data.discount_percent == 0)
                     ? Number(response.data.price).toFixed(2)
-                    : (response.data.price - (response.data.price * (response.data.discount_percent/100))).toFixed(2);
-                
+                    : (response.data.price - (response.data.price * (response.data.discount_percent / 100))).toFixed(2);
+
                 products.push({ finalPrice, ...response.data });
+                //verifyQtd({ id: cartContext.cart[i].id, qtd: 0 });
 
             } catch (error) {
                 console.error(error);
@@ -67,27 +69,27 @@ export default function Order() {
         setProducts(products);
     }
 
-    function verifyQtd({ id, qtd }){
+    function verifyQtd({ id, qtd }) {
 
-        const product = productsState.filter( (product) => product.id == id);
+        const product = productsState.filter((product) => product.id == id);
 
-        const cart = cartContext.cart.filter( (product) => product.id == id);
+        const cart = cartContext.cart.filter((product) => product.id == id);
 
-        if(((cart[0].qtd + qtd) == (product[0].quantity_stock + 1)) || ((cart[0].qtd + qtd) < 1)){
+        if (((cart[0].qtd + qtd) == (product[0].quantity_stock + 1)) || ((cart[0].qtd + qtd) < 1)) {
 
             qtd = 0;
 
-        } else if((cart[0].qtd) > product[0].quantity_stock){
+        } else if ((cart[0].qtd) > product[0].quantity_stock) {
 
             qtd = product[0].quantity_stock - cart[0].qtd;
-        }        
+        }
 
         cartContext.addToCart({ id, qtd });
     }
 
-    function removeFromCart(id){
+    function removeFromCart(id) {
 
-        const products = productsState.filter( (product) => product.id != id);
+        const products = productsState.filter((product) => product.id != id);
 
         setProducts(products);
         cartContext.removeFromCart(id);
@@ -104,7 +106,6 @@ export default function Order() {
 
                 <section>
 
-                    
                     <table>
                         <thead>
                             <tr>
@@ -116,14 +117,14 @@ export default function Order() {
                             </tr>
                         </thead>
                         <tbody>
-                            {productsState.length > 0 && productsState.map( (product, index) => (
+                            {productsState.length > 0 && productsState.map((product, index) => (
                                 <tr key={product.id}>
                                     <td className='td-image'>
                                         <p>
-                                            <img 
+                                            <img
                                                 src='https://picsum.photos/800/400'
                                                 /*src={product.images[0] && product.images[0].url} */
-                                                alt={'imagem-' + product.name.split(' ').join('-')} 
+                                                alt={'imagem-' + product.name.split(' ').join('-')}
                                             />
                                         </p>
                                     </td>
@@ -132,7 +133,7 @@ export default function Order() {
                                             <Link href={`/product/${product.id}`}>
                                                 <a>
                                                     <span className='over-hidden'>{product.name}</span>
-                                                    {(product.discount_percent != 0) 
+                                                    {(product.discount_percent != 0)
                                                         ? <span className='order-discount'>-{product.discount_percent}%</span>
                                                         : null
                                                     }
@@ -147,14 +148,29 @@ export default function Order() {
                                     </td>
                                     <td className='td-qtd'>
                                         <p>
-                                            <button type="button" id='remove' onClick={() => removeFromCart(product.id)} title='Remover do carrinho'>
+                                            <button
+                                                type="button"
+                                                id='remove'
+                                                onClick={() => removeFromCart(product.id)}
+                                                title='Remover do carrinho'
+                                            >
                                                 X
                                             </button>
-                                            <button type="button" id='less' onClick={() => verifyQtd({ id: product.id, qtd: -1 })} title='Remover 1'>
+                                            <button
+                                                type="button"
+                                                id='less'
+                                                onClick={() => verifyQtd({ id: product.id, qtd: -1 })}
+                                                title='Remover 1'
+                                            >
                                                 -
                                             </button>
                                             <span className='cart-qtd'>{cartContext.cart[index].qtd}</span>
-                                            <button type="button" id='plus' onClick={() => verifyQtd({ id: product.id, qtd: 1 })} title='Adicionar 1'>
+                                            <button
+                                                type="button"
+                                                id='plus'
+                                                onClick={() => verifyQtd({ id: product.id, qtd: 1 })}
+                                                title='Adicionar 1'
+                                            >
                                                 +
                                             </button>
                                         </p>
@@ -168,10 +184,19 @@ export default function Order() {
                         </tbody>
                     </table>
 
+                    <div className="calc-freight">
+                        <p>
+                            Calculo de frete: <input type='number' />
+                            <button type='button'>
+                                <FaSearchLocation size={20} />                        
+                            </button>
+                        </p>
+                    </div>
+
                     <div className="total-price">
                         <p>Total: R$ {totalPriceState}</p>
                     </div>
-                    
+
                 </section>
 
             </PageLayout>
@@ -226,7 +251,7 @@ export default function Order() {
                     display: -webkit-box;
                     -webkit-line-clamp: 1;
                     -webkit-box-orient: vertical;
-                    /*padding: 10px 0 0 0;*/
+                    padding: 10px 0 0 0;
                 }
 
                 .td-name a {
@@ -291,7 +316,41 @@ export default function Order() {
                     font-size: 30px;
                     font-weight: bold;
                     float: right;
-                    margin: 30px 0 0 0;
+                    margin: 30px 30px 0 0;
+                }
+
+                .calc-freight {
+                    border: 1px solid black;
+                }
+
+                .calc-freight input {
+                    width: 150px;
+                    height: 30px;
+                    font-size: 30px;    
+                }
+
+                .calc-freight button {
+                    width: 30px;
+                    height: 30px;
+                    border: 0;
+                    border-radius: 2px;
+                    padding: 0;
+                }
+
+                .calc-freight button:active {
+                    background: #3E8C34;
+                }
+
+                /* remove arrows from input[type="number"] Chrome, Safari, Edge, Opera */
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                /* remove arrows from input[type="number"] Firefox */
+                input[type=number] {
+                    -moz-appearance: textfield;
                 }
             `}</style>
         </>
