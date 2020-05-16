@@ -130,7 +130,7 @@ export default function Order() {
                                     </td>
                                     <td className='td-name'>
                                         <p>
-                                            <Link href={`/product/${product.id}`}>
+                                            <Link href={`/${product.id}/${product.name.split(' ').join('-')}`}>
                                                 <a>
                                                     <span className='over-hidden'>{product.name}</span>
                                                     {(product.discount_percent != 0)

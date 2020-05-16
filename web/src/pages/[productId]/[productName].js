@@ -14,9 +14,9 @@ export async function getStaticPaths() {
     const paths = response.data.map( (data) => ({ 
         params: { 
             productId: data.id.toString(),
-            //productName: data.name.split(' ').join('-')
+            productName: data.name.split(' ').join('-')
         }}));
-
+        
     return {
         paths,
         fallback: false
