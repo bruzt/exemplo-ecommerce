@@ -64,7 +64,7 @@ module.exports = {
     
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
-
+        
         try {
 
             const category = await CategoryModel.findByPk(req.body.category_id);

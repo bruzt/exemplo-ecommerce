@@ -24,6 +24,11 @@ module.exports = {
                 allowNull: false
             },
 
+            html_body: {
+                type: Sequelize.TEXT({ length: 'long' }),
+                defaultValue: '<p>Em breve</p>'
+            },
+
             price: {
                 type: Sequelize.DECIMAL,
                 allowNull: false
@@ -42,8 +47,33 @@ module.exports = {
             },  
 
             discount_percent: {
-                type: Sequelize.DECIMAL,
+                type: Sequelize.INTEGER,
                 defaultValue: 0
+            },
+
+            weight: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+
+            length: {
+                type: Sequelize.DECIMAL,
+                allowNull: false,
+            },
+
+            height: {
+                type: Sequelize.DECIMAL,
+                allowNull: false,
+            },
+
+            width: {
+                type: Sequelize.DECIMAL,
+                allowNull: false,
+            },
+
+            diameter: {
+                type: Sequelize.DECIMAL,
+                allowNull: false,
             },
 
             created_at: {
