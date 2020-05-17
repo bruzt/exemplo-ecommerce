@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { FaBan } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 import api from '../../services/api';
 import { useCart } from '../../context/cartContext';
@@ -41,6 +42,7 @@ export default function Product({ product }) {
     const [productState, setProduct] = useState({});
 
     const cartContext = useCart();
+    const router = useRouter();
 
     const finalPrice = (productState.discount_percent == 0) 
         ? Number(productState.price).toFixed(2)
@@ -93,7 +95,8 @@ export default function Product({ product }) {
     function addToCartButton(){
 
         cartContext.addToCart({ id: productState.id, qtd: qtdState });
-        //alert('Item adicionado ao carrinho');
+        
+        router.push('/order');
     }
 
     return (
@@ -199,7 +202,8 @@ export default function Product({ product }) {
                 }
 
                 .buy {
-                    width: 600px;
+                    width: 100%;
+                    max-width: 500px;
                     height: 400px;
                     border: 1px solid black;
                     padding: 10px;
