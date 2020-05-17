@@ -20,7 +20,7 @@ export default function Order() {
     const cartContext = useCart();
 
     useEffect(() => {
-
+        
         getProducts();
 
     }, []);
@@ -79,6 +79,13 @@ export default function Order() {
 
                 products.push({ finalPrice, ...response.data });
 
+                if(cartContext.cart[i].qtd > response.data.quantity_stock){
+
+                    cartContext.cart[i].qtd = response.data.quantity_stock;
+                    
+                    cartContext.setCart(cartContext.cart);
+                }
+
             } catch (error) {
                 console.error(error);
                 alert('Erro, recarregue a página');
@@ -117,7 +124,7 @@ export default function Order() {
         cartContext.removeFromCart(id);
     }
 
-    function verifyFreightChecked(name){
+    function handleFreightCheck(name){
 
         if(name == 'pac'){
 
@@ -190,7 +197,9 @@ export default function Order() {
             <PageLayout>
 
                 <section>
-
+                    {productsState.length == 0 && (
+                        <h1>Carrinho vazio</h1>
+                    )}
                     <table>
                         <thead>
                             <tr>
@@ -207,7 +216,8 @@ export default function Order() {
                                     <td className='td-image'>
                                         <p>
                                             <img
-                                                src='https://picsum.photos/800/400'
+                                                src='https://i.picsum.photos/id/892/800/400.jpg'
+                                                /*src='https://picsum.photos/800/400'*/
                                                 /*src={product.images[0] && product.images[0].url} */
                                                 alt={'imagem-' + product.name.split(' ').join('-')}
                                             />
@@ -275,7 +285,7 @@ export default function Order() {
 
                         <div className="calc-freight">
                             <div className='cep-input'>
-                                Calculo de frete: <input type='text' placeholder='CEP' value={cepInputState} onChange={(event) => setCepInput(event.target.value)} />
+                                Calculo de frete:&nbsp;<input type='text' placeholder='CEP' value={cepInputState} onChange={(event) => setCepInput(event.target.value)} />
                                 <button type='button' onClick={() => getFreightPrice()}>
                                     <FaSearchLocation size={20} />
                                 </button>
@@ -283,13 +293,12 @@ export default function Order() {
                             
                             {freightPriceState ? (
                                 <div className='choose-freight'>
-                                    <div>
                                         <span>
                                             <input 
                                                 type="radio" 
                                                 name='pac'
                                                 checked={pacCheckState} 
-                                                onChange={(event) => verifyFreightChecked(event.target.name)} 
+                                                onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
                                             <p>PAC - R$ {freightPriceState.pac.Valor} - {freightPriceState.pac.PrazoEntrega} Dias</p>
                                         </span>
@@ -298,11 +307,10 @@ export default function Order() {
                                                 type="radio" 
                                                 name='sedex'
                                                 checked={sedexCheckState} 
-                                                onChange={(event) => verifyFreightChecked(event.target.name)} 
+                                                onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
                                             <p>SEDEX - R$ {freightPriceState.sedex.Valor} - {freightPriceState.sedex.PrazoEntrega} Dias</p>  
                                         </span>
-                                    </div>
                                 </div>
                             )
                             : null}
@@ -325,8 +333,14 @@ export default function Order() {
                     padding: 10px;
                 }
 
+                section h1 {
+                    text-align: center;
+                    margin: 25px 0;
+                }
+
                 table {
                     width: 100%;
+                    border-spacing: 0 5px;
                 }
 
                 .th-image {
@@ -349,27 +363,30 @@ export default function Order() {
                     width: 15%;
                 }
 
-                tbody tr td {
-                    height: 50px;
-                    vertical-align: middle;
+                tbody tr {
+                    background: #c9c9c9;
                 }
 
                 .td-image {
                     text-align: center;
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
                 }
 
                 .td-image img {
-                    max-width: 100%;
+                    width: auto;
                     height: 50px;
+                    vertical-align: middle;
+                    padding: 1px 0;
                 }
 
                 .td-name .over-hidden {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
-                    -webkit-line-clamp: 1;
+                    -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
-                    padding: 10px 0 0 0;
+                    
                 }
 
                 .td-name a {
@@ -379,6 +396,7 @@ export default function Order() {
 
                 .td-name .order-discount {
                     background: #3E8C34;
+                    max-height: 27px;
                     padding: 5px 10px;
                     margin: 0 0 0 10px;
                 }
@@ -390,6 +408,7 @@ export default function Order() {
                 .td-qtd p {
                     display: flex;
                     justify-content: center;
+                    align-items: center;
                 }
 
                 .td-qtd .cart-qtd {
@@ -429,6 +448,8 @@ export default function Order() {
                 .td-total {
                     text-align: center;
                     font-weight: bold;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
                 }
 
                 .freight-total {
@@ -447,6 +468,7 @@ export default function Order() {
                     height: 50px;
                     margin: 10px 0 0 0;
                     border: 0;
+                    border-radius: 5px;
                     background: ${(false) ? '#a32e39' : '#3E8C34'};
                     font-size: 20px;
                     font-weight: bold;
@@ -475,13 +497,15 @@ export default function Order() {
                     height: 30px;
                     font-size: 30px;  
                     padding: 0 0 0 2px;  
+                    border: 0;
+                    border-radius: 5px;
                 }
 
                 .calc-freight button {
                     width: 30px;
                     height: 30px;
                     border: 0;
-                    border-radius: 2px;
+                    border-radius: 5px;
                     margin: 0 0 0 5px;
                 }
 
@@ -503,6 +527,9 @@ export default function Order() {
 
                 .choose-freight {
                     margin: 10px 0 0 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
                 }
 
                 .choose-freight span {
@@ -517,6 +544,12 @@ export default function Order() {
 
                 .choose-freight input {
                     width: 20px;
+                }
+
+                @media (max-width: 800px) {
+                    .th-image, .td-image, .th-total, .td-total {
+                        display: none;
+                    }
                 }
             `}</style>
         </>
