@@ -60,6 +60,8 @@ export default function Product({ product }) {
 
             const response = await api.get(`/products/${product.id}`);
 
+            document.querySelector('.product-body').innerHTML = response.data.html_body;
+
             setProduct(response.data);
             
         } catch (error) {
@@ -162,7 +164,7 @@ export default function Product({ product }) {
                         <p>Diametro: {product.diameter}cm</p>
                     </div>
                     <div className='product-body'>
-                        {product.html_body}
+                        
                     </div>
 
                 </section>
