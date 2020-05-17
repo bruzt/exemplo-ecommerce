@@ -20,7 +20,6 @@ module.exports = {
             length: Joi.number().required(),
             height: Joi.number().required(),
             width: Joi.number().required(),
-            diameter: Joi.number().required(),
         })
     }),
 

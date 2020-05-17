@@ -25,7 +25,7 @@ module.exports = {
             },
 
             html_body: {
-                type: Sequelize.TEXT({ length: 'long' }),
+                type: Sequelize.TEXT,
                 defaultValue: '<p>Em breve</p>'
             },
 
@@ -70,12 +70,7 @@ module.exports = {
                 type: Sequelize.DECIMAL,
                 allowNull: false,
             },
-
-            diameter: {
-                type: Sequelize.DECIMAL,
-                allowNull: false,
-            },
-
+            
             created_at: {
                 type: Sequelize.DATE,
                 allowNull: false

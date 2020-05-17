@@ -10,7 +10,7 @@ class ProductModel extends Model {
 
             name: DataTypes.STRING,
             description: DataTypes.STRING,
-            html_body: DataTypes.TEXT({ length: 'long' }),
+            html_body: DataTypes.TEXT,
             price: DataTypes.DECIMAL,
             quantity_stock: DataTypes.INTEGER,
             discount_percent: DataTypes.DECIMAL,
@@ -18,7 +18,6 @@ class ProductModel extends Model {
             length: DataTypes.DECIMAL,
             height: DataTypes.DECIMAL,
             width: DataTypes.DECIMAL,
-            diameter: DataTypes.DECIMAL
 
         }, {
             tableName: 'products',

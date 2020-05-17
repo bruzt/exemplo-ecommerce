@@ -5,18 +5,20 @@ module.exports = {
 
     store: async (req, res) => {
 
+        if(req.body.length < 15) req.body.length = 15;
+
         try {
             
             const [ pac ] = await correios.calcPrecoPrazo({
                 "nCdServico": "04510",                  // Código PAC
                 "sCepOrigem": "13490000",               // CEP ORIGEM (string sem hífen)
                 "sCepDestino": req.body.destZipCode,    // CEP DESTINO (string sem hífen)
-                "nVlPeso": req.body.weight,             // Peso em gramas (string: "0,500")
+                "nVlPeso": req.body.weight,             // Peso em kilogramas (string: "0,500")
                 "nCdFormato": 1,                        // 1 – Formato caixa/pacote // 2 – Formato rolo/prisma // 3 – Envelope
                 "nVlComprimento": req.body.length,      // Comprimento em centimetros (float)
                 "nVlAltura": req.body.height,           // Altura em centimetros (float)
                 "nVlLargura": req.body.width,           // Largura em centimetros (float)
-                "nVlDiametro": req.body.diameter,       // Diametro em centimetros (float)
+                "nVlDiametro": 0,                       // Diametro em centimetros (float)
                 "sCdMaoPropria": "N",                   // Serviço adicional "mão própria" (string: "S" para sim, "N" para não)
                 "nVlValorDeclarado": 0,                 // Serviço adicional "valor declarado" (float: 0 para não)
                 "sCdAvisoRecebimento": "N"              // Serviço adicional "aviso de recebimento" (string: "S" para sim, "N" para não)
