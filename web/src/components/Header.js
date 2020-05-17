@@ -61,11 +61,12 @@ export default function Header() {
                 header {
                     height: 100px;
                     border-bottom: 1px solid black;
+                    background: #60615b;
                 }
 
                 header .limit-center {
                     width: 100%;
-                    max-width: 1300px;
+                    max-width: 1100px;
                     margin: 0 auto;
 
                     display: flex;

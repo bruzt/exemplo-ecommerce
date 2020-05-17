@@ -15,6 +15,7 @@ export default function Footer() {
                     height: 200px;
                     border-top: 1px solid black;
                     bottom: 0;
+                    background: #60615b;
 
                     display: flex;
                     justify-content: center;

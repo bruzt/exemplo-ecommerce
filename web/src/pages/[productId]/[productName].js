@@ -136,7 +136,8 @@ export default function Product({ product }) {
                     <div className='img-buy'>
                         <div className='img-container'>
                             <img 
-                                src='https://picsum.photos/800/400'
+                            src='https://i.picsum.photos/id/892/800/400.jpg'
+                                /*src='https://picsum.photos/800/400'*/
                                 /*src={product.images[0] && product.images[0].url} */
                                 alt={'imagem-' + product.name.split(' ').join('-')} 
                             />
@@ -190,24 +191,25 @@ export default function Product({ product }) {
 
                 .img-container {
                     width: 100%;
+                    max-width: 700px;
                     height: 400px;
                     
                     display: flex;
                     justify-content: center;
                 }
 
-                img {
-                    width: auto;
-                    max-width: 100%;
+                .img-container img {
+                    width: 100%;
+                    max-width: 700px;
                     height: auto;
-                    max-height: 100%;
                 }
 
                 .buy {
                     width: 100%;
-                    max-width: 500px;
+                    max-width: 400px;
                     height: 400px;
-                    border: 1px solid black;
+                    background: #c9c9c9;
+                    border-radius: 5px;
                     padding: 10px;
                     margin: 0 0 0 10px;
 
@@ -243,6 +245,7 @@ export default function Product({ product }) {
                     width: 100%;
                     height: 50px;
                     border: 0;
+                    border-radius: 5px;
                     cursor: pointer;
                     font-size: 20px;
                     font-weight: bold;

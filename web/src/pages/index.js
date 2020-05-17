@@ -72,7 +72,8 @@ export default function Home({ products }) {
                                         <div className='p-card'>
                                             <div className='img-container'>
                                                 <img 
-                                                    src={`https://picsum.photos/800/400`}
+                                                    src='https://i.picsum.photos/id/892/800/400.jpg'
+                                                    /*src={`https://picsum.photos/800/400`}*/
                                                     /*src={product.images[0] && product.images[0].url} */
                                                     alt={'imagem-' + product.name.split(' ').join('-')} 
                                                 />
@@ -109,17 +110,17 @@ export default function Home({ products }) {
                 }
 
                 .p-grid .p-card {
-                    border: 1px solid black;
                     border-radius: 5px;
                     max-height: 350px;
                     overflow: hidden;
                     padding: 10px;
+                    background: #c9c9c9;
                 }
 
                 .p-grid .p-card img {
-                    width: auto;
-                    max-width: 100%;
-                    max-height: 200px;
+                    width: 100%;
+                    max-width: 475px;
+                    height: auto;
                 }
 
                 .p-grid .p-card .title-price {

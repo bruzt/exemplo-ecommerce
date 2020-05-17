@@ -18,7 +18,7 @@ export default function PageLayout({ children }) {
             <style jsx>{`
                 main {
                     width: 100%;
-                    max-width: 1300px;
+                    max-width: 1100px;
                     margin: 0 auto;
                     border-right: 1px solid black;
                     border-left: 1px solid black;
