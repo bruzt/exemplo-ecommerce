@@ -61,6 +61,10 @@ describe('productController Test Suit', () => {
                 description: 'llalal lal lal al alala',
                 price: 1.99,
                 quantity_stock: 0,
+                weight: "0,500",
+                length: 15,
+                height: 15,
+                width: 15,
             });
 
         expect(response.status).toBe(200);
@@ -81,6 +85,10 @@ describe('productController Test Suit', () => {
                 description: 'llalal lal lal al alala',
                 price: 1.99,
                 quantity_stock: 0,
+                weight: "0,500",
+                length: 15,
+                height: 15,
+                width: 15,
             });
 
         expect(response.status).toBe(400);
@@ -93,13 +101,24 @@ describe('productController Test Suit', () => {
         user.admin = true;
         const token = user.generateToken();
 
-        const category = await factories.create('Category');
-        const product = await factories.create('Product', { category_id: category.id });
+        const category1 = await factories.create('Category');
+        const category2 = await factories.create('Category');
+        const product = await factories.create('Product', { category_id: category1.id });
 
         const response = await supertest(app).put(`/products/${product.id}`)
             .set('authorization', 'Bearer ' + token)
             .send({
                 name: 'prod teste 2',
+                description: 'teste desc',
+                html_body: '<h1>teste html</h1>',
+                price: 10.99,
+                quantity: 3,
+                category_id: category2.id,
+                discount_percent: 20,
+                weight: "1",
+                length: 30,
+                height: 15,
+                width: 10,
             });
 
         expect(response.status).toBe(200);

@@ -30,7 +30,11 @@ factory.define('Product', models.ProductModel, {
     description: faker.commerce.product(),
     price: faker.commerce.price(),
     quantity_stock: faker.random.number({ min: 10, max: 50 }),
-    discount_percent: faker.random.number(90)
+    discount_percent: faker.random.number(90),
+    weight: "0," + String(Math.random() * 1000),
+    length: faker.random.number({ min: 15, max: 30 }),
+    height: faker.random.number({ min: 5, max: 30 }),
+    width: faker.random.number({ min: 5, max: 30 }),
 });
 
 factory.define('Image', models.ImageModel, {

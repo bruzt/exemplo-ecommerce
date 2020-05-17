@@ -6,7 +6,7 @@ module.exports = {
     // automock: false,
 
     // Stop running tests after `n` failures
-    // bail: 1,
+    //bail: 1,
 
     // Respect "browser" field in package.json when resolving modules
     // browser: false,
@@ -164,7 +164,7 @@ module.exports = {
 
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
     //timers: "real",
-    //testTimeout: 1000,
+    testTimeout: 10000,
 
     // A map from regular expressions to paths to transformers
     // transform: undefined,
