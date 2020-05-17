@@ -12,6 +12,10 @@ export default function Order() {
 
     const [productsState, setProducts] = useState([]);
     const [totalPriceState, setTotalPrice] = useState(0);
+    const [cepInputState, setCepInput] = useState('');
+    const [pacCheckState, setPacChecked] = useState(false);
+    const [sedexCheckState, setSedexCheckStateChecked] = useState(false);
+    const [freightPriceState, setFreightPrice] = useState(null);
 
     const cartContext = useCart();
 
@@ -25,7 +29,20 @@ export default function Order() {
 
         calcTotalPrice();
 
-    }, [productsState, cartContext.cart]);
+    }, [productsState, cartContext.cart, pacCheckState, sedexCheckState]);
+
+    useEffect(() => {
+
+        resetFreight();
+
+    }, [cepInputState]);
+
+    function resetFreight(){
+
+        setPacChecked(false);
+        setSedexCheckStateChecked(false);
+        setFreightPrice(0);
+    }
 
     function calcTotalPrice() {
 
@@ -36,9 +53,13 @@ export default function Order() {
             if (productsState.length > 0) {
 
                 totalPrice += productsState[i].finalPrice * cartContext.cart[i].qtd;
+
             }
         }
 
+        if(pacCheckState) totalPrice += Number((freightPriceState.pac.Valor).replace(',', '.'))
+        else if(sedexCheckState) totalPrice += Number((freightPriceState.sedex.Valor).replace(',', '.'))
+        
         setTotalPrice(totalPrice.toFixed(2));
     }
 
@@ -57,7 +78,6 @@ export default function Order() {
                     : (response.data.price - (response.data.price * (response.data.discount_percent / 100))).toFixed(2);
 
                 products.push({ finalPrice, ...response.data });
-                //verifyQtd({ id: cartContext.cart[i].id, qtd: 0 });
 
             } catch (error) {
                 console.error(error);
@@ -71,17 +91,19 @@ export default function Order() {
 
     function verifyQtd({ id, qtd }) {
 
-        const product = productsState.filter((product) => product.id == id);
+        resetFreight();
 
-        const cart = cartContext.cart.filter((product) => product.id == id);
+        const [ product ] = productsState.filter((product) => product.id == id);
 
-        if (((cart[0].qtd + qtd) == (product[0].quantity_stock + 1)) || ((cart[0].qtd + qtd) < 1)) {
+        const [ cart ] = cartContext.cart.filter((product) => product.id == id);
+
+        if (((cart.qtd + qtd) == (product.quantity_stock + 1)) || ((cart.qtd + qtd) < 1)) {
 
             qtd = 0;
 
-        } else if ((cart[0].qtd) > product[0].quantity_stock) {
+        } else if ((cart.qtd) > product.quantity_stock) {
 
-            qtd = product[0].quantity_stock - cart[0].qtd;
+            qtd = product.quantity_stock - cart.qtd;
         }
 
         cartContext.addToCart({ id, qtd });
@@ -93,6 +115,69 @@ export default function Order() {
 
         setProducts(products);
         cartContext.removeFromCart(id);
+    }
+
+    function verifyFreightChecked(name){
+
+        if(name == 'pac'){
+
+            setSedexCheckStateChecked(false);
+            setPacChecked(true);
+
+        } else if (name == 'sedex'){
+
+            setPacChecked(false);
+            setSedexCheckStateChecked(true);
+        }
+    }
+
+    async function getFreightPrice(){
+
+        let weight = 0;
+        let length = 0;
+        let height = 0;
+        let width = 0;
+        let diameter = 0;
+
+        for(let i = 0; i < productsState.length; i++) {
+
+            weight += Number((productsState[i].weight).replace(',', '.')) * cartContext.cart[i].qtd;
+            height += Number(productsState[i].height) * cartContext.cart[i].qtd;
+
+            if(length < productsState[i].length) length = Number(productsState[i].length);
+            if(width < productsState[i].width) width = Number(productsState[i].width);
+            if(diameter < productsState[i].diameter) diameter = Number(productsState[i].diameter);
+        }
+
+        weight = String(weight).replace('.', ',');
+
+        try {
+
+            const response = await api.post('/freight', {
+                destZipCode: String(cepInputState).replace('-', ''),
+                weight,
+                length,
+                height,
+                width
+            });
+
+            if(response.data.pac.MsgErro) {
+
+                alert(response.data.pac.MsgErro)
+
+            } else if(response.data.sedex.MsgErro){
+
+                alert(response.data.sedex.MsgErro)
+
+            } else {
+
+                setFreightPrice(response.data);
+            }
+            
+        } catch (error) {
+            console.error(error);
+            alert('Erro, tente novamente');
+        }
     }
 
     return (
@@ -113,7 +198,7 @@ export default function Order() {
                                 <th className='th-product'>Produto</th>
                                 <th className='th-price'>Preço unitário</th>
                                 <th className='th-qtd'>Quantidade</th>
-                                <th className='th-total'>Preço total</th>
+                                <th className='th-total'>Preço</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -178,23 +263,56 @@ export default function Order() {
                                             Disponível: {product.quantity_stock}
                                         </p>
                                     </td>
-                                    <td className='td-total'>R$ {(product.finalPrice * cartContext.cart[index].qtd).toFixed(2)}</td>
+                                    <td className='td-total'>
+                                        R$ {(product.finalPrice * cartContext.cart[index].qtd).toFixed(2)}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                    
+                    <div className='freight-total'>
 
-                    <div className="calc-freight">
-                        <p>
-                            Calculo de frete: <input type='number' />
-                            <button type='button'>
-                                <FaSearchLocation size={20} />                        
-                            </button>
-                        </p>
-                    </div>
+                        <div className="calc-freight">
+                            <div className='cep-input'>
+                                Calculo de frete: <input type='text' placeholder='CEP' value={cepInputState} onChange={(event) => setCepInput(event.target.value)} />
+                                <button type='button' onClick={() => getFreightPrice()}>
+                                    <FaSearchLocation size={20} />
+                                </button>
+                            </div>
+                            
+                            {freightPriceState ? (
+                                <div className='choose-freight'>
+                                    <div>
+                                        <span>
+                                            <input 
+                                                type="radio" 
+                                                name='pac'
+                                                checked={pacCheckState} 
+                                                onChange={(event) => verifyFreightChecked(event.target.name)} 
+                                            /> 
+                                            <p>PAC - R$ {freightPriceState.pac.Valor} - {freightPriceState.pac.PrazoEntrega} Dias</p>
+                                        </span>
+                                        <span>
+                                            <input 
+                                                type="radio" 
+                                                name='sedex'
+                                                checked={sedexCheckState} 
+                                                onChange={(event) => verifyFreightChecked(event.target.name)} 
+                                            /> 
+                                            <p>SEDEX - R$ {freightPriceState.sedex.Valor} - {freightPriceState.sedex.PrazoEntrega} Dias</p>  
+                                        </span>
+                                    </div>
+                                </div>
+                            )
+                            : null}
+                        </div>
 
-                    <div className="total-price">
-                        <p>Total: R$ {totalPriceState}</p>
+                        <div className="total-price">
+                            <p>Total: R$ {totalPriceState}</p>
+                            <button type='button'>Fechar Pedido</button>
+                        </div>
+
                     </div>
 
                 </section>
@@ -310,23 +428,53 @@ export default function Order() {
 
                 .td-total {
                     text-align: center;
+                    font-weight: bold;
+                }
+
+                .freight-total {
+                    display: flex;
+                    justify-content: flex-end;
                 }
 
                 .total-price {
                     font-size: 30px;
                     font-weight: bold;
-                    float: right;
-                    margin: 30px 30px 0 0;
+                    margin: 20px 30px 0 0;
+                }
+
+                .total-price button {
+                    width: 100%;
+                    height: 50px;
+                    margin: 10px 0 0 0;
+                    border: 0;
+                    background: ${(false) ? '#a32e39' : '#3E8C34'};
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+                .total-price button:hover {
+                    background: ${(false) ? '#bf2232' : '#41A933'};
+                }
+
+                .total-price button:active {
+                    background: ${(false) ? '#a32e39' : '#3E8C34'};
                 }
 
                 .calc-freight {
-                    border: 1px solid black;
+                    margin: 20px 50px 0 0;
+                }
+
+                .calc-freight .cep-input {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                 }
 
                 .calc-freight input {
                     width: 150px;
                     height: 30px;
-                    font-size: 30px;    
+                    font-size: 30px;  
+                    padding: 0 0 0 2px;  
                 }
 
                 .calc-freight button {
@@ -334,7 +482,7 @@ export default function Order() {
                     height: 30px;
                     border: 0;
                     border-radius: 2px;
-                    padding: 0;
+                    margin: 0 0 0 5px;
                 }
 
                 .calc-freight button:active {
@@ -351,6 +499,24 @@ export default function Order() {
                 /* remove arrows from input[type="number"] Firefox */
                 input[type=number] {
                     -moz-appearance: textfield;
+                }
+
+                .choose-freight {
+                    margin: 10px 0 0 0;
+                }
+
+                .choose-freight span {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .choose-freight span input {
+                    margin: 0 10px 0 0;
+                }
+
+                .choose-freight input {
+                    width: 20px;
                 }
             `}</style>
         </>
