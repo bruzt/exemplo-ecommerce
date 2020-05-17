@@ -9,11 +9,10 @@ describe('freightController Test Suit', () => {
         const response = await supertest(app).post(`/freight`)
             .send({
                 destZipCode: "13490000",
-                weight: "0.300",
+                weight: "0,300",
                 length: 10,
                 height: 10,
                 width: 10,
-                diameter: 10
             });
         
         expect(response.status).toBe(200);
