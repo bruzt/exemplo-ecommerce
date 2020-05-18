@@ -1,13 +1,17 @@
 import React from 'react';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
 import Link from 'next/link';
 
 import { useCart } from '../context/cartContext';
+import { useLogin } from '../context/loginContext';
+
+import LoginModal from './LoginModal';
 
 export default function Header() {
 
+    const loginContext = useLogin();
     const cartContext = useCart();
-  
+
     return (
         <>
             <style jsx global>{`
@@ -33,26 +37,53 @@ export default function Header() {
                 }
             `}</style>
 
+            <LoginModal />
+
             <header>
                 <div className='limit-center'>
                     <Link href='/'>
-                        <img 
+                        <img
                             src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
-                            alt='logo' 
+                            alt='logo'
                             title='Home'
                         />
                     </Link>
 
-                    <div className='icon' title='Carrinho de compras'>
-                        <Link href='/order'>
-                            <a>
-                                <div className='cart-number'>
-                                    <p>{cartContext.cart.length}</p>
-                                </div>
-                                <FaShoppingCart size={40} />
-                                <p>Carrinho</p>
-                            </a>
-                        </Link>
+                    <div className='login-cart'>
+                        {(loginContext.login == false) ? (
+                            <button
+                                className='login-button'
+                                type='button'
+                                title='Fazer Login'
+                                onClick={loginContext.handleSwitchModal}
+                            >
+                                Entrar&nbsp;<FaSignInAlt />
+                            </button>
+                        ) 
+                        : ((loginContext.userData) ? (
+
+                                <button
+                                    className='user-button'
+                                    type='button'
+                                    onClick={() => loginContext.logOut()}
+                                >
+                                    Olá, {loginContext.userData.name.split(' ')[0]}
+                                </button>
+                            ) : <span></span>
+                        )}
+
+                        <div className='icon' title='Carrinho de compras'>
+                            <Link href='/order'>
+                                <a>
+                                    <div className='cart-number'>
+                                        <p>{cartContext.cart.length}</p>
+                                    </div>
+                                    <FaShoppingCart size={40} />
+                                    <p>Carrinho</p>
+                                </a>
+                            </Link>
+                        </div>
+
                     </div>
                 </div>
             </header>
@@ -80,6 +111,12 @@ export default function Header() {
                     cursor: pointer;
                 }
 
+                header .login-cart {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 25%;
+                }
+
                 header .icon {
                     margin: 35px 10px 0 0;
                     text-align: center;
@@ -97,6 +134,40 @@ export default function Header() {
                 header .cart-number p {
                     padding: 0;
                     margin: 0;
+                }
+
+                .login-cart .login-button {
+                    width: 80px;
+                    height: 20px;
+                    margin: 70px 0 0 0;
+                    border: 0;
+                    background: transparent;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    
+                    display: flex;
+                    align-items: center;
+                }
+
+                .login-cart .user-button {
+                    width: 100px;
+                    height: 20px;
+                    margin: 70px 0 0 0;
+                    border: 0;
+                    background: transparent;
+                    font-size: 20px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    
+                    display: flex;
+                    align-items: center;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
                 }
             `}</style>
         </>
