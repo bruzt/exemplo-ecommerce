@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { useCart } from '../context/cartContext';
 import { useLogin } from '../context/loginContext';
+import { useOrder } from '../context/orderContext';
 
 import LoginModal from './LoginModal';
 
@@ -11,6 +12,7 @@ export default function Header() {
 
     const loginContext = useLogin();
     const cartContext = useCart();
+    const orderContext = useOrder();
 
     return (
         <>
@@ -74,7 +76,7 @@ export default function Header() {
 
                         <div className='icon' title='Carrinho de compras'>
                             <Link href='/order'>
-                                <a>
+                                <a onClick={() => orderContext.setOrder('cart')}>
                                     <div className='cart-number'>
                                         <p>{cartContext.cart.length}</p>
                                     </div>

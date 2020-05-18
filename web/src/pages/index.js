@@ -67,7 +67,7 @@ export default function Home({ products }) {
                                 : Number(product.price).toFixed(2);
 
                             return (
-                                <Link href={`/${product.id}/${product.name.split(' ').join('-')}`} key={product.id}>
+                                <Link href='/[productId]/[productName]' as={`/${product.id}/${product.name.split(' ').join('-')}`} key={product.id}>
                                     <a title={product.name}>
                                         <div className='p-card'>
                                             <div className='img-container'>

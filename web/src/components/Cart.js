@@ -6,6 +6,7 @@ import { FaSearchLocation } from 'react-icons/fa'
 ''
 import { useLogin } from '../context/loginContext';
 import { useCart } from '../context/cartContext';
+import { useOrder } from '../context/orderContext';
 
 import PageLayout from './PageLayout';
 
@@ -20,6 +21,7 @@ export default function Cart() {
 
     const loginContext = useLogin();
     const cartContext = useCart();
+    const orderContext = useOrder();
 
     useEffect(() => {
         
@@ -217,35 +219,29 @@ export default function Cart() {
                             {productsState.length > 0 && productsState.map((product, index) => (
                                 <tr key={product.id}>
                                     <td className='td-image'>
-                                        <p>
-                                            <img
-                                                src='https://i.picsum.photos/id/892/800/400.jpg'
-                                                /*src='https://picsum.photos/800/400'*/
-                                                /*src={product.images[0] && product.images[0].url} */
-                                                alt={'imagem-' + product.name.split(' ').join('-')}
-                                            />
-                                        </p>
+                                        <img
+                                            src='https://i.picsum.photos/id/892/800/400.jpg'
+                                            /*src='https://picsum.photos/800/400'*/
+                                            /*src={product.images[0] && product.images[0].url} */
+                                            alt={'imagem-' + product.name.split(' ').join('-')}
+                                        />
                                     </td>
                                     <td className='td-name'>
-                                        <p>
-                                            <Link href={`/${product.id}/${product.name.split(' ').join('-')}`}>
-                                                <a>
-                                                    <span className='over-hidden'>{product.name}</span>
-                                                    {(product.discount_percent != 0)
-                                                        ? <span className='order-discount'>-{product.discount_percent}%</span>
-                                                        : null
-                                                    }
-                                                </a>
-                                            </Link>
-                                        </p>
+                                        <Link href='/[productId]/[productName]' as={`/${product.id}/${product.name.split(' ').join('-')}`}>
+                                            <a>
+                                                <span className='over-hidden'>{product.name}</span>
+                                                {(product.discount_percent != 0)
+                                                    ? <span className='order-discount'>-{product.discount_percent}%</span>
+                                                    : null
+                                                }
+                                            </a>
+                                        </Link>
                                     </td>
                                     <td className='td-price'>
-                                        <p>
-                                            R$ {product.finalPrice}
-                                        </p>
+                                        R$ {product.finalPrice}
                                     </td>
                                     <td className='td-qtd'>
-                                        <p>
+                                        <span>
                                             <button
                                                 type="button"
                                                 id='remove'
@@ -262,7 +258,7 @@ export default function Cart() {
                                             >
                                                 -
                                             </button>
-                                            <span className='cart-qtd'>{cartContext.cart[index].qtd}</span>
+                                            <p className='cart-qtd'>{cartContext.cart[index].qtd}</p>
                                             <button
                                                 type="button"
                                                 id='plus'
@@ -271,10 +267,10 @@ export default function Cart() {
                                             >
                                                 +
                                             </button>
-                                        </p>
-                                        <p>
+                                        </span>
+                                        <span>
                                             Disponível: {product.quantity_stock}
-                                        </p>
+                                        </span>
                                     </td>
                                     <td className='td-total'>
                                         R$ {(product.finalPrice * cartContext.cart[index].qtd).toFixed(2)}
@@ -327,7 +323,7 @@ export default function Cart() {
                             <p>Total: R$ {totalPriceState}</p>
                             
                             {(loginContext.login) ? (
-                                <button type='button'>Fechar Pedido</button>
+                                <button type='button' onClick={() => orderContext.setOrder('address')}>Fechar Pedido</button>
                             ) : (
                                 <button type='button' onClick={loginContext.handleSwitchModal}>Fazer Login</button>
                             )}
@@ -408,18 +404,18 @@ export default function Cart() {
                     text-align: center;
                 }
 
-                .td-qtd p {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
                 .td-qtd .cart-qtd {
                     font-weight: bold;
                     font-size: 20px;
                 }
 
-                .td-qtd p + p {
+                .td-qtd span {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .td-qtd span + span {
                     margin: 5px 0 0 0;
                 }
 
@@ -473,18 +469,18 @@ export default function Cart() {
                     margin: 10px 0 0 0;
                     border: 0;
                     border-radius: 5px;
-                    background: ${(false) ? '#a32e39' : '#3E8C34'};
+                    background: #3E8C34;
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
                 }
 
                 .total-price button:hover {
-                    background: ${(false) ? '#bf2232' : '#41A933'};
+                    background: #41A933;
                 }
 
                 .total-price button:active {
-                    background: ${(false) ? '#a32e39' : '#3E8C34'};
+                    background: #3E8C34;
                 }
 
                 .calc-freight {
