@@ -9,14 +9,6 @@ export default function ModalLogin() {
 
     const loginContext = useLogin();
 
-    /*function enterKeyEvent(){
-
-        document.addEventListener('keyup', (event) => {
-
-            even
-        });
-    }*/
-
     function handleLogin(event){
 
         event.preventDefault();
