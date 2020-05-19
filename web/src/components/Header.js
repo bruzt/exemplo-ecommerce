@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
 import Link from 'next/link';
 
