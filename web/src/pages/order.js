@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useOrder } from '../context/orderContext';
 
@@ -9,7 +9,12 @@ export default function Order() {
 
     const orderContext = useOrder();
 
-    if(orderContext.order == 'cart') return <Cart />;
+    useEffect( () => {
 
-    else if(orderContext.order == 'address') return <Address />;
+        orderContext.order = 'cart';
+
+    }, []);
+
+    if(orderContext.order == 'cart') return <Cart />
+    else if(orderContext.order == 'address') return <Address />
 }
