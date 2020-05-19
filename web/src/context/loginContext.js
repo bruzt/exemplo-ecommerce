@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
+import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
@@ -11,6 +12,8 @@ export function LoginContextProvider({ children }){
     const [showModalState, setShowModal] = useState(false);
     const [userState, setUser] = useState(null);
     const [tokenState, setToken] = useState('');
+
+    const router = useRouter();
 
     useEffect( () => {
 
@@ -24,8 +27,8 @@ export function LoginContextProvider({ children }){
 
         if(tokenState.length > 0){
 
-            api.defaults.headers.authentication = "Bearer " + tokenState;   
-    
+            api.defaults.headers.authorization = "Bearer " + tokenState;   
+            
             getUser();
             
             sessionStorage.setItem('token', tokenState);
@@ -63,7 +66,9 @@ export function LoginContextProvider({ children }){
 
     function logOut(){
 
-        api.defaults.headers.authentication = undefined;
+        router.push('/');
+
+        api.defaults.headers.authorization = undefined;
 
         sessionStorage.removeItem('token');
 
@@ -83,7 +88,15 @@ export function LoginContextProvider({ children }){
     }
 
     return (
-        <Context.Provider value={{ modal: showModalState,  login: loginState, handleSwitchModal, logIn, logOut, userData: userState }}>
+        <Context.Provider value={{ 
+            modal: showModalState,  
+            login: loginState, 
+            handleSwitchModal, 
+            logIn, 
+            logOut, 
+            userData: userState,
+            setUser
+        }}>
             {children}
         </Context.Provider>
     );
