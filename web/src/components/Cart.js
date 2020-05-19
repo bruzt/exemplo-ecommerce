@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import api from '../services/api';
 import Link from 'next/link';
@@ -11,13 +11,6 @@ import { useOrder } from '../context/orderContext';
 import PageLayout from './PageLayout';
 
 export default function Cart() {
-
-    const [productsState, setProducts] = useState([]);
-    const [totalPriceState, setTotalPrice] = useState(0);
-    const [cepInputState, setCepInput] = useState('');
-    const [pacCheckState, setPacChecked] = useState(false);
-    const [sedexCheckState, setSedexCheckStateChecked] = useState(false);
-    const [freightPriceState, setFreightPrice] = useState(null);
 
     const loginContext = useLogin();
     const cartContext = useCart();
@@ -33,19 +26,19 @@ export default function Cart() {
 
         calcTotalPrice();
 
-    }, [productsState, cartContext.cart, pacCheckState, sedexCheckState]);
+    }, [cartContext.productsState, cartContext.cart, cartContext.pacCheckState, cartContext.sedexCheckState]);
 
     useEffect(() => {
 
         resetFreight();
 
-    }, [cepInputState]);
+    }, [cartContext.cepInputState]);
 
     function resetFreight(){
 
-        setPacChecked(false);
-        setSedexCheckStateChecked(false);
-        setFreightPrice(0);
+        cartContext.setPacCheck(false);
+        cartContext.setSedexCheck(false);
+        cartContext.setFreightPrice(0);
     }
 
     function calcTotalPrice() {
@@ -54,17 +47,17 @@ export default function Cart() {
 
         for (let i = 0; i < cartContext.cart.length; i++) {
 
-            if (productsState.length > 0) {
+            if (cartContext.productsState.length > 0) {
 
-                totalPrice += productsState[i].finalPrice * cartContext.cart[i].qtd;
+                totalPrice += cartContext.productsState[i].finalPrice * cartContext.cart[i].qtd;
 
             }
         }
 
-        if(pacCheckState) totalPrice += Number((freightPriceState.pac.Valor).replace(',', '.'))
-        else if(sedexCheckState) totalPrice += Number((freightPriceState.sedex.Valor).replace(',', '.'))
+        if(cartContext.pacCheckState) totalPrice += Number((cartContext.freightPriceState.pac.Valor).replace(',', '.'))
+        else if(cartContext.sedexCheckState) totalPrice += Number((cartContext.freightPriceState.sedex.Valor).replace(',', '.'))
         
-        setTotalPrice(totalPrice.toFixed(2));
+        cartContext.setTotalPrice(totalPrice.toFixed(2));
     }
 
     async function getProducts() {
@@ -97,14 +90,14 @@ export default function Cart() {
             }
         }
 
-        setProducts(products);
+        cartContext.setProducts(products);
     }
 
     function verifyQtd({ id, qtd }) {
 
         resetFreight();
 
-        const [ product ] = productsState.filter((product) => product.id == id);
+        const [ product ] = cartContext.productsState.filter((product) => product.id == id);
 
         const [ cart ] = cartContext.cart.filter((product) => product.id == id);
 
@@ -122,9 +115,9 @@ export default function Cart() {
 
     function removeFromCart(id) {
 
-        const products = productsState.filter((product) => product.id != id);
+        const products = cartContext.productsState.filter((product) => product.id != id);
 
-        setProducts(products);
+        cartContext.setProducts(products);
         cartContext.removeFromCart(id);
         resetFreight();
     }
@@ -133,13 +126,13 @@ export default function Cart() {
 
         if(name == 'pac'){
 
-            setSedexCheckStateChecked(false);
-            setPacChecked(true);
+            cartContext.setSedexCheck(false);
+            cartContext.setPacCheck(true);
 
         } else if (name == 'sedex'){
 
-            setPacChecked(false);
-            setSedexCheckStateChecked(true);
+            cartContext.setPacCheck(false);
+            cartContext.setSedexCheck(true);
         }
     }
 
@@ -151,14 +144,14 @@ export default function Cart() {
         let width = 0;
         let diameter = 0;
 
-        for(let i = 0; i < productsState.length; i++) {
+        for(let i = 0; i < cartContext.productsState.length; i++) {
 
-            weight += Number((productsState[i].weight).replace(',', '.')) * cartContext.cart[i].qtd;
-            height += Number(productsState[i].height) * cartContext.cart[i].qtd;
+            weight += Number((cartContext.productsState[i].weight).replace(',', '.')) * cartContext.cart[i].qtd;
+            height += Number(cartContext.productsState[i].height) * cartContext.cart[i].qtd;
 
-            if(length < productsState[i].length) length = Number(productsState[i].length);
-            if(width < productsState[i].width) width = Number(productsState[i].width);
-            if(diameter < productsState[i].diameter) diameter = Number(productsState[i].diameter);
+            if(length < cartContext.productsState[i].length) length = Number(cartContext.productsState[i].length);
+            if(width < cartContext.productsState[i].width) width = Number(cartContext.productsState[i].width);
+            if(diameter < cartContext.productsState[i].diameter) diameter = Number(cartContext.productsState[i].diameter);
         }
 
         weight = String(weight).replace('.', ',');
@@ -166,7 +159,7 @@ export default function Cart() {
         try {
 
             const response = await api.post('/freight', {
-                destZipCode: String(cepInputState).replace('-', ''),
+                destZipCode: String(cartContext.cepInputState).replace('-', ''),
                 weight,
                 length,
                 height,
@@ -183,7 +176,7 @@ export default function Cart() {
 
             } else {
 
-                setFreightPrice(response.data);
+                cartContext.setFreightPrice(response.data);
             }
             
         } catch (error) {
@@ -202,7 +195,7 @@ export default function Cart() {
             <PageLayout>
 
                 <section>
-                    {productsState.length == 0 && (
+                    {cartContext.productsState.length == 0 && (
                         <h1>Carrinho vazio</h1>
                     )}
                     <table>
@@ -216,7 +209,7 @@ export default function Cart() {
                             </tr>
                         </thead>
                         <tbody>
-                            {productsState.length > 0 && productsState.map((product, index) => (
+                            {cartContext.productsState.length > 0 && cartContext.productsState.map((product, index) => (
                                 <tr key={product.id}>
                                     <td className='td-image'>
                                         <img
@@ -284,35 +277,35 @@ export default function Cart() {
 
                         <div className="calc-freight">
                             <div className='cep-input'>
-                                Calculo de frete:&nbsp;<input type='text' placeholder='CEP' value={cepInputState} onChange={(event) => setCepInput(event.target.value)} />
+                                Calculo de frete:&nbsp;<input type='text' placeholder='CEP' value={cartContext.cepInputState} onChange={(event) => cartContext.setCepInput(event.target.value)} />
                                 <button 
                                     type='button' 
                                     onClick={() => getFreightPrice()}
-                                    disabled={(productsState.length == 0 || (cepInputState.length != 8 && cepInputState.length != 9)) ? true : false}
+                                    disabled={(cartContext.productsState.length == 0 || (cartContext.cepInputState.length != 8 && cartContext.cepInputState.length != 9)) ? true : false}
                                 >
                                     <FaSearchLocation size={20} />
                                 </button>
                             </div>
                             
-                            {freightPriceState ? (
+                            {cartContext.freightPriceState ? (
                                 <div className='choose-freight'>
                                         <span>
                                             <input 
                                                 type="radio" 
                                                 name='pac'
-                                                checked={pacCheckState} 
+                                                checked={cartContext.pacCheckState} 
                                                 onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
-                                            <p>PAC - R$ {freightPriceState.pac.Valor} - {freightPriceState.pac.PrazoEntrega} Dias</p>
+                                            <p>PAC - R$ {cartContext.freightPriceState.pac.Valor} - {cartContext.freightPriceState.pac.PrazoEntrega} Dias</p>
                                         </span>
                                         <span>
                                             <input 
                                                 type="radio" 
                                                 name='sedex'
-                                                checked={sedexCheckState} 
+                                                checked={cartContext.sedexCheckState} 
                                                 onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
-                                            <p>SEDEX - R$ {freightPriceState.sedex.Valor} - {freightPriceState.sedex.PrazoEntrega} Dias</p>  
+                                            <p>SEDEX - R$ {cartContext.freightPriceState.sedex.Valor} - {cartContext.freightPriceState.sedex.PrazoEntrega} Dias</p>  
                                         </span>
                                 </div>
                             )
@@ -320,7 +313,7 @@ export default function Cart() {
                         </div>
 
                         <div className="total-price">
-                            <p>Total: R$ {totalPriceState}</p>
+                            <p>Total: R$ {cartContext.totalPriceState}</p>
                             
                             {(loginContext.login) ? (
                                 <button type='button' onClick={() => orderContext.setOrder('address')}>Fechar Pedido</button>
@@ -469,18 +462,18 @@ export default function Cart() {
                     margin: 10px 0 0 0;
                     border: 0;
                     border-radius: 5px;
-                    background: #3E8C34;
+                    background: ${(loginContext.login) ? '#3E8C34' : '#E4E000'};
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
                 }
 
                 .total-price button:hover {
-                    background: #41A933;
+                    background: ${(loginContext.login) ? '##41A933' : '#C3C133'};
                 }
-
+                
                 .total-price button:active {
-                    background: #3E8C34;
+                    background: ${(loginContext.login) ? '#3E8C34' : '#E4E000'};
                 }
 
                 .calc-freight {

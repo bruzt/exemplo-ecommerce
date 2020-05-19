@@ -5,6 +5,13 @@ const Context = createContext({});
 export function CartContextProvider({ children }){
 
     const [cartState, setCart] = useState([]);
+    const [productsState, setProducts] = useState([]);
+    const [totalPriceState, setTotalPrice] = useState(0);
+    const [cepInputState, setCepInput] = useState('');
+    const [pacCheckState, setPacCheck] = useState(false);
+    const [sedexCheckState, setSedexCheck] = useState(false);
+    const [freightPriceState, setFreightPrice] = useState(null);
+    const [addressIdState, setAddressId] = useState(null);
 
     useEffect( () => {
         
@@ -56,7 +63,26 @@ export function CartContextProvider({ children }){
     }
 
     return (
-        <Context.Provider value={{ cart: cartState, setCart, addToCart, removeFromCart }}>
+        <Context.Provider value={{ 
+            cart: cartState, 
+            setCart, 
+            addToCart, 
+            removeFromCart ,
+            productsState,
+            setProducts,
+            totalPriceState,
+            setTotalPrice,
+            cepInputState,
+            setCepInput,
+            pacCheckState,
+            setPacCheck,
+            sedexCheckState,
+            setSedexCheck,
+            freightPriceState,
+            setFreightPrice,
+            addressIdState,
+            setAddressId
+        }}>
             {children}
         </Context.Provider>
     );
