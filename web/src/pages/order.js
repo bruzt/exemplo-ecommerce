@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useOrder } from '../context/orderContext';
 
 import Cart from '../components/Cart';
-import Address from '../components/Address';
+import SelectAddress from '../components/SelectAddress';
 
 export default function Order() {
 
@@ -16,5 +16,5 @@ export default function Order() {
     }, []);
 
     if(orderContext.order == 'cart') return <Cart />
-    else if(orderContext.order == 'address') return <Address />
+    else if(orderContext.order == 'address') return <SelectAddress />
 }
