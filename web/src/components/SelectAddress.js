@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
+import { useOrder } from '../context/orderContext';
 
 import PageLayout from './PageLayout';
 
@@ -22,6 +23,7 @@ export default function Address() {
 
     const userContext = useUser();
     const cartContext = useCart();
+    const orderContext = useOrder();
 
     useEffect( () => {
 
@@ -44,18 +46,6 @@ export default function Address() {
         } else setDisableAddAddr(false)
 
     }, [streetState, numberState, districtState, cityState, stateState, zipCodeState]);
-
-    function handleAddressPick(id){
-
-        if(cartContext.addressIdState != null && cartContext.addressIdState != id){
-            
-            cartContext.setAddressId(id);
-            
-        } else {
-            
-            cartContext.setAddressId(id);
-        }
-    }
 
     function switchShowAddAddr(){
 
@@ -123,13 +113,15 @@ export default function Address() {
                                                 </button>
                                             </div>
                                             
-                                            <a onClick={() => handleAddressPick(address.id)}>
-                                                <p>Rua: {address.street}</p>
-                                                <p>Nº: {address.number}</p>
-                                                <p>Bairro: {address.district}</p>
-                                                <p>Cidade: {address.city}</p>
-                                                <p>Estado: {address.state}</p>
-                                                <p>CEP: {address.zipcode}</p>
+                                            <a onClick={() => cartContext.setAddressId(address.id)}>
+                                                <div>
+                                                    <p>Rua: {address.street}</p>
+                                                    <p>Nº: {address.number}</p>
+                                                    <p>Bairro: {address.district}</p>
+                                                    <p>Cidade: {address.city}</p>
+                                                    <p>Estado: {address.state}</p>
+                                                    <p>CEP: {address.zipcode}</p>
+                                                </div>
                                             </a>
                                         </div>
                                     </div>
@@ -151,6 +143,7 @@ export default function Address() {
                         <button
                             className='select-button'
                             disabled={(cartContext.addressIdState == null) ? true : false}
+                            onClick={() => orderContext.setOrder('payment')}
                         >
                             Ir para pagamento
                         </button>
@@ -266,7 +259,7 @@ export default function Address() {
                 .addr-card {
                     border: 1px solid #60615b;
                     border-radius: 5px;
-                    
+                    background: #c9c9c9;
                     height: 220px;
                 }
 
@@ -274,14 +267,16 @@ export default function Address() {
                     border: 3px solid #60615b;
                 }
 
-                .addr-card .addr-data {
+                .addr-card .addr-data a div {
                     padding: 15px;
                     line-height: 25px;
+                    height: 100%;
                 }
 
                 .addr-card .addr-data .addr-remove {
                     display: flex;
                     justify-content: flex-end;
+                    margin: 10px 10px 0 0;
                 }
 
                 .addr-data .addr-remove button {
@@ -353,6 +348,7 @@ export default function Address() {
                     flex-direction: column;
                     margin: 20px 0 0 0;
                     border: 1px solid #60615b;
+                    border-radius: 5px;
                     padding: 20px;
                     width: 480px;
                     max-width: 50%;
