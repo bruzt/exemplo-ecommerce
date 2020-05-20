@@ -8,7 +8,7 @@ class AddressModel extends Model {
 
             street: DataTypes.STRING,
             number: DataTypes.INTEGER,
-            district: DataTypes.STRING,
+            neighborhood: DataTypes.STRING,
             city: DataTypes.STRING,
             state: DataTypes.STRING,
             zipcode: DataTypes.STRING,

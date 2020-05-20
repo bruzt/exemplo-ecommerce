@@ -33,7 +33,7 @@ module.exports = {
                 allowNull: false
             },
 
-            district: {
+            neighborhood: {
                 type: Sequelize.STRING
             },
 

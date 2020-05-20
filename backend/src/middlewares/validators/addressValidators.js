@@ -19,7 +19,7 @@ module.exports = {
             zipcode: Joi.string().required(),
             street: Joi.string().required(),
             number: Joi.string().required(),
-            district: Joi.string().required(),
+            neighborhood: Joi.string().required(),
             city: Joi.string().required(),
             state: Joi.string().required(),
         })
@@ -39,7 +39,7 @@ module.exports = {
             zipcode: Joi.string(),
             street: Joi.string(),
             number: Joi.string(),
-            district: Joi.string(),
+            neighborhood: Joi.string(),
             city: Joi.string(),
             state: Joi.string(),
         }).min(1)
