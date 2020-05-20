@@ -8,8 +8,7 @@ export function CartContextProvider({ children }){
     const [productsState, setProducts] = useState([]);
     const [totalPriceState, setTotalPrice] = useState(0);
     const [cepInputState, setCepInput] = useState('');
-    const [pacCheckState, setPacCheck] = useState(false);
-    const [sedexCheckState, setSedexCheck] = useState(false);
+    const [freightSelectedState, setFreightSelected] = useState(null);
     const [freightPriceState, setFreightPrice] = useState(null);
     const [addressIdState, setAddressId] = useState(null);
 
@@ -74,10 +73,8 @@ export function CartContextProvider({ children }){
             setTotalPrice,
             cepInputState,
             setCepInput,
-            pacCheckState,
-            setPacCheck,
-            sedexCheckState,
-            setSedexCheck,
+            freightSelectedState,
+            setFreightSelected,
             freightPriceState,
             setFreightPrice,
             addressIdState,
