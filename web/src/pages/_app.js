@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { LoginContextProvider } from '../context/loginContext';
+import { UserContextProvider } from '../context/userContext';
 import { OrderContextProvider } from '../context/orderContext';
 import { CartContextProvider } from '../context/cartContext';
 
 export default function MyApp({ Component, pageProps }) {
 
     return (
-        <LoginContextProvider>
+        <UserContextProvider>
             <OrderContextProvider>
                 <CartContextProvider>
                 
@@ -15,6 +15,6 @@ export default function MyApp({ Component, pageProps }) {
 
                 </CartContextProvider>
             </OrderContextProvider>
-        </LoginContextProvider>
+        </UserContextProvider>
     )
 }
