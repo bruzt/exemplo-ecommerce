@@ -99,6 +99,8 @@ module.exports = {
                 await products[i].save();
             }
 
+            if(process.env.NODE_ENV == 'test') return res.json(order);
+
             const response = await axios.post('https://api.pagar.me/1/transactions', {
                 api_key: process.env.PAGARME_API_KEY,
                 ...req.body.credit_card
