@@ -14,7 +14,13 @@ module.exports = {
                 allowNull: false
             },
 
-            name: {
+            category_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                references: { model: 'categories', key: 'id' }
+            },  
+
+            title: {
                 type: Sequelize.STRING,
                 allowNull: false
             },
@@ -34,12 +40,6 @@ module.exports = {
                 allowNull: false
             },
 
-            category_id: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                references: { model: 'categories', key: 'id' }
-            },  
-
             quantity_stock: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0,
@@ -49,6 +49,11 @@ module.exports = {
             discount_percent: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0
+            },
+
+            tangible: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
             },
 
             weight: {

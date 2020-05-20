@@ -8,12 +8,13 @@ class ProductModel extends Model {
 
         super.init({
 
-            name: DataTypes.STRING,
+            title: DataTypes.STRING,
             description: DataTypes.STRING,
             html_body: DataTypes.TEXT,
             price: DataTypes.DECIMAL,
             quantity_stock: DataTypes.INTEGER,
             discount_percent: DataTypes.DECIMAL,
+            tangible: DataTypes.BOOLEAN,
             weight: DataTypes.STRING,
             length: DataTypes.DECIMAL,
             height: DataTypes.DECIMAL,

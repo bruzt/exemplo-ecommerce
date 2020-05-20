@@ -9,13 +9,14 @@ module.exports = {
         .unknown(),
 
         [Segments.BODY]: Joi.object().keys({
-            name: Joi.string().required(),
+            category_id: Joi.number().required(),
+            title: Joi.string().required(),
             description: Joi.string().required(),
             html_body: Joi.string(),
             price: Joi.number().required(),
             quantity_stock: Joi.number().required(),
-            category_id: Joi.number().required(),
             discount_percent: Joi.number(),
+            tangible: Joi.boolean().required(),
             weight: Joi.string().required(),
             length: Joi.number().required(),
             height: Joi.number().required(),
@@ -30,13 +31,14 @@ module.exports = {
         .unknown(),
 
         [Segments.BODY]: Joi.object().keys({
-            name: Joi.string(),
+            category_id: Joi.number(),
+            title: Joi.string(),
             description: Joi.string(),
             html_body: Joi.string(),
             price: Joi.number(),
             quantity_stock: Joi.number(),
-            category_id: Joi.number(),
             discount_percent: Joi.number(),
+            tangible: Joi.boolean(),
             weight: Joi.string(),
             length: Joi.number(),
             height: Joi.number(),
