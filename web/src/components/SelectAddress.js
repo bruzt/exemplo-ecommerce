@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 
-import api from '../services/api';
+//import api from '../services/api';
 
-import { useLogin } from '../context/loginContext';
+import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 
 import PageLayout from './PageLayout';
@@ -11,6 +11,7 @@ import PageLayout from './PageLayout';
 export default function Address() {
 
     const [showAddAddrState, setshowAddAddr] = useState(false);
+    const [disableAddAddrState, setDisableAddAddr] = useState(true);
 
     const [streetState, setStreet] = useState('');
     const [numberState, setNumber] = useState('');
@@ -19,7 +20,7 @@ export default function Address() {
     const [stateState, setState] = useState('');
     const [zipCodeState, setZipCode] = useState('');
 
-    const loginContext = useLogin();
+    const userContext = useUser();
     const cartContext = useCart();
 
     useEffect( () => {
@@ -28,16 +29,30 @@ export default function Address() {
 
     }, []);
 
+    useEffect( () => {
+
+        if( streetState.length < 3 ||
+            numberState.length < 1 ||
+            districtState.length < 3 ||
+            cityState.length < 3 ||
+            stateState.length < 1 ||
+            zipCodeState.length < 8 ||
+            zipCodeState.length > 9
+        ){
+            setDisableAddAddr(true)
+
+        } else setDisableAddAddr(false)
+
+    }, [streetState, numberState, districtState, cityState, stateState, zipCodeState]);
+
     function handleAddressPick(id){
 
         if(cartContext.addressIdState != null && cartContext.addressIdState != id){
-
-            document.getElementById(cartContext.addressIdState).checked = false;
+            
             cartContext.setAddressId(id);
             
         } else {
             
-            document.getElementById(id).checked = true;
             cartContext.setAddressId(id);
         }
     }
@@ -48,37 +63,35 @@ export default function Address() {
         else setshowAddAddr(true);
     }
 
-    async function handleAddAddress(event){
+    function handleAddAddress(event){
 
         event.preventDefault();
 
-        try {
-
-            const response = await api.post('/addresses', {
-                street: streetState,
-                number: numberState,
-                district: districtState,
-                city: cityState,
-                state: stateState,
-                zipcode: zipCodeState
-            });
-
-            const user = loginContext.userData;
-            user.addresses.push(response.data);
-            loginContext.setUser(user);
-
+        const add = userContext.addAddress({
+            street: streetState,
+            number: numberState,
+            district: districtState,
+            city: cityState,
+            state: stateState,
+            zipcode: zipCodeState
+        });
+        
+        if(add){
             setshowAddAddr(false);
             setStreet('');
             setNumber('');
             setDistrict('');
             setCity('');
             setState('');
-            setZipCode('');
-                
-        } catch (error) {
-            console.error(error);
-            alert('Erro, tente novamente');
+            setZipCode('');      
         }
+    }
+
+    function handleDeleteAddress(id){
+        
+        if(cartContext.addressIdState == id) cartContext.setAddressId(null);
+        
+        userContext.deleteAddress(id);
     }
 
     return (
@@ -96,28 +109,31 @@ export default function Address() {
 
                     <div className='addr-grid'>
 
-                        {loginContext.userData.addresses.map( (address) => {
+                        {userContext.userData.addresses.map( (address) => {
                             return (
-                                <div className='addr-card' key={address.id}>
-                                    <div className='addr-radio'>
-                                        <input type="radio" id={address.id} onChange={(event) => handleAddressPick(event.target.id)} />
-                                    </div>
-                                    <div className='addr-data'>
-                                        <div className='addr-remove'>
-                                            <button type="button">
-                                                X
-                                            </button>
+                                
+                                    <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
+                                        <div className='addr-data'>
+                                            <div className='addr-remove'>
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => handleDeleteAddress(address.id)}
+                                                >
+                                                    X
+                                                </button>
+                                            </div>
+                                            
+                                            <a onClick={() => handleAddressPick(address.id)}>
+                                                <p>Rua: {address.street}</p>
+                                                <p>Nº: {address.number}</p>
+                                                <p>Bairro: {address.district}</p>
+                                                <p>Cidade: {address.city}</p>
+                                                <p>Estado: {address.state}</p>
+                                                <p>CEP: {address.zipcode}</p>
+                                            </a>
                                         </div>
-                                        <div>
-                                            <p>Rua: {address.street}</p>
-                                            <p>Nº: {address.number}</p>
-                                            <p>Bairro: {address.district}</p>
-                                            <p>Cidade: {address.city}</p>
-                                            <p>Estado: {address.state}</p>
-                                            <p>CEP: {address.zipcode}</p>
-                                        </div>
                                     </div>
-                                </div>
+                                
                             );
                         })}
 
@@ -125,16 +141,16 @@ export default function Address() {
 
                     <div className='add-select-buttons'>
                         <button 
-                        className='add-button'
-                        type='button'
-                        onClick={switchShowAddAddr}
+                            className='add-button'
+                            type='button'
+                            onClick={switchShowAddAddr}
                         >
                             Adicionar Endereço
                         </button>
 
                         <button
                             className='select-button'
-                            disabled={(cartContext.addressIdState != null) ? false : true}
+                            disabled={(cartContext.addressIdState == null) ? true : false}
                         >
                             Ir para pagamento
                         </button>
@@ -208,6 +224,7 @@ export default function Address() {
                             <button 
                                 className='addr-submit'
                                 type='submit'
+                                disabled={disableAddAddrState}
                                 onClick={handleAddAddress}
                             >
                                 Cadastrar
@@ -238,27 +255,23 @@ export default function Address() {
 
                     min-height: 220px;
                     border: 1px solid #60615b;
+                    border-radius: 5px;
                     padding: 10px;
+                }
+
+                .addr-grid a {
+                    cursor: pointer;
                 }
 
                 .addr-card {
                     border: 1px solid #60615b;
-                    display: grid;
-                    grid-template-columns: 30px 1fr;
+                    border-radius: 5px;
+                    
                     height: 220px;
                 }
 
-                .addr-card .addr-radio {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    background: #c9c9c9;
-                }
-
-                .addr-card .addr-radio input {
-                    height: 20px;
-                    width: 20px;
+                .selected {
+                    border: 3px solid #60615b;
                 }
 
                 .addr-card .addr-data {
@@ -277,10 +290,23 @@ export default function Address() {
                     border: 0;
                     border-radius: 5px;
                     background: #a32e39;
+                    cursor: pointer;
+                }
+
+                .addr-data .addr-remove button:hover {
+                    background: #bf2232;
                 }
 
                 .addr-data .addr-remove button:active {
-                    background: #bf2232;
+                    background: #a32e39;
+                }
+
+                .addr-data p {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
                 }
 
                 .add-select-buttons {
@@ -295,7 +321,7 @@ export default function Address() {
                     border: 0;
                     border-radius: 5px;
                     font-size: 20px;
-                    
+                    cursor: pointer;                    
                 }
 
                 .add-select-buttons .add-button {
@@ -396,12 +422,13 @@ export default function Address() {
                     align-self: center;
                     border: 0;
                     border-radius: 5px;
-                    background: #3E8C34;
+                    background: ${(disableAddAddrState) ? '#a32e39' : '#3E8C34'};
                     font-size: 20px;
+                    cursor: pointer;
                 }
 
                 .addr-submit:hover {
-                    background: #41A933;
+                    background: ${(disableAddAddrState) ? '#bf2232' : '#41A933'};
                 }
 
                 .addr-submit:active {
