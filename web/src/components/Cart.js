@@ -135,7 +135,9 @@ export default function Cart() {
         }
     }
 
-    async function getFreightPrice(){
+    async function getFreightPrice(event){
+
+        event.preventDefault();
 
         let weight = 0;
         let length = 0;
@@ -204,7 +206,7 @@ export default function Cart() {
                                 <th className='th-product'>Produto</th>
                                 <th className='th-price'>Preço unitário</th>
                                 <th className='th-qtd'>Quantidade</th>
-                                <th className='th-total'>Preço</th>
+                                <th className='th-total'>Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -275,16 +277,16 @@ export default function Cart() {
                     <div className='freight-total'>
 
                         <div className="calc-freight">
-                            <div className='cep-input'>
+                            <form className='cep-input'>
                                 Calculo de frete:&nbsp;<input type='text' placeholder='CEP' value={cartContext.cepInputState} onChange={(event) => cartContext.setCepInput(event.target.value)} />
                                 <button 
-                                    type='button' 
-                                    onClick={() => getFreightPrice()}
+                                    type='submit' 
+                                    onClick={(event) => getFreightPrice(event)}
                                     disabled={(cartContext.productsState.length == 0 || (cartContext.cepInputState.length != 8 && cartContext.cepInputState.length != 9)) ? true : false}
                                 >
                                     <FaSearchLocation size={20} />
                                 </button>
-                            </div>
+                            </form>
                             
                             {cartContext.freightPriceState ? (
                                 <div className='choose-freight'>
@@ -315,15 +317,29 @@ export default function Cart() {
                             <p>Total: R$ {cartContext.totalPriceState}</p>
                             
                             {(userContext.login) ? (
-                                <button 
-                                    type='button'
-                                    onClick={() => orderContext.setOrder('address')}
-                                    disabled={(cartContext.cart.length == 0) ? true : false }
-                                >
-                                    {(cartContext.cart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
-                                </button>
+                                (cartContext.freightSelectedState == null) ? (
+                                    <button 
+                                        type='button'
+                                        disabled={true}
+                                    >
+                                        Selecione o frete
+                                    </button>
+                                ) : (
+                                    <button 
+                                        type='button'
+                                        onClick={() => orderContext.setOrder('address')}
+                                        disabled={(cartContext.cart.length == 0) ? true : false }
+                                    >
+                                        {(cartContext.cart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
+                                    </button>
+                                )
                             ) : (
-                                <button type='button' onClick={userContext.handleSwitchModal}>Fazer Login</button>
+                                <button 
+                                    type='button' 
+                                    onClick={userContext.handleSwitchModal}
+                                >
+                                    Fazer Login
+                                </button>
                             )}
                         </div>
 
@@ -502,6 +518,7 @@ export default function Cart() {
                     padding: 0 0 0 2px;  
                     border: 0;
                     border-radius: 5px;
+                    text-align: center;
                 }
 
                 .calc-freight button {
