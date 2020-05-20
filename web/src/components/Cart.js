@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import api from '../services/api';
 import Link from 'next/link';
-import { FaSearchLocation } from 'react-icons/fa'
+import { FaSearchLocation, FaBan } from 'react-icons/fa'
 ''
-import { useLogin } from '../context/loginContext';
+import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
 
@@ -12,7 +12,7 @@ import PageLayout from './PageLayout';
 
 export default function Cart() {
 
-    const loginContext = useLogin();
+    const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
 
@@ -24,9 +24,12 @@ export default function Cart() {
 
     useEffect(() => {
 
-        calcTotalPrice();
+        if (cartContext.productsState.length > 0) {
 
-    }, [cartContext.productsState, cartContext.cart, cartContext.pacCheckState, cartContext.sedexCheckState]);
+            calcTotalPrice();
+        }
+
+    }, [cartContext.productsState, cartContext.cart, cartContext.freightSelectedState]);
 
     useEffect(() => {
 
@@ -36,8 +39,7 @@ export default function Cart() {
 
     function resetFreight(){
 
-        cartContext.setPacCheck(false);
-        cartContext.setSedexCheck(false);
+        cartContext.setFreightSelected(null);
         cartContext.setFreightPrice(0);
     }
 
@@ -47,15 +49,14 @@ export default function Cart() {
 
         for (let i = 0; i < cartContext.cart.length; i++) {
 
-            if (cartContext.productsState.length > 0) {
+            if(cartContext.productsState[i]){
 
                 totalPrice += cartContext.productsState[i].finalPrice * cartContext.cart[i].qtd;
-
             }
         }
 
-        if(cartContext.pacCheckState) totalPrice += Number((cartContext.freightPriceState.pac.Valor).replace(',', '.'))
-        else if(cartContext.sedexCheckState) totalPrice += Number((cartContext.freightPriceState.sedex.Valor).replace(',', '.'))
+        if(cartContext.freightSelectedState == 'pac') totalPrice += Number((cartContext.freightPriceState.pac.Valor).replace(',', '.'))
+        else if(cartContext.freightSelectedState == 'sedex') totalPrice += Number((cartContext.freightPriceState.sedex.Valor).replace(',', '.'))
         
         cartContext.setTotalPrice(totalPrice.toFixed(2));
     }
@@ -126,13 +127,11 @@ export default function Cart() {
 
         if(name == 'pac'){
 
-            cartContext.setSedexCheck(false);
-            cartContext.setPacCheck(true);
+            cartContext.setFreightSelected('pac');
 
         } else if (name == 'sedex'){
 
-            cartContext.setPacCheck(false);
-            cartContext.setSedexCheck(true);
+            cartContext.setFreightSelected('sedex');
         }
     }
 
@@ -195,9 +194,9 @@ export default function Cart() {
             <PageLayout>
 
                 <section>
-                    {cartContext.productsState.length == 0 && (
+                    {cartContext.productsState.length == 0 ? (
                         <h1>Carrinho vazio</h1>
-                    )}
+                    ) : <h1>Carrinho</h1>}
                     <table>
                         <thead>
                             <tr>
@@ -293,7 +292,7 @@ export default function Cart() {
                                             <input 
                                                 type="radio" 
                                                 name='pac'
-                                                checked={cartContext.pacCheckState} 
+                                                checked={cartContext.freightSelectedState == 'pac' ? true : false} 
                                                 onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
                                             <p>PAC - R$ {cartContext.freightPriceState.pac.Valor} - {cartContext.freightPriceState.pac.PrazoEntrega} Dias</p>
@@ -302,7 +301,7 @@ export default function Cart() {
                                             <input 
                                                 type="radio" 
                                                 name='sedex'
-                                                checked={cartContext.sedexCheckState} 
+                                                checked={cartContext.freightSelectedState == 'sedex' ? true : false} 
                                                 onChange={(event) => handleFreightCheck(event.target.name)} 
                                             /> 
                                             <p>SEDEX - R$ {cartContext.freightPriceState.sedex.Valor} - {cartContext.freightPriceState.sedex.PrazoEntrega} Dias</p>  
@@ -315,10 +314,16 @@ export default function Cart() {
                         <div className="total-price">
                             <p>Total: R$ {cartContext.totalPriceState}</p>
                             
-                            {(loginContext.login) ? (
-                                <button type='button' onClick={() => orderContext.setOrder('address')}>Fechar Pedido</button>
+                            {(userContext.login) ? (
+                                <button 
+                                    type='button'
+                                    onClick={() => orderContext.setOrder('address')}
+                                    disabled={(cartContext.cart.length == 0) ? true : false }
+                                >
+                                    {(cartContext.cart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
+                                </button>
                             ) : (
-                                <button type='button' onClick={loginContext.handleSwitchModal}>Fazer Login</button>
+                                <button type='button' onClick={userContext.handleSwitchModal}>Fazer Login</button>
                             )}
                         </div>
 
@@ -462,18 +467,22 @@ export default function Cart() {
                     margin: 10px 0 0 0;
                     border: 0;
                     border-radius: 5px;
-                    background: ${(loginContext.login) ? '#3E8C34' : '#E4E000'};
+                    background: ${(userContext.login) ? '#3E8C34' : '#E4E000'};
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
                 }
 
                 .total-price button:hover {
-                    background: ${(loginContext.login) ? '##41A933' : '#C3C133'};
+                    background: ${(userContext.login) ? '##41A933' : '#C3C133'};
                 }
                 
                 .total-price button:active {
-                    background: ${(loginContext.login) ? '#3E8C34' : '#E4E000'};
+                    background: ${(userContext.login) ? '#3E8C34' : '#E4E000'};
+                }
+
+                .total-price button:disabled {
+                    background: #a32e39;
                 }
 
                 .calc-freight {
