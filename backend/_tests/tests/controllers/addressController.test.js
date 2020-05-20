@@ -59,7 +59,7 @@ describe('addressController Test Suit', () => {
                 zipcode: '21119624',
                 street: 'rua tal do tal',
                 number: '15',
-                district: 'halala',
+                neighborhood: 'halala',
                 city: 'zuz du seu',
                 state: 'sp',
             });
@@ -96,7 +96,7 @@ describe('addressController Test Suit', () => {
                 zipcode: '21119624',
                 street: 'rua tal do tal',
                 number: '15',
-                district: 'halala',
+                neighborhood: 'halala',
                 city: 'zuz du seu',
                 state: 'sp',
             });
@@ -117,7 +117,12 @@ describe('addressController Test Suit', () => {
         const response = await supertest(app).put(`/addresses/${userAddr.id}`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                street: 'rua test'
+                street: 'rua test',
+                zipcode: '16516565151',
+                number: '96494988958',
+                neighborhood: 'ggwegweg',
+                city: 'afafsaf asf',
+                state: 'faasasf sa'
             });
 
         expect(response.status).toBe(200);

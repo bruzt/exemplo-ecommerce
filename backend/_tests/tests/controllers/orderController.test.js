@@ -6,6 +6,60 @@ const exec = promisify(require('child_process').exec);
 const factories = require('../../utils/factories');
 const app = require('../../../src/app');
 
+const credit_card = {
+    "amount": 2400,
+    "card_number": "4111111111111111",
+    "card_cvv": "546",
+    "card_expiration_date": "1025",
+    "card_holder_name": "Jajau Lalau",
+    "customer": {
+        "external_id": "1",
+        "name": "Jajau Lalau",
+        "email": "teste1@teste.com",
+        "type": "individual",
+        "country": "br",
+        "phone_numbers": ["+5519999999999"],
+        "documents": [
+    {
+      "type": "cpf",
+      "number": "99999999999"
+    }
+  ]
+    },
+    "billing": {
+        "name": "Jajau Lalau",
+        "address": {
+            "street": "rau lalau",
+            "street_number": "55a",
+            "zipcode": "13490000",
+            "country": "br",
+            "state": "sp",
+            "city": "cordeirópolis"
+        }
+    },
+    "shipping": {
+        "name": "Jajau Lalau",
+        "fee": 2000,
+        "address": {
+            "street": "rau lalau",
+            "street_number": "55a",
+            "zipcode": "13490000",
+            "country": "br",
+            "state": "sp",
+            "city": "cordeirópolis"
+        }
+    },
+    "items": [
+        {
+            "id": "5",
+            "title": "placa pai",
+            "unit_price": 1400,
+            "quantity": 1,
+            "tangible": true
+        }
+    ]
+}
+
 describe('orderController Test Suit', () => {
 
     beforeEach( async () => {
@@ -66,6 +120,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [product.id],
                 quantity_buyed: [2],
+                credit_card
             });
 
         expect(response.status).toBe(200);
@@ -88,6 +143,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [product.id],
                 quantity_buyed: [2],
+                credit_card
             });
 
         expect(response.status).toBe(400);
@@ -109,6 +165,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [product.id],
                 quantity_buyed: [2],
+                credit_card
             });
 
         expect(response.status).toBe(400);
@@ -128,6 +185,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [],
                 quantity_buyed: [2],
+                credit_card
             });
 
         expect(response.status).toBe(400);
@@ -147,6 +205,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [1],
                 quantity_buyed: [2],
+                credit_card
             });
 
         expect(response.status).toBe(400);
@@ -169,6 +228,7 @@ describe('orderController Test Suit', () => {
                 status: "awaiting payment",
                 products_id: [1],
                 quantity_buyed: [5],
+                credit_card
             });
 
         expect(response.status).toBe(400);

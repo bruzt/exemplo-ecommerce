@@ -57,10 +57,11 @@ describe('productController Test Suit', () => {
             .set('authorization', 'Bearer ' + token)
             .send({
                 category_id: category.id,
-                name: 'prod test',
+                title: 'prod test',
                 description: 'llalal lal lal al alala',
                 price: 1.99,
                 quantity_stock: 0,
+                tangible: true,
                 weight: "0,500",
                 length: 15,
                 height: 15,
@@ -68,7 +69,7 @@ describe('productController Test Suit', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(response.body.name).toBe('prod test');
+        expect(response.body.title).toBe('prod test');
     });
 
     it('should return code 400 for "category not found"', async () => {
@@ -81,10 +82,11 @@ describe('productController Test Suit', () => {
             .set('authorization', 'Bearer ' + token)
             .send({
                 category_id: 10,
-                name: 'prod test',
+                title: 'prod test',
                 description: 'llalal lal lal al alala',
                 price: 1.99,
                 quantity_stock: 0,
+                tangible: true,
                 weight: "0,500",
                 length: 15,
                 height: 15,
@@ -108,13 +110,14 @@ describe('productController Test Suit', () => {
         const response = await supertest(app).put(`/products/${product.id}`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                name: 'prod teste 2',
+                title: 'prod teste 2',
                 description: 'teste desc',
                 html_body: '<h1>teste html</h1>',
                 price: 10.99,
-                quantity: 3,
+                quantity_stock: 3,
                 category_id: category2.id,
                 discount_percent: 20,
+                tangible: true,
                 weight: "1",
                 length: 30,
                 height: 15,
@@ -133,7 +136,7 @@ describe('productController Test Suit', () => {
         const response = await supertest(app).put(`/products/33`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                name: "xablau"
+                title: "xablau"
             });
 
         expect(response.status).toBe(400);
