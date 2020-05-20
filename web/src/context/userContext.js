@@ -6,7 +6,7 @@ import api from '../services/api';
 
 const Context = createContext({});
 
-export function LoginContextProvider({ children }){
+export function UserContextProvider({ children }){
 
     const [loginState, setLogin] = useState(false);
     const [showModalState, setShowModal] = useState(false);
@@ -87,6 +87,53 @@ export function LoginContextProvider({ children }){
         }
     }
 
+    /**
+     * @param {Object} addressObject
+     * @param {string} addressObject.street
+     * @param {string} addressObject.number
+     * @param {string} addressObject.district
+     * @param {string} addressObject.city
+     * @param {string} addressObject.state
+     * @param {string} addressObject.zipcode
+     * @returns {boolean}
+     */
+    async function addAddress(addressObject){
+
+        try {
+
+            const response = await api.post('/addresses', addressObject);
+
+            const user = { ...userState };
+            user.addresses.push(response.data);
+            setUser(user);
+
+            return true;
+
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+
+    async function deleteAddress(id){
+
+        try {
+
+            await api.delete('/addresses/' + id);
+
+            const user = { ...userState };
+            const addresses = user.addresses.filter( (address) => address.id != id);
+            user.addresses = addresses;
+            setUser(user);
+
+            return true;
+            
+        } catch (error) {
+            console.error(error);
+            return false;
+        }
+    }
+
     return (
         <Context.Provider value={{ 
             modal: showModalState,  
@@ -95,14 +142,16 @@ export function LoginContextProvider({ children }){
             logIn, 
             logOut, 
             userData: userState,
-            setUser
+            setUser,
+            addAddress,
+            deleteAddress
         }}>
             {children}
         </Context.Provider>
     );
 }
 
-export function useLogin(){
+export function useUser(){
 
     const context = useContext(Context);
 

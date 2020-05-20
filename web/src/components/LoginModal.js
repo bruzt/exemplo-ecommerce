@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 
-import { useLogin } from '../context/loginContext';
+import { useUser } from '../context/userContext';
 
 export default function ModalLogin() {
 
     const [emailState, setEmail] = useState('');
     const [passwordState, setPasword] = useState('');
 
-    const loginContext = useLogin();
+    const userContext = useUser();
 
     function handleLogin(event){
 
         event.preventDefault();
 
-        loginContext.logIn(emailState, passwordState);
+        userContext.logIn(emailState, passwordState);
     }
     
     return (
@@ -27,7 +27,7 @@ export default function ModalLogin() {
                         <button 
                             type='button' 
                             className='close-modal'
-                            onClick={loginContext.handleSwitchModal}
+                            onClick={userContext.handleSwitchModal}
                         >
                             X
                         </button>
@@ -69,7 +69,7 @@ export default function ModalLogin() {
 
             <style jsx>{`
                 .modal {
-                    display: ${(loginContext.modal) ? 'block' : 'none'};
+                    display: ${(userContext.modal) ? 'block' : 'none'};
                     position: fixed; /* Stay in place */
                     z-index: 20; /* Sit on top */
                     left: 0;

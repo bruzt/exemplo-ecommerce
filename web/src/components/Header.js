@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
 import Link from 'next/link';
 
 import { useCart } from '../context/cartContext';
-import { useLogin } from '../context/loginContext';
+import { useUser } from '../context/userContext';
 import { useOrder } from '../context/orderContext';
 
 import LoginModal from './LoginModal';
 
 export default function Header() {
 
-    const loginContext = useLogin();
+    const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
 
@@ -52,24 +52,24 @@ export default function Header() {
                     </Link>
 
                     <div className='login-cart'>
-                        {(loginContext.login == false) ? (
+                        {(userContext.login == false) ? (
                             <button
                                 className='login-button'
                                 type='button'
                                 title='Fazer Login'
-                                onClick={loginContext.handleSwitchModal}
+                                onClick={userContext.handleSwitchModal}
                             >
                                 Entrar&nbsp;<FaSignInAlt />
                             </button>
                         ) 
-                        : ((loginContext.userData) ? (
+                        : ((userContext.userData) ? (
 
                                 <button
                                     className='user-button'
                                     type='button'
-                                    onClick={() => loginContext.logOut()}
+                                    onClick={() => userContext.logOut()}
                                 >
-                                    Olá, {loginContext.userData.name.split(' ')[0]}
+                                    Olá, {userContext.userData.name.split(' ')[0]}
                                 </button>
                             ) : <span></span>
                         )}
