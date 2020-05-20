@@ -4,6 +4,7 @@ import { useOrder } from '../context/orderContext';
 
 import Cart from '../components/Cart';
 import SelectAddress from '../components/SelectAddress';
+import Payment from '../components/Payment';
 
 export default function Order() {
 
@@ -17,4 +18,5 @@ export default function Order() {
 
     if(orderContext.order == 'cart') return <Cart />
     else if(orderContext.order == 'address') return <SelectAddress />
+    else if(orderContext.order == 'payment') return <Payment />
 }
