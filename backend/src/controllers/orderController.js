@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 
 const OrderModel = require('../models/OrderModel');
 const UserModel = require('../models/UserModel');
@@ -98,7 +99,15 @@ module.exports = {
                 await products[i].save();
             }
 
-            return res.json(order);
+            const response = await axios.post('https://api.pagar.me/1/transactions', {
+                api_key: process.env.PAGARME_API_KEY,
+                ...req.body.credit_card
+            });
+
+            order.status = response.data.status;
+            order.save();
+
+            return res.json({ order, pagarme: response.data });
             
         } catch (error) {
             console.error(error);

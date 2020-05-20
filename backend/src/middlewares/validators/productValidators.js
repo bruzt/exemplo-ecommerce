@@ -34,7 +34,7 @@ module.exports = {
             description: Joi.string(),
             html_body: Joi.string(),
             price: Joi.number(),
-            quantity: Joi.number(),
+            quantity_stock: Joi.number(),
             category_id: Joi.number(),
             discount_percent: Joi.number(),
             weight: Joi.string(),
