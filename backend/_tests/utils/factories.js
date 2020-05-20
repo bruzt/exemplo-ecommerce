@@ -15,7 +15,7 @@ factory.define('Address', models.AddressModel, {
     zipcode: faker.address.zipCode(),
     street: faker.address.streetName(),
     number: faker.random.number(),
-    district: faker.address.secondaryAddress(),
+    neighborhood: faker.address.secondaryAddress(),
     city: faker.address.city(),
     state: faker.address.state()
 });
@@ -26,11 +26,12 @@ factory.define('Category', models.CategoryModel, {
 });
 
 factory.define('Product', models.ProductModel, {
-    name: faker.commerce.productName(),
+    title: faker.commerce.productName(),
     description: faker.commerce.product(),
     price: faker.commerce.price(),
     quantity_stock: faker.random.number({ min: 10, max: 50 }),
     discount_percent: faker.random.number(90),
+    tangible: faker.random.boolean(),
     weight: "0," + String(Math.random() * 1000),
     length: faker.random.number({ min: 15, max: 30 }),
     height: faker.random.number({ min: 5, max: 30 }),
