@@ -6,11 +6,13 @@ export function CartContextProvider({ children }){
 
     const [cartState, setCart] = useState([]);
     const [productsState, setProducts] = useState([]);
+    const [getSubtotalPrice, setSubtotalPrice] = useState(0);
     const [totalPriceState, setTotalPrice] = useState(0);
     const [cepInputState, setCepInput] = useState('');
     const [freightSelectedState, setFreightSelected] = useState(null);
     const [freightPriceState, setFreightPrice] = useState(null);
     const [addressIdState, setAddressId] = useState(null);
+    const [getFreightMeasures, setFreightMeasures] = useState(null);
 
     useEffect( () => {
         
@@ -69,6 +71,8 @@ export function CartContextProvider({ children }){
             removeFromCart ,
             productsState,
             setProducts,
+            getSubtotalPrice,
+            setSubtotalPrice,
             totalPriceState,
             setTotalPrice,
             cepInputState,
@@ -78,7 +82,9 @@ export function CartContextProvider({ children }){
             freightPriceState,
             setFreightPrice,
             addressIdState,
-            setAddressId
+            setAddressId,
+            getFreightMeasures,
+            setFreightMeasures
         }}>
             {children}
         </Context.Provider>
