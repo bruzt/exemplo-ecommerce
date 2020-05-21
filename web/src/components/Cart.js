@@ -35,6 +35,23 @@ export default function Cart() {
 
         resetFreight();
 
+        if(cartContext.cepInputState.length > 0){
+            
+            let cepInput = String(cartContext.cepInputState);
+
+            if(cepInput.length < 9) cepInput = cepInput.replace(/[^0-9]/g, "");
+
+            if(cepInput.length == 8){
+
+                const part1 = cepInput.slice(0,5);
+                const part2 = cepInput.slice(5,8);
+                
+                cepInput = `${part1}-${part2}`;
+            }
+
+            cartContext.setCepInput(cepInput);
+        }
+
     }, [cartContext.cepInputState]);
 
     function resetFreight(){
@@ -54,6 +71,8 @@ export default function Cart() {
                 totalPrice += cartContext.productsState[i].finalPrice * cartContext.cart[i].qtd;
             }
         }
+
+        cartContext.setSubtotalPrice(totalPrice.toFixed(2));
 
         if(cartContext.freightSelectedState == 'pac') totalPrice += Number((cartContext.freightPriceState.pac.Valor).replace(',', '.'))
         else if(cartContext.freightSelectedState == 'sedex') totalPrice += Number((cartContext.freightPriceState.sedex.Valor).replace(',', '.'))
@@ -125,14 +144,8 @@ export default function Cart() {
 
     function handleFreightCheck(name){
 
-        if(name == 'pac'){
-
-            cartContext.setFreightSelected('pac');
-
-        } else if (name == 'sedex'){
-
-            cartContext.setFreightSelected('sedex');
-        }
+        if(name == 'pac') cartContext.setFreightSelected('pac');
+        else if (name == 'sedex') cartContext.setFreightSelected('sedex');
     }
 
     async function getFreightPrice(event){
@@ -156,6 +169,13 @@ export default function Cart() {
         }
 
         weight = String(weight).replace('.', ',');
+
+        cartContext.setFreightMeasures({ 
+            weight,
+            length,
+            height,
+            width
+        });
 
         try {
 
@@ -206,7 +226,7 @@ export default function Cart() {
                                 <th className='th-product'>Produto</th>
                                 <th className='th-price'>Preço unitário</th>
                                 <th className='th-qtd'>Quantidade</th>
-                                <th className='th-total'>Subtotal</th>
+                                <th className='th-total'>Preço</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -217,13 +237,13 @@ export default function Cart() {
                                             src='https://i.picsum.photos/id/892/800/400.jpg'
                                             /*src='https://picsum.photos/800/400'*/
                                             /*src={product.images[0] && product.images[0].url} */
-                                            alt={'imagem-' + product.name.split(' ').join('-')}
+                                            alt={'imagem-' + product.title.split(' ').join('-')}
                                         />
                                     </td>
                                     <td className='td-name'>
-                                        <Link href='/[productId]/[productName]' as={`/${product.id}/${product.name.split(' ').join('-')}`}>
+                                        <Link href='/[productId]/[productName]' as={`/${product.id}/${product.title.split(' ').join('-')}`}>
                                             <a>
-                                                <span className='over-hidden'>{product.name}</span>
+                                                <span className='over-hidden'>{product.title}</span>
                                                 {(product.discount_percent != 0)
                                                     ? <span className='order-discount'>-{product.discount_percent}%</span>
                                                     : null
@@ -278,11 +298,21 @@ export default function Cart() {
 
                         <div className="calc-freight">
                             <form className='cep-input'>
-                                Calculo de frete:&nbsp;<input type='text' placeholder='CEP' value={cartContext.cepInputState} onChange={(event) => cartContext.setCepInput(event.target.value)} />
+                                Calculo de frete:
+                                &nbsp;
+                                <input 
+                                    type='text' 
+                                    placeholder='CEP' 
+                                    value={cartContext.cepInputState} onChange={(event) => cartContext.setCepInput(event.target.value)} 
+                                />
                                 <button 
                                     type='submit' 
                                     onClick={(event) => getFreightPrice(event)}
-                                    disabled={(cartContext.productsState.length == 0 || (cartContext.cepInputState.length != 8 && cartContext.cepInputState.length != 9)) ? true : false}
+                                    disabled={(
+                                            cartContext.productsState.length == 0 
+                                            || (cartContext.cepInputState.length != 8 
+                                            && cartContext.cepInputState.length != 9)
+                                        ) ? true : false}
                                 >
                                     <FaSearchLocation size={20} />
                                 </button>
@@ -314,6 +344,11 @@ export default function Cart() {
                         </div>
 
                         <div className="total-price">
+                            <p>Subtotal: R$ {cartContext.getSubtotalPrice}</p>
+                            <p>Frete: R$ {(cartContext.freightSelectedState) ? (
+                                Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)
+                            ) : ( '0.00' )
+                            }</p>
                             <p>Total: R$ {cartContext.totalPriceState}</p>
                             
                             {(userContext.login) ? (
@@ -472,9 +507,13 @@ export default function Cart() {
                 }
 
                 .total-price {
-                    font-size: 30px;
+                    font-size: 25px;
                     font-weight: bold;
                     margin: 20px 30px 0 0;
+                }
+
+                .total-price p + p + p {
+                    font-size: 30px;
                 }
 
                 .total-price button {
