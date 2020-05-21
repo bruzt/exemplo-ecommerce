@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     const paths = response.data.map( (data) => ({ 
         params: { 
             productId: data.id.toString(),
-            productName: data.name.split(' ').join('-')
+            productName: data.title.split(' ').join('-')
         }}));
         
     return {
@@ -60,7 +60,7 @@ export default function Product({ product }) {
 
             const response = await api.get(`/products/${product.id}`);
 
-            document.querySelector('.product-body').innerHTML = response.data.html_body;
+            //document.querySelector('.product-body').innerHTML = response.data.html_body;
 
             setProduct(response.data);
             
@@ -104,19 +104,19 @@ export default function Product({ product }) {
     return (
         <>
             <Head>
-                <title>{product.name}</title>
+                <title>{product.title}</title>
                 <meta name="description" content={product.description} />
-                <meta name="keywords" content={product.category.name} />
+                <meta name="keywords" content={product.category.title} />
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:description" content={product.description} />
-                <meta name="twitter:title" content={product.name} />
+                <meta name="twitter:title" content={product.title} />
                 <meta name="twitter:site" content="Exemplo-ecommerce" />
                 <meta name="twitter:domain" content="Exemplo-ecommerce E-Shop" />
                 <meta name="twitter:image:src" content={product.images[0] && product.images[0].url} />
                 <meta name="twitter:creator" content="Exemplo-ecommerce" />
                 <meta property="og:locale" content="pt_BR" />
                 <meta property="og:type" content="article" />
-                <meta property="og:title" content={product.name} />
+                <meta property="og:title" content={product.title} />
                 <meta property="og:description" content={product.description} />
                 <meta property="og:url" content={`http://localhost:3000/product/${product.id}`} />
                 <meta property="og:site_name" content="Exemplo-ecommerce E-Shop" />
@@ -131,7 +131,7 @@ export default function Product({ product }) {
 
                 <section>
 
-                    <h1>{product.name}</h1>
+                    <h1>{product.title}</h1>
 
                     <div className='img-buy'>
                         <div className='img-container'>
@@ -139,7 +139,7 @@ export default function Product({ product }) {
                             src='https://i.picsum.photos/id/892/800/400.jpg'
                                 /*src='https://picsum.photos/800/400'*/
                                 /*src={product.images[0] && product.images[0].url} */
-                                alt={'imagem-' + product.name.split(' ').join('-')} 
+                                alt={'imagem-' + product.title.split(' ').join('-')} 
                             />
                         </div>
 
@@ -164,9 +164,8 @@ export default function Product({ product }) {
                         <p>Largura: {product.width}cm</p>
                         <p>Diametro: {product.diameter}cm</p>
                     </div>
-                    <div className='product-body'>
-                        
-                    </div>
+
+                    <div dangerouslySetInnerHTML={{ __html: productState.html_body }} />
 
                 </section>
                 
