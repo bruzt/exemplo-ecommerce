@@ -16,7 +16,7 @@ export default function Address() {
 
     const [streetState, setStreet] = useState('');
     const [numberState, setNumber] = useState('');
-    const [districtState, setDistrict] = useState('');
+    const [neighborhoodState, setNeighborhood] = useState('');
     const [cityState, setCity] = useState('');
     const [stateState, setState] = useState('');
     const [zipCodeState, setZipCode] = useState('');
@@ -35,7 +35,7 @@ export default function Address() {
 
         if( streetState.length < 3 ||
             numberState.length < 1 ||
-            districtState.length < 3 ||
+            neighborhoodState.length < 3 ||
             cityState.length < 3 ||
             stateState.length < 1 ||
             zipCodeState.length < 8 ||
@@ -45,7 +45,28 @@ export default function Address() {
 
         } else setDisableAddAddr(false)
 
-    }, [streetState, numberState, districtState, cityState, stateState, zipCodeState]);
+    }, [streetState, numberState, neighborhoodState, cityState, stateState, zipCodeState]);
+
+    useEffect(() => {
+
+        if(zipCodeState.length > 0){
+            
+            let cepInput = String(zipCodeState);
+
+            if(cepInput.length < 9) cepInput = cepInput.replace(/[^0-9]/g, "");
+
+            if(cepInput.length == 8){
+
+                const part1 = cepInput.slice(0,5);
+                const part2 = cepInput.slice(5,8);
+                
+                cepInput = `${part1}-${part2}`;
+            }
+
+            setZipCode(cepInput);
+        }
+
+    }, [zipCodeState]);
 
     function switchShowAddAddr(){
 
@@ -60,7 +81,7 @@ export default function Address() {
         const add = userContext.addAddress({
             street: streetState,
             number: numberState,
-            district: districtState,
+            neighborhood: neighborhoodState,
             city: cityState,
             state: stateState,
             zipcode: zipCodeState
@@ -70,7 +91,7 @@ export default function Address() {
             setshowAddAddr(false);
             setStreet('');
             setNumber('');
-            setDistrict('');
+            setNeighborhood('');
             setCity('');
             setState('');
             setZipCode('');      
@@ -95,7 +116,7 @@ export default function Address() {
 
                 <section>
 
-                    <h1>Selecione um endereço</h1>
+                    <h1>Selecione um endereço para a entrega</h1>
 
                     <div className='addr-grid'>
 
@@ -115,9 +136,9 @@ export default function Address() {
                                             
                                             <a onClick={() => cartContext.setAddressId(address.id)}>
                                                 <div>
-                                                    <p>Rua: {address.street}</p>
+                                                    <p>Logradouro: {address.street}</p>
                                                     <p>Nº: {address.number}</p>
-                                                    <p>Bairro: {address.district}</p>
+                                                    <p>Bairro: {address.neighborhood}</p>
                                                     <p>Cidade: {address.city}</p>
                                                     <p>Estado: {address.state}</p>
                                                     <p>CEP: {address.zipcode}</p>
@@ -153,7 +174,7 @@ export default function Address() {
                         <form className='add-addr-form'>
                             
                             <div className='flex-column'>
-                                <label htmlFor="street">Rua: </label>
+                                <label htmlFor="street">Logradouro: </label>
                                 <input id='street' type="text" value={streetState} onChange={(event) => setStreet(event.target.value)} />
                             </div>
                         
@@ -164,7 +185,7 @@ export default function Address() {
                                 </div>
                                 <div className='flex-column'>
                                     <label htmlFor="district">Bairro: </label>
-                                    <input id='district' type="text" value={districtState} onChange={(event) => setDistrict(event.target.value)} />
+                                    <input id='district' type="text" value={neighborhoodState} onChange={(event) => setNeighborhood(event.target.value)} />
                                 </div>
                             </div>
 
@@ -210,7 +231,12 @@ export default function Address() {
 
                                 <div className='flex-column'>
                                     <label htmlFor="zipcode">CEP: </label>
-                                    <input id='zipcode' type="text" value={zipCodeState} onChange={(event) => setZipCode(event.target.value)} />
+                                    <input 
+                                        id='zipcode' 
+                                        type="text" 
+                                        maxLength={8}
+                                        value={zipCodeState} onChange={(event) => setZipCode(event.target.value)} 
+                                    />
                                 </div>
                             </div>
 
@@ -352,6 +378,7 @@ export default function Address() {
                     padding: 20px;
                     width: 480px;
                     max-width: 50%;
+                    background: #c9c9c9;
                 }
 
                 .flex-row {
@@ -406,10 +433,12 @@ export default function Address() {
                 .add-addr-form #state {
                     width: 100%;
                     min-width: 65px;   
+                    background: #fff;
                 }
 
                 .add-addr-form #zipcode {
                     width: 100%;
+                    text-align: center;
                 }
 
                 .addr-submit {
