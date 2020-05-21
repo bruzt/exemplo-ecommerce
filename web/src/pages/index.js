@@ -67,19 +67,19 @@ export default function Home({ products }) {
                                 : Number(product.price).toFixed(2);
 
                             return (
-                                <Link href='/[productId]/[productName]' as={`/${product.id}/${product.name.split(' ').join('-')}`} key={product.id}>
-                                    <a title={product.name}>
+                                <Link href='/[productId]/[productName]' as={`/${product.id}/${product.title.split(' ').join('-')}`} key={product.id}>
+                                    <a title={product.title}>
                                         <div className='p-card'>
                                             <div className='img-container'>
                                                 <img 
                                                     src='https://i.picsum.photos/id/892/800/400.jpg'
                                                     /*src={`https://picsum.photos/800/400`}*/
                                                     /*src={product.images[0] && product.images[0].url} */
-                                                    alt={'imagem-' + product.name.split(' ').join('-')} 
+                                                    alt={'imagem-' + product.title.split(' ').join('-')} 
                                                 />
                                             </div>
                                             <div className='title-price'>
-                                                <p className='title'>{product.name}</p>
+                                                <p className='title'>{product.title}</p>
                                                 <div className='price-discount'>
                                                     <p className='price'>R$ {finalPrice}</p>
                                                     {discount && <p className='discount'>{discount}</p>}
