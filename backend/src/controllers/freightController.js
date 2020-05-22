@@ -1,5 +1,7 @@
-const Correios = require('node-correios');
-const correios = new Correios();
+/*const Correios = require('node-correios');
+const correios = new Correios();*/
+const axios = require('axios');
+const { parseStringPromise } = require('xml2js');
 
 module.exports = {
 
@@ -8,7 +10,29 @@ module.exports = {
         if(req.body.length < 15) req.body.length = 15;
 
         try {
+
+            let response = await axios.get(`https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml`);
             
+            let json = await parseStringPromise(response.data);
+
+            const pac = {
+                Valor: json.Servicos.cServico[0].Valor[0],
+                PrazoEntrega: json.Servicos.cServico[0].PrazoEntrega[0],
+                MsgErro: json.Servicos.cServico[0].MsgErro[0]
+            }
+
+            response = await axios.get(`https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04014&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3`);
+            
+            json = await parseStringPromise(response.data);
+
+            const sedex = {
+                Valor: json.Servicos.cServico[0].Valor[0],
+                PrazoEntrega: json.Servicos.cServico[0].PrazoEntrega[0],
+                MsgErro: json.Servicos.cServico[0].MsgErro[0]
+            }
+
+
+            /*
             const [ pac ] = await correios.calcPrecoPrazo({
                 "nCdServico": "04510",                  // Código PAC
                 "sCepOrigem": "13490000",               // CEP ORIGEM (string sem hífen)
@@ -37,7 +61,7 @@ module.exports = {
                 "sCdMaoPropria": "N",
                 "nVlValorDeclarado": 0,
                 "sCdAvisoRecebimento": "N"
-            });
+            });*/
 
             return res.json({ pac, sedex });
 
