@@ -16,7 +16,7 @@ module.exports = {
         .unknown(),
 
         [Segments.BODY]: Joi.object().keys({
-            status: Joi.string(),
+            total_price: Joi.number().required(),
             quantity_buyed: Joi.array().items(Joi.number().required()).required(),
             products_id: Joi.array().items(Joi.number().required()).required(),
             address_id: Joi.number().required(),
@@ -61,13 +61,13 @@ module.exports = {
                         city: Joi.string().required(),
                     }).required()
                 }).required(),
-                items: Joi.array().items(Joi.object().keys({
+                /*items: Joi.array().items(Joi.object().keys({
                     id: Joi.string().required(),
                     title: Joi.string().required(),
                     unit_price: Joi.number().required(),
                     quantity: Joi.number().required(),
                     tangible: Joi.boolean().required()
-                })).required()
+                })).required()*/
             }).required()
         })
     }),
