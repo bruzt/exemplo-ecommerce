@@ -35,7 +35,7 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
 
-        const { quantity_buyed, status, products_id, address_id } = req.body;
+        const { quantity_buyed, total_price, products_id, address_id } = req.body;
         const user_id = req.tokenPayload.id;
 
         try {
@@ -75,17 +75,27 @@ module.exports = {
             if(errorProduct) return res.status(400).json({ message: errorProduct });
 
             // calculates total price with discounts
-            let total_price = 0;
+            /*let total_price = 0;
             for(let i = 0; i < products.length; i++){
 
                 total_price += products[i].price - (products[i].price * (products[i].discount_percent/100));
-            }    
+            }    */
             
             // create order
-            const order = await OrderModel.create({ user_id, total_price, status, address_id });
+            const order = await OrderModel.create({ user_id, total_price, address_id });
             
+            req.body.credit_card.items = []
+
             // add products to order and subtract from stock
             for(let i = 0; i < products.length; i++){
+
+                req.body.credit_card.items.push({
+                    id: String(products[i].id),
+                    title: products[i].title,
+                    unit_price: Number(String(Number(products[i].price).toFixed(2)).replace('.', '')),
+                    quantity: quantity_buyed[i],
+                    tangible: products[i].tangible
+                });
                 
                 await order.addProduct(products[i], {
                     through: {
