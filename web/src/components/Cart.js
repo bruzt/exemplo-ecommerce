@@ -105,7 +105,7 @@ export default function Cart() {
 
             } catch (error) {
                 console.error(error);
-                alert('Erro, recarregue a página');
+                //alert('Erro, recarregue a página');
                 break;
             }
         }
@@ -178,7 +178,7 @@ export default function Cart() {
         });
 
         try {
-
+        
             const response = await api.post('/freight', {
                 destZipCode: String(cartContext.cepInputState).replace('-', ''),
                 weight,
@@ -189,10 +189,12 @@ export default function Cart() {
 
             if(response.data.pac.MsgErro) {
 
+                console.error(response.data.pac.MsgErro)
                 alert(response.data.pac.MsgErro)
 
             } else if(response.data.sedex.MsgErro){
 
+                console.error(response.data.sedex.MsgErro)
                 alert(response.data.sedex.MsgErro)
 
             } else {
@@ -202,7 +204,7 @@ export default function Cart() {
             
         } catch (error) {
             console.error(error);
-            alert('Erro, tente novamente');
+            //alert('Erro, tente novamente');
         }
     }
 
@@ -303,7 +305,9 @@ export default function Cart() {
                                 <input 
                                     type='text' 
                                     placeholder='CEP' 
-                                    value={cartContext.cepInputState} onChange={(event) => cartContext.setCepInput(event.target.value)} 
+                                    maxLength={9}
+                                    value={cartContext.cepInputState} 
+                                    onChange={(event) => cartContext.setCepInput(event.target.value)} 
                                 />
                                 <button 
                                     type='submit' 
@@ -320,6 +324,11 @@ export default function Cart() {
                             
                             {cartContext.freightPriceState ? (
                                 <div className='choose-freight'>
+                                    {cartContext.freightPriceState.pac.message ? (
+                                        <span>
+                                            <p>PAC - {cartContext.freightPriceState.pac.message}</p>
+                                        </span>
+                                    ) : (
                                         <span>
                                             <input 
                                                 type="radio" 
@@ -329,6 +338,13 @@ export default function Cart() {
                                             /> 
                                             <p>PAC - R$ {cartContext.freightPriceState.pac.Valor} - {cartContext.freightPriceState.pac.PrazoEntrega} Dias</p>
                                         </span>
+                                    )}
+                                    
+                                    {cartContext.freightPriceState.sedex.message ? (
+                                        <span>
+                                            <p>SEDEX - {cartContext.freightPriceState.sedex.message}</p>
+                                        </span>
+                                    ):(
                                         <span>
                                             <input 
                                                 type="radio" 
@@ -338,6 +354,7 @@ export default function Cart() {
                                             /> 
                                             <p>SEDEX - R$ {cartContext.freightPriceState.sedex.Valor} - {cartContext.freightPriceState.sedex.PrazoEntrega} Dias</p>  
                                         </span>
+                                    )}
                                 </div>
                             )
                             : null}
@@ -590,6 +607,9 @@ export default function Cart() {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
+                    background: #c9c9c9;
+                    padding: 5px;
+                    border-radius: 5px;
                 }
 
                 .choose-freight span {
