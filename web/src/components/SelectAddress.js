@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { FaArrowLeft } from 'react-icons/fa';
 
 //import api from '../services/api';
 
@@ -21,15 +22,23 @@ export default function Address() {
     const [stateState, setState] = useState('');
     const [zipCodeState, setZipCode] = useState('');
 
+    const [getDisabledPaymentButton, setDisabledPaymentButton] = useState(true);
+
     const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
 
     useEffect( () => {
 
-        cartContext.setAddressId(null)
+        cartContext.setAddressId(null);
 
     }, []);
+
+    useEffect( () => {
+
+        handleDisabledPaymentButton();
+        
+    }, [cartContext.addressIdState]);
 
     useEffect( () => {
 
@@ -105,6 +114,20 @@ export default function Address() {
         userContext.deleteAddress(id);
     }
 
+    function handleDisabledPaymentButton(){
+
+        const [ address ] = userContext.userData.addresses.filter( (address) => address.id == cartContext.addressIdState);
+
+        if(cartContext.addressIdState == null || address.zipcode != cartContext.cepInputState){
+
+            setDisabledPaymentButton(true);
+
+        } else {
+
+            setDisabledPaymentButton(false);
+        }
+    }
+
     return (
         <>
             <Head>
@@ -116,37 +139,46 @@ export default function Address() {
 
                 <section>
 
+                    <button 
+                        type='button'
+                        title='Voltar'
+                        className='back-button'
+                        onClick={() => orderContext.setOrder('cart')}
+                    >
+                        <FaArrowLeft />
+                    </button>
+
                     <h1>Selecione um endereço para a entrega</h1>
 
                     <div className='addr-grid'>
 
                         {userContext.userData.addresses.map( (address) => {
                             return (
-                                
-                                    <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
-                                        <div className='addr-data'>
-                                            <div className='addr-remove'>
-                                                <button 
-                                                    type="button"
-                                                    onClick={() => handleDeleteAddress(address.id)}
-                                                >
-                                                    X
-                                                </button>
-                                            </div>
-                                            
-                                            <a onClick={() => cartContext.setAddressId(address.id)}>
-                                                <div>
-                                                    <p>Logradouro: {address.street}</p>
-                                                    <p>Nº: {address.number}</p>
-                                                    <p>Bairro: {address.neighborhood}</p>
-                                                    <p>Cidade: {address.city}</p>
-                                                    <p>Estado: {address.state}</p>
-                                                    <p>CEP: {address.zipcode}</p>
-                                                </div>
-                                            </a>
+                                <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
+                                    <div className='addr-data'>
+                                        <div className='addr-remove'>
+                                            <button 
+                                                type="button"
+                                                onClick={() => handleDeleteAddress(address.id)}
+                                            >
+                                                X
+                                            </button>
                                         </div>
+                                        
+                                        <a 
+                                            onClick={() => cartContext.setAddressId(address.id)}
+                                        >
+                                            <div>
+                                                <p>Logradouro: {address.street}</p>
+                                                <p>Nº: {address.number}</p>
+                                                <p>Bairro: {address.neighborhood}</p>
+                                                <p>Cidade: {address.city}</p>
+                                                <p>Estado: {address.state}</p>
+                                                <p>CEP: {address.zipcode}</p>
+                                            </div>
+                                        </a>
                                     </div>
-                                
+                                </div>
                             );
                         })}
 
@@ -160,10 +192,9 @@ export default function Address() {
                         >
                             Adicionar Endereço
                         </button>
-
                         <button
                             className='select-button'
-                            disabled={(cartContext.addressIdState == null) ? true : false}
+                            disabled={getDisabledPaymentButton}
                             onClick={() => orderContext.setOrder('payment')}
                         >
                             Ir para pagamento
@@ -197,7 +228,10 @@ export default function Address() {
 
                                 <div className='flex-column'>
                                     <label htmlFor="state"> Estado: </label>
-                                    <select id="state" onChange={(event) => setState(event.target.value)}>
+                                    <select 
+                                        id="state" 
+                                        onChange={(event) => setState(event.target.value)}
+                                    >
                                         <option value=""></option>
                                         <option value="AC">AC</option>
                                         <option value="AL">AL</option>
@@ -262,6 +296,13 @@ export default function Address() {
                     padding: 20px;
                 }
 
+                .back-button {
+                    border: 0;
+                    background: transparent;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
+
                 h1 {
                     text-align: center;
                     margin: 20px;
@@ -290,7 +331,7 @@ export default function Address() {
                 }
 
                 .selected {
-                    border: 3px solid #60615b;
+                    border: 3px solid ${(getDisabledPaymentButton) ? '#a32e39' : '#3E8C34'}
                 }
 
                 .addr-card .addr-data a div {
@@ -358,15 +399,23 @@ export default function Address() {
                 }
                 
                 .add-select-buttons .select-button {
-                    background: ${(cartContext.addressIdState != null) ? '#3E8C34' : '#a32e39'};
+                    background: #3E8C34;
                 }
 
                 .add-select-buttons .select-button:hover {
-                    background: ${(cartContext.addressIdState != null) ? '#41A933' : '#bf2232'};
+                    background: #41A933;
                 }
 
                 .add-select-buttons .select-button:active {
-                    background: ${(cartContext.addressIdState != null) ? '#3E8C34' : '#a32e39'};
+                    background: #3E8C34;
+                }
+
+                .add-select-buttons .select-button:disabled {
+                    background: #a32e39;
+                }
+
+                .add-select-buttons .select-button:disabled:hover {
+                    background: #bf2232;
                 }
 
                 .add-addr-form {
@@ -458,6 +507,12 @@ export default function Address() {
 
                 .addr-submit:active {
                     background: #3E8C34;
+                }
+
+                .go-payment-container {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
                 }
             `}</style>
         </>
