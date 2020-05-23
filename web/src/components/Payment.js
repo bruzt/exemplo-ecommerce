@@ -1,33 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { FaArrowLeft } from 'react-icons/fa';
+
+import api from '../services/api';
+import validateCpf from '../utils/validateCpf';
 
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
+import { useOrder } from '../context/orderContext';
 
 import PageLayout from './PageLayout';
 
 export default function Payment() {
 
+    const [getCardHolderName, setCardHolderName] = useState('');
     const [getCardNumber, setCardNumber] = useState('');
     const [getCardCvv, setCardCvv] = useState('');
     const [getCardExpirationMonth, setCardExpirationMonth] = useState('');
     const [getCardExpirationYear, setCardExpirationYear] = useState('');
-
-    const [getCpf, setCpf] = useState('');
     const [getTel, setTel] = useState('');
+    const [getCpf, setCpf] = useState('');
 
+    const [getValidCpf, setValidCpf] = useState(true);
+
+    const [getStreet, setStreet] = useState('');
+    const [getNumber, setNumber] = useState('');
+    const [getNeighborhood, setNeighborhood] = useState('');
+    const [getCity, setCity] = useState('');
+    const [getState, setState] = useState('');
     const [getZipCode, setZipCode] = useState('');
 
-    const [getFreightFinalPrice, setFreightFinalPrice] = useState(null);
+    const [getDisabledPayButton, setDisabledPayButton] = useState(true);
 
     const userContext = useUser();
     const cartContext = useCart();
+    const orderContext = useOrder();
 
-    useEffect(() => {
+    useEffect( () => {
 
-        verifyFreight();
+        if(
+            getCardHolderName.length < 3 ||
+            getCardNumber.length < 19 ||
+            getCardCvv.length < 3 ||
+            getCardExpirationMonth.length < 1 ||
+            getCardExpirationYear.length < 1 ||
+            getTel.length < 14   ||
+            getCpf.length < 14 ||
+            !getValidCpf ||
+            getStreet.length < 3 ||          
+            getNumber.length < 1 ||          
+            getNeighborhood.length < 3 ||  
+            getCity.length < 3 ||  
+            getState.length < 1 ||  
+            getZipCode.length < 9
+        ){
 
-    }, []);
+            setDisabledPayButton(true);
+
+        }else {
+
+            const year = String(new Date().getFullYear()).substr(-2);
+            const month = new Date().getMonth() + 1;
+
+            if(
+                year == getCardExpirationYear &&
+                month > getCardExpirationMonth
+            ){
+                setDisabledPayButton(true);
+                
+            } else {
+
+                setDisabledPayButton(false);
+            }
+        }
+
+    }, [
+        getCardHolderName, 
+        getCardNumber, 
+        getCardCvv, 
+        getCardExpirationMonth, 
+        getCardExpirationYear, 
+        getTel, 
+        getCpf,
+        getStreet, 
+        getNumber,
+        getNeighborhood,
+        getCity,
+        getState,
+        getZipCode
+    ]);
 
     useEffect(() => {
 
@@ -60,11 +121,6 @@ export default function Payment() {
 
     }, [getCardExpirationMonth, getCardExpirationYear, getCardCvv]);
 
-    function handlePaySubmit(event) {
-
-        event.preventDefault();
-    }
-
     useEffect(() => {
 
         if (getZipCode.length > 0) {
@@ -86,21 +142,6 @@ export default function Payment() {
 
     }, [getZipCode]);
 
-    function verifyFreight() {
-
-        const [address] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
-
-        if (address.zipcode.replace('-', '') == cartContext.cepInputState.replace('-', '')) {
-
-            const price = Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2);
-
-            setFreightFinalPrice(price);
-
-        } else {
-            console.log('aaaaaaaaaaaaaa')
-        }
-    }
-
     function handleCpf(value) {
 
         if (value.length < 12) value = value.replace(/[^0-9]/g, "");
@@ -115,85 +156,9 @@ export default function Payment() {
             value = `${part1}.${part2}.${part3}-${part4}`;
         }
 
+        setValidCpf(validateCpf(value));
+
         setCpf(value);
-        validateCpf(value);
-    }
-
-    function validateCpf(cpf) {
-
-        if (cpf.length == 14) {
-
-            if (
-                cpf == "000.000.000-00" ||
-                cpf == "111.111.111-11" ||
-                cpf == "222.222.222-22" ||
-                cpf == "333.333.333-33" ||
-                cpf == "444.444.444-44" ||
-                cpf == "555.555.555-55" ||
-                cpf == "666.666.666-66" ||
-                cpf == "777.777.777-77" ||
-                cpf == "888.888.888-88" ||
-                cpf == "999.999.999-99"
-            ){
-                console.log('CPF não valido'); 
-
-                return false;
-            }
-
-            cpf = cpf.replace('.', '').replace('.', '').replace('-', '');
-            
-            let soma = 0;
-            let i = 0;
-            let j = 10;
-
-            while(i < 9){
-                while(j > 1){
-
-                    soma += Number(cpf[i]) * j;
-
-                    i++;
-                    j--;
-                    break;
-                }
-            }
-
-            const first = (soma*10)%11;
-
-            if(first != cpf[9]){
-
-                console.log('Primeiro digito não valido'); 
-
-                return false;
-            }
-
-            soma = 0;
-            i = 0;
-            j = 11;
-
-            while(i < 10){
-                while(j > 1){
-
-                    soma += Number(cpf[i]) * j;
-
-                    i++;
-                    j--;
-                    break;
-                }
-            }
-
-            const second = (soma*10)%11;
-
-            if(second != cpf[10]){
-
-                console.log('Segundo digito não valido'); 
-
-                return false;
-            }
-
-            console.log(first, second);
-
-            return true;
-        }
     }
 
     function handleTel(value) {
@@ -222,6 +187,79 @@ export default function Payment() {
         setTel(value);
     }
 
+    async function handlePaySubmit(event) {
+
+        event.preventDefault();
+
+        const amount = Number(String(cartContext.totalPriceState).replace('.', '')).toFixed(2);
+        const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
+        const telephone = getTel.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
+        const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
+        const [address] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
+
+        const products_id = cartContext.cart.map( (product) => product.id);
+        const quantity_buyed = cartContext.cart.map( (product) => product.qtd);
+
+        try {
+
+            const respose = await api.post('/orders', {
+                products_id,
+                quantity_buyed,
+                address_id: address.id,
+                total_price: cartContext.totalPriceState,
+                credit_card: {
+                    amount,
+                    card_number: String(getCardNumber).replace(/ /g,''),
+                    card_cvv: getCardCvv,
+                    card_expiration_date,
+                    card_holder_name: getCardHolderName,
+                    customer: {
+                        external_id: String(userContext.userData.id),
+                        name: userContext.userData.name,
+                        email: userContext.userData.email,
+                        type: "individual",
+                        country: "br",
+                        phone_numbers: ["+55" + telephone],
+                        documents: [
+                            {
+                                type: "cpf",
+                                number: cpf
+                            }
+                        ]
+                    },
+                    billing: {
+                        name: getCardHolderName,
+                        address: {
+                            street: getStreet,
+                            street_number: getNumber,
+                            zipcode: getZipCode.replace('-', ''),
+                            country: "br",
+                            state: getState.toLowerCase(),
+                            city: getCity
+                        }
+                    },
+                    shipping: {
+                        name: userContext.userData.name,
+                        fee: Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '')),
+                        address: {
+                            street: address.street,
+                            street_number: address.number,
+                            zipcode: address.zipcode.replace('-', ''),
+                            country: "br",
+                            state: address.state.toLowerCase(),
+                            city: address.city
+                        }
+                    }
+                }
+            });
+
+            console.log(respose.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <>
             <Head>
@@ -232,6 +270,15 @@ export default function Payment() {
 
                 <section>
 
+                    <button
+                        type='button'
+                        className='back-button'
+                        title='Voltar'
+                        onClick={() => orderContext.setOrder('address')}
+                    >
+                        <FaArrowLeft />
+                    </button>
+
                     <h1>Cartão de Crédito</h1>
 
                     <form>
@@ -240,7 +287,12 @@ export default function Payment() {
                             <div className='border'>
                                 <div className='flex-column'>
                                     <label htmlFor="card-holder-name" className='holder-name-label'>Nome impresso no cartão</label>
-                                    <input id='card-holder-name' type="text" />
+                                    <input
+                                        id='card-holder-name'
+                                        type="text"
+                                        value={getCardHolderName}
+                                        onChange={(event) => setCardHolderName(event.target.value)}
+                                    />
                                 </div>
 
                                 <div className='flex-row justify-center'>
@@ -249,7 +301,7 @@ export default function Payment() {
                                         <input
                                             id='card-number'
                                             type="text"
-                                            maxLength={16}
+                                            maxLength={19}
                                             value={getCardNumber}
                                             onChange={(event) => setCardNumber(event.target.value)}
                                         />
@@ -278,6 +330,7 @@ export default function Payment() {
                                                 placeholder='Mês'
                                                 onChange={(event) => setCardExpirationMonth(event.target.value)}
                                             >
+                                                <option value=""></option>
                                                 <option value="01">01</option>
                                                 <option value="02">02</option>
                                                 <option value="03">03</option>
@@ -298,6 +351,7 @@ export default function Payment() {
                                                 placeholder='Ano'
                                                 onChange={(event) => setCardExpirationYear(event.target.value)}
                                             >
+                                                <option value=""></option>
                                                 <option value="20">20</option>
                                                 <option value="21">21</option>
                                                 <option value="22">22</option>
@@ -308,7 +362,6 @@ export default function Payment() {
                                                 <option value="27">27</option>
                                                 <option value="28">28</option>
                                                 <option value="29">29</option>
-                                                <option value="30">30</option>
                                             </select>
                                         </div>
                                     </div>
@@ -320,7 +373,7 @@ export default function Payment() {
                                         <input
                                             type="text"
                                             id='tel'
-                                            /*maxLength={15}*/
+                                            maxLength={16}
                                             value={getTel}
                                             onChange={(event) => handleTel(event.target.value)}
                                         />
@@ -330,7 +383,8 @@ export default function Payment() {
                                         <input
                                             id='cpf'
                                             type="text"
-                                            /*maxLength={11} */
+                                            className={`${(getValidCpf) ? '' : 'invalid-value'}`}
+                                            maxLength={14}
                                             value={getCpf}
                                             onChange={(event) => handleCpf(event.target.value)}
                                         />
@@ -343,29 +397,52 @@ export default function Payment() {
 
                                 <div className='flex-column'>
                                     <label htmlFor="street">Logradouro</label>
-                                    <input id='street' type="text" />
+                                    <input
+                                        id='street'
+                                        type="text"
+                                        value={getStreet}
+                                        onChange={(event) => setStreet(event.target.value)}
+                                    />
                                 </div>
 
                                 <div className='flex-row flex-justify-start'>
                                     <div className='flex-column'>
                                         <label htmlFor="number"> Nº</label>
-                                        <input id='number' type="text" />
+                                        <input
+                                            id='number'
+                                            type="text"
+                                            value={getNumber}
+                                            onChange={(event) => setNumber(event.target.value)}
+                                        />
                                     </div>
-                                    <div className='flex-column w-100   '>
+                                    <div className='flex-column w-100'>
                                         <label htmlFor="neighborhood">Bairro</label>
-                                        <input id='neighborhood' type="text" />
+                                        <input
+                                            id='neighborhood'
+                                            type="text"
+                                            value={getNeighborhood}
+                                            onChange={(event) => setNeighborhood(event.target.value)}
+                                        />
                                     </div>
                                 </div>
 
                                 <div className='flex-row'>
                                     <div className='flex-column'>
                                         <label htmlFor="city">Cidade</label>
-                                        <input id='city' type="text" />
+                                        <input
+                                            id='city'
+                                            type="text"
+                                            value={getCity}
+                                            onChange={(event) => setCity(event.target.value)}
+                                        />
                                     </div>
 
                                     <div className='flex-column'>
                                         <label htmlFor="state"> Estado</label>
-                                        <select id="state">
+                                        <select
+                                            id="state"
+                                            onChange={(event) => setState(event.target.value)}
+                                        >
                                             <option value=""></option>
                                             <option value="AC">AC</option>
                                             <option value="AL">AL</option>
@@ -402,7 +479,7 @@ export default function Payment() {
                                         <input
                                             id='zipcode'
                                             type="text"
-                                            maxLength={8}
+                                            maxLength={9}
                                             value={getZipCode}
                                             onChange={(event) => setZipCode(event.target.value)}
                                         />
@@ -414,12 +491,13 @@ export default function Payment() {
                         <div className="button-total">
 
                             <div>
-                                <p>Frete: R$ {getFreightFinalPrice}</p>
+                                <p>Frete: R$ {Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)}</p>
                                 <p>Total: R$ {cartContext.totalPriceState}</p>
                             </div>
 
                             <button
                                 type='submit'
+                                disabled={getDisabledPayButton}
                                 onClick={(event) => handlePaySubmit(event)}
                             >
                                 PAGAR
@@ -436,6 +514,13 @@ export default function Payment() {
                 section {
                     min-height: 800px;
                     padding: 20px;
+                }
+
+                .back-button {
+                    border: 0;
+                    background: transparent;
+                    font-size: 30px;
+                    cursor: pointer;
                 }
 
                 .border {
@@ -517,6 +602,10 @@ export default function Payment() {
                 form input#cpf {
                     width: 210px;
                     text-align: center;
+                }
+
+                #cpf.invalid-value {
+                    border: 2px solid #a32e39;
                 }
 
                 form input#tel {
