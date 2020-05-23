@@ -12,7 +12,7 @@ export default function Order() {
 
     useEffect( () => {
 
-        orderContext.order = 'cart';
+        orderContext.setOrder('cart');
 
     }, []);
 
