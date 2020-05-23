@@ -63,6 +63,13 @@ export function CartContextProvider({ children }){
         setCart(cart);
     }
 
+    function orderFinished(){
+
+        setCart([]);
+        setProducts([]);
+        sessionStorage.removeItem('cart');
+    }
+
     return (
         <Context.Provider value={{ 
             cart: cartState, 
@@ -84,7 +91,8 @@ export function CartContextProvider({ children }){
             addressIdState,
             setAddressId,
             getFreightMeasures,
-            setFreightMeasures
+            setFreightMeasures,
+            orderFinished
         }}>
             {children}
         </Context.Provider>
