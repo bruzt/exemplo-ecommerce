@@ -303,6 +303,7 @@ export default function Cart() {
                                 Calculo de frete:
                                 &nbsp;
                                 <input 
+                                    id='cep'
                                     type='text' 
                                     placeholder='CEP' 
                                     maxLength={9}
@@ -361,12 +362,12 @@ export default function Cart() {
                         </div>
 
                         <div className="total-price">
-                            <p>Subtotal: R$ {cartContext.getSubtotalPrice}</p>
+                            <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
                             <p>Frete: R$ {(cartContext.freightSelectedState) ? (
                                 Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)
                             ) : ( '0.00' )
                             }</p>
-                            <p>Total: R$ {cartContext.totalPriceState}</p>
+                            <p>Total: R$ {Number(cartContext.totalPriceState).toFixed(2)}</p>
                             
                             {(userContext.login) ? (
                                 (cartContext.freightSelectedState == null) ? (
@@ -555,6 +556,7 @@ export default function Cart() {
 
                 .total-price button:disabled {
                     background: #a32e39;
+                    color: inherit;
                 }
 
                 .calc-freight {
