@@ -412,6 +412,7 @@ export default function Address() {
 
                 .add-select-buttons .select-button:disabled {
                     background: #a32e39;
+                    color: inherit;
                 }
 
                 .add-select-buttons .select-button:disabled:hover {
