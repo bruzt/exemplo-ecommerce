@@ -22,6 +22,7 @@ module.exports = {
             address_id: Joi.number().required(),
             credit_card: Joi.object().keys({
                 amount: Joi.number().required(),
+                installments: Joi.number().required(),
                 card_number: Joi.string().required(),
                 card_cvv: Joi.string().required(),
                 card_expiration_date: Joi.string().required(),
@@ -43,10 +44,11 @@ module.exports = {
                     address: Joi.object().keys({
                         street: Joi.string().required(),
                         street_number: Joi.string().required(),
+                        neighborhood: Joi.string().required(),
+                        city: Joi.string().required(),
+                        state: Joi.string().required(),
                         zipcode: Joi.string().required(),
                         country: Joi.string().required(),
-                        state: Joi.string().required(),
-                        city: Joi.string().required(),
                     }).required()
                 }).required(),
                 shipping: Joi.object().keys({
@@ -55,10 +57,11 @@ module.exports = {
                     address: Joi.object().keys({
                         street: Joi.string().required(),
                         street_number: Joi.string().required(),
+                        neighborhood: Joi.string().required(),
+                        city: Joi.string().required(),
+                        state: Joi.string().required(),
                         zipcode: Joi.string().required(),
                         country: Joi.string().required(),
-                        state: Joi.string().required(),
-                        city: Joi.string().required(),
                     }).required()
                 }).required(),
                 /*items: Joi.array().items(Joi.object().keys({
