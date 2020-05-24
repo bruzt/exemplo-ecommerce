@@ -18,9 +18,10 @@ export default function Payment() {
     const [getCardCvv, setCardCvv] = useState('');
     const [getCardExpirationMonth, setCardExpirationMonth] = useState('');
     const [getCardExpirationYear, setCardExpirationYear] = useState('');
+    const [getInstallments, setInstallments] = useState(1);
+
     const [getTel, setTel] = useState('');
     const [getCpf, setCpf] = useState('');
-
     const [getValidCpf, setValidCpf] = useState(true);
 
     const [getStreet, setStreet] = useState('');
@@ -209,6 +210,7 @@ export default function Payment() {
                 total_price: cartContext.totalPriceState,
                 credit_card: {
                     amount,
+                    installments: Number(getInstallments),
                     card_number: String(getCardNumber).replace(/ /g,''),
                     card_cvv: getCardCvv,
                     card_expiration_date,
@@ -232,10 +234,11 @@ export default function Payment() {
                         address: {
                             street: getStreet,
                             street_number: getNumber,
+                            neighborhood: getNeighborhood,
+                            city: getCity,
+                            state: getState.toLowerCase(),
                             zipcode: getZipCode.replace('-', ''),
                             country: "br",
-                            state: getState.toLowerCase(),
-                            city: getCity
                         }
                     },
                     shipping: {
@@ -244,14 +247,17 @@ export default function Payment() {
                         address: {
                             street: address.street,
                             street_number: address.number,
+                            neighborhood: address.neighborhood,
+                            city: address.city,
+                            state: address.state.toLowerCase(),
                             zipcode: address.zipcode.replace('-', ''),
                             country: "br",
-                            state: address.state.toLowerCase(),
-                            city: address.city
                         }
                     }
                 }
             });
+
+            cartContext.orderFinished();
 
             console.log(respose.data);
 
@@ -492,7 +498,21 @@ export default function Payment() {
 
                             <div>
                                 <p>Frete: R$ {Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)}</p>
-                                <p>Total: R$ {cartContext.totalPriceState}</p>
+                                <p>Total: R$ {Number(cartContext.totalPriceState).toFixed(2)}</p>
+                            </div>
+
+                            <div>
+                                <select
+                                    id='installments'
+                                    onChange={(event) => setInstallments(event.target.value)}
+                                >
+                                    <option value={1}>1x de R$ {Number(cartContext.totalPriceState).toFixed(2)}</option>
+                                    <option value={2}>2x de R$ {Number(cartContext.totalPriceState/2).toFixed(2)} (sem juros)</option>
+                                    <option value={3}>3x de R$ {Number(cartContext.totalPriceState/3).toFixed(2)} (sem juros)</option>
+                                    <option value={4}>4x de R$ {Number(cartContext.totalPriceState/4).toFixed(2)} (sem juros)</option>
+                                    <option value={5}>5x de R$ {Number(cartContext.totalPriceState/5).toFixed(2)} (sem juros)</option>
+                                    <option value={6}>6x de R$ {Number(cartContext.totalPriceState/6).toFixed(2)} (sem juros)</option>
+                                </select>
                             </div>
 
                             <button
@@ -693,6 +713,7 @@ export default function Payment() {
 
                 .button-total button:disabled {
                     background: #a32e39;
+                    color: inherit;
                 }
             `}</style>
         </>
