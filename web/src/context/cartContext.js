@@ -68,6 +68,8 @@ export function CartContextProvider({ children }){
         setCart([]);
         setProducts([]);
         sessionStorage.removeItem('cart');
+        setSubtotalPrice(0);
+        setTotalPrice(0);
     }
 
     return (
