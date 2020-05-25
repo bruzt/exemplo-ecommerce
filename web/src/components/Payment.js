@@ -20,7 +20,7 @@ export default function Payment() {
     const [getCardExpirationYear, setCardExpirationYear] = useState('');
     const [getInstallments, setInstallments] = useState(1);
 
-    const [getTel, setTel] = useState('');
+    const [getPhone, setPhone] = useState('');
     const [getCpf, setCpf] = useState('');
     const [getValidCpf, setValidCpf] = useState(true);
 
@@ -45,7 +45,7 @@ export default function Payment() {
             getCardCvv.length < 3 ||
             getCardExpirationMonth.length < 1 ||
             getCardExpirationYear.length < 1 ||
-            getTel.length < 14   ||
+            getPhone.length < 14   ||
             getCpf.length < 14 ||
             !getValidCpf ||
             getStreet.length < 3 ||          
@@ -81,7 +81,7 @@ export default function Payment() {
         getCardCvv, 
         getCardExpirationMonth, 
         getCardExpirationYear, 
-        getTel, 
+        getPhone, 
         getCpf,
         getStreet, 
         getNumber,
@@ -185,16 +185,18 @@ export default function Payment() {
             value = `(${part1}) ${part2}-${part3}-${part4}`;
         }
 
-        setTel(value);
+        setPhone(value);
     }
 
     async function handlePaySubmit(event) {
 
         event.preventDefault();
 
+        setDisabledPayButton(true);
+
         const amount = Number(String(cartContext.totalPriceState).replace('.', '')).toFixed(2);
         const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
-        const telephone = getTel.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
+        const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
         const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
         const [address] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
 
@@ -203,10 +205,12 @@ export default function Payment() {
 
         try {
 
-            const respose = await api.post('/orders', {
+            await api.post('/orders', {
                 products_id,
                 quantity_buyed,
                 address_id: address.id,
+                freight_name: cartContext.freightSelectedState,
+                freight_price: Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')),
                 total_price: cartContext.totalPriceState,
                 credit_card: {
                     amount,
@@ -221,7 +225,7 @@ export default function Payment() {
                         email: userContext.userData.email,
                         type: "individual",
                         country: "br",
-                        phone_numbers: ["+55" + telephone],
+                        phone_numbers: ["+55" + phone],
                         documents: [
                             {
                                 type: "cpf",
@@ -259,11 +263,25 @@ export default function Payment() {
 
             cartContext.orderFinished();
 
-            console.log(respose.data);
+            orderContext.setOrder('thanksForBuy');
 
         } catch (error) {
             console.error(error);
+            alert(error);
+            setDisabledPayButton(false);
         }
+    }
+
+    function handleSameAddressButton(){
+
+        const [ address ] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
+
+        setStreet(address.street);
+        setNumber(address.number);
+        setNeighborhood(address.neighborhood);
+        setCity(address.city);
+        setState(address.state);
+        setZipCode(address.zipcode);
     }
 
     return (
@@ -290,7 +308,7 @@ export default function Payment() {
                     <form>
                         <div className="grid-columns">
 
-                            <div className='border'>
+                            <div className='cc-form'>
                                 <div className='flex-column'>
                                     <label htmlFor="card-holder-name" className='holder-name-label'>Nome impresso no cartão</label>
                                     <input
@@ -380,7 +398,7 @@ export default function Payment() {
                                             type="text"
                                             id='tel'
                                             maxLength={16}
-                                            value={getTel}
+                                            value={getPhone}
                                             onChange={(event) => handleTel(event.target.value)}
                                         />
                                     </div>
@@ -398,7 +416,7 @@ export default function Payment() {
                                 </div>
 
                             </div>
-                            <div className='border'>
+                            <div className='cc-form'>
                                 <h2>Endereço de cobrança do cartão</h2>
 
                                 <div className='flex-column'>
@@ -447,6 +465,7 @@ export default function Payment() {
                                         <label htmlFor="state"> Estado</label>
                                         <select
                                             id="state"
+                                            value={getState}
                                             onChange={(event) => setState(event.target.value)}
                                         >
                                             <option value=""></option>
@@ -491,12 +510,21 @@ export default function Payment() {
                                         />
                                     </div>
                                 </div>
+                                <div className='flex-row same-addr-button'>
+                                    <button
+                                        type='button'
+                                        onClick={handleSameAddressButton}
+                                    >
+                                        Mesmo da entrega
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
                         <div className="button-total">
 
-                            <div>
+                            <div className='freight-total'>
+                                <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
                                 <p>Frete: R$ {Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)}</p>
                                 <p>Total: R$ {Number(cartContext.totalPriceState).toFixed(2)}</p>
                             </div>
@@ -533,7 +561,7 @@ export default function Payment() {
             <style jsx>{`
                 section {
                     min-height: 800px;
-                    padding: 20px;
+                    padding: 20px 0;
                 }
 
                 .back-button {
@@ -541,10 +569,11 @@ export default function Payment() {
                     background: transparent;
                     font-size: 30px;
                     cursor: pointer;
+                    color: inherit;
                 }
 
-                .border {
-                    background: #c9c9c9;
+                .cc-form {
+                    background: #0D2235;
                     border-radius: 5px;
                     padding: 10px;
                 }
@@ -682,13 +711,40 @@ export default function Payment() {
                     text-align: center;
                 }                
 
+                .same-addr-button {
+                    justify-content: flex-end;
+                }
+
+                .same-addr-button button {
+                    justify-self: flex-end;
+                    border: 0;
+                    border-radius: 5px;
+                    background: #16324C;
+                    color: inherit;
+                }
+
+                .same-addr-button button:hover {
+                    background: #1C4061;
+                }
+
+                .same-addr-button button:active {
+                    background: #16324C;
+                }
+
                 .button-total {
                     display: flex;
                     justify-content: space-between;
+                    align-items: center;
                     font-size: 20px;
                 }
 
-                .button-total p + p {
+                .button-total .freight-total {
+                    background: #0D2235;
+                    border-radius: 5px;
+                    padding: 10px;
+                }
+
+                .button-total .freight-total p + p + p {
                     font-size: 30px;
                     font-weight: bold;
                 }
