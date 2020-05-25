@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import api from '../services/api';
 import Link from 'next/link';
-import { FaSearchLocation, FaBan } from 'react-icons/fa'
-''
+import { FaSearchLocation, FaBan } from 'react-icons/fa';
+import Loading from 'react-loader-spinner';
+
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
@@ -11,6 +12,8 @@ import { useOrder } from '../context/orderContext';
 import PageLayout from './PageLayout';
 
 export default function Cart() {
+
+    const [getCepButtonDisabled, setCepButtonDisabled] = useState(false);
 
     const userContext = useUser();
     const cartContext = useCart();
@@ -24,16 +27,13 @@ export default function Cart() {
 
     useEffect(() => {
 
-        if (cartContext.productsState.length > 0) {
-
-            calcTotalPrice();
-        }
+        calcTotalPrice();
 
     }, [cartContext.productsState, cartContext.cart, cartContext.freightSelectedState]);
 
     useEffect(() => {
 
-        resetFreight();
+        cartContext.resetFreight();
 
         if(cartContext.cepInputState.length > 0){
             
@@ -53,12 +53,6 @@ export default function Cart() {
         }
 
     }, [cartContext.cepInputState]);
-
-    function resetFreight(){
-
-        cartContext.setFreightSelected(null);
-        cartContext.setFreightPrice(0);
-    }
 
     function calcTotalPrice() {
 
@@ -115,7 +109,7 @@ export default function Cart() {
 
     function verifyQtd({ id, qtd }) {
 
-        resetFreight();
+        cartContext.resetFreight();
 
         const [ product ] = cartContext.productsState.filter((product) => product.id == id);
 
@@ -133,15 +127,6 @@ export default function Cart() {
         cartContext.addToCart({ id, qtd });
     }
 
-    function removeFromCart(id) {
-
-        const products = cartContext.productsState.filter((product) => product.id != id);
-
-        cartContext.setProducts(products);
-        cartContext.removeFromCart(id);
-        resetFreight();
-    }
-
     function handleFreightCheck(name){
 
         if(name == 'pac') cartContext.setFreightSelected('pac');
@@ -151,6 +136,8 @@ export default function Cart() {
     async function getFreightPrice(event){
 
         event.preventDefault();
+
+        setCepButtonDisabled(true);
 
         let weight = 0;
         let length = 0;
@@ -189,17 +176,20 @@ export default function Cart() {
 
             if(response.data.pac.MsgErro) {
 
-                console.error(response.data.pac.MsgErro)
-                alert(response.data.pac.MsgErro)
+                console.error(response.data.pac.MsgErro);
+                alert(response.data.pac.MsgErro);
+                setCepButtonDisabled(false);
 
             } else if(response.data.sedex.MsgErro){
 
-                console.error(response.data.sedex.MsgErro)
-                alert(response.data.sedex.MsgErro)
+                console.error(response.data.sedex.MsgErro);
+                alert(response.data.sedex.MsgErro);
+                setCepButtonDisabled(false);
 
             } else {
 
                 cartContext.setFreightPrice(response.data);
+                setCepButtonDisabled(false);
             }
             
         } catch (error) {
@@ -261,7 +251,7 @@ export default function Cart() {
                                             <button
                                                 type="button"
                                                 id='remove'
-                                                onClick={() => removeFromCart(product.id)}
+                                                onClick={() => cartContext.removeFromCart(product.id)}
                                                 title='Remover do carrinho'
                                             >
                                                 X
@@ -314,12 +304,20 @@ export default function Cart() {
                                     type='submit' 
                                     onClick={(event) => getFreightPrice(event)}
                                     disabled={(
-                                            cartContext.productsState.length == 0 
-                                            || (cartContext.cepInputState.length != 8 
-                                            && cartContext.cepInputState.length != 9)
-                                        ) ? true : false}
+                                            cartContext.productsState.length == 0 || 
+                                            cartContext.cepInputState.length < 9 ||
+                                            getCepButtonDisabled
+                                     ) ? true : false}
                                 >
-                                    <FaSearchLocation size={20} />
+                                    {(getCepButtonDisabled)
+                                        ? <Loading
+                                            type="TailSpin"
+                                            color="black"
+                                            height={20}
+                                            width={20}
+                                        />
+                                        : <FaSearchLocation size={20} />
+                                    }
                                 </button>
                             </form>
                             
@@ -405,7 +403,7 @@ export default function Cart() {
             <style jsx>{`
                 section {
                     min-height: 800px;
-                    padding: 10px;
+                    padding: 20px 0;
                 }
 
                 section h1 {
@@ -431,7 +429,7 @@ export default function Cart() {
                 }
 
                 tbody tr {
-                    background: #c9c9c9;
+                    background: #0D2235;
                 }
 
                 .td-image {
@@ -525,9 +523,13 @@ export default function Cart() {
                 }
 
                 .total-price {
+                    width: 300px;
                     font-size: 25px;
                     font-weight: bold;
                     margin: 20px 30px 0 0;
+                    background: #0D2235;
+                    padding: 20px;
+                    border-radius: 5px;
                 }
 
                 .total-price p + p + p {
@@ -544,6 +546,7 @@ export default function Cart() {
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
+                    color: inherit;
                 }
 
                 .total-price button:hover {
@@ -586,6 +589,7 @@ export default function Cart() {
                     border-radius: 5px;
                     margin: 0 0 0 5px;
                     cursor: pointer;
+                    color: black;
                 }
 
                 .calc-freight button:active {
@@ -609,7 +613,7 @@ export default function Cart() {
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
-                    background: #c9c9c9;
+                    background: #0D2235;
                     padding: 5px;
                     border-radius: 5px;
                 }
