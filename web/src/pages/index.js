@@ -105,7 +105,7 @@ export default function Home({ products }) {
                     display: grid;
                     grid-template-columns: 1fr 1fr 1fr 1fr;
                     text-align: center;
-                    padding: 20px;
+                    padding: 20px 0;
                     grid-gap: 20px;
                 }
 
@@ -114,7 +114,7 @@ export default function Home({ products }) {
                     max-height: 350px;
                     overflow: hidden;
                     padding: 10px;
-                    background: #c9c9c9;
+                    background: #0D2235;
                 }
 
                 .p-grid .p-card img {
