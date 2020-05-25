@@ -26,6 +26,14 @@ module.exports = {
                 references: { model: 'addresses', key: 'id' },
             },
 
+            freight_name: {
+                type: Sequelize.STRING,
+            },
+
+            freight_price: {
+                type: Sequelize.DECIMAL,
+            },
+
             total_price: {
                 type: Sequelize.DECIMAL,
             },
