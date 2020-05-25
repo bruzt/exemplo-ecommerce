@@ -151,7 +151,7 @@ export default function Product({ product }) {
                             <p>Disponível: {productState.quantity_stock}</p>
                             <p className='total'>Total: R$ {(finalPrice * qtdState).toFixed(2)}</p>
                             <button type='button' onClick={addToCartButton} disabled={buyButtonDisabledState}>
-                                {(buyButtonDisabledState) ? <p><FaBan size={30} /></p> : <p>Adicionar ao carrinho</p>}
+                                Adicionar ao carrinho
                             </button>
                         </div>
                     </div>
@@ -174,7 +174,7 @@ export default function Product({ product }) {
             <style jsx>{`
                 section {
                     min-height: 800px;
-                    padding: 10px;
+                    padding: 20px 0;
                 }
 
                 h1 {
@@ -207,7 +207,7 @@ export default function Product({ product }) {
                     width: 100%;
                     max-width: 400px;
                     height: 400px;
-                    background: #c9c9c9;
+                    background: #0D2235;
                     border-radius: 5px;
                     padding: 10px;
                     margin: 0 0 0 10px;
@@ -233,10 +233,13 @@ export default function Product({ product }) {
                     padding: 10px 20px;
                 }
 
-                .buy #qtd {
+                .buy input#qtd {
                     width: 45px;
                     height: 30px;
                     font-size: 20px;
+                    border: 0;
+                    border-radius: 5px;
+                    padding: 3px;
                 }
 
                 .buy button {
@@ -248,6 +251,7 @@ export default function Product({ product }) {
                     cursor: pointer;
                     font-size: 20px;
                     font-weight: bold;
+                    color: inherit;
                 }
 
                 .buy button p {
