@@ -7,6 +7,7 @@ import { useUser } from '../context/userContext';
 import { useOrder } from '../context/orderContext';
 
 import LoginModal from './LoginModal';
+import ManuAndSearchBar from './MenuAndSeachBar';
 
 export default function Header() {
 
@@ -29,13 +30,18 @@ export default function Header() {
                 }
             
                 body {
-                    background: #99a19b;
+                    background: #1C4061;
+                    color: #eee;
                     font-family: Arial, Helvetica, sans-serif;
                 }
             
                 a {
                     text-decoration: none;
                     color: inherit;
+                }
+
+                input, select, button {
+                    background: #eee;
                 }
             `}</style>
 
@@ -90,18 +96,19 @@ export default function Header() {
                 </div>
             </header>
 
+            <ManuAndSearchBar />
+
             <style jsx>{`
                 header {
                     height: 100px;
-                    border-bottom: 1px solid black;
-                    background: #60615b;
+                    background: #0D2235;
+                    color: #eee;
                 }
 
                 header .limit-center {
                     width: 100%;
                     max-width: 1100px;
                     margin: 0 auto;
-
                     display: flex;
                     justify-content: space-between;
                 }
@@ -138,21 +145,7 @@ export default function Header() {
                     margin: 0;
                 }
 
-                .login-cart .login-button {
-                    width: 80px;
-                    height: 20px;
-                    margin: 70px 0 0 0;
-                    border: 0;
-                    background: transparent;
-                    font-size: 20px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    
-                    display: flex;
-                    align-items: center;
-                }
-
-                .login-cart .user-button {
+                .login-cart .login-button, .user-button {
                     width: 100px;
                     height: 20px;
                     margin: 70px 0 0 0;
@@ -161,16 +154,20 @@ export default function Header() {
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
-                    
+                    color: #eee;
+
                     display: flex;
                     align-items: center;
-
+                }
+                
+                .login-cart .user-button {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                 }
+
             `}</style>
         </>
     );
