@@ -35,7 +35,14 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
 
-        const { quantity_buyed, total_price, products_id, address_id } = req.body;
+        const { 
+            products_id, 
+            quantity_buyed, 
+            freight_name,
+            freight_price, 
+            total_price, 
+            address_id 
+        } = req.body;
         const user_id = req.tokenPayload.id;
 
         try {
@@ -82,17 +89,27 @@ module.exports = {
             }    */
             
             // create order
-            const order = await OrderModel.create({ user_id, total_price, address_id });
+            const order = await OrderModel.create({ 
+                user_id, 
+                freight_name,
+                freight_price, 
+                total_price, 
+                address_id 
+            });
             
             req.body.credit_card.items = []
 
             // add products to order and subtract from stock
             for(let i = 0; i < products.length; i++){
 
+                const unit_price = (products[i].discount_percent > 0)
+                    ? Number(String(Number(products[i].price - (products[i].price * (products[i].discount_percent/100))).toFixed(2)).replace('.', ''))
+                    : Number(String(Number(products[i].price).toFixed(2)).replace('.', ''));
+
                 req.body.credit_card.items.push({
                     id: String(products[i].id),
                     title: products[i].title,
-                    unit_price: Number(String(Number(products[i].price).toFixed(2)).replace('.', '')),
+                    unit_price,
                     quantity: quantity_buyed[i],
                     tangible: products[i].tangible
                 });

@@ -8,6 +8,8 @@ class OrderModel extends Model {
 
         super.init({
 
+            freight_name: DataTypes.STRING,
+            freight_price: DataTypes.DECIMAL,
             total_price: DataTypes.DECIMAL,
             status: DataTypes.STRING
 
