@@ -16,7 +16,8 @@ class AddressModel extends Model {
 
         }, {
             tableName: 'addresses',
-            sequelize: connection
+            sequelize: connection,
+            paranoid: true
         });
     }
 
