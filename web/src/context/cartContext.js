@@ -57,10 +57,20 @@ export function CartContextProvider({ children }){
 
     function removeFromCart(id){
 
+        resetFreight();
+
         const cart = cartState.filter( (product) => product.id != id);
+        const products = productsState.filter( (product) => product.id != id);
         
         sessionStorage.setItem('cart', JSON.stringify(cart));
         setCart(cart);
+        setProducts(products);
+    }
+
+    function resetFreight(){
+
+        setFreightSelected(null);
+        setFreightPrice(0);
     }
 
     function orderFinished(){
@@ -94,7 +104,8 @@ export function CartContextProvider({ children }){
             setAddressId,
             getFreightMeasures,
             setFreightMeasures,
-            orderFinished
+            orderFinished,
+            resetFreight
         }}>
             {children}
         </Context.Provider>
