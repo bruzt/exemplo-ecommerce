@@ -118,7 +118,7 @@ export default function Address() {
 
         const [ address ] = userContext.userData.addresses.filter( (address) => address.id == cartContext.addressIdState);
 
-        if(cartContext.addressIdState == null || address.zipcode != cartContext.cepInputState){
+        if(cartContext.addressIdState == null || !address || address.zipcode != cartContext.cepInputState){
 
             setDisabledPaymentButton(true);
 
@@ -152,36 +152,39 @@ export default function Address() {
 
                     <div className='addr-grid'>
 
-                        {userContext.userData.addresses.map( (address) => {
-                            return (
-                                <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
-                                    <div className='addr-data'>
-                                        <div className='addr-remove'>
-                                            <button 
-                                                type="button"
-                                                onClick={() => handleDeleteAddress(address.id)}
-                                            >
-                                                X
-                                            </button>
-                                        </div>
-                                        
-                                        <a 
-                                            onClick={() => cartContext.setAddressId(address.id)}
-                                        >
-                                            <div>
-                                                <p>Logradouro: {address.street}</p>
-                                                <p>Nº: {address.number}</p>
-                                                <p>Bairro: {address.neighborhood}</p>
-                                                <p>Cidade: {address.city}</p>
-                                                <p>Estado: {address.state}</p>
-                                                <p>CEP: {address.zipcode}</p>
+                        {(userContext.userData.addresses) 
+                            ? userContext.userData.addresses.map( (address) => {
+                                    return (
+                                        <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
+                                            <div className='addr-data'>
+                                                <div className='addr-remove'>
+                                                    <button 
+                                                        type="button"
+                                                        onClick={() => handleDeleteAddress(address.id)}
+                                                    >
+                                                        X
+                                                    </button>
+                                                </div>
+                                                
+                                                <a 
+                                                    onClick={() => cartContext.setAddressId(address.id)}
+                                                >
+                                                    <div>
+                                                        <p>Logradouro: {address.street}</p>
+                                                        <p>Nº: {address.number}</p>
+                                                        <p>Bairro: {address.neighborhood}</p>
+                                                        <p>Cidade: {address.city}</p>
+                                                        <p>Estado: {address.state}</p>
+                                                        <p>CEP: {address.zipcode}</p>
+                                                    </div>
+                                                </a>
                                             </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            );
-                        })}
-
+                                        </div>
+                                    );
+                                }
+                            ) 
+                            : null
+                        }
                     </div>
 
                     <div className='add-select-buttons'>
@@ -268,7 +271,7 @@ export default function Address() {
                                     <input 
                                         id='zipcode' 
                                         type="text" 
-                                        maxLength={8}
+                                        maxLength={9}
                                         value={zipCodeState} onChange={(event) => setZipCode(event.target.value)} 
                                     />
                                 </div>
@@ -293,7 +296,7 @@ export default function Address() {
             <style jsx>{`
                 section {
                     min-height: 800px;
-                    padding: 20px;
+                    padding: 20px 0;
                 }
 
                 .back-button {
@@ -301,6 +304,7 @@ export default function Address() {
                     background: transparent;
                     font-size: 30px;
                     cursor: pointer;
+                    color: inherit;
                 }
 
                 h1 {
@@ -314,7 +318,7 @@ export default function Address() {
                     grid-gap: 10px;
 
                     min-height: 220px;
-                    border: 1px solid #60615b;
+                    border: 1px solid #0D2235;
                     border-radius: 5px;
                     padding: 10px;
                 }
@@ -324,9 +328,8 @@ export default function Address() {
                 }
 
                 .addr-card {
-                    border: 1px solid #60615b;
                     border-radius: 5px;
-                    background: #c9c9c9;
+                    background: #0D2235;
                     height: 220px;
                 }
 
@@ -383,19 +386,20 @@ export default function Address() {
                     border: 0;
                     border-radius: 5px;
                     font-size: 20px;
-                    cursor: pointer;                    
+                    cursor: pointer;                 
+                    color: inherit;   
                 }
 
                 .add-select-buttons .add-button {
-                    background: #2A77BB;
+                    background: #0D2235;
                 }
 
                 .add-select-buttons .add-button:hover {
-                    background: #0087FF;
+                    background: #16324C;
                 }
 
                 .add-select-buttons .add-button:active {
-                    background: #2A77BB;
+                    background: #0D2235;
                 }
                 
                 .add-select-buttons .select-button {
@@ -423,12 +427,11 @@ export default function Address() {
                     display: flex;
                     flex-direction: column;
                     margin: 20px 0 0 0;
-                    border: 1px solid #60615b;
                     border-radius: 5px;
                     padding: 20px;
                     width: 480px;
                     max-width: 50%;
-                    background: #c9c9c9;
+                    background: #0D2235;
                 }
 
                 .flex-row {
@@ -500,6 +503,7 @@ export default function Address() {
                     background: ${(disableAddAddrState) ? '#a32e39' : '#3E8C34'};
                     font-size: 20px;
                     cursor: pointer;
+                    color: inherit;
                 }
 
                 .addr-submit:hover {
