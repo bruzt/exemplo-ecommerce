@@ -122,6 +122,7 @@ module.exports = {
                     }
                 });
 
+                products[i].quantity_sold += quantity_buyed[i];
                 products[i].quantity_stock -= quantity_buyed[i];
                 await products[i].save();
             }
@@ -134,7 +135,7 @@ module.exports = {
             });
 
             order.status = response.data.status;
-            order.save();
+            await order.save();
 
             return res.json({ order, pagarme: response.data });
             
