@@ -54,6 +54,16 @@ export default function Product({ product }) {
 
     }, []);
 
+    useEffect( () => {
+
+        if(productState.quantity_stock == 0){
+
+            setBuyButtonDisabled(true);
+            setQtd(0);
+        }
+
+    }, [productState]);
+
     async function getProduct(){
 
         try {
@@ -72,25 +82,29 @@ export default function Product({ product }) {
 
     function verifyQtd(value){
 
-        if(value == 0 || value == null){
-                
-            setBuyButtonDisabled(true);
-            setQtd(value);  
+        if(productState.quantity_stock > 0){
 
-        } else if (value < 0){
-
-            setBuyButtonDisabled(true);
-            setQtd(0);  
+            if(value == 0 || value == null){
+                    
+                setBuyButtonDisabled(true);
+                setQtd(value);  
     
-        } else if(value > productState.quantity_stock){
+            } else if (value < 0){
+    
+                setBuyButtonDisabled(true);
+                setQtd(0);  
+        
+            } else if(value > productState.quantity_stock){
+    
+                setQtd(productState.quantity_stock);
+                setBuyButtonDisabled(false);
+    
+            } else {
+    
+                setQtd(value);
+                setBuyButtonDisabled(false);
+            }
 
-            setQtd(productState.quantity_stock);
-            setBuyButtonDisabled(false);
-
-        } else {
-
-            setQtd(value);
-            setBuyButtonDisabled(false);
         }
     }
 
@@ -146,7 +160,12 @@ export default function Product({ product }) {
                         <div className='buy'>
                             <h2>Preço</h2>
                             <p className='price'>R$ {finalPrice} a unidade</p>
-                            {(productState.discount_percent != 0) && <p className='discount'>-{productState.discount_percent}%</p>}
+                            {(productState.quantity_stock > 0)
+                                ? (productState.discount_percent != 0) 
+                                    ? <p className='discount'>-{productState.discount_percent}%</p>
+                                    : null
+                                : <p className='lacking'>Em falta</p>
+                            }
                             <p>Qtd: <input type="number" id="qtd" value={qtdState} onChange={(event) => verifyQtd(event.target.value)} /></p> 
                             <p>Disponível: {productState.quantity_stock}</p>
                             <p className='total'>Total: R$ {(finalPrice * qtdState).toFixed(2)}</p>
@@ -233,6 +252,11 @@ export default function Product({ product }) {
                     padding: 10px 20px;
                 }
 
+                .buy .lacking {
+                    background: #a32e39;
+                    padding: 10px 20px;
+                }
+
                 .buy input#qtd {
                     width: 45px;
                     height: 30px;
@@ -259,11 +283,15 @@ export default function Product({ product }) {
                 }
 
                 .buy button:hover {
-                    background: ${(buyButtonDisabledState) ? '#bf2232' : '#41A933'};
+                    background: #41A933;
                 }
 
                 .buy button:active {
-                    background: ${(buyButtonDisabledState) ? '#a32e39' : '#3E8C34'};
+                    background: #3E8C34;
+                }
+
+                .buy button:disabled {
+                    background: #a32e39;
                 }
 
                 .description {
