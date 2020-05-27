@@ -40,8 +40,8 @@ router.put('/reset-password', validators.userResetPasswordValidator.update, cont
 router.post('/sessions', validators.sessionValidators.store, controllers.sessionController.store);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
-router.get('/products', controllers.productController.index);
-router.get('/products/:id', controllers.productController.show);
+router.get('/products', validators.productValidators.index, controllers.productController.index);
+router.get('/products/:id', validators.productValidators.show, controllers.productController.show);
 router.post('/products', validators.productValidators.store, adminJwtAuthentication, controllers.productController.store);
 router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, controllers.productController.update);
 router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, controllers.productController.destroy);

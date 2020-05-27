@@ -2,6 +2,19 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 module.exports = {
 
+    index: celebrate({
+        [Segments.QUERY]: Joi.object().keys({
+            title: Joi.string(),
+            category: Joi.string()
+        }),
+    }),
+
+    show: celebrate({
+        [Segments.PARAMS]: Joi.object().keys({
+            id: Joi.number().required()
+        }),
+    }),
+
     store: celebrate({
         [Segments.HEADERS]: Joi.object().keys({
             authorization: Joi.string().required()
@@ -15,6 +28,7 @@ module.exports = {
             html_body: Joi.string(),
             price: Joi.number().required(),
             quantity_stock: Joi.number().required(),
+            quantity_sold: Joi.number(),
             discount_percent: Joi.number(),
             tangible: Joi.boolean().required(),
             weight: Joi.string().required(),
@@ -37,6 +51,7 @@ module.exports = {
             html_body: Joi.string(),
             price: Joi.number(),
             quantity_stock: Joi.number(),
+            quantity_sold: Joi.number(),
             discount_percent: Joi.number(),
             tangible: Joi.boolean(),
             weight: Joi.string(),
