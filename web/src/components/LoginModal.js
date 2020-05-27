@@ -79,17 +79,15 @@ export default function ModalLogin() {
                     overflow: auto; /* Enable scroll if needed */
                     background-color: rgb(0,0,0); /* Fallback color */
                     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-                    transition: 1s;
                 }
 
                 .modal-content {
-                    background-color: #fefefe;
+                    background-color: #0D2235;
                     margin: 10% auto; /* 15% from the top and centered */
                     padding: 20px;
                     width: 100%;
                     max-width: 20%;
-                    height: 100%;
-                    max-height: 400px;
+                    min-height: 350px;
                     border-radius: 5px;
                 }
 
