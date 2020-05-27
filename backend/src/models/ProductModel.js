@@ -13,6 +13,7 @@ class ProductModel extends Model {
             html_body: DataTypes.TEXT,
             price: DataTypes.DECIMAL,
             quantity_stock: DataTypes.INTEGER,
+            quantity_sold: DataTypes.INTEGER,
             discount_percent: DataTypes.DECIMAL,
             tangible: DataTypes.BOOLEAN,
             weight: DataTypes.STRING,

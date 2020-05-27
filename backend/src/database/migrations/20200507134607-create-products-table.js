@@ -46,6 +46,12 @@ module.exports = {
                 allowNull: false
             },  
 
+            quantity_sold: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+                allowNull: false
+            }, 
+
             discount_percent: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0
