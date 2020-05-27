@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 
 const ProductModel = require('../models/ProductModel');
 const CategoryModel = require('../models/CategoryModel');
@@ -10,18 +11,61 @@ module.exports = {
 
         try {
 
-            const products = await ProductModel.findAll({
-                attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
-                include: [{
-                    association: 'images',
-                    attributes: ['id', 'url'],
-                    required: false
-                },                    
-                {
-                    association: 'category',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
-                }]
-            });
+            let products;
+
+            if(req.query.title){
+
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    where: {
+                        title: { 
+                            [Op.iLike]: `%${req.query.title}%` 
+                        }
+                    },
+                    order: [
+                        ['quantity_stock', 'DESC'],
+                        ['discount_percent', 'DESC'],
+                        ['quantity_sold', 'DESC'],
+                    ],
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url'],
+                            required: false
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }
+                    ]
+                });
+
+            } else {
+
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    order: [
+                        ['quantity_stock', 'DESC'],
+                        ['discount_percent', 'DESC'],
+                        ['quantity_sold', 'DESC'],
+                    ],
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url'],
+                            required: false
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }
+                    ]
+                });
+            }
 
             return res.json(products);
             
