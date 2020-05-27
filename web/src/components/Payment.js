@@ -205,7 +205,7 @@ export default function Payment() {
 
         try {
 
-            await api.post('/orders', {
+            const response = await api.post('/orders', {
                 products_id,
                 quantity_buyed,
                 address_id: address.id,
@@ -260,6 +260,10 @@ export default function Payment() {
                     }
                 }
             });
+
+            const user = { ...userContext.userData };
+            user.orders.push(response.order);
+            userContext.setUser(user);
 
             cartContext.orderFinished();
 
