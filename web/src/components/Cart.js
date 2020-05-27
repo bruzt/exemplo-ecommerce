@@ -542,7 +542,7 @@ export default function Cart() {
                     margin: 10px 0 0 0;
                     border: 0;
                     border-radius: 5px;
-                    background: ${(userContext.login) ? '#3E8C34' : '#E4E000'};
+                    background: ${(userContext.login) ? '#3E8C34' : '#969644'};
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
@@ -554,7 +554,7 @@ export default function Cart() {
                 }
                 
                 .total-price button:active {
-                    background: ${(userContext.login) ? '#3E8C34' : '#E4E000'};
+                    background: ${(userContext.login) ? '#3E8C34' : '#969644'};
                 }
 
                 .total-price button:disabled {
