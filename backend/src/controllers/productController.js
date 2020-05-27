@@ -25,8 +25,8 @@ module.exports = {
                         }
                     },
                     order: [
-                        ['quantity_stock', 'DESC'],
                         ['discount_percent', 'DESC'],
+                        ['quantity_stock', 'DESC'],
                         ['quantity_sold', 'DESC'],
                     ],
                     include: [
@@ -49,8 +49,8 @@ module.exports = {
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
                     order: [
-                        ['quantity_stock', 'DESC'],
                         ['discount_percent', 'DESC'],
+                        ['quantity_stock', 'DESC'],
                         ['quantity_sold', 'DESC'],
                     ],
                     include: [
