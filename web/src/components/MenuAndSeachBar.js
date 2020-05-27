@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { FaCaretDown, FaSearch } from 'react-icons/fa';
 import ClickAwayListener from 'react-click-away-listener';
+import { useRouter } from 'next/router';
 
-export default function MenuAndSearchBar() {
+export default memo( function MenuAndSearchBar() {
 
     const [getCategoryMenuToggle, setCategoryMenuToggle] = useState(false);
+    const [getSearchBarText, setSearchBarText] = useState('');
+
+    const router = useRouter();
 
     function categoryMenuToggle(){
 
@@ -15,6 +19,18 @@ export default function MenuAndSearchBar() {
     function categoryMenuClose(){
 
         setCategoryMenuToggle(false);
+    }
+
+    function handleSearch(event){
+
+        event.preventDefault();
+
+        router.push({
+            pathname: '/search',
+            query: {
+                title: getSearchBarText
+            }
+        })
     }
 
     return (
@@ -33,12 +49,14 @@ export default function MenuAndSearchBar() {
                         </div>
                     </ClickAwayListener>
 
-                    <form onSubmit={(event) => event.preventDefault()}>
+                    <form onSubmit={handleSearch}>
                         <input 
                             type="text" 
                             placeholder='Pesquise o seu produto'
+                            value={getSearchBarText}
+                            onChange={(event) => setSearchBarText(event.target.value)}
                         />   
-                        <button>
+                        <button type='submit'>
                             <FaSearch />
                         </button>
                     </form>
@@ -125,4 +143,4 @@ export default function MenuAndSearchBar() {
             `}</style>
         </>
     );
-}
+})
