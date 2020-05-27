@@ -1,16 +1,14 @@
 import React/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
-import Link from 'next/link';
 
 import api from '../services/api';
 
 import PageLayout from '../components/PageLayout';
+import ProductCard from '../components/ProductCard';
 
 export async function getStaticProps() {
 
     const response = await api.get('/products');
-
-    //const props = response.filter( (data) => data.id == params.itemId )[0];
 
     return {
         props: { products: response.data }
@@ -18,30 +16,6 @@ export async function getStaticProps() {
 }
 
 export default function Home({ products }) {
-
-    /*
-    const [productsState, setProducts] = useState([]);
-
-    useEffect( () => {
-
-        getProducts();
-
-    }, []);
-
-    async function getProducts(){
-
-        try {
-            
-            const response = await api.get('/products');
-
-            setProducts(response.data);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro, tente de novo');
-        }
-    }
-    */
 
     return (
         <>
@@ -57,39 +31,7 @@ export default function Home({ products }) {
                 <section>
                     <div className="p-grid">
 
-                        {products.map( (product) => {
-
-                            const discount = (product.discount_percent != 0) 
-                                ? '-' + product.discount_percent + '%' 
-                                : null;
-                            const finalPrice = (product.discount_percent != 0) 
-                                ? (product.price - (product.price * (product.discount_percent/100))).toFixed(2) 
-                                : Number(product.price).toFixed(2);
-
-                            return (
-                                <Link href='/[productId]/[productName]' as={`/${product.id}/${product.title.split(' ').join('-')}`} key={product.id}>
-                                    <a title={product.title}>
-                                        <div className='p-card'>
-                                            <div className='img-container'>
-                                                <img 
-                                                    src='https://i.picsum.photos/id/892/800/400.jpg'
-                                                    /*src={`https://picsum.photos/800/400`}*/
-                                                    /*src={product.images[0] && product.images[0].url} */
-                                                    alt={'imagem-' + product.title.split(' ').join('-')} 
-                                                />
-                                            </div>
-                                            <div className='title-price'>
-                                                <p className='title'>{product.title}</p>
-                                                <div className='price-discount'>
-                                                    <p className='price'>R$ {finalPrice}</p>
-                                                    {discount && <p className='discount'>{discount}</p>}
-                                                </div>
-                                            </div>
-                                        </div>   
-                                    </a>
-                                </Link>
-                            )
-                        })}
+                        {products.map( (product) => <ProductCard product={product} key={product.id} />)}
 
                     </div>
                 </section>
@@ -103,60 +45,10 @@ export default function Home({ products }) {
 
                 .p-grid {
                     display: grid;
-                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                    grid-template-columns: 1fr 1fr 1fr;
                     text-align: center;
                     padding: 20px 0;
                     grid-gap: 20px;
-                }
-
-                .p-grid .p-card {
-                    border-radius: 5px;
-                    max-height: 350px;
-                    overflow: hidden;
-                    padding: 10px;
-                    background: #0D2235;
-                }
-
-                .p-grid .p-card img {
-                    width: 100%;
-                    max-width: 475px;
-                    height: auto;
-                }
-
-                .p-grid .p-card .title-price {
-                    height: 100px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                }
-
-                .p-grid .p-card .title {
-                    font-size: 15px;
-                    margin-top: 10px;
-                    
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2; /* number of lines to show */
-                    -webkit-box-orient: vertical;
-                }
-
-                .p-grid .p-card .price-discount {
-                    margin: 10px 0 0 0;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                }
-
-                .p-grid .p-card .price-discount .discount {
-                    background: #41773A;
-                    padding: 5px 10px;
-                }
-
-                .p-grid .p-card .price {
-                    font-size: 30px;
-                    font-weight: bold;
-                    padding: 5px 10px;
                 }
 
                 @media (max-width: 1200px) {
