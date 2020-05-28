@@ -1,61 +1,118 @@
-import React, { useState, memo } from 'react';
+import React, { useState } from 'react';
 import { FaCaretDown, FaSearch } from 'react-icons/fa';
 import ClickAwayListener from 'react-click-away-listener';
 import { useRouter } from 'next/router';
 
-export default memo( function MenuAndSearchBar() {
+import { useFilterBar } from '../context/filterBarContext';
+
+export default function MenuAndSearchBar() {
 
     const [getCategoryMenuToggle, setCategoryMenuToggle] = useState(false);
-    const [getSearchBarText, setSearchBarText] = useState('');
 
     const router = useRouter();
+    const filterBarContext = useFilterBar();
 
-    function categoryMenuToggle(){
+    function categoryMenuToggle() {
 
-        if(getCategoryMenuToggle == true) setCategoryMenuToggle(false);
+        if (getCategoryMenuToggle == true) setCategoryMenuToggle(false);
         else setCategoryMenuToggle(true);
     }
 
-    function categoryMenuClose(){
+    function categoryMenuClose() {
 
         setCategoryMenuToggle(false);
     }
 
-    function handleSearch(event){
+    function handleSearch(event) {
 
         event.preventDefault();
 
         router.push({
             pathname: '/search',
             query: {
-                title: getSearchBarText
+                title: filterBarContext.getSearchBarText
             }
         })
+    }
+
+    function categoryTree(){
+
+        const firstLevels = filterBarContext.getCategories.filter(item => !item.parent);
+
+        return (
+            <>
+                {firstLevels.map( (firstLevel) => buildCategoryTree(firstLevel))}
+            </>
+        );
+    }
+
+    function buildCategoryTree(category){
+
+        const children = filterBarContext.getCategories.filter(child => child.parent == category.id)
+
+        let hasChildren = false;
+
+        if (children.length > 0) hasChildren = true;
+
+        return (
+            <li 
+                key={category.id} 
+                className={`${(hasChildren) ? 'has-children' : ''}`} 
+                onClick={(event) => handleCategorySearch(event, category)}
+            >
+                {category.name}
+                {(hasChildren) && (
+                    <ul>
+                        {children.map( (child) => buildCategoryTree(child))}
+                    </ul>
+                )}
+            </li>
+        );
+    }
+
+    function handleCategorySearch(event, category){
+
+        event.stopPropagation();
+
+        if(event.target.classList.contains('has-children')){
+
+            event.target.classList.toggle('open');
+            
+            //return; 
+        }
+
+        router.push({
+            pathname: '/search',
+            query: {
+                categoryId: category.id,
+                categoryName: category.name
+            }
+        });
     }
 
     return (
         <>
             <nav>
                 <div className="limit-center">
-                    
-                    <ClickAwayListener onClickAway={categoryMenuClose}>    
+
+                    <ClickAwayListener onClickAway={categoryMenuClose}>
                         <button className="dropbtn" onClick={categoryMenuToggle}>
                             Categorias <FaCaretDown />
                         </button>
                         <div className={`dropdown-content ${(getCategoryMenuToggle) ? 'toggle' : ''}`}>
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
+                            <ul>
+                                {categoryTree()}
+                            </ul>
                         </div>
                     </ClickAwayListener>
 
                     <form onSubmit={handleSearch}>
-                        <input 
-                            type="text" 
+                        <input
+                            type="text"
                             placeholder='Pesquise o seu produto'
-                            value={getSearchBarText}
-                            onChange={(event) => setSearchBarText(event.target.value)}
-                        />   
+                            value={filterBarContext.getSearchBarText}
+                            onChange={(event) => filterBarContext.setSearchBarText(event.target.value)}
+                        />
                         <button type='submit'>
                             <FaSearch />
                         </button>
@@ -92,21 +149,8 @@ export default memo( function MenuAndSearchBar() {
                     padding: 10px 0;
                 }
 
-                .dropdown-content {
-                    display: none;
-                    position: absolute;
-                    background-color: #eee;
-                    min-width: 160px;
-                    z-index: 10;
-                }
-
-                .dropdown-content a {
-                    float: none;
-                    color: black;
-                    padding: 12px 16px;
-                    text-decoration: none;
+                .dropbtn:hover + .dropdown-content {
                     display: block;
-                    text-align: left;
                 }
 
                 .dropdown-content:hover {
@@ -116,6 +160,55 @@ export default memo( function MenuAndSearchBar() {
                 .dropdown-content.toggle {
                     display: block;
                 }
+
+                .dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #0D2235;
+                    min-width: 160px;
+                    z-index: 10;
+                    padding: 10px;
+                }
+
+                .dropdown-content li {
+                    float: none;
+                    color: black;
+                    padding: 12px 16px;
+                    text-decoration: none;
+                    display: block;
+                    text-align: left;
+                }
+
+                .dropdown-content ul {
+                    padding-left: 16px;
+                }
+
+                .dropdown-content li {
+                    list-style: none;
+                    margin-top: 2px;
+                }
+
+                .dropdown-content li.has-children {
+                    cursor: pointer;
+                    position: relative;
+                }
+
+                .dropdown-content li.has-children:before {
+                    content: '\f107';
+                    color: #F3F3F4;
+                    position: absolute;
+                    /*font-family: FontAwesome;*/
+                    font-size: 26px;
+                    right: 15px;
+                }
+
+                .dropdown-content li > ul {
+                    display: none;
+                }
+
+                .dropdown-content li.open > ul {
+                    display: block;
+                } 
 
                 nav form {
                     display: flex;
@@ -143,4 +236,4 @@ export default memo( function MenuAndSearchBar() {
             `}</style>
         </>
     );
-})
+}

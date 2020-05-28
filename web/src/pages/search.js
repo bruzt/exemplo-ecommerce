@@ -17,13 +17,22 @@ export default function Search() {
 
         fetchProducts();
 
-    }, [router.query.title]);
+    }, [router.query.title, router.query.categoryId]);
 
     async function fetchProducts(){
 
         try {
-            
-            const response = await api.get(`/products?title=${router.query.title}`);
+
+            let response;
+
+            if(router.query.title){
+                
+                response = await api.get(`/products?title=${router.query.title}`);
+
+            } else if(router.query.categoryId){
+
+                response = await api.get(`/products?category=${router.query.categoryId}`);
+            }
 
             setProducts(response.data);
             
@@ -59,7 +68,7 @@ export default function Search() {
 
                 .p-grid {
                     display: grid;
-                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                    grid-template-columns: 1fr 1fr 1fr;
                     text-align: center;
                     padding: 20px 0;
                     grid-gap: 20px;
