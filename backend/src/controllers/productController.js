@@ -42,6 +42,36 @@ module.exports = {
                     ]
                 });
 
+            } else if(req.query.category){
+
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    order: [
+                        ['discount_percent', 'DESC'],
+                        ['quantity_stock', 'DESC'],
+                        ['quantity_sold', 'DESC'],
+                    ],
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url'],
+                            required: false
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                            where: { 
+                                [Op.or]: [
+                                    { id: req.query.category },
+                                    { parent: req.query.category }
+                                ]
+                            }
+                        }
+                    ]
+                });
+                
             } else {
 
                 products = await ProductModel.findAll({
