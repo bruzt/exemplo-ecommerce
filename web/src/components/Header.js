@@ -6,6 +6,7 @@ import { useCart } from '../context/cartContext';
 import { useUser } from '../context/userContext';
 import { useOrder } from '../context/orderContext';
 
+import GlobalStyle from './GlobalStyle';
 import LoginModal from './LoginModal';
 import ManuAndSearchBar from './MenuAndSeachBar';
 
@@ -17,33 +18,7 @@ export default function Header() {
 
     return (
         <>
-            <style jsx global>{`
-                * {
-                    margin: 0;
-                    padding: 0;
-                    outline: 0;
-                    box-sizing: border-box;
-                }
-            
-                html, body {
-                    height: 100%;
-                }
-            
-                body {
-                    background: #1C4061;
-                    color: #eee;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-            
-                a {
-                    text-decoration: none;
-                    color: inherit;
-                }
-
-                input, select, button {
-                    background: #eee;
-                }
-            `}</style>
+            <GlobalStyle />
 
             <LoginModal />
 
