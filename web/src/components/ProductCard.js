@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
 
     return (
         <>
-            <Link href='/[productId]/[productName]' as={`/${product.id}/${product.title.split(' ').join('-')}`}>
+            <Link href='/[productId]' as={`/${product.id}?product=${product.title}`}>
                 <a title={product.title}>
                     <div className='p-card'>
                         <div className='img-container'>

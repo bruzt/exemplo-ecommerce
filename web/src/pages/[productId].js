@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { FaBan } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 
-import api from '../../services/api';
-import { useCart } from '../../context/cartContext';
+import api from '../services/api';
+import { useCart } from '../context/cartContext';
 
-import PageLayout from '../../components/PageLayout';
+import PageLayout from '../components/PageLayout';
 
 export async function getStaticPaths() {
 
@@ -15,7 +14,7 @@ export async function getStaticPaths() {
     const paths = response.data.map( (data) => ({ 
         params: { 
             productId: data.id.toString(),
-            productName: data.title.split(' ').join('-')
+            //productName: data.title.split(' ').join('-')
         }}));
         
     return {
@@ -27,8 +26,6 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
 
     const response = await api.get(`/products/${params.productId}`);
-
-    //const props = response.filter( (data) => data.id == params.itemId )[0];
 
     return {
         props: { product: response.data }
@@ -70,7 +67,11 @@ export default function Product({ product }) {
 
             const response = await api.get(`/products/${product.id}`);
 
-            //document.querySelector('.product-body').innerHTML = response.data.html_body;
+            /*router.query = {
+                title: response.data.title
+            }*/
+
+            //console.log(response.data.title)
 
             setProduct(response.data);
             
