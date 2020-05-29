@@ -233,7 +233,7 @@ export default function Cart() {
                                         />
                                     </td>
                                     <td className='td-name'>
-                                        <Link href='/[productId]' as={`/${product.id}?product=${product.title}`}>
+                                        <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
                                             <a>
                                                 <span className='over-hidden'>{product.title}</span>
                                                 {(product.discount_percent != 0)
