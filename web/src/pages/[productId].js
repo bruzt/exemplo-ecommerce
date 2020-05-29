@@ -67,12 +67,6 @@ export default function Product({ product }) {
 
             const response = await api.get(`/products/${product.id}`);
 
-            /*router.query = {
-                title: response.data.title
-            }*/
-
-            //console.log(response.data.title)
-
             setProduct(response.data);
             
         } catch (error) {
