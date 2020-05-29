@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
 
     return (
         <>
-            <Link href='/[productId]' as={`/${product.id}?product=${product.title}`}>
+            <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
                 <a title={product.title}>
                     <div className='p-card'>
                         <div className='img-container'>
@@ -49,6 +49,10 @@ export default function ProductCard({ product }) {
                     overflow: hidden;
                     padding: 10px;
                     background: #0D2235;
+                }
+
+                .p-card:hover {
+                    box-shadow: 5px 5px #16324C;    
                 }
 
                 .p-card img {
