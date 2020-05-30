@@ -17,8 +17,8 @@ export default function Order() {
 
     }, []);
 
-    if(orderContext.order == 'cart') return <Cart />
-    else if(orderContext.order == 'address') return <SelectAddress />
-    else if(orderContext.order == 'payment') return <Payment />
-    else if(orderContext.order == 'thanksForBuy') return <ThanksForBuy />
+    if(orderContext.getOrder == 'cart') return <Cart />
+    else if(orderContext.getOrder == 'address') return <SelectAddress />
+    else if(orderContext.getOrder == 'payment') return <Payment />
+    else if(orderContext.getOrder == 'thanksForBuy') return <ThanksForBuy />
 }

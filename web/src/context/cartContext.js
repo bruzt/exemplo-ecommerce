@@ -4,14 +4,14 @@ const Context = createContext({});
 
 export function CartContextProvider({ children }){
 
-    const [cartState, setCart] = useState([]);
-    const [productsState, setProducts] = useState([]);
+    const [getCart, setCart] = useState([]);
+    const [getProducts, setProducts] = useState([]);
     const [getSubtotalPrice, setSubtotalPrice] = useState(0);
-    const [totalPriceState, setTotalPrice] = useState(0);
-    const [cepInputState, setCepInput] = useState('');
-    const [freightSelectedState, setFreightSelected] = useState(null);
-    const [freightPriceState, setFreightPrice] = useState(null);
-    const [addressIdState, setAddressId] = useState(null);
+    const [getTotalPrice, setTotalPrice] = useState(0);
+    const [getZipCode, setZipCode] = useState('');
+    const [getFreightSelected, setFreightSelected] = useState(null);
+    const [getFreightPrice, setFreightPrice] = useState(null);
+    const [getAddressId, setAddressId] = useState(null);
     const [getFreightMeasures, setFreightMeasures] = useState(null);
 
     useEffect( () => {
@@ -27,9 +27,9 @@ export function CartContextProvider({ children }){
         let cart = [];
         let findIt = false;
 
-        if(cartState.length > 0){
+        if(getCart.length > 0){
             
-            cartState.forEach( (product) => {
+            getCart.forEach( (product) => {
     
                 if(newProduct.id == product.id){
                         
@@ -59,8 +59,8 @@ export function CartContextProvider({ children }){
 
         resetFreight();
 
-        const cart = cartState.filter( (product) => product.id != id);
-        const products = productsState.filter( (product) => product.id != id);
+        const cart = getCart.filter( (product) => product.id != id);
+        const products = getProducts.filter( (product) => product.id != id);
         
         sessionStorage.setItem('cart', JSON.stringify(cart));
         setCart(cart);
@@ -84,23 +84,23 @@ export function CartContextProvider({ children }){
 
     return (
         <Context.Provider value={{ 
-            cart: cartState, 
+            getCart, 
             setCart, 
             addToCart, 
-            removeFromCart ,
-            productsState,
+            removeFromCart,
+            getProducts,
             setProducts,
             getSubtotalPrice,
             setSubtotalPrice,
-            totalPriceState,
+            getTotalPrice,
             setTotalPrice,
-            cepInputState,
-            setCepInput,
-            freightSelectedState,
+            getZipCode,
+            setZipCode,
+            getFreightSelected,
             setFreightSelected,
-            freightPriceState,
+            getFreightPrice,
             setFreightPrice,
-            addressIdState,
+            getAddressId,
             setAddressId,
             getFreightMeasures,
             setFreightMeasures,

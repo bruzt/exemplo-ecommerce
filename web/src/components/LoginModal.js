@@ -4,8 +4,8 @@ import { useUser } from '../context/userContext';
 
 export default function ModalLogin() {
 
-    const [emailState, setEmail] = useState('');
-    const [passwordState, setPasword] = useState('');
+    const [getEmail, setEmail] = useState('');
+    const [getPassword, setPasword] = useState('');
 
     const userContext = useUser();
 
@@ -13,7 +13,7 @@ export default function ModalLogin() {
 
         event.preventDefault();
 
-        userContext.logIn(emailState, passwordState);
+        userContext.logIn(getEmail, getPassword);
     }
     
     return (
@@ -27,7 +27,7 @@ export default function ModalLogin() {
                         <button 
                             type='button' 
                             className='close-modal'
-                            onClick={userContext.handleSwitchModal}
+                            onClick={() => userContext.handleSwitchModal()}
                         >
                             X
                         </button>
@@ -39,7 +39,7 @@ export default function ModalLogin() {
                             <input 
                                 type='email' 
                                 id="login-email"
-                                value={emailState}
+                                value={getEmail}
                                 onChange={(event) => setEmail(event.target.value)}
                             />
                         </div>
@@ -49,7 +49,7 @@ export default function ModalLogin() {
                             <input 
                                 type='password' 
                                 id="login-password"
-                                value={passwordState}
+                                value={getPassword}
                                 onChange={(event) => setPasword(event.target.value)}
                             />
                         </div>
@@ -69,7 +69,7 @@ export default function ModalLogin() {
 
             <style jsx>{`
                 .modal {
-                    display: ${(userContext.modal) ? 'block' : 'none'};
+                    display: ${(userContext.getShowModal) ? 'block' : 'none'};
                     position: fixed; /* Stay in place */
                     z-index: 20; /* Sit on top */
                     left: 0;

@@ -8,10 +8,10 @@ const Context = createContext({});
 
 export function UserContextProvider({ children }){
 
-    const [loginState, setLogin] = useState(false);
-    const [showModalState, setShowModal] = useState(false);
-    const [userState, setUser] = useState(null);
-    const [tokenState, setToken] = useState('');
+    const [getLogin, setLogin] = useState(false);
+    const [getShowModal, setShowModal] = useState(false);
+    const [getUser, setUser] = useState(null);
+    const [getToken, setToken] = useState('');
 
     const router = useRouter();
 
@@ -25,23 +25,23 @@ export function UserContextProvider({ children }){
 
     useEffect( () => {
 
-        if(tokenState.length > 0){
+        if(getToken.length > 0){
 
-            api.defaults.headers.authorization = "Bearer " + tokenState;   
+            api.defaults.headers.authorization = "Bearer " + getToken;   
             
-            getUser();
+            fetchUser();
             
-            sessionStorage.setItem('token', tokenState);
+            sessionStorage.setItem('token', getToken);
     
             setLogin(true);
             setShowModal(false);
         }
 
-    }, [tokenState]);
+    }, [getToken]);
 
     function handleSwitchModal(){
 
-        if(showModalState) setShowModal(false);
+        if(getShowModal) setShowModal(false);
         else setShowModal(true);
     }
 
@@ -75,16 +75,33 @@ export function UserContextProvider({ children }){
         setLogin(false);
     }
 
-    async function getUser(){
+    async function fetchUser(){
 
-        if(tokenState.length > 0){
+        if(getToken.length > 0){
 
-            const tokenPayload = jwt.decode(tokenState);
+            const tokenPayload = jwt.decode(getToken);
     
             const response = await api.get('/users/' + tokenPayload.id);
     
             setUser(response.data);
         }
+    }
+
+    function formatZipCode(value){
+
+        let zipCode = String(value);
+
+        zipCode = zipCode.replace(/[^0-9]/g, "");
+
+        if (zipCode.length == 8) {
+
+            const part1 = zipCode.slice(0, 5);
+            const part2 = zipCode.slice(5, 8);
+
+            zipCode = `${part1}-${part2}`;
+        }
+
+        return zipCode;
     }
 
     /**
@@ -103,7 +120,7 @@ export function UserContextProvider({ children }){
 
             const response = await api.post('/addresses', addressObject);
 
-            const user = { ...userState };
+            const user = { ...getUser };
             user.addresses.push(response.data);
             setUser(user);
 
@@ -121,7 +138,7 @@ export function UserContextProvider({ children }){
 
             await api.delete('/addresses/' + id);
 
-            const user = { ...userState };
+            const user = { ...getUser };
             const addresses = user.addresses.filter( (address) => address.id != id);
             user.addresses = addresses;
             setUser(user);
@@ -136,15 +153,16 @@ export function UserContextProvider({ children }){
 
     return (
         <Context.Provider value={{ 
-            modal: showModalState,  
-            login: loginState, 
+            getShowModal,  
+            getLogin, 
             handleSwitchModal, 
             logIn, 
             logOut, 
-            userData: userState,
+            getUser,
             setUser,
             addAddress,
-            deleteAddress
+            deleteAddress,
+            formatZipCode
         }}>
             {children}
         </Context.Provider>

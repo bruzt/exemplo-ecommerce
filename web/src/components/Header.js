@@ -33,24 +33,24 @@ export default function Header() {
                     </Link>
 
                     <div className='login-cart'>
-                        {(userContext.login == false) ? (
+                        {(userContext.getLogin == false) ? (
                             <button
                                 className='login-button'
                                 type='button'
                                 title='Fazer Login'
-                                onClick={userContext.handleSwitchModal}
+                                onClick={() => userContext.handleSwitchModal()}
                             >
                                 Entrar&nbsp;<FaSignInAlt />
                             </button>
                         ) 
-                        : ((userContext.userData) ? (
+                        : ((userContext.getUser) ? (
 
                                 <button
                                     className='user-button'
                                     type='button'
                                     onClick={() => userContext.logOut()}
                                 >
-                                    Olá, {userContext.userData.name.split(' ')[0]}
+                                    Olá, {userContext.getUser.name.split(' ')[0]}
                                 </button>
                             ) : <span></span>
                         )}
@@ -59,7 +59,7 @@ export default function Header() {
                             <Link href='/order'>
                                 <a onClick={() => orderContext.setOrder('cart')}>
                                     <div className='cart-number'>
-                                        <p>{cartContext.cart.length}</p>
+                                        <p>{cartContext.getCart.length}</p>
                                     </div>
                                     <FaShoppingCart size={40} />
                                     <p>Carrinho</p>

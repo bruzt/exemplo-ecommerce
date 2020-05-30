@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { FaArrowLeft } from 'react-icons/fa';
 
-//import api from '../services/api';
-
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
@@ -12,17 +10,17 @@ import PageLayout from './PageLayout';
 
 export default function Address() {
 
-    const [showAddAddrState, setshowAddAddr] = useState(false);
-    const [disableAddAddrState, setDisableAddAddr] = useState(true);
+    const [getShowAddAddr, setShowAddAddr] = useState(false);
+    const [getDisableAddAddrButton, setDisableAddAddrButton] = useState(true);
 
-    const [streetState, setStreet] = useState('');
-    const [numberState, setNumber] = useState('');
-    const [neighborhoodState, setNeighborhood] = useState('');
-    const [cityState, setCity] = useState('');
-    const [stateState, setState] = useState('');
-    const [zipCodeState, setZipCode] = useState('');
+    const [getStreet, setStreet] = useState('');
+    const [getNumber, setNumber] = useState('');
+    const [getNeighborhood, setNeighborhood] = useState('');
+    const [getCity, setCity] = useState('');
+    const [getState, setState] = useState('');
+    const [getZipCode, setZipCode] = useState('');
 
-    const [getDisabledPaymentButton, setDisabledPaymentButton] = useState(true);
+    const [getDisabledGoToPaymentButton, setDisabledGoToPaymentButton] = useState(true);
 
     const userContext = useUser();
     const cartContext = useCart();
@@ -36,51 +34,32 @@ export default function Address() {
 
     useEffect( () => {
 
-        handleDisabledPaymentButton();
-        
-    }, [cartContext.addressIdState]);
-
-    useEffect( () => {
-
-        if( streetState.length < 3 ||
-            numberState.length < 1 ||
-            neighborhoodState.length < 3 ||
-            cityState.length < 3 ||
-            stateState.length < 1 ||
-            zipCodeState.length < 8 ||
-            zipCodeState.length > 9
+        if( getStreet.length < 3 ||
+            getNumber.length < 1 ||
+            getNeighborhood.length < 3 ||
+            getCity.length < 3 ||
+            getState.length < 1 ||
+            getZipCode.length < 8 ||
+            getZipCode.length > 9
         ){
-            setDisableAddAddr(true)
+            setDisableAddAddrButton(true)
 
-        } else setDisableAddAddr(false)
+        } else setDisableAddAddrButton(false)
 
-    }, [streetState, numberState, neighborhoodState, cityState, stateState, zipCodeState]);
-
-    useEffect(() => {
-
-        if(zipCodeState.length > 0){
-            
-            let cepInput = String(zipCodeState);
-
-            if(cepInput.length < 9) cepInput = cepInput.replace(/[^0-9]/g, "");
-
-            if(cepInput.length == 8){
-
-                const part1 = cepInput.slice(0,5);
-                const part2 = cepInput.slice(5,8);
-                
-                cepInput = `${part1}-${part2}`;
-            }
-
-            setZipCode(cepInput);
-        }
-
-    }, [zipCodeState]);
+    }, 
+        [
+            getStreet, 
+            getNumber, 
+            getNeighborhood, 
+            getCity, getState, 
+            getZipCode
+        ]
+    );
 
     function switchShowAddAddr(){
 
-        if(showAddAddrState) setshowAddAddr(false);
-        else setshowAddAddr(true);
+        if(getShowAddAddr) setShowAddAddr(false);
+        else setShowAddAddr(true);
     }
 
     function handleAddAddress(event){
@@ -88,16 +67,16 @@ export default function Address() {
         event.preventDefault();
 
         const add = userContext.addAddress({
-            street: streetState,
-            number: numberState,
-            neighborhood: neighborhoodState,
-            city: cityState,
-            state: stateState,
-            zipcode: zipCodeState
+            street: getStreet,
+            number: getNumber,
+            neighborhood: getNeighborhood,
+            city: getCity,
+            state: getState,
+            zipcode: getZipCode
         });
         
         if(add){
-            setshowAddAddr(false);
+            setShowAddAddr(false);
             setStreet('');
             setNumber('');
             setNeighborhood('');
@@ -109,22 +88,24 @@ export default function Address() {
 
     function handleDeleteAddress(id){
         
-        if(cartContext.addressIdState == id) cartContext.setAddressId(null);
+        if(cartContext.getAddressId == id) cartContext.setAddressId(null);
         
         userContext.deleteAddress(id);
     }
 
-    function handleDisabledPaymentButton(){
+    function handleDisabledGoToPaymentButton(addrId){
 
-        const [ address ] = userContext.userData.addresses.filter( (address) => address.id == cartContext.addressIdState);
+        const [ address ] = userContext.getUser.addresses.filter( (address) => address.id == addrId);
 
-        if(cartContext.addressIdState == null || !address || address.zipcode != cartContext.cepInputState){
+        if(addrId == null || !address || address.zipcode != cartContext.getZipCode){
 
-            setDisabledPaymentButton(true);
+            cartContext.setAddressId(addrId);
+            setDisabledGoToPaymentButton(true);
 
         } else {
 
-            setDisabledPaymentButton(false);
+            cartContext.setAddressId(addrId);
+            setDisabledGoToPaymentButton(false);
         }
     }
 
@@ -152,10 +133,10 @@ export default function Address() {
 
                     <div className='addr-grid'>
 
-                        {(userContext.userData.addresses) 
-                            ? userContext.userData.addresses.map( (address) => {
+                        {(userContext.getUser.addresses) 
+                            ? userContext.getUser.addresses.map( (address) => {
                                     return (
-                                        <div key={address.id} className={`addr-card ${(cartContext.addressIdState == address.id) ? 'selected' : ''}`}>
+                                        <div key={address.id} className={`addr-card ${(cartContext.getAddressId == address.id) ? 'selected' : ''}`}>
                                             <div className='addr-data'>
                                                 <div className='addr-remove'>
                                                     <button 
@@ -167,7 +148,7 @@ export default function Address() {
                                                 </div>
                                                 
                                                 <a 
-                                                    onClick={() => cartContext.setAddressId(address.id)}
+                                                    onClick={() => handleDisabledGoToPaymentButton(address.id)}
                                                 >
                                                     <div>
                                                         <p>Logradouro: {address.street}</p>
@@ -197,36 +178,36 @@ export default function Address() {
                         </button>
                         <button
                             className='select-button'
-                            disabled={getDisabledPaymentButton}
+                            disabled={getDisabledGoToPaymentButton}
                             onClick={() => orderContext.setOrder('payment')}
                         >
                             Ir para pagamento
                         </button>
                     </div>
 
-                    {showAddAddrState && (
+                    {getShowAddAddr && (
                         <form className='add-addr-form'>
                             
                             <div className='flex-column'>
                                 <label htmlFor="street">Logradouro: </label>
-                                <input id='street' type="text" value={streetState} onChange={(event) => setStreet(event.target.value)} />
+                                <input id='street' type="text" value={getStreet} onChange={(event) => setStreet(event.target.value)} />
                             </div>
                         
                             <div className='flex-row'>
                                 <div className='flex-column'>
                                     <label htmlFor="number"> Nº: </label>
-                                    <input id='number' type="text" value={numberState} onChange={(event) => setNumber(event.target.value)} />
+                                    <input id='number' type="text" value={getNumber} onChange={(event) => setNumber(event.target.value)} />
                                 </div>
                                 <div className='flex-column'>
                                     <label htmlFor="district">Bairro: </label>
-                                    <input id='district' type="text" value={neighborhoodState} onChange={(event) => setNeighborhood(event.target.value)} />
+                                    <input id='district' type="text" value={getNeighborhood} onChange={(event) => setNeighborhood(event.target.value)} />
                                 </div>
                             </div>
 
                             <div  className='flex-row'>
                                 <div className='flex-column'>
                                     <label htmlFor="city">Cidade: </label>
-                                    <input id='city' type="text" value={cityState} onChange={(event) => setCity(event.target.value)} />
+                                    <input id='city' type="text" value={getCity} onChange={(event) => setCity(event.target.value)} />
                                 </div>
 
                                 <div className='flex-column'>
@@ -272,7 +253,7 @@ export default function Address() {
                                         id='zipcode' 
                                         type="text" 
                                         maxLength={9}
-                                        value={zipCodeState} onChange={(event) => setZipCode(event.target.value)} 
+                                        value={getZipCode} onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))} 
                                     />
                                 </div>
                             </div>
@@ -280,7 +261,7 @@ export default function Address() {
                             <button 
                                 className='addr-submit'
                                 type='submit'
-                                disabled={disableAddAddrState}
+                                disabled={getDisableAddAddrButton}
                                 onClick={handleAddAddress}
                             >
                                 Cadastrar
@@ -334,7 +315,7 @@ export default function Address() {
                 }
 
                 .selected {
-                    border: 3px solid ${(getDisabledPaymentButton) ? '#a32e39' : '#3E8C34'}
+                    border: 3px solid ${(getDisabledGoToPaymentButton) ? '#a32e39' : '#3E8C34'}
                 }
 
                 .addr-card .addr-data a div {
@@ -500,14 +481,14 @@ export default function Address() {
                     align-self: center;
                     border: 0;
                     border-radius: 5px;
-                    background: ${(disableAddAddrState) ? '#a32e39' : '#3E8C34'};
+                    background: ${(getDisableAddAddrButton) ? '#a32e39' : '#3E8C34'};
                     font-size: 20px;
                     cursor: pointer;
                     color: inherit;
                 }
 
                 .addr-submit:hover {
-                    background: ${(disableAddAddrState) ? '#bf2232' : '#41A933'};
+                    background: ${(getDisableAddAddrButton) ? '#bf2232' : '#41A933'};
                 }
 
                 .addr-submit:active {

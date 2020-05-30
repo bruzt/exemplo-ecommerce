@@ -34,34 +34,34 @@ export async function getStaticProps({ params }) {
 
 export default function Product({ product }) {
 
-    const [qtdState, setQtd] = useState(1);
-    const [buyButtonDisabledState, setBuyButtonDisabled] = useState(false);
-    const [productState, setProduct] = useState({});
+    const [getQuantity, setQuantity] = useState(1);
+    const [getBuyButtonDisabled, setBuyButtonDisabled] = useState(false);
+    const [getProduct, setProduct] = useState({});
 
     const cartContext = useCart();
     const router = useRouter();
 
-    const finalPrice = (productState.discount_percent == 0) 
-        ? Number(productState.price).toFixed(2)
-        : (productState.price - (productState.price * (productState.discount_percent/100))).toFixed(2);
+    const finalPrice = (getProduct.discount_percent == 0) 
+        ? Number(getProduct.price).toFixed(2)
+        : (getProduct.price - (getProduct.price * (getProduct.discount_percent/100))).toFixed(2);
 
     useEffect( () => {
 
-        getProduct();
+        fetchProduct();
 
     }, []);
 
     useEffect( () => {
 
-        if(productState.quantity_stock == 0){
+        if(getProduct.quantity_stock == 0){
 
             setBuyButtonDisabled(true);
-            setQtd(0);
+            setQuantity(0);
         }
 
-    }, [productState]);
+    }, [getProduct]);
 
-    async function getProduct(){
+    async function fetchProduct(){
 
         try {
 
@@ -75,28 +75,28 @@ export default function Product({ product }) {
         }
     }
 
-    function verifyQtd(value){
+    function handleQuantity(value){
 
-        if(productState.quantity_stock > 0){
+        if(getProduct.quantity_stock > 0){
 
             if(value == 0 || value == null){
                     
                 setBuyButtonDisabled(true);
-                setQtd(value);  
+                setQuantity(value);  
     
             } else if (value < 0){
     
                 setBuyButtonDisabled(true);
-                setQtd(0);  
+                setQuantity(0);  
         
-            } else if(value > productState.quantity_stock){
+            } else if(value > getProduct.quantity_stock){
     
-                setQtd(productState.quantity_stock);
+                setQuantity(getProduct.quantity_stock);
                 setBuyButtonDisabled(false);
     
             } else {
     
-                setQtd(value);
+                setQuantity(value);
                 setBuyButtonDisabled(false);
             }
 
@@ -105,7 +105,7 @@ export default function Product({ product }) {
 
     function addToCartButton(){
 
-        cartContext.addToCart({ id: productState.id, qtd: qtdState });
+        cartContext.addToCart({ id: getProduct.id, qtd: getQuantity });
         
         router.push('/order');
     }
@@ -155,16 +155,16 @@ export default function Product({ product }) {
                         <div className='buy'>
                             <h2>Preço</h2>
                             <p className='price'>R$ {finalPrice} a unidade</p>
-                            {(productState.quantity_stock > 0)
-                                ? (productState.discount_percent != 0) 
-                                    ? <p className='discount'>-{productState.discount_percent}%</p>
+                            {(getProduct.quantity_stock > 0)
+                                ? (getProduct.discount_percent != 0) 
+                                    ? <p className='discount'>-{getProduct.discount_percent}%</p>
                                     : null
                                 : <p className='lacking'>Em falta</p>
                             }
-                            <p>Qtd: <input type="number" id="qtd" value={qtdState} onChange={(event) => verifyQtd(event.target.value)} /></p> 
-                            <p>Disponível: {productState.quantity_stock}</p>
-                            <p className='total'>Total: R$ {(finalPrice * qtdState).toFixed(2)}</p>
-                            <button type='button' onClick={addToCartButton} disabled={buyButtonDisabledState}>
+                            <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(event.target.value)} /></p> 
+                            <p>Disponível: {getProduct.quantity_stock}</p>
+                            <p className='total'>Total: R$ {(finalPrice * getQuantity).toFixed(2)}</p>
+                            <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
                                 Adicionar ao carrinho
                             </button>
                         </div>
@@ -179,7 +179,7 @@ export default function Product({ product }) {
                         <p>Diametro: {product.diameter}cm</p>
                     </div>
 
-                    <div dangerouslySetInnerHTML={{ __html: productState.html_body }} />
+                    <div dangerouslySetInnerHTML={{ __html: getProduct.html_body }} />
 
                 </section>
                 
@@ -262,7 +262,7 @@ export default function Product({ product }) {
                 }
 
                 .buy button {
-                    background: ${(buyButtonDisabledState) ? '#a32e39' : '#3E8C34'};
+                    background: ${(getBuyButtonDisabled) ? '#a32e39' : '#3E8C34'};
                     width: 100%;
                     height: 50px;
                     border: 0;

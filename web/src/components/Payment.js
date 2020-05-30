@@ -91,101 +91,81 @@ export default function Payment() {
         getZipCode
     ]);
 
-    useEffect(() => {
+    function handleCardNumber(value){
 
-        if (getCardNumber.length > 0) {
+        let cardNumber = String(value);
 
-            let cardNumber = String(getCardNumber);
+        cardNumber = cardNumber.replace(/[^0-9]/g, "");
 
-            if (cardNumber.length < 17) cardNumber = cardNumber.replace(/[^0-9]/g, "");
+        if (cardNumber.length == 16) {
 
-            if (cardNumber.length == 16) {
+            const part1 = cardNumber.slice(0, 4);
+            const part2 = cardNumber.slice(4, 8);
+            const part3 = cardNumber.slice(8, 12);
+            const part4 = cardNumber.slice(12, 16);
 
-                const part1 = cardNumber.slice(0, 4);
-                const part2 = cardNumber.slice(4, 8);
-                const part3 = cardNumber.slice(8, 12);
-                const part4 = cardNumber.slice(12, 16);
-
-                cardNumber = `${part1} ${part2} ${part3} ${part4}`;
-            }
-
-            setCardNumber(cardNumber);
+            cardNumber = `${part1} ${part2} ${part3} ${part4}`;
         }
 
-    }, [getCardNumber]);
+        setCardNumber(cardNumber);
+    }
 
-    useEffect(() => {
+    function handleCardCvv(value){
 
-        if (isNaN(getCardExpirationMonth)) setCardExpirationMonth('');
-        if (isNaN(getCardExpirationYear)) setCardExpirationYear('');
-        if (isNaN(getCardCvv)) setCardCvv('');
+        let cardCvv = String(value);
 
-    }, [getCardExpirationMonth, getCardExpirationYear, getCardCvv]);
+        cardCvv = cardCvv.replace(/[^0-9]/g, "");
 
-    useEffect(() => {
-
-        if (getZipCode.length > 0) {
-
-            let cepInput = String(getZipCode);
-
-            if (cepInput.length < 9) cepInput = cepInput.replace(/[^0-9]/g, "");
-
-            if (cepInput.length == 8) {
-
-                const part1 = cepInput.slice(0, 5);
-                const part2 = cepInput.slice(5, 8);
-
-                cepInput = `${part1}-${part2}`;
-            }
-
-            setZipCode(cepInput);
-        }
-
-    }, [getZipCode]);
+        setCardCvv(cardCvv);
+    }
 
     function handleCpf(value) {
 
-        if (value.length < 12) value = value.replace(/[^0-9]/g, "");
+        let cpf = String(value);
 
-        if (value.length == 11) {
+        cpf = cpf.replace(/[^0-9]/g, "");
 
-            const part1 = value.slice(0, 3);
-            const part2 = value.slice(3, 6);
-            const part3 = value.slice(6, 9);
-            const part4 = value.slice(9, 11);
+        if (cpf.length == 11) {
 
-            value = `${part1}.${part2}.${part3}-${part4}`;
+            const part1 = cpf.slice(0, 3);
+            const part2 = cpf.slice(3, 6);
+            const part3 = cpf.slice(6, 9);
+            const part4 = cpf.slice(9, 11);
+
+            cpf = `${part1}.${part2}.${part3}-${part4}`;
         }
 
-        setValidCpf(validateCpf(value));
+        setValidCpf(validateCpf(cpf));
 
-        setCpf(value);
+        setCpf(cpf);
     }
 
-    function handleTel(value) {
+    function handlePhone(value) {
 
-        value = value.replace(/[^0-9]/g, "");
+        let phone = String(value);
+        
+        phone = phone.replace(/[^0-9]/g, "");
 
-        if (value.length == 10) {
+        if (phone.length == 10) {
 
-            const part1 = value.slice(0, 2);
-            const part2 = value.slice(2, 6);
-            const part3 = value.slice(6, 10);
+            const part1 = phone.slice(0, 2);
+            const part2 = phone.slice(2, 6);
+            const part3 = phone.slice(6, 10);
 
-            value = `(${part1}) ${part2}-${part3}`;
+            phone = `(${part1}) ${part2}-${part3}`;
         }
 
-        if (value.length == 11) {
+        if (phone.length == 11) {
 
-            const part1 = value.slice(0, 2);
-            const part2 = value.slice(2, 3);
-            const part3 = value.slice(3, 7);
-            const part4 = value.slice(7, 11);
+            const part1 = phone.slice(0, 2);
+            const part2 = phone.slice(2, 3);
+            const part3 = phone.slice(3, 7);
+            const part4 = phone.slice(7, 11);
 
-            value = `(${part1}) ${part2}-${part3}-${part4}`;
+            phone = `(${part1}) ${part2}-${part3}-${part4}`;
         }
 
-        setPhone(value);
+        setPhone(phone);
     }
 
     async function handlePaySubmit(event) {
@@ -194,14 +174,14 @@ export default function Payment() {
 
         setDisabledPayButton(true);
 
-        const amount = Number(String(cartContext.totalPriceState).replace('.', '')).toFixed(2);
+        const amount = Number(String(cartContext.getTotalPrice).replace('.', '')).toFixed(2);
         const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
         const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
         const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
-        const [address] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
+        const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
 
-        const products_id = cartContext.cart.map( (product) => product.id);
-        const quantity_buyed = cartContext.cart.map( (product) => product.qtd);
+        const products_id = cartContext.getCart.map( (product) => product.id);
+        const quantity_buyed = cartContext.getCart.map( (product) => product.qtd);
 
         try {
 
@@ -209,9 +189,9 @@ export default function Payment() {
                 products_id,
                 quantity_buyed,
                 address_id: address.id,
-                freight_name: cartContext.freightSelectedState,
-                freight_price: Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')),
-                total_price: cartContext.totalPriceState,
+                freight_name: cartContext.getFreightSelected,
+                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')),
+                total_price: cartContext.getTotalPrice,
                 credit_card: {
                     amount,
                     installments: Number(getInstallments),
@@ -220,9 +200,9 @@ export default function Payment() {
                     card_expiration_date,
                     card_holder_name: getCardHolderName,
                     customer: {
-                        external_id: String(userContext.userData.id),
-                        name: userContext.userData.name,
-                        email: userContext.userData.email,
+                        external_id: String(userContext.getUser.id),
+                        name: userContext.getUser.name,
+                        email: userContext.getUser.email,
                         type: "individual",
                         country: "br",
                         phone_numbers: ["+55" + phone],
@@ -246,8 +226,8 @@ export default function Payment() {
                         }
                     },
                     shipping: {
-                        name: userContext.userData.name,
-                        fee: Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '')),
+                        name: userContext.getUser.name,
+                        fee: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '')),
                         address: {
                             street: address.street,
                             street_number: address.number,
@@ -261,7 +241,7 @@ export default function Payment() {
                 }
             });
 
-            const user = { ...userContext.userData };
+            const user = { ...userContext.getUser };
             user.orders.push(response.order);
             userContext.setUser(user);
 
@@ -278,7 +258,7 @@ export default function Payment() {
 
     function handleSameAddressButton(){
 
-        const [ address ] = userContext.userData.addresses.filter((address) => address.id == cartContext.addressIdState);
+        const [ address ] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
 
         setStreet(address.street);
         setNumber(address.number);
@@ -331,7 +311,7 @@ export default function Payment() {
                                             type="text"
                                             maxLength={19}
                                             value={getCardNumber}
-                                            onChange={(event) => setCardNumber(event.target.value)}
+                                            onChange={(event) => handleCardNumber(event.target.value)}
                                         />
                                     </div>
 
@@ -345,7 +325,7 @@ export default function Payment() {
                                             type="text"
                                             maxLength={3}
                                             value={getCardCvv}
-                                            onChange={(event) => setCardCvv(event.target.value)}
+                                            onChange={(event) => handleCardCvv(event.target.value)}
                                         />
                                     </div>
 
@@ -403,7 +383,7 @@ export default function Payment() {
                                             id='tel'
                                             maxLength={16}
                                             value={getPhone}
-                                            onChange={(event) => handleTel(event.target.value)}
+                                            onChange={(event) => handlePhone(event.target.value)}
                                         />
                                     </div>
                                     <div className='flex-column'>
@@ -510,7 +490,7 @@ export default function Payment() {
                                             type="text"
                                             maxLength={9}
                                             value={getZipCode}
-                                            onChange={(event) => setZipCode(event.target.value)}
+                                            onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))}
                                         />
                                     </div>
                                 </div>
@@ -529,8 +509,8 @@ export default function Payment() {
 
                             <div className='freight-total'>
                                 <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                                <p>Frete: R$ {Number((cartContext.freightPriceState[cartContext.freightSelectedState].Valor).replace(',', '.')).toFixed(2)}</p>
-                                <p>Total: R$ {Number(cartContext.totalPriceState).toFixed(2)}</p>
+                                <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)}</p>
+                                <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
                             </div>
 
                             <div>
@@ -538,12 +518,12 @@ export default function Payment() {
                                     id='installments'
                                     onChange={(event) => setInstallments(event.target.value)}
                                 >
-                                    <option value={1}>1x de R$ {Number(cartContext.totalPriceState).toFixed(2)}</option>
-                                    <option value={2}>2x de R$ {Number(cartContext.totalPriceState/2).toFixed(2)} (sem juros)</option>
-                                    <option value={3}>3x de R$ {Number(cartContext.totalPriceState/3).toFixed(2)} (sem juros)</option>
-                                    <option value={4}>4x de R$ {Number(cartContext.totalPriceState/4).toFixed(2)} (sem juros)</option>
-                                    <option value={5}>5x de R$ {Number(cartContext.totalPriceState/5).toFixed(2)} (sem juros)</option>
-                                    <option value={6}>6x de R$ {Number(cartContext.totalPriceState/6).toFixed(2)} (sem juros)</option>
+                                    <option value={1}>1x de R$ {Number(cartContext.getTotalPrice).toFixed(2)}</option>
+                                    <option value={2}>2x de R$ {Number(cartContext.getTotalPrice/2).toFixed(2)} (sem juros)</option>
+                                    <option value={3}>3x de R$ {Number(cartContext.getTotalPrice/3).toFixed(2)} (sem juros)</option>
+                                    <option value={4}>4x de R$ {Number(cartContext.getTotalPrice/4).toFixed(2)} (sem juros)</option>
+                                    <option value={5}>5x de R$ {Number(cartContext.getTotalPrice/5).toFixed(2)} (sem juros)</option>
+                                    <option value={6}>6x de R$ {Number(cartContext.getTotalPrice/6).toFixed(2)} (sem juros)</option>
                                 </select>
                             </div>
 
@@ -761,6 +741,7 @@ export default function Payment() {
                     background: #3E8C34;
                     font-size: 20px;
                     font-weight: bold;
+                    color: inherit;
                 }
 
                 .button-total button:hover {

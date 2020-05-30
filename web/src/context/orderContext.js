@@ -4,10 +4,10 @@ const Context = createContext({});
 
 export function OrderContextProvider({ children }){
 
-    const [orderState, setOrder] = useState('cart');
+    const [getOrder, setOrder] = useState('cart');
 
     return (
-        <Context.Provider value={{ order: orderState, setOrder }}>
+        <Context.Provider value={{ getOrder, setOrder }}>
             {children}
         </Context.Provider>
     );

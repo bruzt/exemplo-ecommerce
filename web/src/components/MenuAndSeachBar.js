@@ -14,12 +14,15 @@ export default function MenuAndSearchBar() {
 
         event.preventDefault();
 
-        router.push({
-            pathname: '/search',
-            query: {
-                title: filterBarContext.getSearchBarText
-            }
-        })
+        if(String(filterBarContext.getSearchBarText).length > 0){
+
+            router.push({
+                pathname: '/search',
+                query: {
+                    title: filterBarContext.getSearchBarText
+                }
+            });
+        }
     }
 
     function categoryTree(){
@@ -162,11 +165,12 @@ const categoryMenuStyle = css`
         background: #0D2235; 
         float: left; 
         height: 40px; 
-        line-height: 45px; 
+        line-height: 40px; 
         font-size: 20px;
         text-align: center; 
         position: relative;
         user-select: none; 
+        border-radius: 2px; 
     }
                 
     ul li:hover { 
