@@ -12,21 +12,34 @@ const testImages = [
 
 export default function ImageSlider({ images }) {
 
-    const customRenderThumb = (children) => children.map( (item, index) => {
-        
-        return (
-            <>
-                <img src={item.props.src} key={index} /> 
+    const customRenderThumb = (children) => children.map( (item, index) => (
+        <React.Fragment key={index}>
 
-                <style jsx>{`
-                    img {
-                        width: 70px;
-                        height: 40px;
-                    }
-                `}</style>
-            </>
-        );
-    });
+            <div className="thumb-container">
+                <img src={item.props.src} /> 
+            </div>
+
+            <style jsx>{`
+                .thumb-container {
+                    width: 70px;
+                    height: 40px;
+
+                    background: #0D2235;
+                }
+
+                .thumb-container img {
+                   
+                    width: auto;
+                    max-width: 70px;
+                    height: auto;
+                    max-height: 40px;
+
+                    display: block;
+                    margin: 0 auto;
+                }
+            `}</style>
+        </React.Fragment>
+    ));
         
     return (
         <>
@@ -34,6 +47,11 @@ export default function ImageSlider({ images }) {
 
                 <Carousel
                     renderThumbs={customRenderThumb}
+                    autoPlay={true}
+                    stopOnHover={true}
+                    infiniteLoop={true}
+                    interval={5000}
+                    emulateTouch={true}
                 >
                     {(images.length > 0)
                         ? images.map((image, index) => <img src={image.url} key={index} />)
