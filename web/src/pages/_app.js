@@ -1,5 +1,7 @@
 import React from 'react';
 
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
 import { UserContextProvider } from '../context/userContext';
 import { OrderContextProvider } from '../context/orderContext';
 import { CartContextProvider } from '../context/cartContext';

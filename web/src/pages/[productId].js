@@ -6,6 +6,7 @@ import api from '../services/api';
 import { useCart } from '../context/cartContext';
 
 import PageLayout from '../components/PageLayout';
+import ImageSlider from '../components/ImageSlider';
 
 export async function getStaticPaths() {
 
@@ -143,14 +144,8 @@ export default function Product({ product }) {
                     <h1>{product.title}</h1>
 
                     <div className='img-buy'>
-                        <div className='img-container'>
-                            <img 
-                            src='https://i.picsum.photos/id/892/800/400.jpg'
-                                /*src='https://picsum.photos/800/400'*/
-                                /*src={product.images[0] && product.images[0].url} */
-                                alt={'imagem-' + product.title.split(' ').join('-')} 
-                            />
-                        </div>
+                    
+                        <ImageSlider images={product.images} />
 
                         <div className='buy'>
                             <h2>Preço</h2>
@@ -211,11 +206,11 @@ export default function Product({ product }) {
                     justify-content: center;
                 }
 
-                .img-container img {
+                /*.img-container img {
                     width: 100%;
                     max-width: 700px;
                     height: auto;
-                }
+                }*/
 
                 .buy {
                     width: 100%;
