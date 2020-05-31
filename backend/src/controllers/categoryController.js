@@ -10,7 +10,12 @@ module.exports = {
         try {
 
             const categories = await CategoryModel.findAll({
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                attributes: { 
+                    exclude: ['createdAt', 'updatedAt'] 
+                },
+                order: [
+                    ['name', 'ASC']
+                ]
             });
 
             return res.json(categories);
