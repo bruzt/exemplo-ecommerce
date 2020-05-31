@@ -34,7 +34,7 @@ export default function Search() {
                 response = await api.get(`/products?category=${router.query.categoryId}`);
             }
 
-            setProducts(response.data);
+            if(response) setProducts(response.data);
             
         } catch (error) {
             console.log(error);
