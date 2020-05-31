@@ -25,9 +25,22 @@ export default function MenuAndSearchBar() {
         }
     }
 
+    function handleCategorySearch(event, category){
+
+        event.stopPropagation();
+
+        router.push({
+            pathname: '/search',
+            query: {
+                categoryId: category.id,
+                category: String(category.name).split(' ').join('-')
+            }
+        });
+    }
+
     function categoryTree(){
 
-        const firstLevels = filterBarContext.getCategories.filter(item => !item.parent);
+        const firstLevels = filterBarContext.getCategories.filter(item => !item.parent_id);
 
         return (
             <>
@@ -46,7 +59,7 @@ export default function MenuAndSearchBar() {
 
     function buildCategoryTree(category){
 
-        const children = filterBarContext.getCategories.filter(child => child.parent == category.id)
+        const children = filterBarContext.getCategories.filter(child => child.parent_id == category.id)
 
         let hasChildren = false;
 
@@ -71,19 +84,6 @@ export default function MenuAndSearchBar() {
 
             </React.Fragment>
         );
-    }
-
-    function handleCategorySearch(event, category){
-
-        event.stopPropagation();
-
-        router.push({
-            pathname: '/search',
-            query: {
-                categoryId: category.id,
-                categoryName: category.name
-            }
-        });
     }
 
     return (

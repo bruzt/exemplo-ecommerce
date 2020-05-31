@@ -63,10 +63,12 @@ module.exports = {
                             association: 'category',
                             attributes: { exclude: ['createdAt', 'updatedAt'] },
                             where: { 
-                                [Op.or]: [
+                                id: req.query.category
+
+                                /*[Op.or]: [
                                     { id: req.query.category },
-                                    { parent: req.query.category }
-                                ]
+                                    { parent_id: req.query.category }
+                                ]*/
                             }
                         }
                     ]

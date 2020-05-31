@@ -7,7 +7,7 @@ class CategoryModel extends Model {
         super.init({
 
             name: DataTypes.STRING,
-            parent: DataTypes.INTEGER,
+            parent_id: DataTypes.INTEGER,
 
         }, {
             tableName: 'categories',

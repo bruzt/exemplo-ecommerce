@@ -17,7 +17,7 @@ module.exports = {
         
         [Segments.BODY]: Joi.object().keys({
             name: Joi.string().required(),
-            parent: Joi.number()
+            parent_id: Joi.number()
         })
     }),
 
@@ -32,7 +32,7 @@ module.exports = {
         
         [Segments.BODY]: Joi.object().keys({
             name: Joi.string(),
-            parent: Joi.number()
+            parent_id: Joi.number()
         }).min(1)
     }),
     

@@ -19,7 +19,7 @@ module.exports = {
                 allowNull: false,
             },
 
-            parent: {
+            parent_id: {
                 type: Sequelize.INTEGER,
             },
 
