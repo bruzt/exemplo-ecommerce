@@ -1,6 +1,8 @@
 const express = require('express');
 const { Op } = require('sequelize');
 
+const findCategoriesChildrenIds = require('../util/findCategoriesChildrenIds');
+
 const ProductModel = require('../models/ProductModel');
 const CategoryModel = require('../models/CategoryModel');
 
@@ -44,6 +46,15 @@ module.exports = {
 
             } else if(req.query.category){
 
+                let categories = await CategoryModel.findAll();
+
+                categories = categories.map( (category) => ({
+                    id: category.id,
+                    parent_id: category.parent_id
+                }));
+
+                const categoriesIds = findCategoriesChildrenIds(req.query.category, categories);
+                
                 products = await ProductModel.findAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
@@ -61,16 +72,13 @@ module.exports = {
                         },                    
                         {
                             association: 'category',
-                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                            attributes: { 
+                                exclude: ['createdAt', 'updatedAt'] 
+                            },
                             where: { 
-                                id: req.query.category
-
-                                /*[Op.or]: [
-                                    { id: req.query.category },
-                                    { parent_id: req.query.category }
-                                ]*/
-                            }
-                        }
+                                id: categoriesIds
+                            },
+                       }
                     ]
                 });
                 
