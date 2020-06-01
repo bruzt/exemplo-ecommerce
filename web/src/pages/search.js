@@ -10,6 +10,7 @@ import ProductCard from '../components/ProductCard';
 export default function Search() {
 
     const [getProducts, setProducts] = useState([]);
+    const [getFilter, setFilter] = useState('');
 
     const router = useRouter();
 
@@ -17,7 +18,20 @@ export default function Search() {
 
         fetchProducts();
 
-    }, [router.query.title, router.query.categoryId]);
+    }, [router.query, getFilter]);
+
+    function handleChangeFilter(value){
+
+        setFilter(value);
+
+        router.push({
+            pathname: '/search',
+            query: {
+                ...router.query,
+                filter: value
+            }
+        })
+    }
 
     async function fetchProducts(){
 
@@ -25,13 +39,18 @@ export default function Search() {
 
             let response;
 
+            let filter = '';
+            
+            if(getFilter == "lowest-price") filter = '&filter=lowest-price'
+            else if(getFilter == "biggest-price") filter = '&filter=biggest-price'
+            
             if(router.query.title){
                 
-                response = await api.get(`/products?title=${router.query.title}`);
+                response = await api.get(`/products?title=${router.query.title}${filter}`);
 
             } else if(router.query.categoryId){
 
-                response = await api.get(`/products?category=${router.query.categoryId}`);
+                response = await api.get(`/products?category=${router.query.categoryId}${filter}`);
             }
 
             if(response) setProducts(response.data);
@@ -52,7 +71,21 @@ export default function Search() {
             <PageLayout>
 
                 <section>
-                    <div className="p-grid">
+
+                    <div className='filter-row'>
+                        <p>Filtro:&nbsp;</p>
+                        <select 
+                            id="filter"
+                            value={getFilter}
+                            onChange={(event) => handleChangeFilter(event.target.value)}
+                        >
+                            <option value=""></option>
+                            <option value="lowest-price">Menor Preço</option>
+                            <option value="biggest-price">Maior Preço</option>
+                        </select>
+                    </div>
+                   
+                    <div className="product-grid">
 
                         {getProducts.map( (product) => <ProductCard product={product} key={product.id} />)}
 
@@ -66,7 +99,7 @@ export default function Search() {
                     min-height: 800px;
                 }
 
-                .p-grid {
+                .product-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr 1fr;
                     text-align: center;
@@ -74,10 +107,24 @@ export default function Search() {
                     grid-gap: 20px;
                 }
 
+                .filter-row {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    margin: 20px 0 0 0;
+                    font-size: 20px;
+                }
+
+                .filter-row  #filter {
+                    font-size: inherit;
+                    border: 0;
+                    border-radius: 2px;
+                }
+
                 @media (max-width: 1200px) {
                     padding: 0;
 
-                    .p-grid {
+                    .product-grid {
                         grid-template-columns: 1fr 1fr 1fr;
                         padding: 10px;
                         grid-gap: 10px;
@@ -87,7 +134,7 @@ export default function Search() {
                 @media (max-width: 900px) {
                     padding: 0;
 
-                    .p-grid {
+                    .product-grid {
                         grid-template-columns: 1fr 1fr;
                         padding: 5px;
                         grid-gap: 5px;
@@ -97,7 +144,7 @@ export default function Search() {
                 @media (max-width: 600px) {
                     padding: 0;
 
-                    .p-grid {
+                    .product-grid {
                         grid-template-columns: 1fr;
                         padding: 0;
                         grid-gap: 0;

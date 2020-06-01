@@ -32,6 +32,7 @@ export default function MenuAndSearchBar() {
         router.push({
             pathname: '/search',
             query: {
+                ...router.query,
                 categoryId: category.id,
                 category: String(category.name).split(' ').join('-')
             }
@@ -161,7 +162,7 @@ const categoryMenuStyle = css`
     }
                 
     ul li { 
-        width: 150px; 
+        width: 200px; 
         background: #0D2235; 
         float: left; 
         height: 40px; 
@@ -187,7 +188,7 @@ const categoryMenuStyle = css`
 
     li.has-children > ul {
         position: absolute; 
-        left: 150px; 
+        left: 200px; 
         top: 0; 
     }
 

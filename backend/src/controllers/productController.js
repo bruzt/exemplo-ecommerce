@@ -11,6 +11,28 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     index: async (req, res) => {
 
+        let filter = [
+            ['quantity_stock', 'DESC'],
+            ['discount_percent', 'DESC'],
+            ['quantity_sold', 'DESC'],
+        ];
+
+        if(req.query.filter == 'lowest-price'){
+            filter = [
+                ['quantity_stock', 'DESC'],
+                ['price', 'ASC'],
+                ['discount_percent', 'DESC'],
+                ['quantity_sold', 'DESC'],
+            ]
+        } else if(req.query.filter == 'biggest-price'){
+            filter = [
+                ['quantity_stock', 'DESC'],
+                ['price', 'DESC'],
+                ['discount_percent', 'DESC'],
+                ['quantity_sold', 'DESC'],
+            ]
+        }
+
         try {
 
             let products;
@@ -26,11 +48,7 @@ module.exports = {
                             [Op.iLike]: `%${req.query.title}%` 
                         }
                     },
-                    order: [
-                        ['discount_percent', 'DESC'],
-                        ['quantity_stock', 'DESC'],
-                        ['quantity_sold', 'DESC'],
-                    ],
+                    order: filter,
                     include: [
                         {
                             association: 'images',
@@ -59,11 +77,7 @@ module.exports = {
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
-                    order: [
-                        ['discount_percent', 'DESC'],
-                        ['quantity_stock', 'DESC'],
-                        ['quantity_sold', 'DESC'],
-                    ],
+                    order: filter,
                     include: [
                         {
                             association: 'images',
@@ -88,11 +102,7 @@ module.exports = {
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
-                    order: [
-                        ['discount_percent', 'DESC'],
-                        ['quantity_stock', 'DESC'],
-                        ['quantity_sold', 'DESC'],
-                    ],
+                    order: filter,
                     include: [
                         {
                             association: 'images',

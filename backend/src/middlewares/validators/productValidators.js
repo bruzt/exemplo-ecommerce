@@ -5,7 +5,8 @@ module.exports = {
     index: celebrate({
         [Segments.QUERY]: Joi.object().keys({
             title: Joi.string(),
-            category: Joi.number()
+            category: Joi.number(),
+            filter: Joi.string(),
         }),
     }),
 
