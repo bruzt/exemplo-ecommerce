@@ -11,6 +11,8 @@ module.exports = {
     /** @param {express.Request} req * @param {express.Response} res */
     index: async (req, res) => {
 
+        const limit = req.query.limit;
+
         let filter = [
             ['quantity_stock', 'DESC'],
             ['discount_percent', 'DESC'],
@@ -23,19 +25,32 @@ module.exports = {
                 ['price', 'ASC'],
                 ['discount_percent', 'DESC'],
                 ['quantity_sold', 'DESC'],
-            ]
+            ];
         } else if(req.query.filter == 'biggest-price'){
             filter = [
                 ['quantity_stock', 'DESC'],
                 ['price', 'DESC'],
                 ['discount_percent', 'DESC'],
                 ['quantity_sold', 'DESC'],
-            ]
-        }
+            ];
+        } else if(req.query.section == 'best-sellers'){
+            filter = [
+                ['quantity_stock', 'DESC'],
+                ['quantity_sold', 'DESC'],
+                ['discount_percent', 'DESC'],
+            ];
+        } else if(req.query.section == 'news'){
+            filter = [
+                ['quantity_stock', 'DESC'],
+                ['createdAt', 'DESC'],
+                ['discount_percent', 'DESC'],
+                ['quantity_sold', 'DESC'],
+            ];
+        }     
 
         try {
 
-            let products;
+            let products = [];
 
             if(req.query.title){
 
@@ -48,11 +63,12 @@ module.exports = {
                             [Op.iLike]: `%${req.query.title}%` 
                         }
                     },
+                    limit,
                     order: filter,
                     include: [
                         {
                             association: 'images',
-                            attributes: ['id', 'url'],
+                            attributes: ['id', 'url', 'filename'],
                             required: false
                         },                    
                         {
@@ -77,11 +93,12 @@ module.exports = {
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
+                    limit,
                     order: filter,
                     include: [
                         {
                             association: 'images',
-                            attributes: ['id', 'url'],
+                            attributes: ['id', 'url', 'filename'],
                             required: false
                         },                    
                         {
@@ -95,18 +112,47 @@ module.exports = {
                        }
                     ]
                 });
-                
-            } else {
 
+            } else if(req.query.section == 'on-sale'){
+                
                 products = await ProductModel.findAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
+                    limit,
+                    where: {
+                        discount_percent: {
+                            [Op.gt]: 0
+                        }
+                    },
+                    order: [
+                        ['discount_percent', 'DESC']
+                    ],
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url', 'filename'],
+                            required: false
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }
+                    ]
+                });
+
+            } else {
+
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    limit,
                     order: filter,
                     include: [
                         {
                             association: 'images',
-                            attributes: ['id', 'url'],
+                            attributes: ['id', 'url', 'filename'],
                             required: false
                         },                    
                         {
@@ -137,7 +183,7 @@ module.exports = {
                 attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] },
                 include: [{
                     association: 'images',
-                    attributes: ['id', 'url'],
+                    attributes: ['id', 'url', 'filename'],
                     required: false
                 },
                 {
