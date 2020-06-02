@@ -4,6 +4,7 @@ require('dotenv').config({
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { errors } = require('celebrate');
 
 const trimBody = require('./middlewares/trimBody');
@@ -20,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(trimBody);
 
 app.use(routes);
+
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 
 app.use(errors());
     
