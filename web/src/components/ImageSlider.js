@@ -1,14 +1,7 @@
 import React from "react";
 import { Carousel } from 'react-responsive-carousel'
 
-//https://picsum.photos/800/400
-const testImages = [
-    { url: 'https://i.picsum.photos/id/424/700/400.jpg' },
-    { url: 'https://i.picsum.photos/id/892/800/400.jpg' },
-    { url: 'https://i.picsum.photos/id/622/900/400.jpg' },
-    { url: 'https://i.picsum.photos/id/322/500/400.jpg' },
-    { url: 'https://i.picsum.photos/id/267/300/400.jpg' },
-];
+import noImg from '../assets/img-n-disp.png';
 
 export default function ImageSlider({ images }) {
 
@@ -54,8 +47,11 @@ export default function ImageSlider({ images }) {
                     emulateTouch={true}
                 >
                     {(images.length > 0)
-                        ? images.map((image, index) => <img src={image.url} key={index} />)
-                        : testImages.map((image, index) => <img src={image.url} key={index} />)}
+                        //? images.map( (image, index) => <img src={image.url} key={index} />)
+                        //: testImages.map((image, index) => <img src={image.url} key={index} />)
+                        ? images.map( (image, index) => <img src={`http://localhost:3001/uploads/${image.filename}`} key={index} />)
+                        : [0].map( (i) => <img src={noImg} key={i} />) 
+                    }
                 </Carousel>
 
             </div>

@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "jsonwebtoken": "^8.5.1",
     "next": "9.3.6",
+    "next-images": "^1.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-icons": "^3.10.0",

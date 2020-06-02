@@ -206,12 +206,6 @@ export default function Product({ product }) {
                     justify-content: center;
                 }
 
-                /*.img-container img {
-                    width: 100%;
-                    max-width: 700px;
-                    height: auto;
-                }*/
-
                 .buy {
                     width: 100%;
                     max-width: 400px;

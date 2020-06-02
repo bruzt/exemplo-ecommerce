@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { FaSearchLocation, FaBan } from 'react-icons/fa';
 import Loading from 'react-loader-spinner';
 
+import noImg from '../assets/img-n-disp.png';
+
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
@@ -212,9 +214,10 @@ export default function Cart() {
                                 <tr key={product.id}>
                                     <td className='td-image'>
                                         <img
-                                            src='https://i.picsum.photos/id/892/800/400.jpg'
+                                            //src='https://i.picsum.photos/id/892/800/400.jpg'
                                             /*src='https://picsum.photos/800/400'*/
                                             /*src={product.images[0] && product.images[0].url} */
+                                            src={`${(product.images.length > 0) ? `http://localhost:3001/uploads/${product.images[0].filename}` : noImg}`}
                                             alt={'imagem-' + product.title.split(' ').join('-')}
                                         />
                                     </td>
