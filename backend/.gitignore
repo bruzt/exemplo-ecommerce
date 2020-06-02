@@ -1,6 +1,6 @@
 node_modules
 .env
-tmp/uploads/*
+uploads/*
 !.gitkeep
 _tests/coverage
 _tests/database.sqlite
