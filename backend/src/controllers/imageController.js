@@ -34,12 +34,16 @@ module.exports = {
             
             const images = []
             files.forEach( async (file) => {
-
-                images.push(file.path);
+                
+                images.push({
+                    url: file.path,
+                    filename: file.filename
+                });
 
                 await ImageModel.create({
                     product_id: id,
-                    url: file.path
+                    url: file.path,
+                    filename: file.filename
                 });
             });
             

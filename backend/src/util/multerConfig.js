@@ -10,7 +10,7 @@ const storageTypes = {
 
         destination: (req, file, callback) => {
 
-            callback(null, path.resolve(__dirname, '../../tmp/uploads'));
+            callback(null, path.resolve(__dirname, '../../uploads'));
         },
 
         filename: (req, file, callback) => {
@@ -51,7 +51,7 @@ const storageTypes = {
 
 module.exports = {
 
-    dest: path.resolve(__dirname, '../../tmp/uploads'),
+    //dest: path.resolve(__dirname, '../../uploads'),
 
     storage: storageTypes[process.env.IMG_STORAGE_LOCATION],
 

@@ -11,6 +11,7 @@ class ImageModel extends Model {
         super.init({
 
             url: DataTypes.STRING,
+            filename: DataTypes.STRING,
 
         }, {
             tableName: 'images',
