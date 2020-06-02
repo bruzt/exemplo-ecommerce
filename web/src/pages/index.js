@@ -8,14 +8,20 @@ import ProductCard from '../components/ProductCard';
 
 export async function getStaticProps() {
 
-    const response = await api.get('/products');
+    const onSale = await api.get('/products?section=on-sale&limit=6');
+    const bestSellers = await api.get('/products?section=best-sellers&limit=6');
+    const news = await api.get('/products?section=news&limit=6');
 
     return {
-        props: { products: response.data }
+        props: { 
+            onSale: onSale.data,
+            bestSellers: bestSellers.data,
+            news: news.data
+        }
     }
 }
 
-export default function Home({ products }) {
+export default function Home({ onSale, bestSellers, news }) {
 
     return (
         <>
@@ -29,11 +35,39 @@ export default function Home({ products }) {
             <PageLayout>
 
                 <section>
-                    <div className="p-grid">
 
-                        {products.map( (product) => <ProductCard product={product} key={product.id} />)}
+                    {onSale.length > 0 && (
+                        <>
+                            <h3>PROMOÇÕES</h3>
+                            <div className="p-grid">
 
-                    </div>
+                                {onSale.map( (product) => <ProductCard product={product} key={product.id} />)}
+
+                            </div>
+                        </>
+                    )}
+
+                    {bestSellers.length > 0 && (
+                        <>
+                            <h3>MAIS VENDIDOS</h3>
+                            <div className="p-grid">
+
+                                {bestSellers.map( (product) => <ProductCard product={product} key={product.id} />)}
+
+                            </div>
+                        </>
+                    )}
+
+                    {news.length > 0 && (
+                        <>
+                            <h3>NOVIDADES</h3>
+                            <div className="p-grid">
+
+                                {news.map( (product) => <ProductCard product={product} key={product.id} />)}
+
+                            </div>
+                        </>
+                    )}
                 </section>
 
             </PageLayout>
@@ -49,6 +83,10 @@ export default function Home({ products }) {
                     text-align: center;
                     padding: 20px 0;
                     grid-gap: 20px;
+                }
+
+                h3 {
+                    margin: 20px 0 0 0;
                 }
 
                 @media (max-width: 1200px) {

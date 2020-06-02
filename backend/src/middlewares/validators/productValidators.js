@@ -7,6 +7,8 @@ module.exports = {
             title: Joi.string(),
             category: Joi.number(),
             filter: Joi.string(),
+            section: Joi.string(),
+            limit: Joi.number(),
         }),
     }),
 
