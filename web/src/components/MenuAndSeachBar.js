@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import css from 'styled-jsx/css';
 import { FaCaretDown, FaCaretRight, FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import ClickAwayListener from 'react-click-away-listener';
 
 import { useFilterBar } from '../context/filterBarContext';
 
 export default function MenuAndSearchBar() {
+
+    const [getActiveCategoryMenu, setActiveCategoryMenu] = useState(false);
 
     const router = useRouter();
     const filterBarContext = useFilterBar();
@@ -45,13 +48,19 @@ export default function MenuAndSearchBar() {
 
         return (
             <>
-                <ul jsx={categoryMenuStyle}>
-                    <li>Categorias <FaCaretDown />
-                        <ul>
-                            {firstLevels.map( (firstLevel) => buildCategoryTree(firstLevel))}   
-                        </ul>
-                    </li>
-                </ul>
+                <ClickAwayListener onClickAway={() => setActiveCategoryMenu(false)}>
+                    <ul jsx={categoryMenuStyle}>
+                        <li
+                            className={`${(getActiveCategoryMenu) ? 'active' : ''}`}
+                            onClick={() => setActiveCategoryMenu(!getActiveCategoryMenu)}
+                        >
+                            Categorias <FaCaretDown />
+                            <ul>
+                                {firstLevels.map( (firstLevel) => buildCategoryTree(firstLevel))}   
+                            </ul>
+                        </li>
+                    </ul>
+                </ClickAwayListener>
 
                 <style jsx>{categoryMenuStyle}</style>
             </>
@@ -192,7 +201,7 @@ const categoryMenuStyle = css`
         top: 0; 
     }
 
-    li:hover > ul {
+    li.active > ul {
         display: block;
     }
 
