@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
@@ -9,11 +10,22 @@ export function FilterBarContextProvider({ children }){
     const [getSearchBarText, setSearchBarText] = useState('');
     const [getCategories, setCategories] = useState([]);
 
+    const router = useRouter();
+
     useEffect( () => {
 
         fetchCategories();
 
     }, []);
+
+    useEffect( () => {
+
+        if(router.route == '/' || router.query.categoryId){
+
+            setSearchBarText('');
+        }
+        
+    }, [router.route, router.query]);
 
     async function fetchCategories(){
 
