@@ -104,8 +104,6 @@ export default function Home({ onSale, bestSellers, news }) {
                 }
 
                 @media (max-width: 1200px) {
-                    padding: 0;
-
                     .p-grid {
                         grid-template-columns: 1fr 1fr 1fr;
                         padding: 10px;
@@ -114,8 +112,6 @@ export default function Home({ onSale, bestSellers, news }) {
                 }
 
                 @media (max-width: 900px) {
-                    padding: 0;
-
                     .p-grid {
                         grid-template-columns: 1fr 1fr;
                         padding: 5px;
@@ -124,12 +120,10 @@ export default function Home({ onSale, bestSellers, news }) {
                 }
 
                 @media (max-width: 600px) {
-                    padding: 0;
-
                     .p-grid {
                         grid-template-columns: 1fr;
                         padding: 0;
-                        grid-gap: 0;
+                        grid-gap: 5px;
                     }
                 }
             `}</style>
