@@ -12,9 +12,9 @@ export async function getStaticPaths() {
 
     const response = await api.get('/products');
     
-    const paths = response.data.map( (data) => ({ 
+    const paths = response.data.products.map( (data) => ({ 
         params: { 
-            productId: data.id.toString(),
+            productId: String(data.id),
             //productName: data.title.split(' ').join('-')
         }}));
         
