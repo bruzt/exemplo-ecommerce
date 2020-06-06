@@ -114,7 +114,7 @@ export default function Product({ product }) {
     return (
         <>
             <Head>
-                <title>{product.title}</title>
+                <title>{product.title} | Exemplo e-commerce</title>
                 <meta name="description" content={product.description} />
                 <meta name="keywords" content={product.category.title} />
                 <meta name="twitter:card" content="summary" />
@@ -149,9 +149,10 @@ export default function Product({ product }) {
 
                         <div className='buy'>
                             <h2>Preço</h2>
+                            {(getProduct.discount_percent > 0) ? <p className='original-price'>R$ {Number(getProduct.price).toFixed(2)}</p> : false} 
                             <p className='price'>R$ {finalPrice} a unidade</p>
                             {(getProduct.quantity_stock > 0)
-                                ? (getProduct.discount_percent != 0) 
+                                ? (getProduct.discount_percent > 0) 
                                     ? <p className='discount'>-{getProduct.discount_percent}%</p>
                                     : null
                                 : <p className='lacking'>Em falta</p>
@@ -224,6 +225,10 @@ export default function Product({ product }) {
                 .buy .price {
                     font-size: 20px;
                     font-weight: bold;
+                }
+
+                .buy .original-price {
+                    text-decoration: line-through;
                 }
 
                 .buy .total {

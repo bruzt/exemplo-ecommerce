@@ -28,6 +28,7 @@ export default function ProductCard({ product }) {
                         <div className='title-price'>
                             <p className='title'>{product.title}</p>
                             <div className='price-discount'>
+                                {(discount) ? <p className='original-price'>R$ {Number(product.price).toFixed(2)}</p> : false}
                                 <p className='price'>R$ {finalPrice}</p>
 
                                 {(product.quantity_stock > 0) 
@@ -97,7 +98,7 @@ export default function ProductCard({ product }) {
                     padding: 5px 10px;
                 }
 
-                .p-card .price {
+                .p-card .price-discount .price {
                     font-size: 30px;
                     font-weight: bold;
                     padding: 5px 10px;
@@ -107,6 +108,10 @@ export default function ProductCard({ product }) {
                     display: -webkit-box;
                     -webkit-line-clamp: 1; /* number of lines to show */
                     -webkit-box-orient: vertical;
+                }
+
+                .p-card .price-discount .original-price {
+                    text-decoration: line-through;
                 }
 
                 .img-container {
