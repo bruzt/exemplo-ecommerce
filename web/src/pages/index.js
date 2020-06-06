@@ -16,9 +16,9 @@ export async function getStaticProps() {
 
     return {
         props: { 
-            onSale: onSale.data,
-            bestSellers: bestSellers.data,
-            news: news.data
+            onSale: onSale.data.products,
+            bestSellers: bestSellers.data.products,
+            news: news.data.products
         }
     }
 }

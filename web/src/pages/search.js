@@ -57,7 +57,7 @@ export default function Search() {
                 response = await api.get(`/products?section=${router.query.section}${filter}`);
             }
 
-            if(response) setProducts(response.data);
+            if(response) setProducts(response.data.products);
             
         } catch (error) {
             console.log(error);
