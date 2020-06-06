@@ -19,6 +19,8 @@ module.exports = {
             ['quantity_sold', 'DESC'],
         ];
 
+        let where = null;
+
         if(req.query.filter == 'lowest-price'){
             filter = [
                 ['quantity_stock', 'DESC'],
@@ -46,6 +48,21 @@ module.exports = {
                 ['discount_percent', 'DESC'],
                 ['quantity_sold', 'DESC'],
             ];
+
+            let date = new Date();
+            let month = date.getMonth() - 1;
+
+            if(month == -1) {
+
+                month = 11;
+                date.setFullYear(date.getFullYear() -1);
+            }
+
+            date.setMonth(month);
+
+            where = {
+                createdAt: { [Op.gte]: date }
+            }
         }     
 
         try {
@@ -54,7 +71,7 @@ module.exports = {
 
             if(req.query.title){
 
-                products = await ProductModel.findAll({
+                products = await ProductModel.findAndCountAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -89,7 +106,7 @@ module.exports = {
 
                 const categoriesIds = findCategoriesChildrenIds(req.query.category, categories);
                 
-                products = await ProductModel.findAll({
+                products = await ProductModel.findAndCountAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -115,7 +132,7 @@ module.exports = {
 
             } else if(req.query.section == 'on-sale'){
                 
-                products = await ProductModel.findAll({
+                products = await ProductModel.findAndCountAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -143,10 +160,11 @@ module.exports = {
 
             } else {
 
-                products = await ProductModel.findAll({
+                products = await ProductModel.findAndCountAll({
                     attributes: { 
                         exclude: ['updatedAt', 'deletedAt', 'category_id'] 
                     },
+                    where,
                     limit,
                     order: filter,
                     include: [
@@ -162,8 +180,8 @@ module.exports = {
                     ]
                 });
             }
-
-            return res.json(products);
+            
+            return res.json({ count: products.count, products: products.rows });
             
         } catch (error) {
             console.error(error);
