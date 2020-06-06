@@ -1,4 +1,9 @@
 
+/**
+ * @param {number} fatherId
+ * @param {Array<{ id: number, parent_id: number}>} categories
+ * @returns {number[]}
+ */
 module.exports = function findCategoriesChildrenIds(fatherId, categories){
 
     let categoriesIds = [];
