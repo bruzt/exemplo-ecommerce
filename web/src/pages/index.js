@@ -1,5 +1,6 @@
 import React/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
+import Link from 'next/link';
 
 import api from '../services/api';
 
@@ -7,6 +8,7 @@ import PageLayout from '../components/PageLayout';
 import ProductCard from '../components/ProductCard';
 
 export async function getStaticProps() {
+//export async function getServerSideProps() {
 
     const onSale = await api.get('/products?section=on-sale&limit=6');
     const bestSellers = await api.get('/products?section=best-sellers&limit=6');
@@ -38,7 +40,11 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {onSale.length > 0 && (
                         <>
-                            <h3>PROMOÇÕES</h3>
+                            <Link href='/search?section=on-sale'>
+                                <a>
+                                    <h3>PROMOÇÕES</h3>  
+                                </a>
+                            </Link>
                             <div className="p-grid">
 
                                 {onSale.map( (product) => <ProductCard product={product} key={product.id} />)}
@@ -49,7 +55,11 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {bestSellers.length > 0 && (
                         <>
-                            <h3>MAIS VENDIDOS</h3>
+                            <Link href='/search?section=best-sellers'>
+                                <a>
+                                    <h3>MAIS VENDIDOS</h3>
+                                </a>
+                            </Link>
                             <div className="p-grid">
 
                                 {bestSellers.map( (product) => <ProductCard product={product} key={product.id} />)}
@@ -60,7 +70,11 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {news.length > 0 && (
                         <>
-                            <h3>NOVIDADES</h3>
+                            <Link href='/search?section=news'>
+                                <a>
+                                    <h3>NOVIDADES</h3>
+                                </a>
+                            </Link>
                             <div className="p-grid">
 
                                 {news.map( (product) => <ProductCard product={product} key={product.id} />)}

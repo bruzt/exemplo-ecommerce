@@ -51,6 +51,10 @@ export default function Search() {
             } else if(router.query.categoryId){
 
                 response = await api.get(`/products?category=${router.query.categoryId}${filter}`);
+
+            } else if(router.query.section){
+
+                response = await api.get(`/products?section=${router.query.section}${filter}`);
             }
 
             if(response) setProducts(response.data);
