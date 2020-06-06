@@ -19,9 +19,13 @@ export default function MenuAndSearchBar() {
 
         if(String(filterBarContext.getSearchBarText).length > 0){
 
+            delete router.query.categoryId;
+            delete router.query.category;
+
             router.push({
                 pathname: '/search',
                 query: {
+                    ...router.query,
                     title: filterBarContext.getSearchBarText
                 }
             });
@@ -33,6 +37,8 @@ export default function MenuAndSearchBar() {
         event.stopPropagation();
 
         setActiveCategoryMenu(!getActiveCategoryMenu);
+
+        delete router.query.title;
 
         router.push({
             pathname: '/search',
@@ -53,7 +59,7 @@ export default function MenuAndSearchBar() {
                 <ClickAwayListener onClickAway={() => setActiveCategoryMenu(false)}>
                     <ul jsx={categoryMenuStyle}>
                         <li
-                            className={`${(getActiveCategoryMenu) ? 'active' : ''}`}
+                            className={`category-menu ${(getActiveCategoryMenu) ? 'active' : ''}`}
                             onClick={() => setActiveCategoryMenu(!getActiveCategoryMenu)}
                         >
                             <p>Categorias <FaCaretDown /></p>
@@ -186,11 +192,13 @@ const categoryMenuStyle = css`
         height: 40px; 
         line-height: 40px; 
         font-size: 20px;
-        position: relative;
-        user-select: none; 
-        border-radius: 2px; 
-
         text-align: center; 
+        user-select: none; 
+        position: relative;
+    }
+
+    ul li.category-menu {
+        border-radius: 5px;
     }
 
     ul li p {
