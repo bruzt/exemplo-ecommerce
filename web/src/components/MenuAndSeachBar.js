@@ -32,6 +32,8 @@ export default function MenuAndSearchBar() {
 
         event.stopPropagation();
 
+        setActiveCategoryMenu(!getActiveCategoryMenu);
+
         router.push({
             pathname: '/search',
             query: {
@@ -54,7 +56,7 @@ export default function MenuAndSearchBar() {
                             className={`${(getActiveCategoryMenu) ? 'active' : ''}`}
                             onClick={() => setActiveCategoryMenu(!getActiveCategoryMenu)}
                         >
-                            Categorias <FaCaretDown />
+                            <p>Categorias <FaCaretDown /></p>
                             <ul>
                                 {firstLevels.map( (firstLevel) => buildCategoryTree(firstLevel))}   
                             </ul>
@@ -82,7 +84,7 @@ export default function MenuAndSearchBar() {
                     className={`${(hasChildren) ? 'has-children' : ''}`} 
                     onClick={(event) => handleCategorySearch(event, category)}
                 >
-                    {category.name} {(hasChildren) && <FaCaretRight />}
+                    <p>{category.name} {(hasChildren) && <FaCaretRight />}</p>
                     {(hasChildren) && (
                         <ul>
                             {children.map( (child) => buildCategoryTree(child))}
@@ -159,6 +161,13 @@ export default function MenuAndSearchBar() {
                     border-top-right-radius: 5px;
                     border-bottom-right-radius: 5px;
                 }
+
+                @media (max-width: 900px) {
+                    nav .limit-center form input {
+                        width: 100%;
+                        max-width: 400px;
+                    }
+                }
             `}</style>
         </>
     );
@@ -177,10 +186,17 @@ const categoryMenuStyle = css`
         height: 40px; 
         line-height: 40px; 
         font-size: 20px;
-        text-align: center; 
         position: relative;
         user-select: none; 
         border-radius: 2px; 
+
+        text-align: center; 
+    }
+
+    ul li p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
                 
     ul li:hover { 
