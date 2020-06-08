@@ -6,14 +6,19 @@ const findCategoriesChildrenIds = require('../util/findCategoriesChildrenIds');
 const ProductModel = require('../models/ProductModel');
 const CategoryModel = require('../models/CategoryModel');
 
+Array.prototype.move = function(from, to) {
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
+
 module.exports = {
 
     /** @param {express.Request} req * @param {express.Response} res */
     index: async (req, res) => {
 
         const limit = req.query.limit;
+        const offset = req.query.offset;
 
-        let filter = [
+        let order = [
             ['quantity_stock', 'DESC'],
             ['discount_percent', 'DESC'],
             ['quantity_sold', 'DESC'],
@@ -21,33 +26,21 @@ module.exports = {
 
         let where = null;
 
-        if(req.query.filter == 'lowest-price'){
-            filter = [
-                ['quantity_stock', 'DESC'],
-                ['price', 'ASC'],
-                ['discount_percent', 'DESC'],
-                ['quantity_sold', 'DESC'],
-            ];
-        } else if(req.query.filter == 'biggest-price'){
-            filter = [
-                ['quantity_stock', 'DESC'],
-                ['price', 'DESC'],
-                ['discount_percent', 'DESC'],
-                ['quantity_sold', 'DESC'],
-            ];
+        if(req.query.section == 'on-sale'){
+
+            where = {
+                discount_percent: {
+                    [Op.gt]: 0
+                }
+            };
+
         } else if(req.query.section == 'best-sellers'){
-            filter = [
-                ['quantity_stock', 'DESC'],
-                ['quantity_sold', 'DESC'],
-                ['discount_percent', 'DESC'],
-            ];
+
+            order.move(2, 1);
+
         } else if(req.query.section == 'news'){
-            filter = [
-                ['quantity_stock', 'DESC'],
-                ['createdAt', 'DESC'],
-                ['discount_percent', 'DESC'],
-                ['quantity_sold', 'DESC'],
-            ];
+
+            order.splice(1, 0, ['createdAt', 'DESC']);
 
             let date = new Date();
             let month = date.getMonth() - 1;
@@ -63,7 +56,10 @@ module.exports = {
             where = {
                 createdAt: { [Op.gte]: date }
             }
-        }     
+        }
+
+        if(req.query.filter == 'lowest-price') order.splice(1, 0, ['price', 'ASC']);
+        else if(req.query.filter == 'biggest-price') order.splice(1, 0, ['price', 'DESC']);
 
         try {
 
@@ -81,7 +77,8 @@ module.exports = {
                         }
                     },
                     limit,
-                    order: filter,
+                    offset,
+                    order,
                     include: [
                         {
                             association: 'images',
@@ -111,7 +108,8 @@ module.exports = {
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
                     limit,
-                    order: filter,
+                    offset,
+                    order,
                     include: [
                         {
                             association: 'images',
@@ -130,34 +128,6 @@ module.exports = {
                     ]
                 });
 
-            } else if(req.query.section == 'on-sale'){
-                
-                products = await ProductModel.findAndCountAll({
-                    attributes: { 
-                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
-                    },
-                    limit,
-                    where: {
-                        discount_percent: {
-                            [Op.gt]: 0
-                        }
-                    },
-                    order: [
-                        ['discount_percent', 'DESC']
-                    ],
-                    include: [
-                        {
-                            association: 'images',
-                            attributes: ['id', 'url', 'filename'],
-                            required: false
-                        },                    
-                        {
-                            association: 'category',
-                            attributes: { exclude: ['createdAt', 'updatedAt'] },
-                        }
-                    ]
-                });
-
             } else {
 
                 products = await ProductModel.findAndCountAll({
@@ -166,7 +136,8 @@ module.exports = {
                     },
                     where,
                     limit,
-                    order: filter,
+                    offset,
+                    order,
                     include: [
                         {
                             association: 'images',

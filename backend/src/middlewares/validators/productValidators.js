@@ -9,6 +9,7 @@ module.exports = {
             filter: Joi.string(),
             section: Joi.string(),
             limit: Joi.number(),
+            offset: Joi.number(),
         }),
     }),
 

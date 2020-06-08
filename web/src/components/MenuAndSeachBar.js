@@ -26,7 +26,8 @@ export default function MenuAndSearchBar() {
                 pathname: '/search',
                 query: {
                     ...router.query,
-                    title: filterBarContext.getSearchBarText
+                    page: 1,
+                    title: filterBarContext.getSearchBarText,
                 }
             });
         }
@@ -45,6 +46,7 @@ export default function MenuAndSearchBar() {
             query: {
                 ...router.query,
                 categoryId: category.id,
+                page: 1,
                 category: String(category.name).split(' ').join('-')
             }
         });

@@ -6,19 +6,66 @@ import api from '../services/api';
 
 import PageLayout from '../components/PageLayout';
 import ProductCard from '../components/ProductCard';
+import PaginationNav from '../components/PaginationNav';
 
 export default function Search() {
 
     const [getProducts, setProducts] = useState([]);
     const [getFilter, setFilter] = useState('');
 
+    const [getTotalPages, setTotalPages] = useState(1);
+
     const router = useRouter();
+
+    const currentPage = Number(router.query.page) || 1;
+    const _itemsPerPage = 15;
 
     useEffect( () => {
 
         fetchProducts();
 
-    }, [router.query, getFilter]);
+    }, [router.query]);
+
+    async function fetchProducts(){
+
+        try {
+
+            let response;
+
+            let filter = '';
+            if(getFilter == "lowest-price") filter = '&filter=lowest-price';
+            else if(getFilter == "biggest-price") filter = '&filter=biggest-price';
+
+            const page = `&offset=${(currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`
+            
+            if(router.query.title){
+                
+                response = await api.get(`/products?title=${router.query.title}${filter}${page}`);
+
+            } else if(router.query.categoryId){
+
+                response = await api.get(`/products?category=${router.query.categoryId}${filter}${page}`);
+
+            } else if(router.query.section){
+
+                response = await api.get(`/products?section=${router.query.section}${filter}${page}`);
+            }
+
+            if(response) {
+
+                const totalPages = (response.data.products.length < _itemsPerPage && currentPage == 1)
+                    ? 1
+                    : Math.ceil(response.data.count/_itemsPerPage);
+
+                setTotalPages(totalPages);
+                setProducts(response.data.products);
+            }
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro, tente de novo');
+        }
+    }
 
     function handleChangeFilter(value){
 
@@ -30,39 +77,18 @@ export default function Search() {
                 ...router.query,
                 filter: value
             }
-        })
+        });
     }
 
-    async function fetchProducts(){
+    function handlePagination(value){
 
-        try {
-
-            let response;
-
-            let filter = '';
-            
-            if(getFilter == "lowest-price") filter = '&filter=lowest-price'
-            else if(getFilter == "biggest-price") filter = '&filter=biggest-price'
-            
-            if(router.query.title){
-                
-                response = await api.get(`/products?title=${router.query.title}${filter}`);
-
-            } else if(router.query.categoryId){
-
-                response = await api.get(`/products?category=${router.query.categoryId}${filter}`);
-
-            } else if(router.query.section){
-
-                response = await api.get(`/products?section=${router.query.section}${filter}`);
+        router.push({
+            pathname: '/search',
+            query: {
+                ...router.query,
+                page: value
             }
-
-            if(response) setProducts(response.data.products);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro, tente de novo');
-        }
+        });
     }
 
     return (
@@ -77,7 +103,7 @@ export default function Search() {
                 <section>
 
                     <div className='filter-row'>
-                        <p>Filtro:&nbsp;</p>
+                        <p>Filtrar por:&nbsp;</p>
                         <select 
                             id="filter"
                             value={getFilter}
@@ -94,6 +120,13 @@ export default function Search() {
                         {getProducts.map( (product) => <ProductCard product={product} key={product.id} />)}
 
                     </div>
+
+                    <PaginationNav
+                        totalPages={getTotalPages}
+                        currentPage={currentPage}
+                        limitPageNav={5}
+                        handlePagination={handlePagination}
+                    />
                 </section>
 
             </PageLayout>

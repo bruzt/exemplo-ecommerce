@@ -40,7 +40,7 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {onSale.length > 0 && (
                         <>
-                            <Link href='/search?section=on-sale'>
+                            <Link href='/search?page=1&section=on-sale'>
                                 <a>
                                     <h3>PROMOÇÕES</h3>  
                                 </a>
@@ -55,7 +55,7 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {bestSellers.length > 0 && (
                         <>
-                            <Link href='/search?section=best-sellers'>
+                            <Link href='/search?page=1&section=best-sellers'>
                                 <a>
                                     <h3>MAIS VENDIDOS</h3>
                                 </a>
@@ -70,7 +70,7 @@ export default function Home({ onSale, bestSellers, news }) {
 
                     {news.length > 0 && (
                         <>
-                            <Link href='/search?section=news'>
+                            <Link href='/search?page=1&section=news'>
                                 <a>
                                     <h3>NOVIDADES</h3>
                                 </a>
