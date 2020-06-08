@@ -67,13 +67,17 @@ module.exports = {
 
             if(req.query.title){
 
+                const title = req.query.title.split(' ').map( (word) => `%${word}%`);
+
                 products = await ProductModel.findAndCountAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
                     where: {
                         title: { 
-                            [Op.iLike]: `%${req.query.title}%` 
+                            [Op.iLike]: {
+                                [Op.any]: title
+                            }
                         }
                     },
                     limit,

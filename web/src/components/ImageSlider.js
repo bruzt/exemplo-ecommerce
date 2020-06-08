@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel } from 'react-responsive-carousel'
+import { Carousel } from 'react-responsive-carousel';
 
 import noImg from '../assets/img-n-disp.png';
 

@@ -159,6 +159,7 @@ export default function MenuAndSearchBar() {
                     font-size: 20px;
                     border-top-left-radius: 5px;
                     border-bottom-left-radius: 5px;
+                    text-align: center;
                 }
 
                 nav .limit-center form button {
@@ -168,12 +169,17 @@ export default function MenuAndSearchBar() {
                     cursor: pointer;
                     border-top-right-radius: 5px;
                     border-bottom-right-radius: 5px;
+                    margin: 0 200px 0 0;
                 }
 
                 @media (max-width: 900px) {
                     nav .limit-center form input {
                         width: 100%;
                         max-width: 400px;
+                    }
+
+                    nav .limit-center form button {
+                        margin: 0;
                     }
                 }
             `}</style>

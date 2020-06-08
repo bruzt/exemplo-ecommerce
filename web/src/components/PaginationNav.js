@@ -122,6 +122,7 @@ const styles = css`
         border: 0;
         border-radius: 2px;
         font-size: 25px;
+        color: #0D2235;
     }
 
     ul li button:hover {
@@ -132,8 +133,8 @@ const styles = css`
         background: #0D2235;
     }
 
-    .active {
+    ul li button.active {
         background: #0D2235;
-        color: inherit;
+        color: #eee;
     }
 `;
