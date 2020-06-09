@@ -38,10 +38,19 @@ module.exports = {
                 type: Sequelize.DECIMAL,
             },
 
+            payment_method: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+
             status: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 defaultValue: 'awaiting payment',
+            },
+
+            boleto_url: {
+                type: Sequelize.STRING,
             },
 
             created_at: {

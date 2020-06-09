@@ -104,13 +104,10 @@ export default function PaymentMethod() {
                     border: 0;
                     border-radius: 5px;
                     color: #0D2235;
+                    cursor: pointer;
                 }
 
-                .cc-boleto-buttons button:hover {
-                    background: #16324C;
-                }
-
-                .cc-boleto-buttons button:active, .cc-boleto-buttons button.active {
+                .cc-boleto-buttons button:hover, .cc-boleto-buttons button.active {
                     background: #0D2235;
                     color: #eee;
                 }

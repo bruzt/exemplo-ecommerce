@@ -93,9 +93,10 @@ module.exports = {
             const order = await OrderModel.create({ 
                 user_id, 
                 freight_name,
-                freight_price, 
-                total_price, 
-                address_id 
+                freight_price: freight_price.toFixed(2), 
+                total_price: total_price.toFixed(2), 
+                address_id,
+                payment_method: (req.body.credit_card) ? 'credit_card' : 'boleto'
             });
             
             if(req.body.credit_card) req.body.credit_card.items = [];
@@ -167,6 +168,9 @@ module.exports = {
                 response = await client.transactions.create({
                     ...req.body.boleto
                 });
+
+                order.boleto_url = response.boleto_url;
+                order.save();
                 
                 /*response = await axios.post('https://api.pagar.me/1/transactions', {
                     api_key: process.env.PAGARME_API_KEY,

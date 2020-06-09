@@ -11,7 +11,9 @@ class OrderModel extends Model {
             freight_name: DataTypes.STRING,
             freight_price: DataTypes.DECIMAL,
             total_price: DataTypes.DECIMAL,
-            status: DataTypes.STRING
+            payment_method: DataTypes.STRING,
+            status: DataTypes.STRING,
+            boleto_url: DataTypes.STRING,
 
         }, {
             tableName: 'orders',

@@ -197,6 +197,8 @@ module.exports = {
     
     /** @param {express.Request} req * @param {express.Response} res */
     store: async (req, res) => {
+
+        req.body.price = req.body.price.toFixed(2);
         
         try {
 
