@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
+import validateCpf from '../utils/validateCpf';
+
 const Context = createContext({});
 
 export function UserContextProvider({ children }){
@@ -104,6 +106,55 @@ export function UserContextProvider({ children }){
         return zipCode;
     }
 
+    function formatCpf(value){
+
+        let cpf = String(value);
+
+        cpf = cpf.replace(/[^0-9]/g, "");
+
+        if (cpf.length == 11) {
+
+            const part1 = cpf.slice(0, 3);
+            const part2 = cpf.slice(3, 6);
+            const part3 = cpf.slice(6, 9);
+            const part4 = cpf.slice(9, 11);
+
+            cpf = `${part1}.${part2}.${part3}-${part4}`;
+        }
+
+        const valid = validateCpf(cpf);
+
+        return { cpf, valid };
+    }
+
+    function formatPhone(value){
+        
+        let phone = String(value);
+
+        phone = phone.replace(/[^0-9]/g, "");
+
+        if (phone.length == 10) {
+
+            const part1 = phone.slice(0, 2);
+            const part2 = phone.slice(2, 6);
+            const part3 = phone.slice(6, 10);
+
+            phone = `(${part1}) ${part2}-${part3}`;
+        }
+
+        if (phone.length == 11) {
+
+            const part1 = phone.slice(0, 2);
+            const part2 = phone.slice(2, 3);
+            const part3 = phone.slice(3, 7);
+            const part4 = phone.slice(7, 11);
+
+            phone = `(${part1}) ${part2}-${part3}-${part4}`;
+        }
+
+        return phone;
+    }
+
     /**
      * @param {Object} addressObject
      * @param {string} addressObject.street
@@ -162,7 +213,9 @@ export function UserContextProvider({ children }){
             setUser,
             addAddress,
             deleteAddress,
-            formatZipCode
+            formatZipCode,
+            formatCpf,
+            formatPhone,
         }}>
             {children}
         </Context.Provider>

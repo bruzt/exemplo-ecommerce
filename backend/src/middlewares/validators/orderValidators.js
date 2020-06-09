@@ -24,6 +24,7 @@ module.exports = {
             address_id: Joi.number().required(),
             credit_card: Joi.object().keys({
                 amount: Joi.number().required(),
+                payment_method: Joi.string().required(),
                 installments: Joi.number().required(),
                 card_number: Joi.string().required(),
                 card_cvv: Joi.string().required(),
@@ -66,14 +67,51 @@ module.exports = {
                         country: Joi.string().required(),
                     }).required()
                 }).required(),
-                /*items: Joi.array().items(Joi.object().keys({
-                    id: Joi.string().required(),
-                    title: Joi.string().required(),
-                    unit_price: Joi.number().required(),
-                    quantity: Joi.number().required(),
-                    tangible: Joi.boolean().required()
-                })).required()*/
-            }).required()
+            }),
+            boleto: Joi.object().keys({
+                amount: Joi.number().required(),
+                payment_method: Joi.string().required(),
+                boleto_expiration_date: Joi.string().required(),
+                boleto_instructions: Joi.string().required(),
+                capture: Joi.boolean().required(),
+                customer: {
+                    external_id: Joi.string().required(),
+                    name: Joi.string().required(),
+                    type: Joi.string().required(),
+                    country: Joi.string().required(),
+                    email: Joi.string().required(),
+                    phone_numbers: Joi.array().items(Joi.string().required()).required(),
+                    documents: Joi.array().items(Joi.object().keys({
+                        type: Joi.string().required(),
+                        number: Joi.string().required()
+                    })).required()
+                },
+                /*billing: {
+                    name: Joi.string().required(),
+                    address: {
+                        country: Joi.string().required(),
+                        state: Joi.string().required(),
+                        city: Joi.string().required(),
+                        neighborhood: Joi.string().required(),
+                        street: Joi.string().required(),
+                        street_number: Joi.string().required(),
+                        zipcode: Joi.string().required()
+                    }
+                },*/
+                shipping: {
+                    name: Joi.string().required(),
+                    fee: Joi.number().required(),
+                    address: {
+                        country: Joi.string().required(),
+                        state: Joi.string().required(),
+                        city: Joi.string().required(),
+                        neighborhood: Joi.string().required(),
+                        street: Joi.string().required(),
+                        street_number: Joi.string().required(),
+                        zipcode: Joi.string().required()
+                    }
+                }
+            }),
         })
     }),
 

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { useUser } from '../context/userContext';
@@ -111,168 +110,159 @@ export default function Address() {
 
     return (
         <>
-            <Head>
-                <title>Seleção de endereço</title>
-                <meta name="robots" content="noindex" />
-            </Head>
+            <section>
 
-            <PageLayout>
+                <button 
+                    type='button'
+                    title='Voltar'
+                    className='back-button'
+                    onClick={() => orderContext.setOrder('cart')}
+                >
+                    <FaArrowLeft />
+                </button>
 
-                <section>
+                <h1>Selecione um endereço para a entrega</h1>
 
-                    <button 
-                        type='button'
-                        title='Voltar'
-                        className='back-button'
-                        onClick={() => orderContext.setOrder('cart')}
-                    >
-                        <FaArrowLeft />
-                    </button>
+                <div className='addr-grid'>
 
-                    <h1>Selecione um endereço para a entrega</h1>
-
-                    <div className='addr-grid'>
-
-                        {(userContext.getUser.addresses) 
-                            ? userContext.getUser.addresses.map( (address) => {
-                                    return (
-                                        <div key={address.id} className={`addr-card ${(cartContext.getAddressId == address.id) ? 'selected' : ''}`}>
-                                            <div className='addr-data'>
-                                                <div className='addr-remove'>
-                                                    <button 
-                                                        type="button"
-                                                        onClick={() => handleDeleteAddress(address.id)}
-                                                    >
-                                                        X
-                                                    </button>
-                                                </div>
-                                                
-                                                <a 
-                                                    onClick={() => handleDisabledGoToPaymentButton(address.id)}
+                    {(userContext.getUser.addresses) 
+                        ? userContext.getUser.addresses.map( (address) => {
+                                return (
+                                    <div key={address.id} className={`addr-card ${(cartContext.getAddressId == address.id) ? 'selected' : ''}`}>
+                                        <div className='addr-data'>
+                                            <div className='addr-remove'>
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => handleDeleteAddress(address.id)}
                                                 >
-                                                    <div>
-                                                        <p>Logradouro: {address.street}</p>
-                                                        <p>Nº: {address.number}</p>
-                                                        <p>Bairro: {address.neighborhood}</p>
-                                                        <p>Cidade: {address.city}</p>
-                                                        <p>Estado: {address.state}</p>
-                                                        <p>CEP: {address.zipcode}</p>
-                                                    </div>
-                                                </a>
+                                                    X
+                                                </button>
                                             </div>
+                                            
+                                            <a 
+                                                onClick={() => handleDisabledGoToPaymentButton(address.id)}
+                                            >
+                                                <div>
+                                                    <p>Logradouro: {address.street}</p>
+                                                    <p>Nº: {address.number}</p>
+                                                    <p>Bairro: {address.neighborhood}</p>
+                                                    <p>Cidade: {address.city}</p>
+                                                    <p>Estado: {address.state}</p>
+                                                    <p>CEP: {address.zipcode}</p>
+                                                </div>
+                                            </a>
                                         </div>
-                                    );
-                                }
-                            ) 
-                            : null
-                        }
-                    </div>
+                                    </div>
+                                );
+                            }
+                        ) 
+                        : null
+                    }
+                </div>
 
-                    <div className='add-select-buttons'>
-                        <button 
-                            className='add-button'
-                            type='button'
-                            onClick={switchShowAddAddr}
-                        >
-                            Adicionar Endereço
-                        </button>
-                        <button
-                            className='select-button'
-                            disabled={getDisabledGoToPaymentButton}
-                            onClick={() => orderContext.setOrder('payment')}
-                        >
-                            Ir para pagamento
-                        </button>
-                    </div>
+                <div className='add-select-buttons'>
+                    <button 
+                        className='add-button'
+                        type='button'
+                        onClick={switchShowAddAddr}
+                    >
+                        Adicionar Endereço
+                    </button>
+                    <button
+                        className='select-button'
+                        disabled={getDisabledGoToPaymentButton}
+                        onClick={() => orderContext.setOrder('payment')}
+                    >
+                        Ir para pagamento
+                    </button>
+                </div>
 
-                    {getShowAddAddr && (
-                        <form className='add-addr-form'>
-                            
-                            <div className='flex-column'>
-                                <label htmlFor="street">Logradouro: </label>
-                                <input id='street' type="text" value={getStreet} onChange={(event) => setStreet(event.target.value)} />
-                            </div>
+                {getShowAddAddr && (
+                    <form className='add-addr-form'>
                         
-                            <div className='flex-row'>
-                                <div className='flex-column'>
-                                    <label htmlFor="number"> Nº: </label>
-                                    <input id='number' type="text" value={getNumber} onChange={(event) => setNumber(event.target.value)} />
-                                </div>
-                                <div className='flex-column'>
-                                    <label htmlFor="district">Bairro: </label>
-                                    <input id='district' type="text" value={getNeighborhood} onChange={(event) => setNeighborhood(event.target.value)} />
-                                </div>
-                            </div>
-
-                            <div  className='flex-row'>
-                                <div className='flex-column'>
-                                    <label htmlFor="city">Cidade: </label>
-                                    <input id='city' type="text" value={getCity} onChange={(event) => setCity(event.target.value)} />
-                                </div>
-
-                                <div className='flex-column'>
-                                    <label htmlFor="state"> Estado: </label>
-                                    <select 
-                                        id="state" 
-                                        onChange={(event) => setState(event.target.value)}
-                                    >
-                                        <option value=""></option>
-                                        <option value="AC">AC</option>
-                                        <option value="AL">AL</option>
-                                        <option value="AP">AP</option>
-                                        <option value="AM">AM</option>
-                                        <option value="BA">BA</option>
-                                        <option value="CE">CE</option>
-                                        <option value="DF">DF</option>
-                                        <option value="ES">ES</option>
-                                        <option value="GO">GO</option>
-                                        <option value="MA">MA</option>
-                                        <option value="MT">MT</option>
-                                        <option value="MS">MS</option>
-                                        <option value="MG">MG</option>
-                                        <option value="PA">PA</option>
-                                        <option value="PB">PB</option>
-                                        <option value="PR">PR</option>
-                                        <option value="PE">PE</option>
-                                        <option value="PI">PI</option>
-                                        <option value="RJ">RJ</option>
-                                        <option value="RN">RN</option>
-                                        <option value="RS">RS</option>
-                                        <option value="RO">RO</option>
-                                        <option value="RR">RR</option>
-                                        <option value="SC">SC</option>
-                                        <option value="SP">SP</option>
-                                        <option value="SE">SE</option>
-                                        <option value="TO">TO</option>
-                                    </select>
-                                </div>
-
-                                <div className='flex-column'>
-                                    <label htmlFor="zipcode">CEP: </label>
-                                    <input 
-                                        id='zipcode' 
-                                        type="text" 
-                                        maxLength={9}
-                                        value={getZipCode} onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))} 
-                                    />
-                                </div>
-                            </div>
-
-                            <button 
-                                className='addr-submit'
-                                type='submit'
-                                disabled={getDisableAddAddrButton}
-                                onClick={handleAddAddress}
-                            >
-                                Cadastrar
-                            </button>
-                        </form>
-                    )}
+                        <div className='flex-column'>
+                            <label htmlFor="street">Logradouro: </label>
+                            <input id='street' type="text" value={getStreet} onChange={(event) => setStreet(event.target.value)} />
+                        </div>
                     
+                        <div className='flex-row'>
+                            <div className='flex-column'>
+                                <label htmlFor="number"> Nº: </label>
+                                <input id='number' type="text" value={getNumber} onChange={(event) => setNumber(event.target.value)} />
+                            </div>
+                            <div className='flex-column'>
+                                <label htmlFor="district">Bairro: </label>
+                                <input id='district' type="text" value={getNeighborhood} onChange={(event) => setNeighborhood(event.target.value)} />
+                            </div>
+                        </div>
 
-                </section>
+                        <div  className='flex-row'>
+                            <div className='flex-column'>
+                                <label htmlFor="city">Cidade: </label>
+                                <input id='city' type="text" value={getCity} onChange={(event) => setCity(event.target.value)} />
+                            </div>
 
-            </PageLayout>
+                            <div className='flex-column'>
+                                <label htmlFor="state"> Estado: </label>
+                                <select 
+                                    id="state" 
+                                    onChange={(event) => setState(event.target.value)}
+                                >
+                                    <option value=""></option>
+                                    <option value="AC">AC</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AP">AP</option>
+                                    <option value="AM">AM</option>
+                                    <option value="BA">BA</option>
+                                    <option value="CE">CE</option>
+                                    <option value="DF">DF</option>
+                                    <option value="ES">ES</option>
+                                    <option value="GO">GO</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MT">MT</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MG">MG</option>
+                                    <option value="PA">PA</option>
+                                    <option value="PB">PB</option>
+                                    <option value="PR">PR</option>
+                                    <option value="PE">PE</option>
+                                    <option value="PI">PI</option>
+                                    <option value="RJ">RJ</option>
+                                    <option value="RN">RN</option>
+                                    <option value="RS">RS</option>
+                                    <option value="RO">RO</option>
+                                    <option value="RR">RR</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SP">SP</option>
+                                    <option value="SE">SE</option>
+                                    <option value="TO">TO</option>
+                                </select>
+                            </div>
+
+                            <div className='flex-column'>
+                                <label htmlFor="zipcode">CEP: </label>
+                                <input 
+                                    id='zipcode' 
+                                    type="text" 
+                                    maxLength={9}
+                                    value={getZipCode} onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))} 
+                                />
+                            </div>
+                        </div>
+
+                        <button 
+                            className='addr-submit'
+                            type='submit'
+                            disabled={getDisableAddAddrButton}
+                            onClick={handleAddAddress}
+                        >
+                            Cadastrar
+                        </button>
+                    </form>
+                )}
+                
+
+            </section>
 
             <style jsx>{`
                 section {

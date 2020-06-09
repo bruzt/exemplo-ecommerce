@@ -1,7 +1,6 @@
 /*const Correios = require('node-correios');
 const correios = new Correios();*/
 const axios = require('axios');
-const { parseStringPromise } = require('xml2js');
 
 module.exports = {
 
@@ -9,7 +8,7 @@ module.exports = {
 
         if(req.body.length < 15) req.body.length = 15;
 
-        let response, json, pac, sedex;
+        let response, pac, sedex;
         
         try {
             const source = axios.CancelToken.source();
@@ -20,16 +19,14 @@ module.exports = {
 
             }, 5000);
             
-            response = await axios.get(`https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04510&nVlDiametro=0&StrRetorno=xml`, {
+            response = await axios.get(`http://correios-server.herokuapp.com/frete/prazo?nCdServico=04510&sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&nVlDiametro=0&nVlValorDeclarado=0&sCdMaoPropria=n&sCdAvisoRecebimento=n`, {
                 cancelToken: source.token
             });
             
-            json = await parseStringPromise(response.data);
-
             pac = {
-                Valor: json.Servicos.cServico[0].Valor[0],
-                PrazoEntrega: json.Servicos.cServico[0].PrazoEntrega[0],
-                MsgErro: json.Servicos.cServico[0].MsgErro[0]
+                Valor: response.data.response[0].Valor,
+                PrazoEntrega: response.data.response[0].PrazoEntrega,
+                MsgErro: response.data.response[0].MsgErro
             }
 
         } catch (error) {
@@ -46,17 +43,15 @@ module.exports = {
                 source.cancel();
 
             }, 5000);
-        
-            response = await axios.get(`https://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=04014&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3`, {
+                                   
+            response = await axios.get(`http://correios-server.herokuapp.com/frete/prazo?nCdServico=04014&sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&nVlDiametro=0&nVlValorDeclarado=0&sCdMaoPropria=n&sCdAvisoRecebimento=n`, {
                 cancelToken: source.token
             });
             
-            json = await parseStringPromise(response.data);
-
             sedex = {
-                Valor: json.Servicos.cServico[0].Valor[0],
-                PrazoEntrega: json.Servicos.cServico[0].PrazoEntrega[0],
-                MsgErro: json.Servicos.cServico[0].MsgErro[0]
+                Valor: response.data.response[0].Valor,
+                PrazoEntrega: response.data.response[0].PrazoEntrega,
+                MsgErro: response.data.response[0].MsgErro
             }
 
         } catch (error) {

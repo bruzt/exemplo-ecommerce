@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
+import Head from 'next/head';
 
 import { useOrder } from '../context/orderContext';
 
+import PageLayout from '../components/PageLayout';
 import Cart from '../components/Cart';
 import SelectAddress from '../components/SelectAddress';
-import Payment from '../components/Payment';
+import PaymentMethod from '../components/PaymentMethod';
 import ThanksForBuy from '../components/ThanksForBuy';
 
 export default function Order() {
@@ -17,8 +19,21 @@ export default function Order() {
 
     }, []);
 
-    if(orderContext.getOrder == 'cart') return <Cart />
-    else if(orderContext.getOrder == 'address') return <SelectAddress />
-    else if(orderContext.getOrder == 'payment') return <Payment />
-    else if(orderContext.getOrder == 'thanksForBuy') return <ThanksForBuy />
+    return (
+        <>
+            <Head>
+                <title>Obrigado pela compra</title>
+                <meta name="robots" content="noindex" />
+            </Head>
+
+            <PageLayout>
+
+                {(orderContext.getOrder == 'cart') && <Cart />}
+                {(orderContext.getOrder == 'address') && <SelectAddress />}
+                {(orderContext.getOrder == 'payment') && <PaymentMethod />}
+                {(orderContext.getOrder == 'thanksForBuy') && <ThanksForBuy />}
+
+            </PageLayout>
+        </>
+    );
 }

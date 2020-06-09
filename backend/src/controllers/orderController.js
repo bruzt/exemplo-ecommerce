@@ -1,5 +1,6 @@
 const express = require('express');
-const axios = require('axios');
+//const axios = require('axios');
+const pagarme = require('pagarme');
 
 const OrderModel = require('../models/OrderModel');
 const UserModel = require('../models/UserModel');
@@ -97,22 +98,36 @@ module.exports = {
                 address_id 
             });
             
-            req.body.credit_card.items = []
+            if(req.body.credit_card) req.body.credit_card.items = [];
+            else if(req.body.boleto) req.body.boleto.items = [];
 
             // add products to order and subtract from stock
             for(let i = 0; i < products.length; i++){
-
+                
                 const unit_price = (products[i].discount_percent > 0)
-                    ? Number(String(Number(products[i].price - (products[i].price * (products[i].discount_percent/100))).toFixed(2)).replace('.', ''))
-                    : Number(String(Number(products[i].price).toFixed(2)).replace('.', ''));
-
-                req.body.credit_card.items.push({
-                    id: String(products[i].id),
-                    title: products[i].title,
-                    unit_price,
-                    quantity: quantity_buyed[i],
-                    tangible: products[i].tangible
-                });
+                ? Number(String(Number(products[i].price - (products[i].price * (products[i].discount_percent/100))).toFixed(2)).replace('.', ''))
+                : Number(String(Number(products[i].price).toFixed(2)).replace('.', ''));
+                
+                if(req.body.credit_card){
+                    
+                    req.body.credit_card.items.push({
+                        id: String(products[i].id),
+                        title: products[i].title,
+                        unit_price,
+                        quantity: quantity_buyed[i],
+                        tangible: products[i].tangible
+                    });
+                    
+                } else if(req.body.boleto){
+                    
+                    req.body.boleto.items.push({
+                        id: String(products[i].id),
+                        title: products[i].title,
+                        unit_price,
+                        quantity: quantity_buyed[i],
+                        tangible: products[i].tangible
+                    });
+                }
                 
                 await order.addProduct(products[i], {
                     through: {
@@ -121,23 +136,45 @@ module.exports = {
                         product_discount_percent: products[i].discount_percent
                     }
                 });
-
+                
                 products[i].quantity_sold += quantity_buyed[i];
                 products[i].quantity_stock -= quantity_buyed[i];
                 await products[i].save();
             }
-
+            
             if(process.env.NODE_ENV == 'test') return res.json(order);
+            
+            let response;
+            
+            if(req.body.credit_card){
 
-            const response = await axios.post('https://api.pagar.me/1/transactions', {
-                api_key: process.env.PAGARME_API_KEY,
-                ...req.body.credit_card
-            });
+                const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
+                response = await client.transactions.create({
+                    ...req.body.credit_card
+                });
+                
+                /*response = await axios.post('https://api.pagar.me/1/transactions', {
+                    api_key: process.env.PAGARME_API_KEY,
+                    ...req.body.credit_card
+                });*/
 
-            order.status = response.data.status;
-            await order.save();
+                order.status = response.status; //response.data.status;
+                await order.save();
+                
+            } else if(req.body.boleto){
 
-            return res.json({ order, pagarme: response.data });
+                const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
+                response = await client.transactions.create({
+                    ...req.body.boleto
+                });
+                
+                /*response = await axios.post('https://api.pagar.me/1/transactions', {
+                    api_key: process.env.PAGARME_API_KEY,
+                    ...req.body.boleto
+                });*/
+            }
+            
+            return res.json({ order, pagarme: response /*response.data*/ });
             
         } catch (error) {
             console.error(error);

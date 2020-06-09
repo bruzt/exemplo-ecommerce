@@ -36,11 +36,11 @@ module.exports = {
 
         } else if(req.query.section == 'best-sellers'){
 
-            order.move(2, 1);
+            order.move(2, 0);
 
         } else if(req.query.section == 'news'){
 
-            order.splice(1, 0, ['createdAt', 'DESC']);
+            order.splice(0, 0, ['createdAt', 'DESC']);
 
             let date = new Date();
             let month = date.getMonth() - 1;
@@ -58,8 +58,8 @@ module.exports = {
             }
         }
 
-        if(req.query.filter == 'lowest-price') order.splice(1, 0, ['price', 'ASC']);
-        else if(req.query.filter == 'biggest-price') order.splice(1, 0, ['price', 'DESC']);
+        if(req.query.filter == 'lowest-price') order.splice(0, 0, ['price', 'ASC']);
+        else if(req.query.filter == 'biggest-price') order.splice(0, 0, ['price', 'DESC']);
 
         try {
 
