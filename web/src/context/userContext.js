@@ -41,10 +41,40 @@ export function UserContextProvider({ children }){
 
     }, [getToken]);
 
+    async function fetchUser(){
+
+        if(getToken.length > 0){
+
+            const tokenPayload = jwt.decode(getToken);
+    
+            const response = await api.get('/users/' + tokenPayload.id);
+    
+            setUser(response.data);
+        }
+    }
+
     function handleSwitchModal(){
 
         if(getShowModal) setShowModal(false);
         else setShowModal(true);
+    }
+
+    async function createUser(name, email, password){
+
+        try {
+
+            const response = await api.post('/users', {
+                name,
+                email,
+                password
+            });
+
+            setToken(response.data.token);
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao cadastrar usuário');
+        }
     }
 
     async function logIn(email, password){
@@ -75,18 +105,6 @@ export function UserContextProvider({ children }){
         sessionStorage.removeItem('token');
 
         setLogin(false);
-    }
-
-    async function fetchUser(){
-
-        if(getToken.length > 0){
-
-            const tokenPayload = jwt.decode(getToken);
-    
-            const response = await api.get('/users/' + tokenPayload.id);
-    
-            setUser(response.data);
-        }
     }
 
     /**
@@ -147,6 +165,7 @@ export function UserContextProvider({ children }){
             setUser,
             addAddress,
             deleteAddress,
+            createUser
         }}>
             {children}
         </Context.Provider>

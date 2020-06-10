@@ -82,7 +82,7 @@ module.exports = {
     
             newUser.password = undefined;
 
-            return res.json(newUser);
+            return res.json({ user: newUser, token: newUser.generateToken() });
 
         } catch (error) {
             console.error(error);

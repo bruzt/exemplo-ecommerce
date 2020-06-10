@@ -1,21 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useUser } from '../context/userContext';
 
+import ForgotPassword from './ForgotPassword';
+
 export default function ModalLogin() {
 
+    const [getName, setName] = useState('');
     const [getEmail, setEmail] = useState('');
-    const [getPassword, setPasword] = useState('');
+    const [getPassword, setPassword] = useState('');
+    const [getConfirmPassword, setConfirmPassword] = useState('');
+
+    const [getDisabledButton, setDisabledButton] = useState(true);
+
+    const [getCreateNewAccount, setCreateNewAccount] = useState(false);
+    const [getForgotPassword, setForgotPassword] = useState(false);
 
     const userContext = useUser();
 
-    function handleLogin(event){
+    useEffect( () => {
+
+        if(getCreateNewAccount){
+            if(
+                getName.length > 3 &&
+                getEmail.length > 7 &&
+                getPassword.length > 5 &&
+                getConfirmPassword == getPassword
+            ){
+                setDisabledButton(false);
+            } else {
+                setDisabledButton(true);
+            }
+        } else {
+            if(
+                getEmail.length > 8 &&
+                getPassword.length > 5
+            ){
+                setDisabledButton(false);
+            } else {
+                setDisabledButton(true);
+            }
+        }
+
+    }, [getName, getEmail, getPassword, getConfirmPassword]);
+
+    function handleCreateOrLogin(event){
 
         event.preventDefault();
 
-        userContext.logIn(getEmail, getPassword);
+        if(getCreateNewAccount){
+
+            userContext.createUser(getName, getEmail, getPassword);
+
+        } else {
+
+            userContext.logIn(getEmail, getPassword);
+        }
     }
-    
+
     return (
         <>
             <div className='modal'>
@@ -23,7 +65,7 @@ export default function ModalLogin() {
                 <div className='modal-content'>
 
                     <div className="modal-head">
-                        <h1>Login</h1>
+                        <h1>{(getCreateNewAccount) ? 'Cadastrar' : (getForgotPassword) ? 'Recuperar' : 'Login'}</h1>
                         <button 
                             type='button' 
                             className='close-modal'
@@ -33,37 +75,95 @@ export default function ModalLogin() {
                         </button>
                     </div>
 
-                    <form>
-                        <div className="email-container">
-                            <label htmlFor="login-email">e-mail</label>
-                            <input 
-                                type='email' 
-                                id="login-email"
-                                value={getEmail}
-                                onChange={(event) => setEmail(event.target.value)}
-                            />
-                        </div>
+                    {(getForgotPassword)
+                        ? <ForgotPassword setForgotPassword={setForgotPassword} />    
+                        : (
+                            <>
+                                <form>
+                                    {(getCreateNewAccount) && (
+                                        <div className="input-group">
+                                            <label htmlFor="login-name">Nome completo</label>
+                                            <input 
+                                                type='text' 
+                                                id="login-name"
+                                                value={getName}
+                                                onChange={(event) => setName(event.target.value)}
+                                            />
+                                        </div>
+                                    )}
 
-                        <div className="password-container">
-                            <label htmlFor="login-password">Senha</label>
-                            <input 
-                                type='password' 
-                                id="login-password"
-                                value={getPassword}
-                                onChange={(event) => setPasword(event.target.value)}
-                            />
-                        </div>
+                                    <div className="input-group">
+                                        <label htmlFor="login-email">e-mail</label>
+                                        <input 
+                                            type='email' 
+                                            id="login-email"
+                                            value={getEmail}
+                                            onChange={(event) => setEmail(event.target.value)}
+                                        />
+                                    </div>
 
-                        <button 
-                            type="submit" 
-                            className='login-button'
-                            onClick={(event) => handleLogin(event)}
-                        >
-                            Entrar
-                        </button>
+                                    <div className="input-group">
+                                        <label htmlFor="login-password">Senha</label>
+                                        <input 
+                                            type='password' 
+                                            id="login-password"
+                                            value={getPassword}
+                                            onChange={(event) => setPassword(event.target.value)}
+                                        />
+                                    </div>
 
-                    </form>
+                                    {(getCreateNewAccount) && (
+                                        <div className="input-group">
+                                            <label htmlFor="login-confirm-password">Confirmar senha</label>
+                                            <input 
+                                                type='password' 
+                                                id="login-confirm-password"
+                                                value={getConfirmPassword}
+                                                onChange={(event) => setConfirmPassword(event.target.value)}
+                                            />
+                                        </div>
+                                    )}
 
+                                    <button 
+                                        type="submit" 
+                                        className='login-button'
+                                        disabled={getDisabledButton}
+                                        onClick={(event) => handleCreateOrLogin(event)}
+                                    >
+                                        {(getCreateNewAccount) ? 'Cadastrar' : 'Entrar'}
+                                    </button>
+
+                                </form>
+
+                                <div className='create-forgot'>
+                                    {(getCreateNewAccount == false) && (
+                                        <>
+                                            <a 
+                                                onClick={() => setCreateNewAccount(true)}
+                                            >
+                                                Criar nova conta
+                                            </a> 
+                                            <a
+                                                onClick={() => setForgotPassword(true)}
+                                            >
+                                                Esqueci a senha
+                                            </a>
+                                        </>
+                                    )}
+
+                                    {(getCreateNewAccount) && (
+                                        <>
+                                            <a 
+                                                onClick={() => setCreateNewAccount(false)}
+                                            >
+                                                Voltar para Login
+                                            </a> 
+                                        </>
+                                    )}
+                                </div>
+                            </>
+                        )
+                    }
                 </div>
             </div>
 
@@ -103,6 +203,7 @@ export default function ModalLogin() {
                     border-radius: 5px;
                     font-weight: bold;
                     background: #a32e39;
+                    cursor: pointer;
                 }
 
                 .modal-content .close-modal:hover {
@@ -119,13 +220,17 @@ export default function ModalLogin() {
                     align-items: center;
                 }
 
-                .modal-content form .email-container, .password-container  {
+                .modal-content form .input-group  {
                     display: flex;
                     flex-direction: column;
                     width: 200px;
                 }
 
-                .modal-content form .password-container {
+                .modal-content form .input-group label {
+                    margin: 0 0 0 5px;
+                }
+
+                .modal-content form .input-group + .input-group {
                     margin: 20px 0 0 0;
                 }
 
@@ -143,6 +248,9 @@ export default function ModalLogin() {
                     border: 0;
                     border-radius: 5px;
                     background: #3E8C34;
+                    font-size: 15px;
+                    cursor: pointer;
+                    color: inherit;
                 }
 
                 .modal-content form .login-button:hover {
@@ -151,6 +259,28 @@ export default function ModalLogin() {
 
                 .modal-content form .login-button:active {
                     background: #3E8C34;
+                }
+
+                .modal-content form .login-button:disabled {
+                    background: #a32e39;
+                }
+
+                .modal-content form .login-button:disabled:hover {
+                    background: #bf2232;
+                }
+
+                .create-forgot {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    margin: 10px 0;
+                }
+
+                .create-forgot a {
+                    cursor: pointer;
+                    margin: 10px 0 0 0;
                 }
             `}</style>
         </>
