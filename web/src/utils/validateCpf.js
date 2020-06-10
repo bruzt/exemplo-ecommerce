@@ -1,4 +1,7 @@
 
+/**
+ * @param {string | number} cpf 
+ */
 export default function validateCpf(cpf) {
 
     cpf = String(cpf).replace('.', '').replace('.', '').replace('-', '');

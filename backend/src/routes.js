@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 
-const multerConfig = require('./util/multerConfig');
+const multerConfig = require('./config/multerConfig');
 
 const autoRequireAll = require('./util/autoRequireAll');
 const jwtAuthentication = require('./middlewares/jwtAuthentication');

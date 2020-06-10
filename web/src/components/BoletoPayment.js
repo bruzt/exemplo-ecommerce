@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Loading from 'react-loader-spinner';
 
 import api from '../services/api';
+import formatCpf from '../utils/formatCpf';
+import formatPhone from '../utils/formatPhone';
 
 import { useCart } from '../context/cartContext';
 import { useUser } from '../context/userContext';
@@ -35,7 +37,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
 
     function handleCpf(value){
 
-        const format = userContext.formatCpf(value);
+        const format = formatCpf(value);
 
         setValidCpf(format.valid);
         setCpf(format.cpf);
@@ -156,7 +158,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                                 type="text" 
                                 maxLength={16}
                                 value={getPhone}
-                                onChange={(event) => setPhone(userContext.formatPhone(event.target.value))}
+                                onChange={(event) => setPhone(formatPhone(event.target.value))}
                             />
                         </div>
                     </div>
@@ -225,7 +227,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 }
 
                 .button-total .inputs .input-group input.invalid-cpf {
-                    border: 2px solid red;
+                    border: 1px solid red;
                 }
 
                 .button-total button {

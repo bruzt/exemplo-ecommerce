@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Loading from 'react-loader-spinner';
 
 import api from '../services/api';
-import validateCpf from '../utils/validateCpf';
+import formatCpf from '../utils/formatCpf';
+import formatPhone from '../utils/formatPhone';
+import formatZipCode from '../utils/formatZipCode';
 
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
@@ -118,51 +120,10 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
     function handleCpf(value) {
 
-        let cpf = String(value);
+        const format = formatCpf(value);
 
-        cpf = cpf.replace(/[^0-9]/g, "");
-
-        if (cpf.length == 11) {
-
-            const part1 = cpf.slice(0, 3);
-            const part2 = cpf.slice(3, 6);
-            const part3 = cpf.slice(6, 9);
-            const part4 = cpf.slice(9, 11);
-
-            cpf = `${part1}.${part2}.${part3}-${part4}`;
-        }
-
-        setValidCpf(validateCpf(cpf));
-
-        setCpf(cpf);
-    }
-
-    function handlePhone(value) {
-
-        let phone = String(value);
-
-        phone = phone.replace(/[^0-9]/g, "");
-
-        if (phone.length == 10) {
-
-            const part1 = phone.slice(0, 2);
-            const part2 = phone.slice(2, 6);
-            const part3 = phone.slice(6, 10);
-
-            phone = `(${part1}) ${part2}-${part3}`;
-        }
-
-        if (phone.length == 11) {
-
-            const part1 = phone.slice(0, 2);
-            const part2 = phone.slice(2, 3);
-            const part3 = phone.slice(3, 7);
-            const part4 = phone.slice(7, 11);
-
-            phone = `(${part1}) ${part2}-${part3}-${part4}`;
-        }
-
-        setPhone(phone);
+        setValidCpf(format.valid);
+        setCpf(format.cpf);
     }
 
     function handleSameAddressButton() {
@@ -367,7 +328,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                     id='tel'
                                     maxLength={16}
                                     value={getPhone}
-                                    onChange={(event) => handlePhone(event.target.value)}
+                                    onChange={(event) => setPhone(formatPhone(event.target.value))}
                                 />
                             </div>
                             <div className='flex-column'>
@@ -474,7 +435,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                     type="text"
                                     maxLength={9}
                                     value={getZipCode}
-                                    onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))}
+                                    onChange={(event) => setZipCode(formatZipCode(event.target.value))}
                                 />
                             </div>
                         </div>

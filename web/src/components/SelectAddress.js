@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 
+import formatZipCode from '../utils/formatZipCode';
+
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
-
-import PageLayout from './PageLayout';
 
 export default function Address() {
 
@@ -245,7 +245,8 @@ export default function Address() {
                                     id='zipcode' 
                                     type="text" 
                                     maxLength={9}
-                                    value={getZipCode} onChange={(event) => setZipCode(userContext.formatZipCode(event.target.value))} 
+                                    value={getZipCode} 
+                                    onChange={(event) => setZipCode(formatZipCode(event.target.value))} 
                                 />
                             </div>
                         </div>

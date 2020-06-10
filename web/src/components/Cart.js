@@ -6,6 +6,8 @@ import Loading from 'react-loader-spinner';
 
 import noImg from '../assets/img-n-disp.png';
 
+import formatZipCode from '../utils/formatZipCode';
+
 import { useUser } from '../context/userContext';
 import { useCart } from '../context/cartContext';
 import { useOrder } from '../context/orderContext';
@@ -30,33 +32,6 @@ export default function Cart() {
         calcTotalPrice();
 
     }, [cartContext.getProducts, cartContext.getCart, cartContext.getFreightSelected]);
-
-    function handleZipCode(value){
-
-        cartContext.resetFreight();
-
-        cartContext.setZipCode(userContext.formatZipCode(value));
-    }
-
-    function calcTotalPrice() {
-
-        let totalPrice = 0;
-
-        for (let i = 0; i < cartContext.getCart.length; i++) {
-
-            if(cartContext.getProducts[i]){
-
-                totalPrice += cartContext.getProducts[i].finalPrice * cartContext.getCart[i].qtd;
-            }
-        }
-
-        cartContext.setSubtotalPrice(totalPrice.toFixed(2));
-
-        if(cartContext.getFreightSelected == 'pac') totalPrice += Number((cartContext.getFreightPrice.pac.Valor).replace(',', '.'))
-        else if(cartContext.getFreightSelected == 'sedex') totalPrice += Number((cartContext.getFreightPrice.sedex.Valor).replace(',', '.'))
-        
-        cartContext.setTotalPrice(totalPrice.toFixed(2));
-    }
 
     async function fetchProducts() {
 
@@ -90,6 +65,33 @@ export default function Cart() {
         }
 
         cartContext.setProducts(products);
+    }
+
+    function handleZipCode(value){
+
+        cartContext.resetFreight();
+
+        cartContext.setZipCode(formatZipCode(value));
+    }
+
+    function calcTotalPrice() {
+
+        let totalPrice = 0;
+
+        for (let i = 0; i < cartContext.getCart.length; i++) {
+
+            if(cartContext.getProducts[i]){
+
+                totalPrice += cartContext.getProducts[i].finalPrice * cartContext.getCart[i].qtd;
+            }
+        }
+
+        cartContext.setSubtotalPrice(totalPrice.toFixed(2));
+
+        if(cartContext.getFreightSelected == 'pac') totalPrice += Number((cartContext.getFreightPrice.pac.Valor).replace(',', '.'))
+        else if(cartContext.getFreightSelected == 'sedex') totalPrice += Number((cartContext.getFreightPrice.sedex.Valor).replace(',', '.'))
+        
+        cartContext.setTotalPrice(totalPrice.toFixed(2));
     }
 
     function verifyQtd({ id, qtd }) {
