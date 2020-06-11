@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
+import Head from 'next/head';
 
 import formatZipCode from '../utils/formatZipCode';
 
@@ -110,6 +111,11 @@ export default function Address() {
 
     return (
         <>
+            <Head>
+                <title>Selecione o endereço</title>
+                <meta name="robots" content="noindex" />
+            </Head>
+
             <section>
 
                 <button 

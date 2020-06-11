@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
-import validateCpf from '../utils/validateCpf';
-
 const Context = createContext({});
 
 export function UserContextProvider({ children }){

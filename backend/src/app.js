@@ -16,7 +16,7 @@ const app = express();
  
 app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
 
 app.use(trimBody);
 

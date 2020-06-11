@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useUser } from '../context/userContext';
 
-import ForgotPassword from './ForgotPassword';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 export default function ModalLogin() {
 
@@ -44,7 +44,7 @@ export default function ModalLogin() {
 
     }, [getName, getEmail, getPassword, getConfirmPassword]);
 
-    function handleCreateOrLogin(event){
+    async function handleCreateOrLogin(event){
 
         event.preventDefault();
 
@@ -54,7 +54,9 @@ export default function ModalLogin() {
 
         } else {
 
-            userContext.logIn(getEmail, getPassword);
+            const result = await userContext.logIn(getEmail, getPassword);
+            
+            if(!result) alert('Erro ao logar');
         }
     }
 
@@ -76,7 +78,7 @@ export default function ModalLogin() {
                     </div>
 
                     {(getForgotPassword)
-                        ? <ForgotPassword setForgotPassword={setForgotPassword} />    
+                        ? <ForgotPasswordModal setForgotPassword={setForgotPassword} />    
                         : (
                             <>
                                 <form>

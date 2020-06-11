@@ -21,7 +21,7 @@ export default function ProductCard({ product }) {
                         <div className='img-container'>
                             <img
                                 //src={product.images[0] && product.images[0].url}
-                                src={`${(product.images.length > 0) ? `http://localhost:3001/uploads/${product.images[0].filename}` : noImg}`}
+                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
                                 alt={'imagem-' + product.title.split(' ').join('-')}
                             />
                         </div>

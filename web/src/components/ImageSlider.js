@@ -49,7 +49,7 @@ export default function ImageSlider({ images }) {
                     {(images.length > 0)
                         //? images.map( (image, index) => <img src={image.url} key={index} />)
                         //: testImages.map((image, index) => <img src={image.url} key={index} />)
-                        ? images.map( (image, index) => <img src={`http://localhost:3001/uploads/${image.filename}`} key={index} />)
+                        ? images.map( (image, index) => <img src={`${process.env.BACKEND_URL}/uploads/${image.filename}`} key={index} />)
                         : [1].map( (i) => <img src={noImg} key={i} />) 
                     }
                 </Carousel>

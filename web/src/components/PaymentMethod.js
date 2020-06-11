@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
+import Head from 'next/head';
 
 import { useOrder } from '../context/orderContext';
 
@@ -24,6 +25,11 @@ export default function PaymentMethod() {
 
     return (
         <>
+            <Head>
+                <title>Pagamento</title>
+                <meta name="robots" content="noindex" />
+            </Head>
+
             <section>
 
                 <button

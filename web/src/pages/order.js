@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Head from 'next/head';
 
 import { useOrder } from '../context/orderContext';
 
@@ -21,11 +20,6 @@ export default function Order() {
 
     return (
         <>
-            <Head>
-                <title>Obrigado pela compra</title>
-                <meta name="robots" content="noindex" />
-            </Head>
-
             <PageLayout>
 
                 {(orderContext.getOrder == 'cart') && <Cart />}

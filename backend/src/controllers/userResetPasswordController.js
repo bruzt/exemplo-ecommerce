@@ -27,6 +27,9 @@ module.exports = {
 
             await user.save();
 
+            const token = user.id + '$' + rawToken;
+            const reset_url = `${process.env.FRONTEND_URL}/forgotpass?token=${token}`;
+
             await mailer.sendMail({
                 from: 'donotreply@companydomain.com',
                 to: email,
@@ -34,7 +37,7 @@ module.exports = {
                 template: 'resetPassword',
                 context: { 
                     name: user.name,
-                    token: user.id + '#' + rawToken,
+                    reset_url,
                  }
             });
 
@@ -51,7 +54,7 @@ module.exports = {
 
         const { token, password } = req.body;
 
-        const [id, rawToken] = token.split('#');
+        const [id, rawToken] = token.split('$');
 
         if(isNaN(id)) return res.status(400).json({ message: 'invalid token' });
        

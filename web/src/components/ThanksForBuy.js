@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 
 import { useOrder } from '../context/orderContext';
 
@@ -8,6 +9,11 @@ export default function ThanksForBuy() {
 
     return (
         <>
+            <Head>
+                <title>Obrigado pela compra</title>
+                <meta name="robots" content="noindex" />
+            </Head>
+            
             <section>
 
                 <h2>Obrigado pela compra, seu pedido será processado e qualquer alteração será informada por email</h2>
