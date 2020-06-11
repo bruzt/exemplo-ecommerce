@@ -8,7 +8,7 @@ import { useOrder } from '../context/orderContext';
 
 import GlobalStyle from './GlobalStyle';
 import LoginModal from './LoginModal';
-import ManuAndSearchBar from './MenuAndSeachBar';
+import MenuAndSearchBar from './MenuAndSeachBar';
 
 export default function Header() {
 
@@ -71,7 +71,7 @@ export default function Header() {
                 </div>
             </header>
 
-            <ManuAndSearchBar />
+            <MenuAndSearchBar />
 
             <style jsx>{`
                 header {
