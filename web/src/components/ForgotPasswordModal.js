@@ -48,42 +48,53 @@ export default function ForgotPasswordModal({ setForgotPassword }) {
             {(getEmailSended)
                 ?   <p className='forgot-password'>Enviado, verifique seu e-mail para trocar a senha.</p>
                 : (
-                    <form className='forgot-password'>
-                        <label htmlFor="forgot-pass-input">e-mail cadastrado</label>
-                        <input 
-                            type="email"
-                            id='forgot-pass-input'
-                            value={getEmail}
-                            onChange={(event) => setEmail(event.target.value)}
-                        />
+                    <div className='center'>
+                        <form className='forgot-password'>
+                            <label htmlFor="forgot-pass-input">e-mail cadastrado</label>
+                            <input 
+                                type="email"
+                                id='forgot-pass-input'
+                                value={getEmail}
+                                onChange={(event) => setEmail(event.target.value)}
+                            />
 
-                        <button
-                            type='submit'
-                            disabled={getDisabledSendButton}
-                            onClick={(event) => handleSendButton(event)}
-                        >
-                            {(getSendingEmail) ? (
-                                <Loading
-                                    type="TailSpin"
-                                    color='#0D2235'
-                                    height={20}
-                                    width={20}
-                                />
-                            ) : 'Enviar'}
-                        </button>
+                            <button
+                                type='submit'
+                                disabled={getDisabledSendButton}
+                                onClick={(event) => handleSendButton(event)}
+                            >
+                                {(getSendingEmail) ? (
+                                    <Loading
+                                        type="TailSpin"
+                                        color='#0D2235'
+                                        height={20}
+                                        width={20}
+                                    />
+                                ) : 'Enviar'}
+                            </button>
 
-                        <a
-                            onClick={() => setForgotPassword(false)}
-                        >
-                            Voltar para Login
-                        </a>
-                    </form>
+                            <a
+                                onClick={() => setForgotPassword(false)}
+                            >
+                                Voltar para Login
+                            </a>
+                        </form>
+                    </div>
                 )
             }
 
             <style jsx>{`
+                .center {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
                 .forgot-password {
+                    width: 100%;
+                    max-width: 300px;
                     height: 300px;
+
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
@@ -95,7 +106,8 @@ export default function ForgotPasswordModal({ setForgotPassword }) {
                 }
 
                 .forgot-password input#forgot-pass-input {
-                    height: 30px;
+                    width: 100%;
+                    height: 40px;
                     border: 0;
                     border-radius: 5px;
                     margin: 10px 0 0 0;
@@ -105,9 +117,9 @@ export default function ForgotPasswordModal({ setForgotPassword }) {
                 }
 
                 .forgot-password button {
-                    width: 75px;
-                    height: 40px;
-                    margin: 20px 0 0 0;
+                    width: 100%;
+                    height: 50px;
+                    margin: 30px 0 0 0;
                     padding: 10px;
                     border: 0;
                     border-radius: 5px;

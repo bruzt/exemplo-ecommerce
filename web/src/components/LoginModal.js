@@ -224,7 +224,7 @@ export default function ModalLogin() {
                 .modal-content form .input-group  {
                     display: flex;
                     flex-direction: column;
-                    width: 200px;
+                    width: 300px;
                 }
 
                 .modal-content form .input-group label {
@@ -236,16 +236,18 @@ export default function ModalLogin() {
                 }
 
                 .modal-content form input {
-                    font-size: 15px;
+                    width: 100%;
+                    height: 40px;
+                    font-size: 20px;
                     padding: 5px;
                     border: 1px solid #60615b;
                     border-radius: 5px;
                 }
 
                 .modal-content form .login-button {
-                    margin: 20px 0 0 0;
-                    width: 200px;
-                    height: 30px;
+                    margin: 30px 0 0 0;
+                    width: 300px;
+                    height: 50px;
                     border: 0;
                     border-radius: 5px;
                     background: #3E8C34;

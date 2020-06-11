@@ -31,7 +31,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
         ) {
 
             setDisabledCreateBoletoButton(false);
-        }
+        } else setDisabledCreateBoletoButton(true);
 
     }, [getCpf, getPhone])
 
@@ -239,6 +239,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                     font-size: 20px;
                     font-weight: bold;
                     color: inherit;
+                    cursor: pointer;
                 }
 
                 .button-total button:hover {
@@ -251,7 +252,10 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
 
                 .button-total button:disabled {
                     background: ${(getDisabledCreditCardButton) ? '#3E8C34' : '#a32e39'};
-                    color: inherit;
+                }
+
+                .button-total button:disabled:hover {
+                    background: ${(getDisabledCreditCardButton) ? '#41A933' : '#bf2232'};
                 }
             `}</style>
         </>

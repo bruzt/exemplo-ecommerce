@@ -678,6 +678,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                     font-size: 20px;
                     font-weight: bold;
                     color: inherit;
+                    cursor: pointer;
                 }
 
                 .button-total button:hover {
@@ -690,7 +691,10 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                 .button-total button:disabled {
                     background: ${(getDisabledBoletoButton) ? '#3E8C34' : '#a32e39'};
-                    color: inherit;
+                }
+
+                .button-total button:disabled:hover {
+                    background: ${(getDisabledBoletoButton) ? '#41A933' : '#bf2232'};
                 }
             `}</style>
         </>
