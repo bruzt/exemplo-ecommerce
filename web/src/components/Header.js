@@ -20,7 +20,7 @@ export default function Header() {
         <>
             <GlobalStyle />
 
-            <LoginModal />
+            {(userContext.getShowModal) ? <LoginModal /> : false}  
 
             <header>
                 <div className='limit-center'>

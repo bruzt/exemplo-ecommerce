@@ -171,7 +171,6 @@ export default function ModalLogin() {
 
             <style jsx>{`
                 .modal {
-                    display: ${(userContext.getShowModal) ? 'block' : 'none'};
                     position: fixed; /* Stay in place */
                     z-index: 20; /* Sit on top */
                     left: 0;
