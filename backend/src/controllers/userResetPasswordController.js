@@ -38,6 +38,7 @@ module.exports = {
                 context: { 
                     name: user.name,
                     reset_url,
+                    website_url: process.env.FRONTEND_URL
                  }
             });
 

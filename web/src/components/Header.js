@@ -77,7 +77,6 @@ export default function Header() {
                 header {
                     height: 100px;
                     background: #0D2235;
-                    color: #eee;
                 }
 
                 header .limit-center {

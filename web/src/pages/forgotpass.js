@@ -60,7 +60,7 @@ export default function ForgotPass() {
     return (
         <>
             <Head>
-                <title>Esqueceu a senha</title>
+                <title>Trocar senha</title>
                 <meta name="robots" content="noindex" />
             </Head>
 
@@ -71,14 +71,6 @@ export default function ForgotPass() {
                     <h1>Trocar senha</h1>
 
                     <form>
-                        {/*<label htmlFor="token">Token</label>
-                        <input 
-                            type="text" 
-                            id="token"
-                            value={getToken}
-                            onChange={(event) => setToken(event.target.value)}
-                        />*/}
-
                         <label htmlFor="password">Senha</label>
                         <input 
                             type="password" 
