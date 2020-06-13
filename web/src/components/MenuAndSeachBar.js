@@ -195,9 +195,9 @@ const categoryMenuStyle = css`
                 
     ul li { 
         width: 200px; 
+        height: 40px; 
         background: #0D2235; 
         float: left; 
-        height: 40px; 
         line-height: 40px; 
         font-size: 20px;
         text-align: center; 
@@ -213,6 +213,7 @@ const categoryMenuStyle = css`
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
                 
     ul li:hover { 

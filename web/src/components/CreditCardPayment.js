@@ -641,6 +641,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                     border-radius: 5px;
                     background: #16324C;
                     color: inherit;
+                    cursor: pointer;
                 }
 
                 .same-addr-button button:hover {

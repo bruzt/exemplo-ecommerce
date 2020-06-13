@@ -312,7 +312,7 @@ export default function Cart() {
                             <div className='choose-freight'>
                                 {cartContext.getFreightPrice.pac.message ? (
                                     <span>
-                                        <p>PAC - {cartContext.getFreightPrice.pac.message}</p>
+                                        <p>Correios PAC - {cartContext.getFreightPrice.pac.message}</p>
                                     </span>
                                 ) : (
                                     <span>
@@ -322,13 +322,13 @@ export default function Cart() {
                                             checked={cartContext.getFreightSelected == 'pac' ? true : false} 
                                             onChange={(event) => handleFreightCheck(event.target.name)} 
                                         /> 
-                                        <p>PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</p>
+                                        <p>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</p>
                                     </span>
                                 )}
                                 
                                 {cartContext.getFreightPrice.sedex.message ? (
                                     <span>
-                                        <p>SEDEX - {cartContext.getFreightPrice.sedex.message}</p>
+                                        <p>Correios SEDEX - {cartContext.getFreightPrice.sedex.message}</p>
                                     </span>
                                 ):(
                                     <span>
@@ -338,7 +338,7 @@ export default function Cart() {
                                             checked={cartContext.getFreightSelected == 'sedex' ? true : false} 
                                             onChange={(event) => handleFreightCheck(event.target.name)} 
                                         /> 
-                                        <p>SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</p>  
+                                        <p>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</p>  
                                     </span>
                                 )}
                             </div>
@@ -563,18 +563,21 @@ export default function Cart() {
                     font-size: 25px;  
                     padding: 0 0 0 2px;  
                     border: 0;
-                    border-radius: 5px;
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
                     text-align: center;
+                    background: #eee;
                 }
 
                 .calc-freight button {
                     width: 30px;
                     height: 30px;
                     border: 0;
-                    border-radius: 5px;
-                    margin: 0 0 0 5px;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
                     cursor: pointer;
                     color: black;
+                    background: #eee;
                 }
 
                 .calc-freight button:active {

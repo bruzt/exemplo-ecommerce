@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
+import { FaShoppingCart, FaSignInAlt, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 
 import { useCart } from '../context/cartContext';
@@ -15,6 +15,14 @@ export default function Header() {
     const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
+
+    /*<button
+        className='user-button'
+        type='button'
+        onClick={() => userContext.logOut()}
+    >
+        Olá, {userContext.getUser.name.split(' ')[0]}
+    </button>*/
 
     return (
         <>
@@ -40,19 +48,28 @@ export default function Header() {
                                 title='Fazer Login'
                                 onClick={() => userContext.handleSwitchModal()}
                             >
-                                Entrar&nbsp;<FaSignInAlt />
+                                <FaSignInAlt />&nbsp;Entrar
                             </button>
                         ) 
-                        : ((userContext.getUser) ? (
-
-                                <button
-                                    className='user-button'
-                                    type='button'
-                                    onClick={() => userContext.logOut()}
-                                >
-                                    Olá, {userContext.getUser.name.split(' ')[0]}
-                                </button>
-                            ) : <span></span>
+                        : ((userContext.getUser) 
+                            ? (
+                                <div className="dropdown">
+                                    <span>Olá, {userContext.getUser.name.split(' ')[0]}</span>
+                                    <div className="dropdown-content">
+                                        <p
+                                            onClick={() => {}}
+                                        >
+                                            <FaUserCircle />&nbsp;Minha Conta
+                                        </p>
+                                        <p
+                                            onClick={() => userContext.logOut()}
+                                        >
+                                            <FaSignOutAlt />&nbsp;Sair
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                            : <span></span>
                         )}
 
                         <div className='icon' title='Carrinho de compras'>
@@ -79,7 +96,7 @@ export default function Header() {
                     background: #0D2235;
                 }
 
-                header .limit-center {
+                div.limit-center {
                     width: 100%;
                     max-width: 1100px;
                     margin: 0 auto;
@@ -94,32 +111,70 @@ export default function Header() {
                     cursor: pointer;
                 }
 
-                header .login-cart {
+                div.login-cart {
                     display: flex;
                     justify-content: space-between;
                     width: 25%;
                 }
 
-                header .icon {
-                    margin: 35px 10px 0 0;
-                    text-align: center;
+                .dropdown {
+                    position: relative;
+                    display: inline-block;
                 }
 
-                header .cart-number {
+                .dropdown-content {
+                    display: none;
                     position: absolute;
-                    margin: 0 0 0 40px;
-                    background: #8f182a;
-                    padding: 1px 5px;
-                    border-radius: 20px;
+                    background-color: #eee;
+                    color: #0D2235;
+                    min-width: 160px;   
+                    z-index: 10;
+                    margin: 45px 0 0 0;
+                }
+
+                .dropdown:hover .dropdown-content {
+                    display: block;
+                }
+
+                .dropdown-content p {
+                    padding: 5px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .dropdown-content p:hover {
+                    background: #c8c8c8;
+                }
+
+                /*ul.user-menu {
+                    list-style: none;
+                }
+
+                ul.user-menu > li {
+
+                    position: relative;
                     z-index: 10;
                 }
 
-                header .cart-number p {
-                    padding: 0;
-                    margin: 0;
+                ul.user-menu li > ul {
+                    width: 150px;
+                    height: 50px;
+                    position: absolute; 
+                    bottom: 0;
+                    top: 25px;
+                    background: #eee;  
+                    z-index: 20;
                 }
 
-                .login-cart .login-button, .user-button {
+                ul.user-menu li > ul li {
+                    color: #232b2b; 
+                }
+
+                ul.user-menu li > ul li:hover {
+                    background: #A9A9A9;
+                }*/
+
+                button.login-button, .dropdown {
                     width: 100px;
                     height: 20px;
                     margin: 70px 0 0 0;
@@ -134,13 +189,33 @@ export default function Header() {
                     align-items: center;
                 }
                 
-                .login-cart .user-button {
+                li.user-name {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                 }
+
+                div.icon {
+                    margin: 35px 10px 0 0;
+                    text-align: center;
+                }
+
+                div.cart-number {
+                    position: absolute;
+                    margin: 0 0 0 40px;
+                    background: #8f182a;
+                    padding: 1px 5px;
+                    border-radius: 20px;
+                    z-index: 20;
+                }
+
+                div.cart-number p {
+                    padding: 0;
+                    margin: 0;
+                }
+
 
             `}</style>
         </>
