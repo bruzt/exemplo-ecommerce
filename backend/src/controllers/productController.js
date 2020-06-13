@@ -38,20 +38,18 @@ module.exports = {
 
             order.move(2, 0);
 
+            where = {
+                quantity_sold: {
+                    [Op.gt]: 0
+                }
+            }
+
         } else if(req.query.section == 'news'){
 
             order.splice(0, 0, ['createdAt', 'DESC']);
 
             let date = new Date();
-            let month = date.getMonth() - 1;
-
-            if(month == -1) {
-
-                month = 11;
-                date.setFullYear(date.getFullYear() -1);
-            }
-
-            date.setMonth(month);
+            date.setMonth(date.getMonth() - 1);
 
             where = {
                 createdAt: { [Op.gte]: date }
@@ -64,12 +62,24 @@ module.exports = {
         try {
 
             let products = [];
+            let count = 0;
 
             if(req.query.title){
 
                 const title = req.query.title.split(' ').map( (word) => `%${word}%`);
 
-                products = await ProductModel.findAndCountAll({
+                count = await ProductModel.count({
+                    col: 'id',
+                    where: {
+                        title: { 
+                            [Op.iLike]: {
+                                [Op.any]: title
+                            }
+                        }
+                    }
+                });
+
+                products = await ProductModel.findAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -87,7 +97,7 @@ module.exports = {
                         {
                             association: 'images',
                             attributes: ['id', 'url', 'filename'],
-                            required: false
+                            required: false,
                         },                    
                         {
                             association: 'category',
@@ -107,7 +117,19 @@ module.exports = {
 
                 const categoriesIds = findCategoriesChildrenIds(req.query.category, categories);
                 
-                products = await ProductModel.findAndCountAll({
+                count = await ProductModel.count({
+                    col: 'id',
+                    include: [                  
+                        {
+                            association: 'category',
+                            where: { 
+                                id: categoriesIds
+                            },
+                       }
+                    ]
+                });
+                
+                products = await ProductModel.findAll({
                     attributes: { 
                         exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -134,7 +156,12 @@ module.exports = {
 
             } else {
 
-                products = await ProductModel.findAndCountAll({
+                count = await ProductModel.count({
+                    col: 'id',
+                    where
+                });
+                
+                products = await ProductModel.findAll({
                     attributes: { 
                         exclude: ['updatedAt', 'deletedAt', 'category_id'] 
                     },
@@ -156,7 +183,7 @@ module.exports = {
                 });
             }
             
-            return res.json({ count: products.count, products: products.rows });
+            return res.json({ count, products: products });
             
         } catch (error) {
             console.error(error);
