@@ -12,10 +12,8 @@ module.exports = function findCategoriesChildrenIds(fatherId, categories){
     
     children.forEach( (category) => {
         
-        categoriesIds.push(category.id);
-        
         categoriesIds.push(...findCategoriesChildrenIds(category.id, categories));
     });
 
-    return [ ...new Set([ fatherId, ...categoriesIds ]) ];
+    return [ fatherId, ...categoriesIds ];
 }
