@@ -51,10 +51,16 @@ class UserModel extends Model {
 
     generateToken() {
 
-        return jwt.sign({ 
-            id: this.id, 
-            admin: this.admin
-        }, process.env.APP_SECRET);
+        return jwt.sign(
+            { 
+                id: this.id, 
+                admin: this.admin
+            }, 
+            process.env.APP_SECRET, 
+            {
+                expiresIn: '12h'
+            }
+        );
     }
 }
 
