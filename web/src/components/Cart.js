@@ -194,194 +194,201 @@ export default function Cart() {
             </Head>
 
             <section>
-                {cartContext.getProducts.length == 0 ? (
+                {(cartContext.getProducts.length == 0) 
+                ? (
                     <h1>Carrinho vazio</h1>
-                ) : <h1>Carrinho</h1>}
-                <table>
-                    <thead>
-                        <tr>
-                            <th className='th-image'>Imagem</th>
-                            <th className='th-product'>Produto</th>
-                            <th className='th-price'>Preço unitário</th>
-                            <th className='th-qtd'>Quantidade</th>
-                            <th className='th-total'>Preço</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cartContext.getProducts.length > 0 && cartContext.getProducts.map((product, index) => (
-                            <tr key={product.id}>
-                                <td className='td-image'>
-                                    <img
-                                        //src='https://i.picsum.photos/id/892/800/400.jpg'
-                                        /*src='https://picsum.photos/800/400'*/
-                                        /*src={product.images[0] && product.images[0].url} */
-                                        src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
-                                        alt={'imagem-' + product.title.split(' ').join('-')}
-                                    />
-                                </td>
-                                <td className='td-name'>
-                                    <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
-                                        <a>
-                                            <span className='over-hidden'>{product.title}</span>
-                                            {(product.discount_percent != 0)
-                                                ? <span className='order-discount'>-{product.discount_percent}%</span>
-                                                : null
-                                            }
-                                        </a>
-                                    </Link>
-                                </td>
-                                <td className='td-price'>
-                                    R$ {product.finalPrice}
-                                </td>
-                                <td className='td-qtd'>
-                                    <span>
-                                        <button
-                                            type="button"
-                                            id='remove'
-                                            onClick={() => cartContext.removeFromCart(product.id)}
-                                            title='Remover do carrinho'
-                                        >
-                                            X
-                                        </button>
-                                        <button
-                                            type="button"
-                                            id='less'
-                                            onClick={() => verifyQtd({ id: product.id, qtd: -1 })}
-                                            title='Remover 1'
-                                        >
-                                            -
-                                        </button>
-                                        <p className='cart-qtd'>{cartContext.getCart[index].qtd}</p>
-                                        <button
-                                            type="button"
-                                            id='plus'
-                                            onClick={() => verifyQtd({ id: product.id, qtd: 1 })}
-                                            title='Adicionar 1'
-                                        >
-                                            +
-                                        </button>
-                                    </span>
-                                    <span>
-                                        Disponível: {product.quantity_stock}
-                                    </span>
-                                </td>
-                                <td className='td-total'>
-                                    R$ {(product.finalPrice * cartContext.getCart[index].qtd).toFixed(2)}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                
-                <div className='freight-total'>
+                ) 
+                : (
+                    <>
+                        <h1>Carrinho</h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th className='th-image'>Imagem</th>
+                                    <th className='th-product'>Produto</th>
+                                    <th className='th-price'>Preço unitário</th>
+                                    <th className='th-qtd'>Quantidade</th>
+                                    <th className='th-total'>Preço</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cartContext.getProducts.length > 0 && cartContext.getProducts.map((product, index) => (
+                                    <tr key={product.id}>
+                                        <td className='td-image'>
+                                            <img
+                                                //src='https://i.picsum.photos/id/892/800/400.jpg'
+                                                /*src='https://picsum.photos/800/400'*/
+                                                /*src={product.images[0] && product.images[0].url} */
+                                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
+                                                alt={'imagem-' + product.title.split(' ').join('-')}
+                                            />
+                                        </td>
+                                        <td className='td-name'>
+                                            <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
+                                                <a>
+                                                    <span className='over-hidden'>{product.title}</span>
+                                                    {(product.discount_percent != 0)
+                                                        ? <span className='order-discount'>-{product.discount_percent}%</span>
+                                                        : null
+                                                    }
+                                                </a>
+                                            </Link>
+                                        </td>
+                                        <td className='td-price'>
+                                            R$ {product.finalPrice}
+                                        </td>
+                                        <td className='td-qtd'>
+                                            <span>
+                                                <button
+                                                    type="button"
+                                                    id='remove'
+                                                    onClick={() => cartContext.removeFromCart(product.id)}
+                                                    title='Remover do carrinho'
+                                                >
+                                                    X
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    id='less'
+                                                    onClick={() => verifyQtd({ id: product.id, qtd: -1 })}
+                                                    title='Remover 1'
+                                                >
+                                                    -
+                                                </button>
+                                                <p className='cart-qtd'>{cartContext.getCart[index].qtd}</p>
+                                                <button
+                                                    type="button"
+                                                    id='plus'
+                                                    onClick={() => verifyQtd({ id: product.id, qtd: 1 })}
+                                                    title='Adicionar 1'
+                                                >
+                                                    +
+                                                </button>
+                                            </span>
+                                            <span>
+                                                Disponível: {product.quantity_stock}
+                                            </span>
+                                        </td>
+                                        <td className='td-total'>
+                                            R$ {(product.finalPrice * cartContext.getCart[index].qtd).toFixed(2)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    
+                        <div className='freight-total'>
 
-                    <div className="calc-freight">
-                        <form className='cep-input'>
-                            Calculo de frete:
-                            &nbsp;
-                            <input 
-                                id='cep'
-                                type='text' 
-                                placeholder='CEP' 
-                                maxLength={9}
-                                value={cartContext.getZipCode} 
-                                onChange={(event) => handleZipCode(event.target.value)} 
-                            />
-                            <button 
-                                type='submit' 
-                                onClick={(event) => getFreightPrice(event)}
-                                disabled={(
-                                        cartContext.getProducts.length == 0 || 
-                                        cartContext.getZipCode.length < 9 ||
-                                        getZipCodeButtonDisabled
-                                    ) ? true : false}
-                            >
-                                {(getZipCodeButtonDisabled)
-                                    ? <Loading
-                                        type="TailSpin"
-                                        color="black"
-                                        height={20}
-                                        width={20}
-                                      />
-                                    : <FaSearchLocation size={20} />
-                                }
-                            </button>
-                        </form>
-                        
-                        {cartContext.getFreightPrice ? (
-                            <div className='choose-freight'>
-                                {cartContext.getFreightPrice.pac.message ? (
-                                    <span>
-                                        <p>Correios PAC - {cartContext.getFreightPrice.pac.message}</p>
-                                    </span>
-                                ) : (
-                                    <span>
-                                        <input 
-                                            type="radio" 
-                                            name='pac'
-                                            checked={cartContext.getFreightSelected == 'pac' ? true : false} 
-                                            onChange={(event) => handleFreightCheck(event.target.name)} 
-                                        /> 
-                                        <p>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</p>
-                                    </span>
-                                )}
+                            <div className="calc-freight">
+                                <form className='cep-input'>
+                                    Calculo de frete:
+                                    &nbsp;
+                                    <input 
+                                        id='cep'
+                                        type='text' 
+                                        placeholder='CEP' 
+                                        maxLength={9}
+                                        value={cartContext.getZipCode} 
+                                        onChange={(event) => handleZipCode(event.target.value)} 
+                                    />
+                                    <button 
+                                        type='submit' 
+                                        onClick={(event) => getFreightPrice(event)}
+                                        disabled={(
+                                                cartContext.getProducts.length == 0 || 
+                                                cartContext.getZipCode.length < 9 ||
+                                                getZipCodeButtonDisabled
+                                            ) ? true : false}
+                                    >
+                                        {(getZipCodeButtonDisabled)
+                                            ? <Loading
+                                                type="TailSpin"
+                                                color="black"
+                                                height={20}
+                                                width={20}
+                                            />
+                                            : <FaSearchLocation size={20} />
+                                        }
+                                    </button>
+                                </form>
                                 
-                                {cartContext.getFreightPrice.sedex.message ? (
-                                    <span>
-                                        <p>Correios SEDEX - {cartContext.getFreightPrice.sedex.message}</p>
-                                    </span>
-                                ):(
-                                    <span>
-                                        <input 
-                                            type="radio" 
-                                            name='sedex'
-                                            checked={cartContext.getFreightSelected == 'sedex' ? true : false} 
-                                            onChange={(event) => handleFreightCheck(event.target.name)} 
-                                        /> 
-                                        <p>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</p>  
-                                    </span>
+                                {cartContext.getFreightPrice ? (
+                                    <div className='choose-freight'>
+                                        {cartContext.getFreightPrice.pac.message ? (
+                                            <span>
+                                                <p>Correios PAC - {cartContext.getFreightPrice.pac.message}</p>
+                                            </span>
+                                        ) : (
+                                            <span>
+                                                <input 
+                                                    type="radio" 
+                                                    name='pac'
+                                                    checked={cartContext.getFreightSelected == 'pac' ? true : false} 
+                                                    onChange={(event) => handleFreightCheck(event.target.name)} 
+                                                /> 
+                                                <p>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</p>
+                                            </span>
+                                        )}
+                                        
+                                        {cartContext.getFreightPrice.sedex.message ? (
+                                            <span>
+                                                <p>Correios SEDEX - {cartContext.getFreightPrice.sedex.message}</p>
+                                            </span>
+                                        ):(
+                                            <span>
+                                                <input 
+                                                    type="radio" 
+                                                    name='sedex'
+                                                    checked={cartContext.getFreightSelected == 'sedex' ? true : false} 
+                                                    onChange={(event) => handleFreightCheck(event.target.name)} 
+                                                /> 
+                                                <p>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</p>  
+                                            </span>
+                                        )}
+                                    </div>
+                                )
+                                : null}
+                            </div>
+
+                            <div className="total-price">
+                                <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
+                                <p>Frete: R$ {(cartContext.getFreightSelected) ? (
+                                    Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)
+                                ) : ( '0.00' )
+                                }</p>
+                                <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
+                                
+                                {(userContext.getLogin) ? (
+                                    (cartContext.getFreightSelected == null) ? (
+                                        <button 
+                                            type='button'
+                                            disabled={true}
+                                        >
+                                            Selecione o frete
+                                        </button>
+                                    ) : (
+                                        <button 
+                                            type='button'
+                                            onClick={() => orderContext.setOrder('address')}
+                                            disabled={(cartContext.getCart.length == 0) ? true : false }
+                                        >
+                                            {(cartContext.getCart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
+                                        </button>
+                                    )
+                                ) : (
+                                    <button 
+                                        type='button' 
+                                        onClick={() => userContext.handleSwitchModal()}
+                                    >
+                                        Fazer Login
+                                    </button>
                                 )}
                             </div>
-                        )
-                        : null}
-                    </div>
 
-                    <div className="total-price">
-                        <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                        <p>Frete: R$ {(cartContext.getFreightSelected) ? (
-                            Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)
-                        ) : ( '0.00' )
-                        }</p>
-                        <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
-                        
-                        {(userContext.getLogin) ? (
-                            (cartContext.getFreightSelected == null) ? (
-                                <button 
-                                    type='button'
-                                    disabled={true}
-                                >
-                                    Selecione o frete
-                                </button>
-                            ) : (
-                                <button 
-                                    type='button'
-                                    onClick={() => orderContext.setOrder('address')}
-                                    disabled={(cartContext.getCart.length == 0) ? true : false }
-                                >
-                                    {(cartContext.getCart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
-                                </button>
-                            )
-                        ) : (
-                            <button 
-                                type='button' 
-                                onClick={() => userContext.handleSwitchModal()}
-                            >
-                                Fazer Login
-                            </button>
-                        )}
-                    </div>
-
-                </div>
+                        </div>
+                    </>
+                )}
+                
 
             </section>
 
