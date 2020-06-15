@@ -100,17 +100,19 @@ export default function ModalLogin() {
                                             type='email' 
                                             id="login-email"
                                             value={getEmail}
-                                            onChange={(event) => setEmail(event.target.value)}
+                                            onChange={(event) => setEmail(event.target.value.trim())}
                                         />
                                     </div>
 
                                     <div className="input-group">
-                                        <label htmlFor="login-password">Senha</label>
+                                        <label htmlFor="login-password">
+                                            Senha {(getCreateNewAccount) && <span>(no mínimo 6 caracteres)</span>}
+                                        </label>
                                         <input 
                                             type='password' 
                                             id="login-password"
                                             value={getPassword}
-                                            onChange={(event) => setPassword(event.target.value)}
+                                            onChange={(event) => setPassword(event.target.value.trim())}
                                         />
                                     </div>
 
@@ -121,7 +123,7 @@ export default function ModalLogin() {
                                                 type='password' 
                                                 id="login-confirm-password"
                                                 value={getConfirmPassword}
-                                                onChange={(event) => setConfirmPassword(event.target.value)}
+                                                onChange={(event) => setConfirmPassword(event.target.value.trim())}
                                             />
                                         </div>
                                     )}
@@ -229,6 +231,10 @@ export default function ModalLogin() {
 
                 .modal-content form .input-group label {
                     margin: 0 0 0 5px;
+                }
+
+                .modal-content form .input-group label span {
+                    font-size: 14px;
                 }
 
                 .modal-content form .input-group + .input-group {
