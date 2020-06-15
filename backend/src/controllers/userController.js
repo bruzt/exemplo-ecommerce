@@ -94,17 +94,38 @@ module.exports = {
     async update(req, res){
 
         const { id } = req.tokenPayload;
-
-        //if(Object.keys(req.body).length === 0) return res.status(400).json({ message: 'empty object not allowed'});
+        const { name, email, currentPassword, newPassword } = req.body;
 
         try {
 
-            const [ updated ] = await UserModel.update(req.body, { 
-                where: { id }, 
-                individualHooks: true 
-            });
+            let password;
+            const user = await UserModel.findByPk(id);
 
-            if(updated == 0) return res.status(400).json({ message: 'no update has been made' });
+            if(currentPassword && newPassword){
+
+                if(await user.checkPassword(currentPassword)){
+
+                    password = newPassword;
+
+                } else {
+
+                    return res.status(400).json({ message: 'wrong current password' })
+                }
+            }
+
+            if(!password) password = undefined;
+            
+            const updated = await user.update({
+                    name,
+                    email,
+                    password
+                },
+                { 
+                    individualHooks: true 
+                }
+            );
+
+            if(Object.keys(updated._changed).length == 0) return res.status(400).json({ message: 'no update has been made' });
         
             return res.sendStatus(200);
 
