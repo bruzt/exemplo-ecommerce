@@ -30,24 +30,31 @@ export function UserContextProvider({ children }){
             api.defaults.headers.authorization = "Bearer " + getToken;   
             
             fetchUser();
-            
-            sessionStorage.setItem('token', getToken);
-    
-            setLogin(true);
-            setShowModal(false);
         }
 
     }, [getToken]);
 
     async function fetchUser(){
 
-        if(getToken.length > 0){
-
+        try {
+            
             const tokenPayload = jwt.decode(getToken);
     
             const response = await api.get('/users/' + tokenPayload.id);
     
             setUser(response.data);
+
+            sessionStorage.setItem('token', getToken);
+            setLogin(true);
+            setShowModal(false);
+
+        } catch (error) {
+
+            console.log(error);
+            
+            api.defaults.headers.authorization = undefined;
+            sessionStorage.removeItem('token');
+            setLogin(false);
         }
     }
 
