@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaShoppingCart, FaSignInAlt, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useCart } from '../context/cartContext';
 import { useUser } from '../context/userContext';
@@ -15,14 +16,7 @@ export default function Header() {
     const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
-
-    /*<button
-        className='user-button'
-        type='button'
-        onClick={() => userContext.logOut()}
-    >
-        Olá, {userContext.getUser.name.split(' ')[0]}
-    </button>*/
+    const router = useRouter();
 
     return (
         <>
@@ -57,7 +51,7 @@ export default function Header() {
                                     <span>Olá, {userContext.getUser.name.split(' ')[0]}</span>
                                     <div className="dropdown-content">
                                         <p
-                                            onClick={() => {}}
+                                            onClick={() => router.push('/account')}
                                         >
                                             <FaUserCircle />&nbsp;Minha Conta
                                         </p>
@@ -129,7 +123,7 @@ export default function Header() {
                     color: #0D2235;
                     min-width: 160px;   
                     z-index: 10;
-                    margin: 45px 0 0 0;
+                    top: 22px;
                 }
 
                 .dropdown:hover .dropdown-content {
@@ -140,39 +134,12 @@ export default function Header() {
                     padding: 5px;
                     display: flex;
                     align-items: center;
+                    font-weight: normal;
                 }
 
                 .dropdown-content p:hover {
                     background: #c8c8c8;
                 }
-
-                /*ul.user-menu {
-                    list-style: none;
-                }
-
-                ul.user-menu > li {
-
-                    position: relative;
-                    z-index: 10;
-                }
-
-                ul.user-menu li > ul {
-                    width: 150px;
-                    height: 50px;
-                    position: absolute; 
-                    bottom: 0;
-                    top: 25px;
-                    background: #eee;  
-                    z-index: 20;
-                }
-
-                ul.user-menu li > ul li {
-                    color: #232b2b; 
-                }
-
-                ul.user-menu li > ul li:hover {
-                    background: #A9A9A9;
-                }*/
 
                 button.login-button, .dropdown {
                     width: 100px;
