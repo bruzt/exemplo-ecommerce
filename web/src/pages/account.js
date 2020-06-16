@@ -34,7 +34,7 @@ export default function Account() {
                                 className={`menu-item ${(getActiveMenu == 'addresses') ? 'active' : ''}`}
                                 onClick={() => setActiveMenu('addresses')}
                             >
-                                Endereços
+                                Gerenciar Endereços
                             </a>
                             <a 
                                 className={`menu-item ${(getActiveMenu == 'my-shopping') ? 'active' : ''}`}
