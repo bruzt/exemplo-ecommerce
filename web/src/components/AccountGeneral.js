@@ -77,11 +77,9 @@ export default function AccountGeneral(){
         <>
             <section>
 
-                <h1>Dados da conta</h1>
-
                 {(Object.keys(userContext.getUser).length) > 0 && (
-
                     <form>
+                        <h1>Dados da conta</h1>
 
                         <div className="form-group">
                             <label htmlFor="name">Nome</label>
@@ -119,7 +117,7 @@ export default function AccountGeneral(){
 
                                 <div className="form-group">
                                     <label htmlFor="new-password">
-                                        Nova senha <span>(no mínimo 6 caracteres)</span>
+                                        Nova senha <span>(no mínimo 6 dígitos)</span>
                                     </label>
                                     <input 
                                         type="password"
@@ -155,16 +153,26 @@ export default function AccountGeneral(){
             </section>
 
             <style jsx>{`
-                h1 {
-                    text-align: center;
+                section {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
 
-                form {
+                section h1 {
+                    font-size: 30px;
+                }
+
+                section form {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
                     width: 100%;
+                    max-width: 600px;
+                    background: #0D2235;
+                    border-radius: 5px;
+                    padding: 20px 10px;
                 }
 
                 div.form-group {
@@ -195,15 +203,16 @@ export default function AccountGeneral(){
                 div.change-password-group {
                     width: 100%;
                     max-width: 300px;
-                    padding: 10px;
                     margin-top: 20px;
                 }
 
                 div.change-password-group h2 {
-                    margin-bottom: 10px;
+                    margin-bottom: -10px;
                 }
 
                 button[type='submit'] {
+                    width: 100%;
+                    max-width: 300px;
                     margin-top: 30px;
                     font-size: 30px;
                     padding: 5px 10px;
