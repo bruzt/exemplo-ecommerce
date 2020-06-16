@@ -106,7 +106,7 @@ export default function ModalLogin() {
 
                                     <div className="input-group">
                                         <label htmlFor="login-password">
-                                            Senha {(getCreateNewAccount) && <span>(no mínimo 6 caracteres)</span>}
+                                            Senha {(getCreateNewAccount) && <span>(no mínimo 6 dígitos)</span>}
                                         </label>
                                         <input 
                                             type='password' 
