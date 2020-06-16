@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import Head from 'next/head';
+import axios from 'axios';
 
 import formatZipCode from '../utils/formatZipCode';
 
@@ -10,35 +11,49 @@ import { useOrder } from '../context/orderContext';
 
 export default function Address() {
 
-    const [getShowAddAddr, setShowAddAddr] = useState(false);
-    const [getDisableAddAddrButton, setDisableAddAddrButton] = useState(true);
-
-    const [getStreet, setStreet] = useState('');
-    const [getNumber, setNumber] = useState('');
-    const [getNeighborhood, setNeighborhood] = useState('');
-    const [getCity, setCity] = useState('');
-    const [getState, setState] = useState('');
-    const [getZipCode, setZipCode] = useState('');
-
-    const [getDisabledGoToPaymentButton, setDisabledGoToPaymentButton] = useState(true);
-
     const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
 
+    const [getShowAddAddr, setShowAddAddr] = useState(false);
+    const [getDisableAddAddrButton, setDisableAddAddrButton] = useState(true);
+
+    const [getUfs, setUfs] = useState([]);
+    const [getCities, setCities] = useState([]);
+
+    const [getStreet, setStreet] = useState('');
+    const [getNumber, setNumber] = useState('');
+    const [getNeighborhood, setNeighborhood] = useState('');
+    const [getCity, setCity] = useState('0');
+    const [getUf, setUf] = useState('0');
+    const [getZipCode, setZipCode] = useState('');
+
+    const [getDisabledGoToPaymentButton, setDisabledGoToPaymentButton] = useState(true);
+
     useEffect( () => {
 
         cartContext.setAddressId(null);
+        fetchUfs();
 
     }, []);
+
+    useEffect( () => {
+
+        if(getUf != '0'){
+
+            fetchCities();
+            setCity('0');
+        }
+
+    }, [getUf]);
 
     useEffect( () => {
 
         if( getStreet.length < 3 ||
             getNumber.length < 1 ||
             getNeighborhood.length < 3 ||
-            getCity.length < 3 ||
-            getState.length < 1 ||
+            getCity == '0' ||
+            getUf == '0' ||
             getZipCode.length < 8 ||
             getZipCode.length > 9
         ){
@@ -51,10 +66,41 @@ export default function Address() {
             getStreet, 
             getNumber, 
             getNeighborhood, 
-            getCity, getState, 
+            getCity, 
+            getUf, 
             getZipCode
         ]
     );
+
+    async function fetchUfs(){
+
+        try {
+
+            const response = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+
+            setUfs(response.data);
+            
+        } catch (error) {
+            console.log(error);
+            console.log(error.response);
+            alert('Erro ao buscar lista de estados')
+        }
+    }
+
+    async function fetchCities(){
+        
+        try {
+
+            const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${getUf}/municipios`);
+
+            setCities(response.data);
+            
+        } catch (error) {
+            console.log(error);
+            console.log(error.response);
+            alert('Erro ao buscar lista de estados')
+        }
+    }
 
     function switchShowAddAddr(){
 
@@ -66,12 +112,14 @@ export default function Address() {
 
         event.preventDefault();
 
+        setDisableAddAddrButton(true);
+
         const add = userContext.addAddress({
             street: getStreet,
             number: getNumber,
             neighborhood: getNeighborhood,
             city: getCity,
-            state: getState,
+            state: getUf,
             zipcode: getZipCode
         });
         
@@ -80,10 +128,11 @@ export default function Address() {
             setStreet('');
             setNumber('');
             setNeighborhood('');
-            setCity('');
-            setState('');
-            setZipCode('');      
-        }
+            setCity('0');
+            setUf('0');
+            setZipCode('');   
+
+        } else setDisableAddAddrButton(false);
     }
 
     function handleDeleteAddress(id){
@@ -152,8 +201,7 @@ export default function Address() {
                                                     <p>Logradouro: {address.street}</p>
                                                     <p>Nº: {address.number}</p>
                                                     <p>Bairro: {address.neighborhood}</p>
-                                                    <p>Cidade: {address.city}</p>
-                                                    <p>Estado: {address.state}</p>
+                                                    <p>Cidade: {address.city} - {address.state}</p>
                                                     <p>CEP: {address.zipcode}</p>
                                                 </div>
                                             </a>
@@ -205,43 +253,44 @@ export default function Address() {
                         <div  className='flex-row'>
                             <div className='flex-column'>
                                 <label htmlFor="city">Cidade: </label>
-                                <input id='city' type="text" value={getCity} onChange={(event) => setCity(event.target.value)} />
+                                <select 
+                                    id="city"
+                                    value={getCity} 
+                                    onChange={(event) => setCity(event.target.value)}
+                                >
+                                    <option 
+                                        value="0"
+                                    >
+                                        {(getUf == '0') ? 'Selecione o estado' : ''}
+                                    </option>
+                                    {getCities.map( (city) => (
+                                        <option 
+                                            key={city.id}
+                                            value={city.nome}
+                                        >
+                                            {city.nome}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className='flex-column'>
                                 <label htmlFor="state"> Estado: </label>
                                 <select 
                                     id="state" 
-                                    onChange={(event) => setState(event.target.value)}
+                                    value={getUf}
+                                    onChange={(event) => setUf(event.target.value)}
                                 >
-                                    <option value=""></option>
-                                    <option value="AC">AC</option>
-                                    <option value="AL">AL</option>
-                                    <option value="AP">AP</option>
-                                    <option value="AM">AM</option>
-                                    <option value="BA">BA</option>
-                                    <option value="CE">CE</option>
-                                    <option value="DF">DF</option>
-                                    <option value="ES">ES</option>
-                                    <option value="GO">GO</option>
-                                    <option value="MA">MA</option>
-                                    <option value="MT">MT</option>
-                                    <option value="MS">MS</option>
-                                    <option value="MG">MG</option>
-                                    <option value="PA">PA</option>
-                                    <option value="PB">PB</option>
-                                    <option value="PR">PR</option>
-                                    <option value="PE">PE</option>
-                                    <option value="PI">PI</option>
-                                    <option value="RJ">RJ</option>
-                                    <option value="RN">RN</option>
-                                    <option value="RS">RS</option>
-                                    <option value="RO">RO</option>
-                                    <option value="RR">RR</option>
-                                    <option value="SC">SC</option>
-                                    <option value="SP">SP</option>
-                                    <option value="SE">SE</option>
-                                    <option value="TO">TO</option>
+                                    <option value="0"></option>
+                                    {getUfs.map( (uf) => (
+                                        <option 
+                                            key={uf.id}
+                                            value={`${uf.sigla.toUpperCase()}`}
+                                        >
+                                            {`${uf.sigla.toUpperCase()}`}
+                                        </option>
+                                    ))}
+                                    
                                 </select>
                             </div>
 
@@ -263,7 +312,7 @@ export default function Address() {
                             disabled={getDisableAddAddrButton}
                             onClick={handleAddAddress}
                         >
-                            Cadastrar
+                            Adicionar
                         </button>
                     </form>
                 )}
@@ -345,6 +394,9 @@ export default function Address() {
                 }
 
                 .addr-data p {
+                    font-size: 20px;
+                    line-height: 30px;
+
                     overflow: hidden;
                     text-overflow: ellipsis;
                     display: -webkit-box;
@@ -459,6 +511,7 @@ export default function Address() {
 
                 .add-addr-form #city {
                     width: 240px;
+                    margin-right: 5px;
                 }
 
                 .add-addr-form #state {
@@ -473,8 +526,9 @@ export default function Address() {
                 }
 
                 .addr-submit {
-                    width: 50%; 
+                    width: 100%; 
                     height: 40px;
+                    margin-top: 10px;
                     align-self: center;
                     border: 0;
                     border-radius: 5px;
