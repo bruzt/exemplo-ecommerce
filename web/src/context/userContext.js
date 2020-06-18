@@ -10,7 +10,7 @@ export function UserContextProvider({ children }){
 
     const [getLogin, setLogin] = useState(false);
     const [getShowModal, setShowModal] = useState(false);
-    const [getUser, setUser] = useState(null);
+    const [getUser, setUser] = useState({});
     const [getToken, setToken] = useState('');
 
     const router = useRouter();

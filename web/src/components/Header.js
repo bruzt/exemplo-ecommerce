@@ -9,7 +9,7 @@ import { useOrder } from '../context/orderContext';
 
 import GlobalStyle from './GlobalStyle';
 import LoginModal from './LoginModal';
-import MenuAndSearchBar from './MenuAndSeachBar';
+import CategoriesAndSeachBar from './CategoriesAndSeachBar';
 
 export default function Header() {
 
@@ -51,7 +51,10 @@ export default function Header() {
                                     <span>Olá, {userContext.getUser.name.split(' ')[0]}</span>
                                     <div className="dropdown-content">
                                         <p
-                                            onClick={() => router.push('/account')}
+                                            onClick={() => router.push({
+                                                pathname: '/account',
+                                                query: { menu: 'account-data' }
+                                            })}
                                         >
                                             <FaUserCircle />&nbsp;Minha Conta
                                         </p>
@@ -82,7 +85,7 @@ export default function Header() {
                 </div>
             </header>
 
-            <MenuAndSearchBar />
+            <CategoriesAndSeachBar />
 
             <style jsx>{`
                 header {

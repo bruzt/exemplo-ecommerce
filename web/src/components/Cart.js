@@ -534,19 +534,19 @@ export default function Cart() {
                     margin: 10px 0 0 0;
                     border: 0;
                     border-radius: 5px;
-                    background: ${(userContext.getLogin) ? '#3E8C34' : '#969644'};
+                    background: ${(userContext.getLogin) ? '#3E8C34' : '#EED202'};
                     font-size: 20px;
                     font-weight: bold;
                     cursor: pointer;
-                    color: inherit;
+                    color: ${(userContext.getLogin) ? 'inherit' : '#0D2235'};
                 }
 
                 .total-price button:hover {
-                    background: ${(userContext.getLogin) ? '##41A933' : '#C3C133'};
+                    background: ${(userContext.getLogin) ? '#41A933' : '#f0dc4d'};
                 }
                 
                 .total-price button:active {
-                    background: ${(userContext.getLogin) ? '#3E8C34' : '#969644'};
+                    background: ${(userContext.getLogin) ? '#3E8C34' : '#EED202'};
                 }
 
                 .total-price button:disabled {

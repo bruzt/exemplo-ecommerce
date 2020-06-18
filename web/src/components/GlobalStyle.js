@@ -26,7 +26,7 @@ export default function GlobalStyle() {
                 color: inherit;
             }
 
-            input, select, button {
+            input, select {
                 background: #eee;
             }
 

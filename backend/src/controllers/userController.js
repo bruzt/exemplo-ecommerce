@@ -50,7 +50,7 @@ module.exports = {
                         paranoid: false,
                         include: {
                             association: 'images',
-                            attributes: ['id', 'url'],
+                            attributes: { exclude: ['product_id', 'createdAt', 'updatedAt'] },
                             required: false
                         }
                     }]

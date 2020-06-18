@@ -8,8 +8,8 @@ export default function AccountGeneral(){
 
     const userContext = useUser();
 
-    const [getName, setName] = useState(userContext.getUser.name);
-    const [getEmail, setEmail] = useState(userContext.getUser.email);
+    const [getName, setName] = useState(userContext.getUser.name || '');
+    const [getEmail, setEmail] = useState(userContext.getUser.email || '');
     const [getCurrentPassword, setCurrentPassword] = useState('');
     const [getNewPassword, setNewPassword] = useState('');
     const [getConfirmNewPassword, setConfirmNewPassword] = useState('');

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import PageLayout from '../components/PageLayout';
 import AccountGeneral from '../components/AccountGeneral';
@@ -8,7 +9,7 @@ import AccountMyShopping from '../components/AccountMyShopping';
 
 export default function Account() {
 
-    const [getActiveMenu, setActiveMenu] = useState('account-data');
+    const router = useRouter();
 
     return (
         <>
@@ -25,20 +26,29 @@ export default function Account() {
 
                         <nav className="menu">
                             <a 
-                                className={`menu-item ${(getActiveMenu == 'account-data') ? 'active' : ''}`}
-                                onClick={() => setActiveMenu('account-data')}
+                                className={`menu-item ${(router.query.menu == 'account-data') ? 'active' : ''}`}
+                                onClick={() => router.push({
+                                    pathname: '/account',
+                                    query: { menu: 'account-data' }
+                                })}
                             >
                                 Dados da conta
                             </a>
                             <a 
-                                className={`menu-item ${(getActiveMenu == 'addresses') ? 'active' : ''}`}
-                                onClick={() => setActiveMenu('addresses')}
+                                className={`menu-item ${(router.query.menu == 'addresses') ? 'active' : ''}`}
+                                onClick={() => router.push({
+                                    pathname: '/account',
+                                    query: { menu: 'addresses' }
+                                })}
                             >
                                 Gerenciar Endereços
                             </a>
                             <a 
-                                className={`menu-item ${(getActiveMenu == 'my-shopping') ? 'active' : ''}`}
-                                onClick={() => setActiveMenu('my-shopping')}
+                                className={`menu-item ${(router.query.menu == 'my-shopping') ? 'active' : ''}`}
+                                onClick={() => router.push({
+                                    pathname: '/account',
+                                    query: { menu: 'my-shopping' }
+                                })}
                             >
                                 Minhas compras
                             </a>
@@ -46,9 +56,9 @@ export default function Account() {
 
                         <div className="content">
                             
-                            {(getActiveMenu == 'account-data') && <AccountGeneral />}
-                            {(getActiveMenu == 'addresses') && <AccountAddresses />}
-                            {(getActiveMenu == 'my-shopping') && <AccountMyShopping />}
+                            {(router.query.menu == 'account-data') && <AccountGeneral />}
+                            {(router.query.menu == 'addresses') && <AccountAddresses />}
+                            {(router.query.menu == 'my-shopping') && <AccountMyShopping />}
 
                         </div>
                     </div>
