@@ -53,6 +53,10 @@ module.exports = {
                 type: Sequelize.STRING,
             },
 
+            tracking_code: {
+                type: Sequelize.STRING,
+            },
+
             created_at: {
                 type: Sequelize.DATE,
                 allowNull: false

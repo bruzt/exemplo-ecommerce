@@ -59,7 +59,7 @@ export default function MenuAndSearchBar() {
         return (
             <>
                 <ClickAwayListener onClickAway={() => setActiveCategoryMenu(false)}>
-                    <ul jsx={categoryMenuStyle}>
+                    <ul>
                         <li
                             className={`category-menu ${(getActiveCategoryMenu) ? 'active' : ''}`}
                             onClick={() => setActiveCategoryMenu(!getActiveCategoryMenu)}
@@ -191,6 +191,7 @@ const categoryMenuStyle = css`
     ul {
         list-style: none;
         z-index: 10;
+        position: relative;
     }
                 
     ul li { 
@@ -209,6 +210,14 @@ const categoryMenuStyle = css`
         border-radius: 5px;
     }
 
+    ul li.category-menu.active {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-bottom: 1px solid #16324C;
+    }
+
     ul li p {
         display: flex;
         justify-content: center;
@@ -223,6 +232,10 @@ const categoryMenuStyle = css`
     ul li:active { 
         background: #0D2235;
     }
+
+    li + li {
+        border-top: 1px solid #16324C;
+    } 
 
     li > ul {
         display: none;

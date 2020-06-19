@@ -39,6 +39,7 @@ export default function ImageSlider({ images }) {
             <div className="img-container">
 
                 <Carousel
+                    className='carousel'
                     renderThumbs={customRenderThumb}
                     autoPlay={true}
                     stopOnHover={true}
@@ -62,6 +63,11 @@ export default function ImageSlider({ images }) {
                     max-width: 700px;
                     height: 100%;
                     max-height: 400px;
+                    z-index: 0;
+                }
+
+                .carousel {
+                    z-index: 0;
                 }
 
                 .img-container img {

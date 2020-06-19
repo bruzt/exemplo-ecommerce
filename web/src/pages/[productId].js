@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 import { useCart } from '../context/cartContext';
+import { useFilterBar } from '../context/filterBarContext';
 
 import PageLayout from '../components/PageLayout';
 import ImageSlider from '../components/ImageSlider';
@@ -34,13 +35,14 @@ export async function getStaticProps({ params }) {
 }
 
 export default function Product({ product }) {
+    
+    const cartContext = useCart();
+    const router = useRouter();
+    const filterBarContext = useFilterBar();
 
     const [getQuantity, setQuantity] = useState(1);
     const [getBuyButtonDisabled, setBuyButtonDisabled] = useState(false);
     const [getProduct, setProduct] = useState({});
-
-    const cartContext = useCart();
-    const router = useRouter();
 
     const finalPrice = (getProduct.discount_percent == 0) 
         ? Number(getProduct.price).toFixed(2)
@@ -111,12 +113,40 @@ export default function Product({ product }) {
         router.push('/order');
     }
 
+    function findCategoryFather(fatherId){
+
+        let categories = [];
+
+        const [ father ] = filterBarContext.getCategories.filter( (category) => fatherId == category.id);
+
+        if(father) {
+
+            categories.push(father);
+            
+            categories.push(...findCategoryFather(father.parent_id));
+        }
+
+        return categories;
+    }
+
+    function handleCategorySearch(category){
+
+        router.push({
+            pathname: '/search',
+            query: {
+                categoryId: category.id,
+                page: 1,
+                category: String(category.name).split(' ').join('-')
+            }
+        });
+    }
+
     return (
         <>
             <Head>
                 <title>{product.title} | Exemplo e-commerce</title>
                 <meta name="description" content={product.description} />
-                <meta name="keywords" content={product.category.title} />
+                <meta name="keywords" content={product.category.name}/>
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:description" content={product.description} />
                 <meta name="twitter:title" content={product.title} />
@@ -140,6 +170,31 @@ export default function Product({ product }) {
             <PageLayout>
 
                 <section>
+
+                    <div className="breadcrumb">
+                        <>
+                            {(product.category.parent_id) && (
+                                <>
+                                    {findCategoryFather(product.category.parent_id).reverse().map( (category, index) => (
+                                        <React.Fragment key={index}>
+                                            {(index != 0) && <span> {'>'} </span>}
+                                            <a
+                                                onClick={() => handleCategorySearch(category)}
+                                            > 
+                                                {category.name}
+                                            </a>
+                                        </React.Fragment>
+                                    ))}
+                                    <span> {'>'} </span>
+                                </>
+                            )}
+                            <a
+                                onClick={() => handleCategorySearch(product.category)}
+                            >
+                                {product.category.name}
+                            </a>
+                        </>
+                    </div>
 
                     <h1>{product.title}</h1>
 
@@ -184,7 +239,19 @@ export default function Product({ product }) {
             <style jsx>{`
                 section {
                     min-height: 800px;
-                    padding: 20px 0;
+                }
+
+                div.breadcrumb {
+                    padding: 10px;
+                    background: #0D2235;
+                    border-bottom-right-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                    margin-bottom: 20px;
+                    font-size: 18px;
+                }
+
+                div.breadcrumb a {
+                    cursor: pointer;
                 }
 
                 h1 {
