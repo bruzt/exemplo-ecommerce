@@ -57,12 +57,12 @@ export default function AccountMyShopping() {
                                         className='tracking-code'
                                         onClick={(event) => {
                                             event.stopPropagation();
-                                            navigator.clipboard.writeText('PP652398735BR')
+                                            navigator.clipboard.writeText(`${order.tracking_code}`)
                                         }}
                                     >
                                         Cod. Rast.:&nbsp;
                                         <span className='user-select'>
-                                            PP652398735BR
+                                            {order.tracking_code}
                                         </span>
                                     </span>
                                 )}
