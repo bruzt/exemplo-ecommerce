@@ -8,6 +8,7 @@ const app = require('../../../src/app');
 
 const credit_card = {
     "amount": 2400,
+    "installments": 2,
     "card_number": "4111111111111111",
     "card_cvv": "546",
     "card_expiration_date": "1025",
@@ -20,21 +21,22 @@ const credit_card = {
         "country": "br",
         "phone_numbers": ["+5519999999999"],
         "documents": [
-    {
-      "type": "cpf",
-      "number": "99999999999"
-    }
-  ]
+            {
+            "type": "cpf",
+            "number": "99999999999"
+            }
+        ]
     },
     "billing": {
         "name": "Jajau Lalau",
         "address": {
             "street": "rau lalau",
             "street_number": "55a",
+            "neighborhood": "bairro haha",
+            "city": "cordeirópolis",
+            "state": "sp",
             "zipcode": "13490000",
             "country": "br",
-            "state": "sp",
-            "city": "cordeirópolis"
         }
     },
     "shipping": {
@@ -43,21 +45,13 @@ const credit_card = {
         "address": {
             "street": "rau lalau",
             "street_number": "55a",
+            "neighborhood": "bairro haha",
+            "city": "cordeirópolis",
+            "state": "sp",
             "zipcode": "13490000",
             "country": "br",
-            "state": "sp",
-            "city": "cordeirópolis"
         }
     },
-    "items": [
-        {
-            "id": "5",
-            "title": "placa pai",
-            "unit_price": 1400,
-            "quantity": 1,
-            "tangible": true
-        }
-    ]
 }
 
 describe('orderController Test Suit', () => {
@@ -105,7 +99,7 @@ describe('orderController Test Suit', () => {
         expect(response.body.message).toBe('user not found');
     });
 
-    it('should add an order', async () => {
+    it('should add an order paid by credit_card', async () => {
 
         const user = await factories.create('User');
         const address = await factories.create('Address', { user_id: user.id });
@@ -116,22 +110,79 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: address.id,
-                status: "awaiting payment",
-                products_id: [product.id],
+                freight_name: 'sedex',
+                freight_price: 30.77,
+                total_price: 80.55,
                 quantity_buyed: [2],
+                products_id: [product.id],
+                address_id: address.id,
                 credit_card
             });
 
         expect(response.status).toBe(200);
-        expect(response.body.user_id).toBe(user.id);
+        expect(response.body).toHaveProperty('order');
+        expect(response.body).toHaveProperty('pagarme');
+    });
+
+    it('should add an order paid by boleto', async () => {
+
+        const user = await factories.create('User');
+        const address = await factories.create('Address', { user_id: user.id });
+        const category = await factories.create('Category');
+        const product = await factories.create('Product', { category_id: category.id });
+        const token = user.generateToken();
+
+        const response = await supertest(app).post(`/orders`)
+            .set('authorization', 'Bearer ' + token)
+            .send({
+                freight_name: 'sedex',
+                freight_price: 30.77,
+                total_price: 80.55,
+                quantity_buyed: [2],
+                products_id: [product.id],
+                address_id: address.id,
+                boleto: {
+                    amount: 5000,
+                    "customer": {
+                        "external_id": "1",
+                        "name": "Jajau Lalau",
+                        "email": "teste1@teste.com",
+                        "type": "individual",
+                        "country": "br",
+                        "phone_numbers": ["+5519999999999"],
+                        "documents": [
+                            {
+                            "type": "cpf",
+                            "number": "99999999999"
+                            }
+                        ]
+                    },
+                    "shipping": {
+                        "name": "Jajau Lalau",
+                        "fee": 2000,
+                        "address": {
+                            "street": "rau lalau",
+                            "street_number": "55a",
+                            "neighborhood": "bairro haha",
+                            "city": "cordeirópolis",
+                            "state": "sp",
+                            "zipcode": "13490000",
+                            "country": "br",
+                        }
+                    },
+                }
+            });
+
+        expect(response.status).toBe(200);
+        expect(response.body).toHaveProperty('order');
+        expect(response.body).toHaveProperty('pagarme');
     });
 
     it('should return code 400 for "user not found" - store', async () => {
 
         const user = await factories.create('User');
         const token = user.generateToken();
-        //const address = await factories.create('Address', { user_id: user.id });
+        const address = await factories.create('Address', { user_id: user.id });
         await user.destroy();
         const category = await factories.create('Category');
         const product = await factories.create('Product', { category_id: category.id });
@@ -139,10 +190,12 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: 1,
-                status: "awaiting payment",
-                products_id: [product.id],
+                freight_name: 'sedex',
+                freight_price: 3077,
+                total_price: 8055,
                 quantity_buyed: [2],
+                products_id: [product.id],
+                address_id: address.id,
                 credit_card
             });
 
@@ -161,10 +214,12 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: 1,
-                status: "awaiting payment",
-                products_id: [product.id],
+                freight_name: 'sedex',
+                freight_price: 3077,
+                total_price: 8055,
                 quantity_buyed: [2],
+                products_id: [product.id],
+                address_id: 1,
                 credit_card
             });
 
@@ -181,10 +236,12 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: address.id,
-                status: "awaiting payment",
-                products_id: [],
+                freight_name: 'sedex',
+                freight_price: 3077,
+                total_price: 8055,
                 quantity_buyed: [2],
+                products_id: [],
+                address_id: address.id,
                 credit_card
             });
 
@@ -201,10 +258,12 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: address.id,
-                status: "awaiting payment",
-                products_id: [1],
+                freight_name: 'sedex',
+                freight_price: 3077,
+                total_price: 8055,
                 quantity_buyed: [2],
+                products_id: [1],
+                address_id: address.id,
                 credit_card
             });
 
@@ -212,7 +271,7 @@ describe('orderController Test Suit', () => {
         expect(response.body.message).toBe("product id 1 not found");
     });
 
-    it('should return code 400 for "product id not found" - store', async () => {
+    it('should return code 400 for "product dont have enough stock" - store', async () => {
 
         const user = await factories.create('User');
         const token = user.generateToken();
@@ -224,10 +283,12 @@ describe('orderController Test Suit', () => {
         const response = await supertest(app).post(`/orders`)
             .set('authorization', 'Bearer ' + token)
             .send({
-                address_id: address.id,
-                status: "awaiting payment",
-                products_id: [1],
+                freight_name: 'sedex',
+                freight_price: 3077,
+                total_price: 8055,
                 quantity_buyed: [5],
+                products_id: [product.id],
+                address_id: address.id,
                 credit_card
             });
 

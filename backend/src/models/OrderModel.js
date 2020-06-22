@@ -14,6 +14,7 @@ class OrderModel extends Model {
             payment_method: DataTypes.STRING,
             status: DataTypes.STRING,
             boleto_url: DataTypes.STRING,
+            tracking_code: DataTypes.STRING,
 
         }, {
             tableName: 'orders',

@@ -43,8 +43,11 @@ factory.define('Image', models.ImageModel, {
 });
 
 factory.define('Order', models.OrderModel, {
+    freight_name: 'pac',
+    freight_price: faker.commerce.price(10, 99),
+    payment_method: 'credit_card',
     total_price: faker.commerce.price(),
-    status: faker.commerce.color(), 
+    status: 'paid', 
 });
 
 factory.define('OrdersProducts', models.OrdersProductsModel, {

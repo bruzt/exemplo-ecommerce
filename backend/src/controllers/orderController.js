@@ -44,6 +44,7 @@ module.exports = {
             total_price, 
             address_id 
         } = req.body;
+
         const user_id = req.tokenPayload.id;
 
         try {
@@ -143,11 +144,13 @@ module.exports = {
                 await products[i].save();
             }
             
-            if(process.env.NODE_ENV == 'test') return res.json(order);
+            //if(process.env.NODE_ENV == 'test') return res.json(order);
             
             let response;
             
             if(req.body.credit_card){
+
+                req.body.credit_card.payment_method = 'credit_card';
 
                 const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
                 response = await client.transactions.create({
@@ -163,6 +166,15 @@ module.exports = {
                 await order.save();
                 
             } else if(req.body.boleto){
+
+                req.body.boleto.payment_method = 'boleto';
+
+                let date = new Date();
+                date.setDate(date.getDate() + 3);
+                req.body.boleto.boleto_expiration_date = `${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${(date.getDate() < 10) ? `0${date.getDate()}` : date.getDate() }`;
+                
+                req.body.boleto.capture = true; // retorna o link para o boleto
+                req.body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
 
                 const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
                 response = await client.transactions.create({

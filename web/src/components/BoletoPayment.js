@@ -56,10 +56,6 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
         const products_id = cartContext.getCart.map((product) => product.id);
         const quantity_buyed = cartContext.getCart.map((product) => product.qtd);
 
-        let date = new Date();
-        date.setDate(date.getDate() + 3);
-        const boleto_expiration_date = `${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? '0' + (date.getMonth() + 1) : date.getMonth() + 1}-${(date.getDate() < 10) ? '0' + date.getDate() : date.getDate() }`;
-
         try {
 
             const response = await api.post('/orders', {
@@ -71,10 +67,6 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 total_price: cartContext.getTotalPrice,
                 boleto: {
                     amount,
-                    payment_method: 'boleto',
-                    boleto_expiration_date,
-                    boleto_instructions: 'O BOLETO VENCE EM 3 (TRÊS) DIAS.',
-                    capture: true,
                     customer: {
                         external_id: String(userContext.getUser.id),
                         name: userContext.getUser.name,

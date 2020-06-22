@@ -165,7 +165,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 total_price: cartContext.getTotalPrice,
                 credit_card: {
                     amount,
-                    payment_method: 'credit_card',
                     installments: Number(getInstallments),
                     card_number: String(getCardNumber).replace(/ /g, ''),
                     card_cvv: getCardCvv,
