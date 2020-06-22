@@ -51,7 +51,7 @@ describe('userResetPasswordController Test Suit', () => {
 
         const response = await supertest(app).put('/reset-password')
             .send({
-                token: user.id + '#' + token,
+                token: user.id + '$' + token,
                 password: '123456'
             });
 
@@ -62,7 +62,7 @@ describe('userResetPasswordController Test Suit', () => {
 
         const response = await supertest(app).put('/reset-password')
             .send({
-                token: '2#df95h495df4h9dh',
+                token: '2$df95h495df4h9dh',
                 password: '123456'
             });
 
@@ -85,7 +85,7 @@ describe('userResetPasswordController Test Suit', () => {
 
         const response = await supertest(app).put('/reset-password')
             .send({
-                token: user.id + '#df4gd54g',
+                token: user.id + '$df4gd54g',
                 password: '123456'
             });
 
@@ -97,7 +97,7 @@ describe('userResetPasswordController Test Suit', () => {
 
         const response = await supertest(app).put('/reset-password')
             .send({
-                token: 'a#df4gd54g',
+                token: 'a$df4gd54g',
                 password: '123456'
             });
 
@@ -120,7 +120,7 @@ describe('userResetPasswordController Test Suit', () => {
 
         const response = await supertest(app).put('/reset-password')
             .send({
-                token: user.id + '#' + token,
+                token: user.id + '$' + token,
                 password: '123456'
             });
         
