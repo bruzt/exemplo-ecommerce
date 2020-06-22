@@ -50,9 +50,9 @@ module.exports = {
 
         try {
 
-            if(req.body.parent){
+            if(req.body.parent_id){
 
-                const parent = await CategoryModel.findByPk(req.body.parent);
+                const parent = await CategoryModel.findByPk(req.body.parent_id);
 
                 if(!parent) return res.status(400).json({ message: 'parent category id not found' });
             }

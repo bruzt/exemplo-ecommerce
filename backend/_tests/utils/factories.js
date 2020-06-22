@@ -22,7 +22,7 @@ factory.define('Address', models.AddressModel, {
 
 factory.define('Category', models.CategoryModel, {
     name: faker.commerce.department(),
-    parent: null
+    parent_id: null
 });
 
 factory.define('Product', models.ProductModel, {

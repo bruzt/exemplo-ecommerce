@@ -15,7 +15,9 @@ describe('categoryController Test Suit', () => {
 
         for(let i = 0; i < 3; i++){
             
-            await factories.create('Category');
+            await factories.create('Category', {
+                name: 'a' + i
+            });
         }
 
         const response = await supertest(app).get(`/categories`);
@@ -51,11 +53,11 @@ describe('categoryController Test Suit', () => {
             .set('authorization', `Bearer ${token}`)
             .send({
                 name: 'Eletronicos',
-                parent: category.id
+                parent_id: category.id
             });
 
         expect(response.status).toBe(200);
-        expect(response.body.parent).toBe(category.id);
+        expect(response.body.parent_id).toBe(category.id);
     });
 
     it('should return code 400 for "parent category id not found"', async () => {
@@ -68,7 +70,7 @@ describe('categoryController Test Suit', () => {
             .set('authorization', `Bearer ${token}`)
             .send({
                 name: 'Eletronicos',
-                parent: 5
+                parent_id: 5
             });
 
         expect(response.status).toBe(400);
