@@ -62,7 +62,7 @@ describe('userController Test Suit', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(response.body.name).toBe('teste');
+        expect(response.body.user.name).toBe('teste');
     });
 
     it('should not add a user with same email on db', async () => {
@@ -96,7 +96,7 @@ describe('userController Test Suit', () => {
         expect(response.status).toBe(200);
     });
 
-    it('should return code 400 for "no update has been made" - update', async () => {
+    it('should return code 400 for "user not found" - update', async () => {
 
         const user = await factories.create('User');
         const token = user.generateToken();
@@ -109,7 +109,7 @@ describe('userController Test Suit', () => {
             });
         
         expect(response.status).toBe(400);
-        expect(response.body.message).toBe("no update has been made");
+        expect(response.body.message).toBe("user not found");
     });
 
     it('should erase a user from db', async () => {

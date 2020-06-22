@@ -101,6 +101,8 @@ module.exports = {
             let password;
             const user = await UserModel.findByPk(id);
 
+            if(!user) return res.status(400).json({ message: 'user not found' });
+
             if(currentPassword && newPassword){
 
                 if(await user.checkPassword(currentPassword)){
