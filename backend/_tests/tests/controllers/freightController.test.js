@@ -19,5 +19,4 @@ describe('freightController Test Suit', () => {
         expect(response.body).toHaveProperty("pac");
         expect(response.body).toHaveProperty("sedex");
     });
-
 });

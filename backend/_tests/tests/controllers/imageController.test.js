@@ -33,7 +33,7 @@ describe('imageController Test Suit', () => {
             .set('authorization', 'Bearer ' + token)
             .attach('file', filePath);
         
-        await unlinkAsync(response.body[0]);
+        await unlinkAsync(response.body[0].url);
 
         expect(response.status).toBe(200);
     });
@@ -54,11 +54,11 @@ describe('imageController Test Suit', () => {
 
     it('should erase an image', async () => {
 
-        const copyFilePath = path.resolve(__dirname, '../../../tmp/uploads/test-img.png');
+        const copyFilePath = path.resolve(__dirname, '../../../uploads/test-img.png');
 
         const category = await factories.create('Category');
         const product = await factories.create('Product', { category_id: category.id });
-        const image = await factories.create('Image', { url: copyFilePath, product_id: product.id });
+        const image = await factories.create('Image', { url: copyFilePath, filename: 'test-img.png', product_id: product.id });
         
         const user = await factories.create('User');
         user.admin = true;
