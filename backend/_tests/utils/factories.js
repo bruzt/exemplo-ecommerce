@@ -30,7 +30,6 @@ factory.define('Product', models.ProductModel, {
     description: faker.commerce.product(),
     price: faker.commerce.price(),
     quantity_stock: faker.random.number({ min: 10, max: 50 }),
-    discount_percent: faker.random.number(90),
     tangible: faker.random.boolean(),
     weight: "0," + String(Math.random() * 1000),
     length: faker.random.number({ min: 15, max: 30 }),

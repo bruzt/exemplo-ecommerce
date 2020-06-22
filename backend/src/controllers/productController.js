@@ -6,6 +6,8 @@ const findCategoriesChildrenIds = require('../util/findCategoriesChildrenIds');
 const ProductModel = require('../models/ProductModel');
 const CategoryModel = require('../models/CategoryModel');
 
+//const ilike = (process.env.NODE_ENV == 'test') ? Op.like : Op.iLike;
+
 Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
 };
