@@ -49,7 +49,18 @@ export default function AccountMyShopping() {
                                 <span>Data: {Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt))}</span>
                                 <span>Total: R$ {Number(order.total_price).toFixed(2)}</span>
 
-                                {(order.status == 'awaiting payment') && <span className='awaiting-payment'>Aguardando pagamento</span>}
+                                {(order.status == 'awaiting payment') && 
+                                    <a 
+                                        href={order.boleto_url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className={`${(order.boleto_url) ? 'boleto-link' : ''}`}
+                                        title={(order.boleto_url) ? 'Abrir boleto' : ''}
+                                        onClick={(event) => event.stopPropagation()}
+                                    >
+                                        <span>Aguardando pagamento</span>
+                                    </a>
+                                }
                                 {(order.status == 'paid') && <span className='paid'>Pagamento aceito</span>}
                                 {(order.status == 'dispatch') && <span className='dispatch'>expedição</span>}
                                 {(order.status == 'sent') && (
@@ -189,11 +200,12 @@ export default function AccountMyShopping() {
                     white-space: nowrap;
                 }
 
-                span.awaiting-payment {
+                a.boleto-link {
                     padding: 5px;
                     background: #EED202;
                     border-radius: 5px;
                     color: #0D2235;
+                    cursor: alias;
                 }
 
                 span.paid {
