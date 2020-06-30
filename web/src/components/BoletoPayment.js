@@ -249,6 +249,24 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 .button-total button:disabled:hover {
                     background: ${(getDisabledCreditCardButton) ? '#41A933' : '#bf2232'};
                 }
+
+                @media (max-width: 768px) {
+                    .button-total {
+                        flex-direction: column;
+                    }
+
+                    .button-total div {
+                        margin-bottom: 15px;
+                    }
+
+                    .button-total .inputs {
+                        flex-direction: column;
+                    }
+
+                    .button-total .inputs div {
+                        margin-bottom: 15px;
+                    }
+                }
             `}</style>
         </>
     );

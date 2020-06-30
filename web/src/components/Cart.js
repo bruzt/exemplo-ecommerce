@@ -631,6 +631,17 @@ export default function Cart() {
                     .th-image, .td-image, .th-total, .td-total {
                         display: none;
                     }
+
+                    .td-name {
+                        padding-left: 10px;
+                    }
+                }
+
+                @media (max-width: 425px) {
+                    .freight-total {
+                        flex-direction: column;
+                        align-items: center;
+                    }
                 }
             `}</style>
         </>

@@ -110,6 +110,21 @@ export default function Account() {
                 div.content {
                     padding: 0 10px;
                 }
+
+                @media (max-width: 768px) {
+                    div.menu-content-grid {
+                        grid-template-columns: 1fr;
+                    }
+
+                    nav.menu {
+                        margin-bottom: 20px;
+                    }
+
+                    div.content {
+                        padding: 0;
+                    }
+                }
+
             `}</style>
         </>
     );

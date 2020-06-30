@@ -407,6 +407,12 @@ export default function AccountAddresses() {
                 form button[type='submit']:disabled:hover {
                     background: #bf2232;
                 }
+
+                @media (max-width: 768px) {
+                    div.address-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
             `}</style>
         </>
     );

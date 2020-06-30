@@ -562,13 +562,13 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 }
 
                 form input#card-number {
-                    width: 210px;
+                    width: 190px;
                     text-align: center;
                     align-self: center;
                 }
 
                 form input#cpf {
-                    width: 210px;
+                    width: 190px;
                     text-align: center;
                 }
 
@@ -577,7 +577,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 }
 
                 form input#tel {
-                    width: 210px;
+                    width: 190px;
                     text-align: center;
                 }
 
@@ -695,6 +695,31 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                 .button-total button:disabled:hover {
                     background: ${(getDisabledBoletoButton) ? '#41A933' : '#bf2232'};
+                }
+
+                @media (max-width: 768px) {
+                    form .grid-columns {
+                        grid-template-columns: 1fr;
+                    }
+                }
+
+                @media (max-width: 425px) {
+                    .button-total {
+                        flex-direction: column;
+                    }
+
+                    form input#card-number {
+                        width: 190px;
+                        
+                    }   
+
+                    form input#cpf {
+                        width: 190px;
+                    }
+
+                    form input#tel {
+                        width: 190px;
+                    }
                 }
             `}</style>
         </>

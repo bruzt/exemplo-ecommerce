@@ -551,6 +551,16 @@ export default function Address() {
                     flex-direction: column;
                     justify-content: flex-end;
                 }
+
+                @media (max-width: 425px) {
+                    .addr-grid {
+                        grid-template-columns: 1fr;
+                    }
+
+                    .add-addr-form {
+                        max-width: 100%;
+                    }
+                }
             `}</style>
         </>
     );

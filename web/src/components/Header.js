@@ -111,7 +111,8 @@ export default function Header() {
                 div.login-cart {
                     display: flex;
                     justify-content: space-between;
-                    width: 25%;
+                    width: 100%;
+                    max-width: 250px;
                 }
 
                 .dropdown {
@@ -186,7 +187,23 @@ export default function Header() {
                     margin: 0;
                 }
 
+                @media (max-width: 425px) {
 
+                    div.login-cart {
+                        max-width: 175px;
+                    }
+                    /*div.limit-center {
+                        justify-content: flex-start;
+                    }
+
+                    div.limit-center div.login-cart{
+                        margin-left: 50px;
+                    }
+
+                    div.login-cart {
+
+                    }*/
+                }
             `}</style>
         </>
     );

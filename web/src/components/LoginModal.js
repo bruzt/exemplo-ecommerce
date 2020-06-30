@@ -174,7 +174,7 @@ export default function ModalLogin() {
             <style jsx>{`
                 .modal {
                     position: fixed; /* Stay in place */
-                    z-index: 20; /* Sit on top */
+                    z-index: 30; /* Sit on top */
                     left: 0;
                     top: 0;
                     width: 100%; /* Full width */
@@ -189,7 +189,7 @@ export default function ModalLogin() {
                     margin: 10% auto; /* 15% from the top and centered */
                     padding: 20px;
                     width: 100%;
-                    max-width: 20%;
+                    max-width: 400px;
                     min-height: 350px;
                     border-radius: 5px;
                 }
@@ -291,6 +291,7 @@ export default function ModalLogin() {
                     cursor: pointer;
                     margin: 10px 0 0 0;
                 }
+
             `}</style>
         </>
     );
