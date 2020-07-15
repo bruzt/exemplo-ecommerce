@@ -45,8 +45,12 @@ const Home: React.FC = () => {
                             </div>
                             
                             <ul>
-                                <li>Listar</li>
-                                <li>Adicionar</li>
+                                <li>
+                                    <span>Listar</span>
+                                </li>
+                                <li>
+                                    <span>Adicionar</span>
+                                </li>
                             </ul>
                         </nav>
 
@@ -60,8 +64,12 @@ const Home: React.FC = () => {
                             </div>
                             
                             <ul>
-                                <li>Listar</li>
-                                <li>Adicionar</li>
+                                <li>
+                                    <span>Listar</span>
+                                </li>
+                                <li>
+                                    <span>Adicionar</span>
+                                </li>
                             </ul>
                         </nav>
 
@@ -71,12 +79,18 @@ const Home: React.FC = () => {
                                 <div className="icon">
                                     <FaCaretRight /> 
                                 </div>
-                                <label htmlFor="orders-cb">Ordens</label>
+                                <label htmlFor="orders-cb">
+                                    Ordens
+                                </label>
                             </div>
                             
                             <ul>
-                                <li>Listar</li>
-                                <li>Adicionar</li>
+                                <li>
+                                    <span>Listar</span>
+                                </li>
+                                <li>
+                                    <span>Adicionar</span>
+                                </li>
                             </ul>
                         </nav>
                         
@@ -96,10 +110,18 @@ const Home: React.FC = () => {
                     background: var(--secondary)
                 }
 
+                input[type=checkbox] {
+                    display: none;
+                }
+
                 ul {
                     display: none;
                     position: relative;
-                    /*left: 10px;*/
+                }
+
+                li span {
+                    position: relative;
+                    left: 10px;
                 }
 
                 input[type=checkbox]:checked ~ ul {
@@ -114,10 +136,6 @@ const Home: React.FC = () => {
                     transform: rotate(90deg);
                 }
 
-                input[type=checkbox] {
-                    display: none;
-                }
-
                 div.cb-label, div.cb-label label, li {
                     display: flex;
                     align-items: center;
@@ -129,11 +147,15 @@ const Home: React.FC = () => {
                     color: var(--color);
                     padding: 5px;
                     cursor: pointer;
-                    
                 }
 
                 div.resizable-box nav + nav, li {
                     border-top: 1px solid var(--secondary);
+                }
+
+                ul li {
+                    background: var(--secondary);
+                    border-top: 1px solid var(--background);
                 }
 
             `}</style>
