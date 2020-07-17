@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head'
 import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
 
 import GlobalStyle from '../components/GlobalStyle';
+import ProductsList from '../components/ProductsList';
+
+type SelectedMenu = 
+    "" |
+    "products-list" |
+    "add-products" |
+    "categories-list" |
+    "add-categories" |
+    "orders-list" |
+    "update-orders";
 
 const Home: React.FC = () => {
+
+    const [getSelectedMenu, setSelectedMenu] = useState<SelectedMenu>('');
 
     return (
         <>
@@ -37,7 +49,7 @@ const Home: React.FC = () => {
 
                         <nav>
                             <input type="checkbox" id='products-cb' /> 
-                            <div className='cb-label' >
+                            <div className='cb-label'>
                                 <div className="icon">
                                     <FaCaretRight /> 
                                 </div>
@@ -45,10 +57,16 @@ const Home: React.FC = () => {
                             </div>
                             
                             <ul>
-                                <li>
+                                <li
+                                    className={`${(getSelectedMenu == "products-list") ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu("products-list")}
+                                >
                                     <span>Listar</span>
                                 </li>
-                                <li>
+                                <li
+                                    className={`${(getSelectedMenu == 'add-products') ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu('add-products')}        
+                                >
                                     <span>Adicionar</span>
                                 </li>
                             </ul>
@@ -64,10 +82,16 @@ const Home: React.FC = () => {
                             </div>
                             
                             <ul>
-                                <li>
+                                <li
+                                    className={`${(getSelectedMenu == 'categories-list') ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu('categories-list')} 
+                                >
                                     <span>Listar</span>
                                 </li>
-                                <li>
+                                <li
+                                    className={`${(getSelectedMenu == 'add-categories') ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu('add-categories')} 
+                                >
                                     <span>Adicionar</span>
                                 </li>
                             </ul>
@@ -85,16 +109,36 @@ const Home: React.FC = () => {
                             </div>
                             
                             <ul>
-                                <li>
+                                <li
+                                    className={`${(getSelectedMenu == 'orders-list') ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu('orders-list')} 
+                                >
                                     <span>Listar</span>
                                 </li>
-                                <li>
-                                    <span>Adicionar</span>
+                                <li
+                                    className={`${(getSelectedMenu == 'update-orders') ? 'active' : ''}`} 
+                                    onClick={() => setSelectedMenu('update-orders')} 
+                                >
+                                    <span>Atualizar</span>
                                 </li>
                             </ul>
                         </nav>
                         
                     </Resizable>
+                </div>
+                
+                <div id='content'>
+                    {(getSelectedMenu == 'products-list') && <ProductsList />}
+
+                    {(getSelectedMenu == 'add-products') && <div>add-products</div>}
+
+                    {(getSelectedMenu == 'categories-list') && <div>categories-list</div>}
+
+                    {(getSelectedMenu == 'add-categories') && <div>add-categories</div>}
+
+                    {(getSelectedMenu == 'orders-list') && <div>orders-list</div>}
+
+                    {(getSelectedMenu == 'update-orders') && <div>update-orders</div>}
                 </div>
                 
             </main>
@@ -149,6 +193,10 @@ const Home: React.FC = () => {
                     cursor: pointer;
                 }
 
+                ul li.active {
+                    background: var(--background);
+                }
+
                 div.resizable-box nav + nav, li {
                     border-top: 1px solid var(--secondary);
                 }
@@ -156,6 +204,10 @@ const Home: React.FC = () => {
                 ul li {
                     background: var(--secondary);
                     border-top: 1px solid var(--background);
+                }
+
+                div#content {
+                    width: 100%;
                 }
 
             `}</style>
