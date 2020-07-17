@@ -15,7 +15,7 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 - Paginação na página de busca, com filtros de menor e maior valor;
 - Card do produto, mostrando imagem, nome, preço, "em falta", porcentagem de desconto e preço após desconto;
 - Página do produto exibindo um slider das imagens cadastradas, breadcrumb da árvore de categoria, nome, desconto, preço, quantidade a comprar, quantidade em estoque, dados de peso e medida, descrição e detalhes do produto;
-- Carrinho de compra, montrando preço total, botoẽs para aumentar e diminuir quantidade ou remover do carrinho, integração com a API dos conrreios para calculo de frete;
+- Carrinho de compra, montrando preço total, botoẽs para aumentar e diminuir quantidade ou remover do carrinho, integração com a API dos correios para calculo de frete;
 - Página para seleção do endereço de entrega, podendo cadstrar um novo endereço ou apagar um já cadastrado (podendo ter vários endereços cadastrados);
 - Página de pagamento integrado com a API de pagamentos do Pagar.me, podendo escolher entre cartão de crédito ou boleto;
 - Tela de confirmação de compra, no caso de boleto exibe link para boleto;
