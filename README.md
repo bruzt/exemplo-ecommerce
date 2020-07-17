@@ -1,4 +1,4 @@
-# Prototipo de um e-commerce
+# Protótipo de um e-commerce
 Backend: REST API feita com Express.js, banco de dados Postgres utilizando o ORM Sequelize.</br>
 Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas estáticas dos produtos com meta tags para maximizar a indexação de motores de busca.
 
