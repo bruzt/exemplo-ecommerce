@@ -10,6 +10,10 @@ const GlobalStyle: React.FC = () => {
                 --primary: #0D2235;
                 --secondary: #16324C;
                 --color: #eee;
+                --warning: #EED202;
+                --warning-active: #f0dc4d;
+                --danger: #a32e39;
+                --danger-active: #bf2232;
             }
 
             * {
