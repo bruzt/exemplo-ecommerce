@@ -20,3 +20,13 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 - Página de pagamento integrado com a API de pagamentos do Pagar.me, podendo escolher entre cartão de crédito ou boleto;
 - Tela de confirmação de compra, no caso de boleto exibe link para boleto;
 - Tela da conta do usuário, onde ele pode alterar suas informações de cadastro (nome, email e senha), adicionar ou remover endereços e visualizar suas ordens de compra.
+
+<p align="center">
+  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce1.png?raw=true">
+</p>
+<p align="center">
+  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce2.png?raw=true">
+</p>
+<p align="center">
+  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce3.png?raw=true">
+</p>
