@@ -320,7 +320,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                         </div>
                         <div className='flex-row justify-center'>
-                            <div>
+                            <div className='flex-column'>
                                 <label htmlFor="tel">DDD + Telefone</label>
                                 <input
                                     type="text"
