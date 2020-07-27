@@ -1,4 +1,4 @@
-import React/*, { useState, useEffect }*/ from 'react';
+import React, { useState, useEffect }/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
 import Link from 'next/link';
 
@@ -7,7 +7,7 @@ import api from '../services/api';
 import PageLayout from '../components/PageLayout';
 import ProductCard from '../components/ProductCard';
 
-export async function getStaticProps() {
+/*export async function getStaticProps() {
 //export async function getServerSideProps() {
 
     const onSale = await api.get('/products?section=on-sale&limit=6');
@@ -21,9 +21,37 @@ export async function getStaticProps() {
             news: news.data.products
         }
     }
-}
+}*/
 
-export default function Home({ onSale, bestSellers, news }) {
+export default function Home(/*{ onSale, bestSellers, news }*/) {
+
+    const [onSale, setOnSale] = useState([]);
+    const [bestSellers, setBestSellers] = useState([]);
+    const [news, setNews] = useState([]);
+
+    useEffect( () => {
+
+        fetchProducts();
+        
+    }, []);
+
+    async function fetchProducts(){
+
+        try {
+
+            const onSale = await api.get('/products?section=on-sale&limit=6');
+            const bestSellers = await api.get('/products?section=best-sellers&limit=6');
+            const news = await api.get('/products?section=news&limit=6');
+
+            setOnSale(onSale.data.products);
+            setBestSellers(bestSellers.data.products);
+            setNews(news.data.products);
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro', 'Não foi possivel obter os produtos, tente novamente');
+        }
+    }
 
     return (
         <>
