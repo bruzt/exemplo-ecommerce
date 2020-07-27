@@ -227,7 +227,7 @@ export default function Product({ product }) {
                         <p>Comprimento: {product.length}cm</p>
                         <p>Altura: {product.height}cm</p>
                         <p>Largura: {product.width}cm</p>
-                        <p>Diametro: {product.diameter}cm</p>
+                        {/*<p>Diametro: {product.diameter}cm</p>*/}
                     </div>
 
                     <div dangerouslySetInnerHTML={{ __html: getProduct.html_body }} />
