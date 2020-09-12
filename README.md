@@ -3,7 +3,7 @@ Backend: REST API feita com Express.js, banco de dados Postgres utilizando o ORM
 Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas estáticas dos produtos com meta tags para maximizar a indexação de motores de busca.
 
 ## Backend
-- Validação de dados recebidos pela rota com o pacote Celebrate, para garantir que os dados são do tipo correto;
+- Validação de dados recebidos pela rota com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
 - Rotas para cadastro, atualização e remoção de usuários, endereços, categorias, produtos, upload de imagens de produtos e ordens de compra;
 - Rota para autenticação de usuário com JWT (json web token);
 - Upload de imagens do produto.
