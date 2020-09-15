@@ -198,11 +198,15 @@ export default function Product({ product }) {
 
                     <h1>{product.title}</h1>
 
-                    <div className='img-buy'>
-                    
+                    <div className='img-slider-container'>
+
                         <ImageSlider images={product.images} />
 
-                        <div className='buy'>
+                    </div>
+
+                    <div className='buy-card-container'>
+
+                        <div className='buy-card'>
                             <h2>Preço</h2>
                             {(getProduct.discount_percent > 0) ? <p className='original-price'>R$ {Number(getProduct.price).toFixed(2)}</p> : false} 
                             <p className='price'>R$ {finalPrice} a unidade</p>
@@ -219,18 +223,25 @@ export default function Product({ product }) {
                                 Adicionar ao carrinho
                             </button>
                         </div>
-                    </div>
 
+                    </div>
+                
                     <div className='description'>
-                        <p>Descrição: {product.description}</p>
-                        <p>Peso: {product.weight}g</p>
-                        <p>Comprimento: {product.length}cm</p>
-                        <p>Altura: {product.height}cm</p>
-                        <p>Largura: {product.width}cm</p>
-                        {/*<p>Diametro: {product.diameter}cm</p>*/}
+                        <div>
+                            <p>Descrição: {product.description}</p>
+                            <p>Peso: {product.weight}g</p>
+                            <p>Comprimento: {product.length}cm</p>
+                            <p>Altura: {product.height}cm</p>
+                            <p>Largura: {product.width}cm</p>
+                            {/*<p>Diametro: {product.diameter}cm</p>*/}
+                        </div>
                     </div>
 
-                    <div dangerouslySetInnerHTML={{ __html: getProduct.html_body }} />
+                    <div className="html-body">
+
+                        <div dangerouslySetInnerHTML={{ __html: getProduct.html_body }} />
+
+                    </div>
 
                 </section>
                 
@@ -239,9 +250,21 @@ export default function Product({ product }) {
             <style jsx>{`
                 section {
                     min-height: 800px;
+
+                    display: grid;
+                    grid-template-columns: 1fr 400px;
+                    grid-template-rows: 60px minmax(40px, auto) 425px 175px 1fr;
+                    grid-template-areas: 
+                        "breadcrumb breadcrumb"
+                        "title title"
+                        "slider-container cart-card"
+                        "description cart-card"
+                        "html-body cart-card"
+                    ;
                 }
 
                 div.breadcrumb {
+                    grid-area: breadcrumb;
                     padding: 10px;
                     background: #0D2235;
                     border-bottom-right-radius: 5px;
@@ -255,14 +278,14 @@ export default function Product({ product }) {
                 }
 
                 h1 {
+                    grid-area: title;
                     text-align: center;
+                    margin-bottom: 20px;
                 }
 
-                .img-buy {
-                    display: flex;
-                    flex-direction: row;
-                    margin: 20px 0 0 0;
-                    justify-content: space-between;
+
+                div.img-slider-container {
+                    grid-area: slider-container;
                 }
 
                 .img-container {
@@ -274,7 +297,19 @@ export default function Product({ product }) {
                     justify-content: center;
                 }
 
-                .buy {
+                .buy-card-container {
+                    grid-area: cart-card;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    margin: 0;
+                    justify-content: space-between;
+                }
+
+                .buy-card {
+                    position: sticky;
+                    top: 5px;
+
                     width: 100%;
                     max-width: 400px;
                     height: 400px;
@@ -289,31 +324,31 @@ export default function Product({ product }) {
                     align-items: center;
                 }
 
-                .buy .price {
+                .buy-card .price {
                     font-size: 20px;
                     font-weight: bold;
                 }
 
-                .buy .original-price {
+                .buy-card .original-price {
                     text-decoration: line-through;
                 }
 
-                .buy .total {
+                .buy-card .total {
                     font-size: 30px;
                     font-weight: bold;
                 }
 
-                .buy .discount {
+                .buy-card .discount {
                     background: #41773A;
                     padding: 10px 20px;
                 }
 
-                .buy .lacking {
+                .buy-card .lacking {
                     background: #a32e39;
                     padding: 10px 20px;
                 }
 
-                .buy input#qtd {
+                .buy-card input#qtd {
                     width: 45px;
                     height: 30px;
                     font-size: 20px;
@@ -322,7 +357,7 @@ export default function Product({ product }) {
                     padding: 3px;
                 }
 
-                .buy button {
+                .buy-card button {
                     background: ${(getBuyButtonDisabled) ? '#a32e39' : '#3E8C34'};
                     width: 100%;
                     height: 50px;
@@ -334,43 +369,52 @@ export default function Product({ product }) {
                     color: inherit;
                 }
 
-                .buy button p {
+                .buy-card button p {
                     margin: 5px 0 0 0;
                 }
 
-                .buy button:hover {
+                .buy-card button:hover {
                     background: #41A933;
                 }
 
-                .buy button:active {
+                .buy-card button:active {
                     background: #3E8C34;
                 }
 
-                .buy button:disabled {
+                .buy-card button:disabled {
                     background: #a32e39;
                 }
 
                 .description {
+                    grid-area: description;
                     margin: 10px 0;
                     line-height: 25px;
                 }
 
-                @media (max-width: 1285px) {
-                    padding: 0;
-
-                    .img-buy {
-                        flex-direction: column;
-                        align-items: center;
-                    }
-
-                    .buy {
-                        margin: 10px 0 0 0;
-                    }
+                div.html-body {
+                    grid-area: html-body;
                 }
 
-                @media (max-width: 800px) {
+                @media (max-width: 1180px) {
+                    padding: 0;
 
-                    
+                    section {
+                        grid-template-columns: 100vw;
+                        grid-template-rows: 60px minmax(40px, auto) 425px 425px 175px 1fr;
+                        grid-template-areas: 
+                            "breadcrumb"
+                            "title"
+                            "slider-container"
+                            "cart-card"
+                            "description"
+                            "html-body"
+                        ;
+                    }
+
+                    div.img-slider-container, div.buy-card-container, div.description, div.html-body  {
+                        display: flex;
+                        justify-content: center;
+                    }
                 }
             `}</style>
         </>
