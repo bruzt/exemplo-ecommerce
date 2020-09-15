@@ -2,6 +2,6 @@ const withImages = require('next-images');
 
 module.exports = withImages({
     env: {
-        BACKEND_URL: 'http://192.168.1.10:3001'
+        BACKEND_URL: 'http://localhost:3001'
     }
 });
