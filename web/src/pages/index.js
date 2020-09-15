@@ -49,7 +49,7 @@ export default function Home(/*{ onSale, bestSellers, news }*/) {
             
         } catch (error) {
             console.log(error);
-            alert('Erro', 'Não foi possivel obter os produtos, tente novamente');
+            alert('Erro, não foi possivel obter os produtos, tente novamente');
         }
     }
 
