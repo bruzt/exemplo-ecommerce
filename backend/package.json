@@ -4,9 +4,9 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "npm run dev",
-    "dev": "nodemon src/server.js --ignore _tests",
-    "prod": "cross-env NODE_ENV=prod sequelize db:migrate && cross-env NODE_ENV=prod pm2 start src/server.js",
+    "start": "npm run prod",
+    "dev": "cross-env NODE_ENV=development nodemon src/server.js --ignore _tests",
+    "prod": "cross-env NODE_ENV=production sequelize db:migrate && cross-env NODE_ENV=production pm2 start src/server.js",
     "test": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=test jest",
     "posttest": "node _tests/utils/deleteDbFile.js"
   },
