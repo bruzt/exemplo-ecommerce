@@ -51,6 +51,7 @@ Depois disso, no diretório backend, execute o comando "npm run dev", depois, a 
 
 ### Cadastrando um produto
 
-Atualmente não existe uma interface administrativa (to-do), para cadastrar um produto você precisará criar um usuário administrador, acesse o banco com uma GUI client como o Postbird (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true". 
-Com o REST Client Insomnia, importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te dar uma JSON Web Token para acessar as rotas, configure uma Bearer token com o JWT nas rotas "store" de categories e products, crie uma Categoria de produto, e depois um produto cadastrado ao id daquela categoria e pronto, recarregando a página o card do produto deve aparecer.
+Atualmente não existe uma interface administrativa (to-do), para cadastrar um produto você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
+
+Com o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
 
