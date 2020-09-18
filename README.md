@@ -45,9 +45,9 @@ sudo docker run -d \
     postgres:12.3
 ```
 
-*Se você deseja usar outro banco você precisará alterar os dados no arquivo .env.dev dentro do diretório backend.
+*Se você deseja usar outro banco você precisará alterar os dados no arquivo ".env.dev" dentro do diretório backend.
 
-No diretório backend, execute o comando para executar as migrations e criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, a mesma coisa no diretório web, execute o comando "npm run dev" para iniciar a aplicação, acesse no navegador o endereço "http://locahost:3000" e você deve ver a página inicial sem nenhum produto.
+No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, a mesma coisa no diretório web, execute o comando "npm run dev" para iniciar a aplicação, acesse no navegador o endereço "http://locahost:3000" e você deve ver a página inicial sem nenhum produto.
 
 ### Cadastrando um produto
 
