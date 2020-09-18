@@ -30,3 +30,27 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 <p align="center">
   <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce3.png?raw=true">
 </p>
+
+## Para testar
+
+Se você deseja testar esse app basta instalar os pacotes com "npm install" nos diretórios backend e web, iniciar um banco de dados postgres com o comando (requer Docker):
+
+```
+sudo docker run -d \
+    --name ecommerce-tests \
+    -e POSTGRES_USER=dbuser1 \
+    -e POSTGRES_PASSWORD=123 \
+    -e POSTGRES_DB=ecommerce-tests \
+    -p 5432:5432 \
+    postgres:12.3
+```
+
+*Se você deseja usar outro banco você precisará alterar os dados no arquivo .env.dev dentro do diretório backend.
+
+Depois disso, no diretório backend, execute o comando "npm run dev", depois, a mesma coisa no diretório web, execute o comando "npm run dev", acesse no navegador o endereço "http://locahost:3000" e você deve ver a página inicial sem nenhum produto.
+
+### Cadastrando um produto
+
+Atualmente não existe uma interface administrativa (to-do), para cadastrar um produto você precisará criar um usuário administrador, acesse o banco com uma GUI client como o Postbird (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true". 
+Com o REST Client Insomnia, importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te dar uma JSON Web Token para acessar as rotas, configure uma Bearer token com o JWT nas rotas "store" de categories e products, crie uma Categoria de produto, e depois um produto cadastrado ao id daquela categoria e pronto, recarregando a página o card do produto deve aparecer.
+
