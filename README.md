@@ -33,7 +33,7 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 
 ## Para testar
 
-Se você deseja testar esse app basta instalar os pacotes com "npm install" nos diretórios backend e web, iniciar um banco de dados postgres com o comando (requer Docker):
+Se você deseja testar esse app basta instalar os pacotes com "npm install" nos diretórios backend e web, iniciar um banco de dados postgres com o comando (requer [Docker](https://www.docker.com/)):
 
 ```
 sudo docker run -d \
