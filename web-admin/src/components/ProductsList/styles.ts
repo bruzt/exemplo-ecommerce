@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 
 export const Container = styled.section`
     padding: 10px;
@@ -16,7 +15,7 @@ export const Container = styled.section`
     table td {
         text-align: center;
         line-height: 50px;
-        background: var(--primary);
+        background: ${(props) => props.theme.primary};
     }
 
     table td:first-child {
@@ -50,9 +49,9 @@ export const Container = styled.section`
         -webkit-box-orient: vertical;
     }
 
-    td#td-actions {
+    td#td-actions div {
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
     }
 
@@ -62,32 +61,6 @@ export const Container = styled.section`
         padding: 2px;
         cursor: pointer;    
         border-radius: 2px;
+        background: transparent;
     }
-
-    td#td-actions button:nth-child(1) {
-        margin-right: 5px;
-        background: var(--warning);
-    }
-
-    td#td-actions button:nth-child(2) {
-        background: var(--danger);
-    }
-
-    td#td-actions button:nth-child(1):active {
-        background: var(--warning-active);
-    }
-
-    td#td-actions button:nth-child(2):active {
-        background: var(--danger-active);
-    }
-`;
-
-export const PencilIcon = styled(FaPencilAlt)`
-    font-size: 20px;
-    color: ${(props) => props.theme.warning};
-`;
-
-export const TrashIcon = styled(FaTrashAlt)`
-    font-size: 20px;
-    color: ${(props) => props.theme.danger};
 `;

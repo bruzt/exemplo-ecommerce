@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import api from '../../services/api';
 
-import { Container, PencilIcon, TrashIcon } from './styles';
+import { Container } from './styles';
+
+import PencilIcon from '../Icons/Pencil';
+import TrashIcon from '../Icons/TrashCan';
 
 interface Products {
     id: number;
