@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 
 import api from '../../services/api';
 
-import { Container } from './styles';
+import { Container, PencilIcon, TrashIcon } from './styles';
 
 interface Products {
     id: number;
@@ -20,11 +19,11 @@ export default function ProductsList(){
 
     const [getProducts, setProducts] = useState<Products[]>([]);
 
-     /*useEffect( () => {
+     useEffect( () => {
 
         fetchProducts();
 
-    }, []);*/
+    }, []);
 
     async function fetchProducts(){
 
@@ -48,13 +47,13 @@ export default function ProductsList(){
             <table>
                 <thead>
                     <tr>
-                        <th style={{ width: 50}}>ID</th>
-                        <th style={{ width: 100}}>Imagem</th>
-                        <th style={{ width: 500}}>Nome</th>
-                        <th style={{ width: 150}}>Preço</th>
-                        <th style={{ width: 100}}>Desconto</th>
-                        <th style={{ width: 100}}>Estoque</th>
-                        <th style={{ width: 100}}>Ações</th>
+                        <th style={{ width: 50 }}>ID</th>
+                        <th style={{ width: 100 }}>Imagem</th>
+                        <th style={{ width: 500 }}>Nome</th>
+                        <th style={{ width: 150 }}>Preço</th>
+                        <th style={{ width: 100 }}>Desconto</th>
+                        <th style={{ width: 100 }}>Estoque</th>
+                        <th style={{ width: 100 }}>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,10 +75,10 @@ export default function ProductsList(){
                             <td id='td-actions'>
                                 <div>
                                     <button type='button'>
-                                        <FaPencilAlt fontSize={20} />
+                                        <PencilIcon title='Editar' />
                                     </button>
                                     <button type='button'>
-                                        <FaTrashAlt fontSize={20} />
+                                        <TrashIcon title='Excluir' />
                                     </button>
                                 </div>
                             </td>
