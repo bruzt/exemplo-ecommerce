@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 
 export const Container = styled.section`
     padding: 10px;
@@ -79,4 +80,14 @@ export const Container = styled.section`
     td#td-actions button:nth-child(2):active {
         background: var(--danger-active);
     }
+`;
+
+export const PencilIcon = styled(FaPencilAlt)`
+    font-size: 20px;
+    color: ${(props) => props.theme.warning};
+`;
+
+export const TrashIcon = styled(FaTrashAlt)`
+    font-size: 20px;
+    color: ${(props) => props.theme.danger};
 `;
