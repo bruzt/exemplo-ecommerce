@@ -52,7 +52,7 @@ export const Container = styled.main`
         background: ${props => props.theme.background};
     }
 
-    div.resizable-box nav + nav, li {
+    div.resizable-box nav + nav {
         border-top: 1px solid ${props => props.theme.secondary};
     }
 
