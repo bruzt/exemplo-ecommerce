@@ -5,6 +5,7 @@ import { FaCaretRight } from 'react-icons/fa';
 
 import ProductsList from '../ProductsList';
 import CategoriesList from '../CategoriesList';
+import AddCategory from '../AddCategory';
 
 import { Container } from './styles';
 
@@ -134,7 +135,7 @@ export default function Main(){
 
                     {(getSelectedMenu == 'categories-list') && <CategoriesList />}
 
-                    {(getSelectedMenu == 'add-categories') && <div>add-categories</div>}
+                    {(getSelectedMenu == 'add-categories') && <AddCategory />}
 
                     {(getSelectedMenu == 'orders-list') && <div>orders-list</div>}
 
