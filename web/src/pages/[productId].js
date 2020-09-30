@@ -21,7 +21,7 @@ export async function getStaticPaths() {
         
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
 
@@ -34,7 +34,12 @@ export async function getStaticProps({ params }) {
     }
 }
 
-export default function Product({ product }) {
+const emptyProduct = {
+    category: {},
+    images: []
+}
+
+export default function Product({ product = emptyProduct }) {
     
     const cartContext = useCart();
     const router = useRouter();
