@@ -73,8 +73,8 @@ export default function AddProduct(){
                 </div>
 
                 <div className="input-group">
-                    <label htmlFor="editor">Corpo do anúncio</label>
-                    <RichTextEditor setContent={setHtmlText} id='editor' />
+                    <label>Corpo do anúncio</label>
+                    <RichTextEditor setContent={setHtmlText} />
                 </div>
 
                 <Button type='submit'>
@@ -83,10 +83,12 @@ export default function AddProduct(){
 
             </form>
 
-            <div 
-                className='html-text'
-                dangerouslySetInnerHTML={{ __html: getHtmlText }} 
-            />
+            {(getHtmlText.length > 0) && (
+                <div 
+                    className='html-text'
+                    dangerouslySetInnerHTML={{ __html: getHtmlText }} 
+                />
+            )}
 
         </Container>
     );

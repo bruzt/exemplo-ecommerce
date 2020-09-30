@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 
-export const Container = styled.main`
+export const Container = styled.div`
     display: flex;
-    min-height: 800px;
+`;
 
-    div.resizable-box {
-        border-right: 2px solid ${props => props.theme.primary};
-        background: ${props => props.theme.secondary};
-    }
+export const Menu = styled.div`
+    height: 1fr;
+    min-height: 100vh;
+    border-right: 2px solid ${props => props.theme.primary};
+    background: ${props => props.theme.secondary};
 
     input[type=checkbox] {
         display: none;
@@ -60,6 +61,11 @@ export const Container = styled.main`
         background: ${props => props.theme.secondary};
         border-top: 1px solid ${props => props.theme.background};
     }
+`;
+
+export const MainContainer = styled.main`
+    width: 100%;
+    min-width: 800px;
 
     div#content {
         width: 100%;

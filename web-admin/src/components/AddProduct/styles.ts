@@ -53,14 +53,14 @@ export const Container = styled.div`
 
     form div.form-line {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
     }
 
     div.form-line div.input-group + div.input-group {
         margin-left: 5px;
     }
 
-    form button {
+    form > button {
         align-self: center;
     }
 
@@ -68,15 +68,16 @@ export const Container = styled.div`
         width: 100%;
         max-width: 800px;
         height: 100%;
+        overflow-x: hidden;
 
         margin-top: 50px;
-        border: 1px dashed ${(props) => props.theme.primary};
-        overflow-x: hidden;
+        /*border: 1px dashed ${(props) => props.theme.primary};*/
         
         .se-video-container figure {
             height: 450px !important;
             padding-bottom: 0 !important;
         }
+
         a, a:visited {
             color: inherit;
         }

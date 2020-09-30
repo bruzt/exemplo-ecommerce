@@ -19,10 +19,10 @@ export default createGlobalStyle`
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    a {
+    /*a {
         text-decoration: none;
         color: inherit;
-    }
+    }*/
 
     input, select, textarea {
         background: #eee;
