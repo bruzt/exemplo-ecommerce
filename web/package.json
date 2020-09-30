@@ -8,19 +8,19 @@
     "start": "next build && next start"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "jsonwebtoken": "^8.5.1",
-    "next": "9.3.6",
-    "next-images": "^1.4.0",
+    "next": "^9.5.3",
+    "next-images": "^1.6.0",
     "react": "16.13.1",
-    "react-click-away-listener": "^1.1.0",
+    "react-click-away-listener": "^1.4.1",
     "react-dom": "16.13.1",
-    "react-icons": "^3.10.0",
+    "react-icons": "^3.11.0",
     "react-loader-spinner": "^3.1.14",
-    "react-responsive-carousel": "^3.2.7"
+    "react-responsive-carousel": "^3.2.10"
   },
   "devDependencies": {
-    "eslint": "^7.0.0",
-    "eslint-plugin-react": "^7.20.0"
+    "eslint": "^7.10.0",
+    "eslint-plugin-react": "^7.21.2"
   }
 }
