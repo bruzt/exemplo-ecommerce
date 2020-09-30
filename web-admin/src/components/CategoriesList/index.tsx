@@ -9,7 +9,7 @@ import TrashIcon from '../Icons/TrashCan';
 
 export default function CategoriesList(){
 
-	const [getCategories, setCategories] = useState([{ id: 1, name: 'aaa', parent_id: 0 }]);
+	const [getCategories, setCategories] = useState([]);
 
 	useEffect( () => {
 		fetchCategories();
