@@ -4,6 +4,7 @@ import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
 
 import ProductsList from '../ProductsList';
+import AddProduct from '../AddProduct';
 import CategoriesList from '../CategoriesList';
 import AddCategory from '../AddCategory';
 
@@ -131,7 +132,7 @@ export default function Main(){
                 <div id='content'>
                     {(getSelectedMenu == 'products-list') && <ProductsList />}
 
-                    {(getSelectedMenu == 'add-products') && <div>add-products</div>}
+                    {(getSelectedMenu == 'add-products') && <AddProduct />}
 
                     {(getSelectedMenu == 'categories-list') && <CategoriesList />}
 

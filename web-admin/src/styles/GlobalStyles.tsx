@@ -24,7 +24,7 @@ export default createGlobalStyle`
         color: inherit;
     }
 
-    input, select {
+    input, select, textarea {
         background: #eee;
     }
 `;
