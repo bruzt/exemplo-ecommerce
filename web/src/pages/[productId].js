@@ -244,12 +244,11 @@ export default function Product({ product }) {
                             </div>
                         </div>
     
-                        <div className="html-body">
-    
-                            <div dangerouslySetInnerHTML={{ __html: getProduct.html_body }} />
-    
-                        </div>
-    
+                        <div 
+                            className="html-body" 
+                            dangerouslySetInnerHTML={{ __html: getProduct.html_body }}
+                        />
+
                     </section>
                     
                 </PageLayout>
@@ -398,8 +397,13 @@ export default function Product({ product }) {
                         line-height: 25px;
                     }
     
-                    div.html-body {
+                    section div.html-body {
                         grid-area: html-body;
+
+                        width: 100%;
+                        max-width: 700px;
+                        height: 100%;
+                        overflow-x: hidden;
                     }
     
                     @media (max-width: 1180px) {
