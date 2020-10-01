@@ -235,8 +235,9 @@ export default function Product({ product }) {
                     
                         <div className='description'>
                             <div>
-                                <p>Descrição: {product.description}</p>
-                                <p>Peso: {product.weight}g</p>
+                                <p>{product.description}</p>
+                                <br/>
+                                <p>Peso: {product.weight}kg</p>
                                 <p>Comprimento: {product.length}cm</p>
                                 <p>Altura: {product.height}cm</p>
                                 <p>Largura: {product.width}cm</p>
@@ -259,7 +260,7 @@ export default function Product({ product }) {
     
                         display: grid;
                         grid-template-columns: 1fr 400px;
-                        grid-template-rows: 60px minmax(40px, auto) 425px 175px 1fr;
+                        grid-template-rows: 60px minmax(40px, auto) 425px auto 1fr;
                         grid-template-areas: 
                             "breadcrumb breadcrumb"
                             "title title"
@@ -403,7 +404,11 @@ export default function Product({ product }) {
                         width: 100%;
                         max-width: 700px;
                         height: 100%;
+
                         overflow-x: hidden;
+
+                        margin-top: 20px;
+                        padding-bottom: 20px;
                     }
     
                     @media (max-width: 1180px) {
@@ -411,7 +416,7 @@ export default function Product({ product }) {
     
                         section {
                             grid-template-columns: 100vw;
-                            grid-template-rows: 60px minmax(40px, auto) 425px 425px 175px 1fr;
+                            grid-template-rows: 60px minmax(40px, auto) 425px 425px auto 1fr;
                             grid-template-areas: 
                                 "breadcrumb"
                                 "title"
@@ -424,7 +429,8 @@ export default function Product({ product }) {
     
                         div.img-slider-container, div.buy-card-container, div.description, div.html-body  {
                             display: flex;
-                            justify-content: center;
+                            flex-direction: column;
+                            align-items: center;
                         }
                     }
                 `}</style>
