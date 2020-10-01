@@ -10,12 +10,15 @@ import sunEditorLangPtBr from '../../utils/sunEditorLangPtBr';
 import { Container } from './styles';
 
 interface IProps extends HTMLAttributes<HTMLElement> {
+    getContent: string;
     setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function RichTextEditor({ setContent, ...rest }: IProps) {
+function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
 
     function onEditorChange(content: string){
+
+        content = content.replace('height: 56.25%; padding-bottom: 56.25%;', 'height: 394px; padding-bottom: 0px;');
 
         setContent(dompurify.sanitize(content, { 
             ADD_TAGS: ["iframe"], 
@@ -35,6 +38,7 @@ function RichTextEditor({ setContent, ...rest }: IProps) {
                     min-height: 500px;
                 `}
                 placeholder='Escreva aqui'
+                setContents={getContent}
                 onChange={onEditorChange}
                 setOptions={{
                     imageWidth: '100%',

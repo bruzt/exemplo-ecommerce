@@ -7,11 +7,11 @@ export const Container = styled.div`
 
     margin-top: 50px;
 
-    form {
+    & > form {
         background: ${(props) => props.theme.primary};
         border-radius: 4px;
         padding: 30px;
-        width: 830px;
+        width: 800px;
         height: 100%;
 
         display: flex;
@@ -19,39 +19,35 @@ export const Container = styled.div`
         justify-content: space-evenly;
     }
 
-    form > * {
+    & > form > * {
         margin-top: 20px;
     }
 
-    form div.input-group {
+    & > form div.input-group {
         display: flex;
         flex-direction: column;
     }
 
-    form input {
+    & > form div.input-group > input {
         height: 30px;
         border: 0;
         text-align: center; 
     }
 
-    form textarea {
+    & > form textarea {
         height: 60px;
         border: 0;
         resize: none;
     }
 
-    form input, textarea, select {
+    & > form div.input-group > input, textarea, select {
         border-radius: 4px;
         width: 100%;
         padding: 5px;
         font-size: 16px;
     }
 
-    /*form select {
-        width: 65px;
-    }*/
-
-    form div.form-line {
+    & > form div.form-line {
         display: flex;
         justify-content: space-between;
     }
@@ -60,23 +56,34 @@ export const Container = styled.div`
         margin-left: 5px;
     }
 
-    form > button {
+    & > form > button {
         align-self: center;
+    }
+
+    div.preview {
+        width: 100%;
+        max-width: 700px;
+    }
+
+    div.preview h2:first-child {
+        margin-top: 50px;
+        text-decoration: underline;
+        text-align: center;
     }
 
     div.html-text {
         width: 100%;
-        max-width: 800px;
+        max-width: 700px;
         height: 100%;
         overflow-x: hidden;
-
         margin-top: 50px;
+
         /*border: 1px dashed ${(props) => props.theme.primary};*/
         
-        .se-video-container figure {
+        /*.se-video-container figure {
             height: 450px !important;
             padding-bottom: 0 !important;
-        }
+        }*/
 
         a, a:visited {
             color: inherit;
