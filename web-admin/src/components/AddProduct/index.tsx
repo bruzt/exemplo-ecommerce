@@ -28,7 +28,6 @@ export default function AddProduct(){
 
     const [getHtmlText, setHtmlText] = useState('');
 
-    //const ref = useRef<InputHTMLAttributes<InputEvent>>();
     let inputElement: HTMLInputElement;
 
     useEffect( () => {
@@ -75,8 +74,6 @@ export default function AddProduct(){
     async function onSubmit(event: FormEvent) {
         
         event.preventDefault();
-
-        console.log(getFiles)
 
         if(getTitle.trim().length == 0) return alert('Título não preenchido');
         if(getDescription.trim().length == 0) return alert('Descrição não preenchida');
@@ -140,7 +137,12 @@ export default function AddProduct(){
 
                 <div className="input-group">
                     <label htmlFor="product-title">Título</label>
-                    <input type="text" id='product-title' onChange={(event) => setTitle(event.target.value)} />
+                    <input 
+                        type="text" 
+                        id='product-title' 
+                        value={getTitle} 
+                        onChange={(event) => setTitle(event.target.value)} 
+                    />
                 </div>
 
                 <div className="input-group">
@@ -148,37 +150,79 @@ export default function AddProduct(){
                     <button type='button' id='file-input' onClick={() => inputElement.click()}>
                         Selecione as imagens
                     </button>
-                    <input ref={(input) => inputElement = input} type='file' accept="image/png,image/gif,image/jpeg" multiple onChange={handleFilesInput} />
+                    <input 
+                        ref={(element) => inputElement = element} 
+                        type='file' 
+                        accept="image/png,image/gif,image/jpeg" 
+                        multiple 
+                        onChange={handleFilesInput} 
+                    />
                     {getFiles.length > 0 && <br/>} 
                     {getFiles.map( (file, index) => (
-                        <p key={index}>{file.name} <button type='button' className='remove-file' onClick={() => handleRemoveFile(file.name)}>X</button></p>
+                        <p key={index}>
+                            {file.name} 
+                            <button 
+                                type='button' 
+                                className='remove-file' 
+                                onClick={() => handleRemoveFile(file.name)}
+                            >
+                                X
+                            </button>
+                        </p>
                     ))}
                 </div>
 
                 <div className="input-group">
                     <label htmlFor="product-description">Descrição</label>
-                    <textarea id="product-description" value={getDescription} onChange={(event) => setDescription(event.target.value)} />
+                    <textarea 
+                        id="product-description" 
+                        value={getDescription} 
+                        onChange={(event) => setDescription(event.target.value)} 
+                    />
                 </div>
 
                 <div className='form-line'>
                     <div className="input-group">
                         <label htmlFor="product-price">Preço (R$)</label>
-                        <input type="number" min="0.00" step="0.01" id='product-price' value={getPrice} onChange={(event) => setPrice(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0.00" 
+                            step="0.01" 
+                            id='product-price' 
+                            value={getPrice} 
+                            onChange={(event) => setPrice(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="product-discount">Desconto (%)</label>
-                        <input type="number" min="0" max='100' id='product-discount' value={getDiscount} onChange={(event) => setDiscount(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0" 
+                            max='100' 
+                            id='product-discount' 
+                            value={getDiscount} 
+                            onChange={(event) => setDiscount(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="product-stock">Qtd em Estoque</label>
-                        <input type="number" min="0" id='product-stock' value={getQtdStock} onChange={(event) => setQtdStock(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0" id='product-stock' 
+                            value={getQtdStock} 
+                            onChange={(event) => setQtdStock(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="product-category">Categoria</label>
-                        <select id='product-category' value={getCategory} onChange={(event) => setCategory(event.target.value)}>
+                        <select 
+                            id='product-category' 
+                            value={getCategory} 
+                            onChange={(event) => setCategory(event.target.value)}
+                        >
                             <option value={0}></option>
                             {getCategories.map( (category, index) => (
                                 <option key={index} value={category.id}>{category.name}</option>
@@ -188,7 +232,11 @@ export default function AddProduct(){
 
                     <div className="input-group">
                         <label htmlFor="product-tangible">Tangível</label>
-                        <select id='product-tangible' value={getTangible} onChange={(event) => setTangible(Number(event.target.value))}>
+                        <select 
+                            id='product-tangible' 
+                            value={getTangible} 
+                            onChange={(event) => setTangible(Number(event.target.value))}
+                        >
                             <option value={1}>Sim</option>
                             {/*<option value={0}>Não</option>*/}
                         </select>
@@ -199,22 +247,46 @@ export default function AddProduct(){
 
                     <div className="input-group">
                         <label htmlFor="product-weight">Peso (kg)</label>
-                        <input type="number" min="0.00" step="0.01" id="product-weight" value={getWeight} onChange={(event) => setWeight(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0.00" 
+                            step="0.01" 
+                            id="product-weight" 
+                            value={getWeight} 
+                            onChange={(event) => setWeight(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="product-length">Comprimento (cm)</label>
-                        <input type="number" min="0" id="product-length" value={getLength} onChange={(event) => setLength(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0" 
+                            id="product-length" 
+                            value={getLength} 
+                            onChange={(event) => setLength(event.target.value)} 
+                        />
                     </div>
                     
                     <div className="input-group">
                         <label htmlFor="product-height">Altura (cm)</label>
-                        <input type="number" min="0" id="product-height" value={getHeight} onChange={(event) => setHeight(event.target.value)} />
+                        <input 
+                            type="number"
+                            min="0" 
+                            id="product-height" 
+                            value={getHeight} onChange={(event) => setHeight(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="product-width">Largura (cm)</label>
-                        <input type="number" min="0" id="product-width" value={getWidth} onChange={(event) => setWidth(event.target.value)} />
+                        <input 
+                            type="number" 
+                            min="0"
+                            id="product-width" 
+                            value={getWidth} 
+                            onChange={(event) => setWidth(event.target.value)} 
+                        />
                     </div>
                 </div>
 
