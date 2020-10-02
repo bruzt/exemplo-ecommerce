@@ -56,7 +56,7 @@ module.exports = {
     storage: storageTypes[process.env.IMG_STORAGE_LOCATION],
 
     limits: {
-        fileSize: 2 * 1024 * 1024 // 2MB
+        fileSize: 10 * 1024 * 1024 // 10MB
     },
 
     fileFilter: (req, file, callback) => {
