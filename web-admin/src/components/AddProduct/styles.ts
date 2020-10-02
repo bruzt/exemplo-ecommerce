@@ -34,6 +34,30 @@ export const Container = styled.div`
         text-align: center; 
     }
 
+    & > form input[type=file] {
+        display: none;
+    }
+
+    & > form button#file-input {
+        height: 30px;
+    }
+
+    & > form button.remove-file {
+        margin-left: 5px;
+        padding: 0 3px;
+        border: 0;
+        border-radius: 4px;
+        background: ${(props) => props.theme.danger};
+
+        &:hover {
+            background: ${(props) => props.theme.dangerActive};
+        }
+
+        &:active {
+            background: ${(props) => props.theme.danger};
+        }
+    }
+
     & > form textarea {
         height: 60px;
         border: 0;

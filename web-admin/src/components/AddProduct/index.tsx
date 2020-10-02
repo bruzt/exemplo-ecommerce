@@ -12,6 +12,7 @@ export default function AddProduct(){
     const [getCategories, setCategories] = useState([]);
 
     const [getTitle, setTitle] = useState('');
+    const [getFiles, setFiles] = useState<File[]>([]);
     const [getDescription, setDescription] = useState('');
 
     const [getPrice, setPrice] = useState('');
@@ -26,6 +27,9 @@ export default function AddProduct(){
     const [getWidth, setWidth] = useState('');
 
     const [getHtmlText, setHtmlText] = useState('');
+
+    //const ref = useRef<InputHTMLAttributes<InputEvent>>();
+    let inputElement: HTMLInputElement;
 
     useEffect( () => {
         fetchCategories();
@@ -45,9 +49,34 @@ export default function AddProduct(){
         }
     }
 
+    function handleFilesInput(event: FormEvent<HTMLInputElement>){
+
+        const files = Array.from(event.currentTarget.files);
+
+        const filteredFiles: File[] = [];
+
+        files.forEach( (file) => {
+            const fFiles = getFiles.filter( (gFile) => gFile.name != file.name);
+            filteredFiles.push(...fFiles);
+        });
+
+        filteredFiles.push(...files);
+
+        setFiles(filteredFiles);
+    }
+
+    function handleRemoveFile(name: string){
+
+        const files = getFiles.filter( (file) => file.name != name);
+
+        setFiles(files);
+    }
+
     async function onSubmit(event: FormEvent) {
         
         event.preventDefault();
+
+        console.log(getFiles)
 
         if(getTitle.trim().length == 0) return alert('Título não preenchido');
         if(getDescription.trim().length == 0) return alert('Descrição não preenchida');
@@ -74,9 +103,19 @@ export default function AddProduct(){
 
         try {
 
-            await api.post('/products', product);
+            const response = await api.post('/products', product);
+
+            if(getFiles.length > 0){
+
+                const data = new FormData();
+
+                getFiles.forEach( (file) => data.append('file', file, file.name));
+                
+                await api.post(`/products/${response.data.id}/images`, data);
+            }
 
             setTitle('');
+            setFiles([]);
             setDescription('');
             setPrice('');
             setQtdStock('0');
@@ -101,7 +140,19 @@ export default function AddProduct(){
 
                 <div className="input-group">
                     <label htmlFor="product-title">Título</label>
-                    <input type="text" id='product-title' value={getTitle} onChange={(event) => setTitle(event.target.value)} />
+                    <input type="text" id='product-title' onChange={(event) => setTitle(event.target.value)} />
+                </div>
+
+                <div className="input-group">
+                    <label htmlFor="file-input">Imagens</label>
+                    <button type='button' id='file-input' onClick={() => inputElement.click()}>
+                        Selecione as imagens
+                    </button>
+                    <input ref={(input) => inputElement = input} type='file' accept="image/png,image/gif,image/jpeg" multiple onChange={handleFilesInput} />
+                    {getFiles.length > 0 && <br/>} 
+                    {getFiles.map( (file, index) => (
+                        <p key={index}>{file.name} <button type='button' className='remove-file' onClick={() => handleRemoveFile(file.name)}>X</button></p>
+                    ))}
                 </div>
 
                 <div className="input-group">
