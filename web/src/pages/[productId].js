@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Loader from 'react-loader-spinner';
 
 import api from '../services/api';
 import { useCart } from '../context/cartContext';
@@ -143,7 +144,28 @@ export default function Product({ product }) {
 
     if(router.isFallback){
         return (
-            <h1>Carregando</h1>
+            <PageLayout>
+                <div id="fallback-loading">
+                    <Loader
+                        type="TailSpin"
+                        color="#0D2235"
+                        height={150}
+                        width={150}
+                    />
+                </div>
+
+                <style jsx>{`
+
+                    div#fallback-loading {
+                        width: 100%;
+                        height: calc(100vh - 200px);
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                `}</style>
+            </PageLayout>
         );
 
     } else {
