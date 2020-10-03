@@ -7,7 +7,7 @@ import { useCart } from '../context/cartContext';
 import { useUser } from '../context/userContext';
 import { useOrder } from '../context/orderContext';
 
-import GlobalStyle from './GlobalStyle';
+import GlobalStyle from '../styles/GlobalStyle';
 import LoginModal from './LoginModal';
 import CategoriesAndSeachBar from './CategoriesAndSeachBar';
 
