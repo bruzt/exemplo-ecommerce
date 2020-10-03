@@ -52,16 +52,21 @@ export default function AddProduct(){
 
         const files = Array.from(event.currentTarget.files);
 
-        const filteredFiles: File[] = [];
+        if(files.length > 0){
 
-        files.forEach( (file) => {
-            const fFiles = getFiles.filter( (gFile) => gFile.name != file.name);
-            filteredFiles.push(...fFiles);
-        });
-
-        filteredFiles.push(...files);
-
-        setFiles(filteredFiles);
+            const filteredFiles: File[] = [];
+    
+            files.forEach( (file) => {
+                const fFiles = getFiles.filter( (gFile) => gFile.name != file.name);
+                filteredFiles.push(...fFiles);
+            });
+    
+            filteredFiles.push(...files);
+    
+            console.log(filteredFiles)
+    
+            setFiles(filteredFiles);
+        }
     }
 
     function handleRemoveFile(name: string){
@@ -89,6 +94,7 @@ export default function AddProduct(){
             description: getDescription, 
             price: Number(getPrice), 
             quantity_stock: Number(getQtdStock), 
+            discount_percent: Number(getDiscount), 
             category_id: Number(getCategory),
             tangible: Boolean(Number(getTangible)),
             weight: String(getWeight).replace('.', ','),
@@ -111,11 +117,14 @@ export default function AddProduct(){
                 await api.post(`/products/${response.data.id}/images`, data);
             }
 
+            alert('Produto cadastrado com sucesso');
+
             setTitle('');
             setFiles([]);
             setDescription('');
             setPrice('');
             setQtdStock('0');
+            setDiscount('0');
             setCategory('0');
             setTangible(1);
             setWeight('');
