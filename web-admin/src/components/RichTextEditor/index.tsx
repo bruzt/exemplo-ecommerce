@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic';
 import SunEditor from 'suneditor-react';
 import dompurify from 'dompurify';
 
-import 'suneditor/dist/css/suneditor.min.css';
-
 import sunEditorLangPtBr from '../../utils/sunEditorLangPtBr';
 
 import { Container } from './styles';
