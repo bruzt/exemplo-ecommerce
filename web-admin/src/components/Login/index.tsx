@@ -32,7 +32,7 @@ export default function Login(){
                 password: getPassword
             });
 
-            session(response.data.token);
+            session(response.data.token, response.data.user.name);
             
         } catch (error) {
             console.log(error);
@@ -40,7 +40,7 @@ export default function Login(){
         }
     }
 
-    function session(token: string){
+    function session(token: string, name: string){
 
          const tokenPayload: ITokenPayload = jwt.decode(token) as ITokenPayload;
 
@@ -50,7 +50,12 @@ export default function Login(){
      
              api.defaults.headers.authorization = `Bearer ${token}`;
      
-             router.push('/admin');
+             router.push({
+                 pathname: '/admin',
+                 query: {
+                     name
+                 }
+             });
 
          } else {
              alert('Conta não autorizada');

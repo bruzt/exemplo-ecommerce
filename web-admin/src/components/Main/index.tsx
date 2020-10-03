@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
+import api from '../../services/api';
+
+import { Container, Menu, MainContainer } from './styles';
+
+import Header from '../Header';
+import Footer from '../Footer';
 import ProductsList from '../ProductsList';
 import AddProduct from '../AddProduct';
 import CategoriesList from '../CategoriesList';
 import AddCategory from '../AddCategory';
-
-import { Container, Menu, MainContainer } from './styles';
 
 type SelectedMenu = 
     "" |
@@ -24,12 +29,21 @@ export default function Main(){
 
     const [getSelectedMenu, setSelectedMenu] = useState<SelectedMenu>('');
 
+    const router = useRouter()
+
+    useEffect( () => {
+        if(!api.defaults.headers.authorization) router.replace('/');
+    }, []);
+
     return (
         <>
             <Head>
                 <title>Exemplo e-commerce Admin page</title>
                 <meta name="robots" content="noindex" />
             </Head>
+
+            <Header />
+
             <Container>
 
                 <Menu>
@@ -148,6 +162,8 @@ export default function Main(){
                     </div>
                 </MainContainer>
             </Container>
+
+            <Footer />
         </>
     );
 }
