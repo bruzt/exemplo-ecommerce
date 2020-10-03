@@ -17,6 +17,7 @@ export default createGlobalStyle`
         background: ${props => props.theme.background};
         color: ${props => props.theme.color};
         font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
     }
 
     /*a {
