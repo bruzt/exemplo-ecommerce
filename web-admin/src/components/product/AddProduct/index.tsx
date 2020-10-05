@@ -1,11 +1,11 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
 import { Container } from './styles';
 
-import Button from '../generic/Button';
-import RichTextEditor from '../RichTextEditor';
+import Button from '../../generic/Button';
+import RichTextEditor from '../../RichTextEditor';
 
 export default function AddProduct() {
 

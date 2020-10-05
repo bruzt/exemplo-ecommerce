@@ -1,10 +1,10 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
 import { Container } from './styles';
 
-import Button from '../generic/Button';
+import Button from '../../generic/Button';
 
 interface ICategory {
     id: number;

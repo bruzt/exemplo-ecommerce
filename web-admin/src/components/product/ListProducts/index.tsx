@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
 import { Container } from './styles';
 
-import PencilIcon from '../Icons/Pencil';
-import TrashIcon from '../Icons/TrashCan';
+import PencilIcon from '../../generic/icons/Pencil';
+import TrashIcon from '../../generic/icons/TrashCan';
 
 interface Products {
     id: number;
@@ -18,7 +18,7 @@ interface Products {
     }>
 }
 
-export default function ProductsList(){
+export default function ListProducts(){
 
     const [getProducts, setProducts] = useState<Products[]>([]);
 

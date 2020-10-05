@@ -10,10 +10,10 @@ import { Container, Menu, MainContainer } from './styles';
 
 import Header from '../Header';
 import Footer from '../Footer';
-import ProductsList from '../ProductsList';
-import AddProduct from '../AddProduct';
-import CategoriesList from '../CategoriesList';
-import AddCategory from '../AddCategory';
+import ListProducts from '../product/ListProducts';
+import AddProduct from '../product/AddProduct';
+import CategoriesList from '../category/CategoriesList';
+import AddCategory from '../category/AddCategory';
 
 type SelectedMenu = 
     "" |
@@ -148,7 +148,7 @@ export default function Main(){
 
                 <MainContainer>
                     <div id='content'>
-                        {(getSelectedMenu == 'products-list') && <ProductsList />}
+                        {(getSelectedMenu == 'products-list') && <ListProducts />}
 
                         {(getSelectedMenu == 'add-products') && <AddProduct />}
 
