@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+    position: relative;
+
     display: flex;
     justify-content: center;
     padding-top: 50px;
+
+    height: 100%;
+    min-height: 100vh;
 
     table {
         margin-top: 20px;

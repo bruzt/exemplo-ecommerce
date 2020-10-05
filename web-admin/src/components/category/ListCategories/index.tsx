@@ -6,14 +6,24 @@ import { Container } from './styles';
 
 import PencilIcon from '../../generic/icons/Pencil';
 import TrashIcon from '../../generic/icons/TrashCan';
+import UpdateCategory from '../UpdateCategory';
+
+export interface ICategory {
+    id: number;
+    name: string;
+    parent_id: number;
+}
 
 export default function ListCategories(){
 
-	const [getCategories, setCategories] = useState([]);
+    const [getCategories, setCategories] = useState<ICategory[]>([]);
+    
+    const [isUpdating, setUpdating] = useState(false);
+    const [getUpdatingCategory, setUpdatingCategory] = useState<ICategory>({} as ICategory);
 
 	useEffect( () => {
-		fetchCategories();
-	}, []);
+		if(isUpdating == false) fetchCategories();
+	}, [isUpdating]);
 
 	async function fetchCategories(){
 
@@ -27,10 +37,18 @@ export default function ListCategories(){
 			console.log(error);
 			alert('Erro ao buscar categorias');
 		}
-	}
+    }
+    
+    function handleUpdate(category: ICategory){
+
+        setUpdatingCategory(category);
+        setUpdating(true);
+    }
 
 	return (
 		<Container>
+            
+            {isUpdating && <UpdateCategory updatingCategory={getUpdatingCategory} updating={setUpdating} />}
 			
 			<table>
                 <thead>
@@ -49,7 +67,7 @@ export default function ListCategories(){
                             <td>{category.parent_id}</td>
                             <td id='td-actions'>
                                 <div>
-                                    <button type='button'>
+                                    <button type='button' onClick={() => handleUpdate(category)}>
                                         <PencilIcon title='Editar' />
                                     </button>
                                     <button type='button'>
