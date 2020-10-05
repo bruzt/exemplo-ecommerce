@@ -17,7 +17,7 @@ export default function AddCategory(){
     const [getCategories, setCategories] = useState<ICategory[]>([]);
 
     const [getName, setName] = useState('');
-    const [getParent, setParent] = useState('');
+    const [getParent, setParent] = useState('0');
 
     useEffect( () => {
         fetchCategories();
@@ -45,7 +45,7 @@ export default function AddCategory(){
 
             await api.post('/categories', {
                 name: getName,
-                parent_id: (getParent.length > 0) ? getParent : undefined
+                parent_id: Number(getParent)
             });
 
             alert('Categoria cadastrada com sucesso');
@@ -73,9 +73,9 @@ export default function AddCategory(){
                     <label htmlFor="category-parent">Pai</label>
 
                     <select id="category-parent" value={getParent} onChange={(event) => setParent(event.target.value)}>
-                        <option value={null}></option>
+                        <option value={'0'}></option>
                         {getCategories.map( (category, index) => {
-                            return <option key={index} value={category.id}>{category.name}</option>
+                            return <option key={index} value={String(category.id)}>{category.name}</option>
                         })}
 
                     </select>
