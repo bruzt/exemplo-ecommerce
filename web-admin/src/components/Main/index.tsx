@@ -12,7 +12,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import ListProducts from '../product/ListProducts';
 import AddProduct from '../product/AddProduct';
-import CategoriesList from '../category/CategoriesList';
+import CategoriesList from '../category/ListCategories';
 import AddCategory from '../category/AddCategory';
 
 type SelectedMenu = 
