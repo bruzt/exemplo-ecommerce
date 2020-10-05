@@ -54,29 +54,34 @@ export default function ListCategories(){
                 <thead>
                     <tr>
                         <th style={{ width: 50 }}>ID</th>
-                        <th style={{ width: 300 }}>Nome</th>
-                        <th style={{ width: 100 }}>Pai</th>
+                        <th style={{ minWidth: 300 }}>Nome</th>
+                        <th style={{ minWidth: 300 }}>Pai</th>
                         <th style={{ width: 100 }}>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {getCategories.map( (category, index) => (
-                        <tr key={index}>
-                            <td>{category.id}</td>
-                            <td className='name'>{category.name}</td>
-                            <td>{category.parent_id}</td>
-                            <td id='td-actions'>
-                                <div>
-                                    <button type='button' onClick={() => handleUpdate(category)}>
-                                        <PencilIcon title='Editar' />
-                                    </button>
-                                    <button type='button'>
-                                        <TrashIcon title='Excluir' />
-									</button>
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
+                    {getCategories.map( (category, index) => {
+
+                        const [parentCategory] = getCategories.filter( (categoryItem) => categoryItem.id == category.parent_id);
+                        
+                        return (
+                            <tr key={index}>
+                                <td>{category.id}</td>
+                                <td className='name'>{category.name}</td>
+                                <td>{parentCategory && parentCategory.name}</td>
+                                <td id='td-actions'>
+                                    <div>
+                                        <button type='button' onClick={() => handleUpdate(category)}>
+                                            <PencilIcon title='Editar' />
+                                        </button>
+                                        <button type='button'>
+                                            <TrashIcon title='Excluir' />
+                                        </button>
+                                    </div>
+                        </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
 
