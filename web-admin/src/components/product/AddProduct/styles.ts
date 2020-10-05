@@ -41,6 +41,7 @@ export const Container = styled.div`
 
     & > form button#file-input {
         height: 30px;
+        cursor: pointer;
     }
 
     & > form button.remove-file {
