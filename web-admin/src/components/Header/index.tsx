@@ -22,7 +22,7 @@ export default function Header() {
         <Container>
 
             <div>
-                <h3>Olá, {router.query.name}</h3>
+                
             </div>
 
             <div>

@@ -50,12 +50,7 @@ export default function Login(){
      
              api.defaults.headers.authorization = `Bearer ${token}`;
      
-             router.push({
-                 pathname: '/admin',
-                 query: {
-                     name
-                 }
-             });
+             router.push('/admin');
 
          } else {
              alert('Conta não autorizada');
