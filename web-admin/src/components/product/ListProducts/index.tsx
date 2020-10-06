@@ -9,6 +9,7 @@ import { Container } from './styles';
 
 import PencilIcon from '../../generic/icons/Pencil';
 import TrashIcon from '../../generic/icons/TrashCan';
+import PaginationNav from '../../PaginationNav';
 
 interface Products {
     id: number;
@@ -32,25 +33,46 @@ export default function ListProducts(){
 
     const [getSeachBar, setSeachBar] = useState('');
 
+    const [getTotalPages, setTotalPages] = useState(1);
+
+
     const router = useRouter();
 
     const _currentPage = Number(router.query.page) || 1;
     const _itemsPerPage = 15;
-    const _page = `&offset=${(_currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`;  
+    const _page = `offset=${(_currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`;  
 
      useEffect( () => {
 
         fetchProducts();
 
-    }, []);
+    }, [_currentPage]);
 
     async function fetchProducts(){
 
         try {
 
-            const response = await api.get('/products');
+            let response: AxiosResponse<IFetchProducts>;
+
+            if(getSeachBar.trim().length != 0){
+
+                response = await api.get(`/products?title=${getSeachBar}&${_page}`);
+
+            } else {
+                
+                response = await api.get(`/products?${_page}`);
+            }
+
+            //const sortedProductsById = response.data.products.sort( (prod1: Products, prod2: Products) => prod1.id > prod2.id ? -1 : 1);
             
-            setProducts(response.data.products.sort( (prod1: Products, prod2: Products) => prod1.id > prod2.id ? -1 : 1));
+            //setProducts(sortedProductsById);
+
+            const totalPages = (response.data.products.length < _itemsPerPage && _currentPage == 1)
+                    ? 1
+                    : Math.ceil(response.data.count/_itemsPerPage);
+
+            setTotalPages(totalPages);
+            setProducts(response.data.products);
             
         } catch (error) {
             console.log(error);
@@ -62,21 +84,18 @@ export default function ListProducts(){
         
         event.preventDefault();
 
-        try {
+        fetchProducts();
+    }
 
-            let response: AxiosResponse<IFetchProducts>;
+    function handlePagination(value: number){
 
-            if(getSeachBar.trim().length != 0){
-
-                response = await api.get(`/products?title=${getSeachBar}${_page}`);
-
-                setProducts(response.data.products);
-            } 
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao filtrar produtos');
-        }
+        router.push({
+            pathname: '/admin',
+            query: {
+                ...router.query,
+                page: value
+            }
+        });
     }
 
     return (
@@ -133,6 +152,13 @@ export default function ListProducts(){
                     ))}
                 </tbody>
             </table>
+
+            <PaginationNav
+                totalPages={getTotalPages}
+                currentPage={_currentPage}
+                limitPageNav={5}
+                handlePagination={handlePagination}
+            />
 
         </Container>
     );
