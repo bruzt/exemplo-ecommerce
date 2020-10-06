@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "start": "next start"
+    "start": "next build && next start -p 3002"
   },
   "dependencies": {
     "axios": "^0.19.2",
