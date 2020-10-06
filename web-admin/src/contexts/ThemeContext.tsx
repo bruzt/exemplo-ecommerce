@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import darkTheme from '../styles/darkTheme';
-import lightTheme from '../styles/darkTheme';
+import lightTheme from '../styles/lightTheme';
 
 interface IThemeHook {
     changeThemeTo: (theme: "dark" | "light") => void
@@ -16,7 +16,7 @@ const Context = createContext({});
 
 export function ThemeContextProvider({ children }: ThemeContextProviderProps){
     
-    const [getTheme, setTheme] = useState(darkTheme);
+    const [getTheme, setTheme] = useState(lightTheme);
 
     function changeThemeTo(theme: string){
 

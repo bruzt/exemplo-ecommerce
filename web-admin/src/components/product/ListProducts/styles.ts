@@ -17,7 +17,7 @@ export const Container = styled.section`
         border: 0;
         height: 30px;
         font-size: 20px;
-        background: ${props => props.theme.color};
+        border: 1px solid ${props => props.theme.color};
     }
 
     & > form input {
