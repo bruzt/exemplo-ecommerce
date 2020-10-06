@@ -1,5 +1,6 @@
 
 export default {
+    title: 'light',
     background: '#eee',
     primary: '#ccc',
     secondary: '#ddd',
