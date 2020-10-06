@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import { AxiosResponse } from 'axios';
 
 import api from '../../../services/api';
 
@@ -18,9 +21,22 @@ interface Products {
     }>
 }
 
+interface IFetchProducts {
+    count: number;
+    products: Products[];
+}
+
 export default function ListProducts(){
 
     const [getProducts, setProducts] = useState<Products[]>([]);
+
+    const [getSeachBar, setSeachBar] = useState('');
+
+    const router = useRouter();
+
+    const _currentPage = Number(router.query.page) || 1;
+    const _itemsPerPage = 15;
+    const _page = `&offset=${(_currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`;  
 
      useEffect( () => {
 
@@ -42,10 +58,38 @@ export default function ListProducts(){
         }
     }
 
+    async function onSubmit(event: FormEvent) {
+        
+        event.preventDefault();
+
+        try {
+
+            let response: AxiosResponse<IFetchProducts>;
+
+            if(getSeachBar.trim().length != 0){
+
+                response = await api.get(`/products?title=${getSeachBar}${_page}`);
+
+                setProducts(response.data.products);
+            } 
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao filtrar produtos');
+        }
+    }
+
     return (
         <Container>
             
             <h1>Lista de produtos</h1>
+
+            <form onSubmit={onSubmit}>
+                <input type="text" value={getSeachBar} onChange={(event) => setSeachBar(event.target.value)} />
+                <button type='submit'>
+                    <FaSearch size={16} />
+                </button>
+            </form>
 
             <table>
                 <thead>

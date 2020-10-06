@@ -6,6 +6,34 @@ export const Container = styled.section`
     flex-direction: column;
     align-items: center;
 
+    & > form {
+        width: fit-content;
+        display: flex;
+        margin: 20px 0;
+    }
+
+    & > form input,
+    & > form button {
+        border: 0;
+        height: 30px;
+        font-size: 20px;
+        background: ${props => props.theme.color};
+    }
+
+    & > form input {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        width: 350px;
+        padding: 0 5px;
+    }
+
+    & > form button {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        width: 30px;
+        cursor: pointer;
+    }
+
     table {
         margin-top: 20px;
         font-size: 20px;
