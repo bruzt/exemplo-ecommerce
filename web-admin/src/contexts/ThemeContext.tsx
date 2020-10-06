@@ -16,7 +16,7 @@ const Context = createContext({});
 
 export function ThemeContextProvider({ children }: ThemeContextProviderProps){
     
-    const [getTheme, setTheme] = useState(lightTheme);
+    const [getTheme, setTheme] = useState(darkTheme);
 
     function changeThemeTo(theme: string){
 
