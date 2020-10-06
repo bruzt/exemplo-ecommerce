@@ -5,9 +5,12 @@ import api from '../../services/api';
 
 import { Container } from './styles';
 
+import { useTheme } from '../../contexts/ThemeContext';
+
 export default function Header() {
 
     const router = useRouter();
+    const themeContext = useTheme();
 
     function logOut(){
 
@@ -22,7 +25,20 @@ export default function Header() {
         <Container>
 
             <div>
-                
+                <button 
+                    type='button'
+                    onClick={() => themeContext.changeThemeTo('light')}
+                >
+                    Claro
+                </button>
+
+                <button 
+                    type='button'
+                    onClick={() => themeContext.changeThemeTo('dark')}
+                >
+                    Escuro
+                </button>
+
             </div>
 
             <div>
