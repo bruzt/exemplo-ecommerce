@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 import { AxiosResponse } from 'axios';
 
 import api from '../../../services/api';
@@ -33,12 +33,12 @@ export default function ListProducts(){
 
     const [getSeachBar, setSeachBar] = useState('');
 
+    const [getCurrentPage, setCurrentPage] = useState(1);
     const [getTotalPages, setTotalPages] = useState(1);
 
+    //const router = useRouter();
 
-    const router = useRouter();
-
-    const _currentPage = Number(router.query.page) || 1;
+    const _currentPage = getCurrentPage; //Number(router.query.page) || 1;
     const _itemsPerPage = 15;
     const _page = `offset=${(_currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`;  
 
@@ -89,13 +89,15 @@ export default function ListProducts(){
 
     function handlePagination(value: number){
 
-        router.push({
+        /*router.push({
             pathname: '/admin',
             query: {
                 ...router.query,
                 page: value
             }
-        });
+        });*/
+
+        setCurrentPage(value);
     }
 
     return (
