@@ -12,7 +12,7 @@ import ImageSlider from '../components/ImageSlider';
 
 export async function getStaticPaths() {
 
-    const response = await api.get('/products');
+    const response = await api.get('/products?section=best-sellers&limit=100');
     
     const paths = response.data.products.map( (data) => ({ 
         params: { 
