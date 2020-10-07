@@ -21,6 +21,12 @@ export default function Login(){
 
     const router = useRouter();
 
+    if(process.browser){
+        const token = sessionStorage.getItem('token');
+
+        if(token) session(token);
+    }
+
     async function onSubmit(event: FormEvent) {
         
         event.preventDefault();
@@ -32,7 +38,7 @@ export default function Login(){
                 password: getPassword
             });
 
-            session(response.data.token, response.data.user.name);
+            session(response.data.token);
             
         } catch (error) {
             console.log(error);
@@ -40,7 +46,7 @@ export default function Login(){
         }
     }
 
-    function session(token: string, name: string){
+    function session(token: string){
 
          const tokenPayload: ITokenPayload = jwt.decode(token) as ITokenPayload;
 
