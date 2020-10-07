@@ -14,7 +14,7 @@ export const Container = styled.section`
 
     & > form input,
     & > form button {
-        height: 30px;
+        height: 40px;
         font-size: 20px;
         border: ${props => props.theme.title == 'dark' ? '0' : `1px solid ${props.theme.color}`};
     }

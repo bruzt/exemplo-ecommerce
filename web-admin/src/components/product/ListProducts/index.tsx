@@ -11,7 +11,7 @@ import PencilIcon from '../../generic/icons/Pencil';
 import TrashIcon from '../../generic/icons/TrashCan';
 import PaginationNav from '../../PaginationNav';
 
-interface Products {
+interface Product {
     id: number;
     title: string;
     price: number;
@@ -24,12 +24,12 @@ interface Products {
 
 interface IFetchProducts {
     count: number;
-    products: Products[];
+    products: Product[];
 }
 
 export default function ListProducts(){
 
-    const [getProducts, setProducts] = useState<Products[]>([]);
+    const [getProducts, setProducts] = useState<Product[]>([]);
 
     const [getSeachBar, setSeachBar] = useState('');
 
@@ -54,7 +54,20 @@ export default function ListProducts(){
 
             let response: AxiosResponse<IFetchProducts>;
 
-            if(getSeachBar.trim().length != 0){
+            // Se for um numero procura pelo id
+            if (Number(getSeachBar.trim())){
+
+                const res: AxiosResponse<Product> = await api.get(`/products/${getSeachBar.trim()}`);
+
+                response = {
+                    ...res,
+                    data: {
+                        count: 1,
+                        products: [res.data]
+                    }
+                };
+
+            } else if(getSeachBar.trim().length != 0){
 
                 response = await api.get(`/products?title=${getSeachBar}&${_page}`);
 
