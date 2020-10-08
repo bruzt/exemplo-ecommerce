@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
+    position: relative;
+
     padding: 10px;
     display: flex;
     flex-direction: column;
