@@ -10,14 +10,17 @@ import { Container } from './styles';
 import PencilIcon from '../../generic/icons/Pencil';
 import TrashIcon from '../../generic/icons/TrashCan';
 import PaginationNav from '../../PaginationNav';
+import UpdateProduct from '../UpdateProduct';
 
-interface Product {
+export interface Product {
     id: number;
     title: string;
+    description: string;
     price: number;
     discount_percent: number;
     quantity_stock: number;
     images: Array<{
+        id: number;
         filename: string;
     }>
 }
@@ -35,6 +38,10 @@ export default function ListProducts(){
 
     const [getCurrentPage, setCurrentPage] = useState(1);
     const [getTotalPages, setTotalPages] = useState(1);
+
+
+    const [getUpdeting, setUpdeting] = useState(false);
+    const [getUpdetingProduct, setUpdetingProduct] = useState<Product>({} as Product);
 
     //const router = useRouter();
 
@@ -113,8 +120,16 @@ export default function ListProducts(){
         setCurrentPage(value);
     }
 
+    function handleUpdateModal(product: Product){
+
+        setUpdeting(true);
+        setUpdetingProduct(product);
+    }
+
     return (
         <Container>
+
+            {getUpdeting && <UpdateProduct product={getUpdetingProduct} setUpdeting={setUpdeting} />}
             
             <h1>Lista de produtos</h1>
 
@@ -155,7 +170,7 @@ export default function ListProducts(){
                             <td>{product.quantity_stock}</td>
                             <td id='td-actions'>
                                 <div>
-                                    <button type='button'>
+                                    <button type='button' onClick={() => handleUpdateModal(product)}>
                                         <PencilIcon title='Editar' />
                                     </button>
                                     <button type='button'>
