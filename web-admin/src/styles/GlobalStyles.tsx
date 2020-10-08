@@ -27,5 +27,6 @@ export default createGlobalStyle`
 
     input, select, textarea {
         background: #eee;
+        font-family: Arial, Helvetica, sans-serif;
     }
 `;
