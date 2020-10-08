@@ -51,9 +51,9 @@ export default function ListProducts(){
 
      useEffect( () => {
 
-        fetchProducts();
+        if(getUpdeting == false) fetchProducts();
 
-    }, [_currentPage]);
+    }, [_currentPage, getUpdeting]);
 
     async function fetchProducts(){
 
