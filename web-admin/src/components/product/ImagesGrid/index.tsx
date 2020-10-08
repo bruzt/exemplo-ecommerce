@@ -12,7 +12,7 @@ interface IProps {
 
 export default function ImagesGrid({ product }: IProps) {
 
-    const [getImages, setImages] = useState(product.images);
+    const [getImages, setImages] = useState([...product.images]);
 
     async function removeImage(id: number) {
 
@@ -24,11 +24,11 @@ export default function ImagesGrid({ product }: IProps) {
 
                 let imgIndex: number;
                 
-                product.images.forEach( (image, index) => {
+                getImages.forEach( (image, index) => {
                     if(image.id == id) imgIndex = index;
                 });
 
-                const images = [...product.images];
+                const images = [...getImages];
 
                 images.splice(imgIndex, 1);
                 
