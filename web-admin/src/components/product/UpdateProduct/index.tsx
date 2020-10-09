@@ -31,7 +31,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getCategoryId, setCategoryId] = useState(String(product.category.id));
     const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
 
-    const [getWeight, setWeight] = useState(product.weight);
+    const [getWeight, setWeight] = useState(product.weight.replace(',', '.'));
     const [getLength, setLength] = useState(product.length);
     const [getHeight, setHeight] = useState(product.height);
     const [getWidth, setWidth] = useState(product.width);
@@ -60,7 +60,37 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
         event.preventDefault();
 
+        if (getTitle.trim().length == 0) return alert('Título não preenchido');
+        if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
+        if (getPrice.trim().length == 0) return alert('Preço não preenchido');
+        if (getCategoryId == '0') return alert('Categoria não selecionada');
+        if (getWeight.trim().length == 0) return alert('Peso não preenchido');
+        if (getLength.trim().length == 0) return alert('Comprimento não preenchido');
+        if (getHeight.trim().length == 0) return alert('Altura não preenchido');
+        if (getWidth.trim().length == 0) return alert('Largura não preenchido');
+
+        const data = {
+            title: getTitle,
+            description: getDescription,
+            price: Number(getPrice),
+            quantity_stock: Number(getQtdStock),
+            discount_percent: Number(getDiscount),
+            category_id: Number(getCategoryId),
+            tangible: Boolean(Number(getTangible)),
+            weight: getWeight.replace('.', ','),
+            length: Number(getLength),
+            height: Number(getHeight),
+            width: Number(getWidth),
+            html_body: getHtmlBody.trim().length > 0 ? getHtmlBody : undefined
+        };
+
         try {
+
+            await api.put(`/products/${product.id}`, data);
+
+            alert('Produto atualizado com sucesso');
+
+            setUpdeting(false);
             
         } catch (error) {
             console.log(error);
@@ -156,7 +186,8 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <label htmlFor="product-weight">Peso (kg)</label>
                         <input 
                             type="number" 
-                            min='0'
+                            min="0.00"
+                            step="0.01"
                             id='product-weight' 
                             value={getWeight} 
                             onChange={(event) => setWeight(event.target.value)} 
