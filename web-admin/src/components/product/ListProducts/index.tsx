@@ -12,7 +12,7 @@ import TrashIcon from '../../generic/icons/TrashCan';
 import PaginationNav from '../../PaginationNav';
 import UpdateProduct from '../UpdateProduct';
 
-export interface Product {
+export interface IProduct {
     id: number;
     title: string;
     description: string;
@@ -27,12 +27,12 @@ export interface Product {
 
 interface IFetchProducts {
     count: number;
-    products: Product[];
+    products: IProduct[];
 }
 
 export default function ListProducts(){
 
-    const [getProducts, setProducts] = useState<Product[]>([]);
+    const [getProducts, setProducts] = useState<IProduct[]>([]);
 
     const [getSeachBar, setSeachBar] = useState('');
 
@@ -41,7 +41,7 @@ export default function ListProducts(){
 
 
     const [getUpdeting, setUpdeting] = useState(false);
-    const [getUpdetingProduct, setUpdetingProduct] = useState<Product>({} as Product);
+    const [getUpdetingProduct, setUpdetingProduct] = useState<IProduct>({} as IProduct);
 
     //const router = useRouter();
 
@@ -64,7 +64,7 @@ export default function ListProducts(){
             // Se for um numero procura pelo id
             if (Number(getSeachBar.trim())){
 
-                const res: AxiosResponse<Product> = await api.get(`/products/${getSeachBar.trim()}`);
+                const res: AxiosResponse<IProduct> = await api.get(`/products/${getSeachBar.trim()}`);
 
                 response = {
                     ...res,
@@ -120,7 +120,7 @@ export default function ListProducts(){
         setCurrentPage(value);
     }
 
-    function handleUpdateModal(product: Product){
+    function handleUpdateModal(product: IProduct){
 
         setUpdeting(true);
         setUpdetingProduct(product);

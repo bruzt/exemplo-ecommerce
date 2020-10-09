@@ -4,10 +4,10 @@ import api from '../../../services/api';
 
 import { Container } from './styles';
 
-import { Product } from '../ListProducts';
+import { IProduct } from '../ListProducts';
 
 interface IProps {
-    product: Product;
+    product: IProduct;
 }
 
 export default function ImagesGrid({ product }: IProps) {

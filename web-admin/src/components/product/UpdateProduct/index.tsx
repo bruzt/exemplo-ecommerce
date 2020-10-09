@@ -2,23 +2,21 @@ import React, { FormEvent, useState } from 'react';
 
 import { Container } from './styles';
 
-import { Product } from '../ListProducts';
+import { IProduct } from '../ListProducts';
 
 import Button from '../../generic/Button';
 import AddImageInput from '../AddImageInput';
 import ImagesGrid from '../ImagesGrid';
 
 interface IProps {
-    product: Product;
+    product: IProduct;
     setUpdeting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
     const [getTitle, setTitle] = useState(product.title);
-
     const [getFiles, setFiles] = useState<File[]>([]);
-
     const [getDescription, setDescription] = useState(product.description);
 
     async function onSubmit(event: FormEvent) {
