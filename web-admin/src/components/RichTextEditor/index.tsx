@@ -14,14 +14,30 @@ interface IProps extends HTMLAttributes<HTMLElement> {
 
 function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
 
-    function onEditorChange(content: string){
+    function setContentTimeOut(){
+
+        let timer = 0;
+
+        return function(content: string){
+
+            clearTimeout(timer);
+
+            timer = setTimeout( () => {
+                onEditorChange(content)
+            }, 1000);
+        }
+    }
+
+    function onEditorChange(content: string) {
 
         content = content.replace('height: 56.25%; padding-bottom: 56.25%;', 'height: 394px; padding-bottom: 0px;');
 
-        setContent(dompurify.sanitize(content, { 
+        const purifiedContent = dompurify.sanitize(content, { 
             ADD_TAGS: ["iframe"], 
             ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] 
-        }));
+        });
+
+        setContent(purifiedContent);
     }
 
     return (
@@ -37,7 +53,7 @@ function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
                 `}
                 placeholder='Escreva aqui'
                 setContents={getContent}
-                onChange={onEditorChange}
+                onChange={(content) => setContentTimeOut()(content)}
                 setOptions={{
                     imageWidth: '100%',
                     imageFileInput: false,

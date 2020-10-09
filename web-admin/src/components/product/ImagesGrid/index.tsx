@@ -16,7 +16,7 @@ export default function ImagesGrid({ product }: IProps) {
 
     async function removeImage(id: number) {
 
-        if(confirm('Tem certeza que deseja deletar a imagem?')){
+        if(confirm('Tem certeza que deseja excluir a imagem?')){
 
             try {
 

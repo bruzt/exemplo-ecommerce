@@ -8,9 +8,15 @@ import Button from '../../generic/Button';
 import RichTextEditor from '../../RichTextEditor';
 import AddImageInput from '../AddImageInput';
 
+export interface ICategory {
+    id: number;
+    name: string;
+    parent_id: number;
+}
+
 export default function AddProduct() {
 
-    const [getCategories, setCategories] = useState([]);
+    const [getCategories, setCategories] = useState<ICategory[]>([]);
 
     const [getTitle, setTitle] = useState('');
     const [getFiles, setFiles] = useState<File[]>([]);
@@ -131,6 +137,7 @@ export default function AddProduct() {
                     <label htmlFor="product-description">Descrição</label>
                     <textarea
                         id="product-description"
+                        maxLength={255}
                         value={getDescription}
                         onChange={(event) => setDescription(event.target.value)}
                     />
@@ -165,7 +172,8 @@ export default function AddProduct() {
                         <label htmlFor="product-stock">Qtd em Estoque</label>
                         <input
                             type="number"
-                            min="0" id='product-stock'
+                            min="0" 
+                            id='product-stock'
                             value={getQtdStock}
                             onChange={(event) => setQtdStock(event.target.value)}
                         />

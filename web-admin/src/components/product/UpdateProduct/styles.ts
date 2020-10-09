@@ -5,7 +5,7 @@ export const Container = styled.div`
 
     z-index: 10;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     margin-top: -10px;
 
     display: flex;
@@ -18,7 +18,7 @@ export const Container = styled.div`
         background: ${props => props.theme.primary};
         border-radius: 4px;
 
-        margin-top: 10%;
+        margin: 5% 0;
         padding: 20px;
         width: 800px;
 
@@ -48,13 +48,20 @@ export const Container = styled.div`
         font-size: 20px;
     }
 
-    div.input-group input {
+    div.input-group input,
+    div.input-group select {
+        width: 100%;
+        height: 30px;
+
         border: 0;
         border-radius: 4px;
-        height: 40px;
         font-size: 20px;
         padding: 0 5px;
         text-align: center;
+    }
+
+    & > form div.product-tangible-group  {
+        width: 75px;
     }
 
     div.input-group textarea {
@@ -83,5 +90,25 @@ export const Container = styled.div`
         &:active {
             background: ${props => props.theme.danger};
         }
+    }
+
+    & > form div.form-row {
+        width: fit-content;
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    div.form-row > div.input-group + div.input-group {
+        margin-left: 5px;
+    }
+
+    div.preview {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    div.preview h2 {
+        text-decoration: underline;
     }
 `;

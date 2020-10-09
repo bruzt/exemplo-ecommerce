@@ -12,6 +12,8 @@ import TrashIcon from '../../generic/icons/TrashCan';
 import PaginationNav from '../../PaginationNav';
 import UpdateProduct from '../UpdateProduct';
 
+import { ICategory } from '../AddProduct';
+
 export interface IProduct {
     id: number;
     title: string;
@@ -19,6 +21,13 @@ export interface IProduct {
     price: number;
     discount_percent: number;
     quantity_stock: number;
+    category: ICategory;
+    tangible: boolean;
+    weight: string;
+    length: string;
+    height: string;
+    width: string;
+    html_body: string;
     images: Array<{
         id: number;
         filename: string;

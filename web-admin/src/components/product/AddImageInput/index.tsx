@@ -40,7 +40,7 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
         <Container>
             
             <div className="input-group">
-                    <label htmlFor="file-input">Imagens</label>
+                    <label htmlFor="file-input">Adicionar Imagens</label>
                     <button type='button' id='file-input' onClick={() => inputElement.click()}>
                         Selecione as imagens
                     </button>

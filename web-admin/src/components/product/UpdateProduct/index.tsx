@@ -1,12 +1,16 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+
+import api from '../../../services/api';
 
 import { Container } from './styles';
-
-import { IProduct } from '../ListProducts';
 
 import Button from '../../generic/Button';
 import AddImageInput from '../AddImageInput';
 import ImagesGrid from '../ImagesGrid';
+import RichTextEditor from '../../RichTextEditor';
+
+import { IProduct } from '../ListProducts';
+import { ICategory } from '../AddProduct';
 
 interface IProps {
     product: IProduct;
@@ -15,9 +19,42 @@ interface IProps {
 
 export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
+    const [getCategories, setCategories] = useState<ICategory[]>([]);
+
     const [getTitle, setTitle] = useState(product.title);
     const [getFiles, setFiles] = useState<File[]>([]);
     const [getDescription, setDescription] = useState(product.description);
+
+    const [getPrice, setPrice] = useState(String(product.price));
+    const [getDiscount, setDiscount] = useState(String(product.discount_percent));
+    const [getQtdStock, setQtdStock] = useState(String(product.quantity_stock));
+    const [getCategoryId, setCategoryId] = useState(String(product.category.id));
+    const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
+
+    const [getWeight, setWeight] = useState(product.weight);
+    const [getLength, setLength] = useState(product.length);
+    const [getHeight, setHeight] = useState(product.height);
+    const [getWidth, setWidth] = useState(product.width);
+
+    const [getHtmlBody, setHtmlBody] = useState(product.html_body);
+    
+    useEffect( () => {
+        fetchCategories();
+    }, []);
+
+    async function fetchCategories() {
+        
+        try {
+
+            const response = await api.get('/categories');
+
+            setCategories(response.data);
+            
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao buscar categorias');
+        }
+    }
 
     async function onSubmit(event: FormEvent) {
 
@@ -51,7 +88,121 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
                 <div className="input-group">
                     <label htmlFor="product-description">Descrição</label>
-                    <textarea id='product-description' value={getDescription} onChange={(event) => setDescription(event.target.value)} />
+                    <textarea 
+                        id='product-description' 
+                        maxLength={255}
+                        value={getDescription} 
+                        onChange={(event) => setDescription(event.target.value)} 
+                    />
+                </div>
+
+                <div className="form-row">
+                    <div className="input-group">
+                        <label htmlFor="product-price">Preço (R$)</label>
+                        <input 
+                            type="number" 
+                            min="0.00"
+                            step="0.01"
+                            id='product-price' 
+                            value={getPrice} 
+                            onChange={(event) => setPrice(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-discount">Desconto (%)</label>
+                        <input 
+                            type="number" 
+                            min="0"
+                            max='100'
+                            id='product-discount' 
+                            value={getDiscount} 
+                            onChange={(event) => setDiscount(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-stock">Qtd estoque</label>
+                        <input 
+                            type="number" 
+                            min='0'
+                            id='product-stock' 
+                            value={getQtdStock} 
+                            onChange={(event) => setQtdStock(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-category">Categoria</label>
+                        <select id="product-category" value={getCategoryId} onChange={(event) => setCategoryId(event.target.value)}>
+                            <option value="0"></option>
+                            {getCategories.map( (category, index) => (
+                                <option key={index} value={`${category.id}`}>{category.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="input-group product-tangible-group">
+                        <label htmlFor="product-tangible">Tangível</label>
+                        <select id="product-tangible" value={getTangible} onChange={(event) => setTangible(event.target.value)}>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="input-group">
+                        <label htmlFor="product-weight">Peso (kg)</label>
+                        <input 
+                            type="number" 
+                            min='0'
+                            id='product-weight' 
+                            value={getWeight} 
+                            onChange={(event) => setWeight(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-length">Comprimento (cm)</label>
+                        <input 
+                            type="number" 
+                            min='0'
+                            id='product-length' 
+                            value={getLength} 
+                            onChange={(event) => setLength(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-height">Altura (cm)</label>
+                        <input 
+                            type="number" 
+                            min='0'
+                            id='product-height' 
+                            value={getHeight} 
+                            onChange={(event) => setHeight(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="product-width">Largura (cm)</label>
+                        <input 
+                            type="number" 
+                            min='0'
+                            id='product-width' 
+                            value={getWidth} 
+                            onChange={(event) => setWidth(event.target.value)} 
+                        />
+                    </div>
+                </div>
+
+                <div className="input-group">
+                    <label>Corpo do anúncio</label>
+                    <RichTextEditor
+                        getContent={getHtmlBody}
+                        setContent={setHtmlBody}
+                    />
                 </div>
 
                 <Button type='submit'>
@@ -59,6 +210,12 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                 </Button>
             </form>
 
+            <div className="preview">
+                <h2>Preview</h2>
+
+                <div className="preview-content" dangerouslySetInnerHTML={{ __html: getHtmlBody }} />
+
+            </div>
 
         </Container>
     );
