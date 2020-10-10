@@ -15,6 +15,7 @@ const categoryController = require('./controllers/categoryController');
 const freightController = require('./controllers/freightController');
 const imageController = require('./controllers/imageController');
 const orderController = require('./controllers/orderController');
+const productController = require('./controllers/productController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
@@ -47,11 +48,11 @@ router.put('/reset-password', validators.userResetPasswordValidator.update, cont
 router.post('/sessions', validators.sessionValidators.store, controllers.sessionController.store);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
-router.get('/products', validators.productValidators.index, controllers.productController.index);
-router.get('/products/:id', validators.productValidators.show, controllers.productController.show);
-router.post('/products', validators.productValidators.store, adminJwtAuthentication, controllers.productController.store);
-router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, controllers.productController.update);
-router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, controllers.productController.destroy);
+router.get('/products', validators.productValidators.index, productController.list);
+router.get('/products/:id', validators.productValidators.show, productController.show);
+router.post('/products', validators.productValidators.store, adminJwtAuthentication, productController.store);
+router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, productController.update);
+router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, productController.destroy);
 
 // ADICIONA, ALTERA OU REMOVE UMA IMAGEM DO PRODUTO
 router.post('/products/:id/images', validators.imageValidators.store, adminJwtAuthentication, multer(multerConfig).any(), multerErrorHandler, imageController.store);
