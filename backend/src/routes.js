@@ -9,6 +9,8 @@ const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
 const controllers = autoRequireAll(__dirname, './controllers');
+const addressController = require('./controllers/addressController');
+
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
 const router = express.Router();
@@ -21,10 +23,10 @@ router.put('/users', validators.userValidators.update, jwtAuthentication, contro
 router.delete('/users', validators.userValidators.destroy, jwtAuthentication, controllers.userController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE ENDEREÇOS DE UM USUÁRIO
-router.get('/addresses', validators.addressValidators.index, jwtAuthentication, controllers.addressController.index);
-router.post('/addresses', validators.addressValidators.store, jwtAuthentication, controllers.addressController.store);
-router.put('/addresses/:id', validators.addressValidators.update, jwtAuthentication, controllers.addressController.update);
-router.delete('/addresses/:id', validators.addressValidators.destroy, jwtAuthentication, controllers.addressController.destroy);
+router.get('/addresses', validators.addressValidators.index, jwtAuthentication, addressController.list);
+router.post('/addresses', validators.addressValidators.store, jwtAuthentication, addressController.store);
+router.put('/addresses/:id', validators.addressValidators.update, jwtAuthentication, addressController.update);
+router.delete('/addresses/:id', validators.addressValidators.destroy, jwtAuthentication, addressController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
 router.get('/orders', validators.orderValidators.index, jwtAuthentication, controllers.orderController.index);
