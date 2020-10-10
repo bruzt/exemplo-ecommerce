@@ -9,8 +9,10 @@ const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
 const controllers = autoRequireAll(__dirname, './controllers');
+
 const addressController = require('./controllers/addressController');
 const categoryController = require('./controllers/categoryController');
+const freightController = require('./controllers/freightController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
@@ -59,6 +61,6 @@ router.post('/categories', validators.categoryValidators.store, adminJwtAuthenti
 router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, categoryController.update);
 
 // CALCULO DE FRETE
-router.post('/freight', validators.freightValidators.store, controllers.freightController.store);
+router.post('/freight', validators.freightValidators.store, freightController.store);
 
 module.exports = router;
