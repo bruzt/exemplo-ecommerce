@@ -17,17 +17,18 @@ const imageController = require('./controllers/imageController');
 const orderController = require('./controllers/orderController');
 const productController = require('./controllers/productController');
 const sessionController = require('./controllers/sessionController');
+const userController = require('./controllers/userController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
 const router = express.Router();
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE USUÁRIOS
-router.get('/users', controllers.userController.index);
-router.get('/users/:id', validators.userValidators.show, controllers.userController.show);
-router.post('/users', validators.userValidators.store, controllers.userController.store);
-router.put('/users', validators.userValidators.update, jwtAuthentication, controllers.userController.update);
-router.delete('/users', validators.userValidators.destroy, jwtAuthentication, controllers.userController.destroy);
+router.get('/users', userController.list);
+router.get('/users/:id', validators.userValidators.show, userController.show);
+router.post('/users', validators.userValidators.store, userController.store);
+router.put('/users', validators.userValidators.update, jwtAuthentication, userController.update);
+router.delete('/users', validators.userValidators.destroy, jwtAuthentication, userController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE ENDEREÇOS DE UM USUÁRIO
 router.get('/addresses', validators.addressValidators.index, jwtAuthentication, addressController.list);
