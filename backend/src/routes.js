@@ -10,6 +10,7 @@ const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
 const controllers = autoRequireAll(__dirname, './controllers');
 const addressController = require('./controllers/addressController');
+const categoryController = require('./controllers/categoryController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
@@ -53,10 +54,9 @@ router.post('/products/:id/images', validators.imageValidators.store, adminJwtAu
 router.delete('/products/images/:id', validators.imageValidators.destroy, adminJwtAuthentication, controllers.imageController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
-router.get('/categories', controllers.categoryController.index);
-//router.get('/categories/:id', controllers.categoryController.show);
-router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, controllers.categoryController.store);
-router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, controllers.categoryController.update);
+router.get('/categories', categoryController.list);
+router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, categoryController.store);
+router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, categoryController.update);
 
 // CALCULO DE FRETE
 router.post('/freight', validators.freightValidators.store, controllers.freightController.store);
