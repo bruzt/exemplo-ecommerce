@@ -16,6 +16,7 @@ const freightController = require('./controllers/freightController');
 const imageController = require('./controllers/imageController');
 const orderController = require('./controllers/orderController');
 const productController = require('./controllers/productController');
+const sessionController = require('./controllers/sessionController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
@@ -45,7 +46,7 @@ router.post('/reset-password', validators.userResetPasswordValidator.store, cont
 router.put('/reset-password', validators.userResetPasswordValidator.update, controllers.userResetPasswordController.update);
 
 // RETORNA UMA CHAVE JWT
-router.post('/sessions', validators.sessionValidators.store, controllers.sessionController.store);
+router.post('/sessions', validators.sessionValidators.store, sessionController.store);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
 router.get('/products', validators.productValidators.index, productController.list);
