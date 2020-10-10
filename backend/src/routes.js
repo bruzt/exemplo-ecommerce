@@ -8,8 +8,6 @@ const jwtAuthentication = require('./middlewares/jwtAuthentication');
 const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
-const controllers = autoRequireAll(__dirname, './controllers');
-
 const addressController = require('./controllers/addressController');
 const categoryController = require('./controllers/categoryController');
 const freightController = require('./controllers/freightController');
@@ -18,6 +16,7 @@ const orderController = require('./controllers/orderController');
 const productController = require('./controllers/productController');
 const sessionController = require('./controllers/sessionController');
 const userController = require('./controllers/userController');
+const userResetPasswordController = require('./controllers/userResetPasswordController');
 
 const validators = autoRequireAll(__dirname, './middlewares/validators');
 
@@ -43,8 +42,8 @@ router.put('/orders/:id', validators.orderValidators.update, adminJwtAuthenticat
 router.delete('/orders/:id', validators.orderValidators.destroy, adminJwtAuthentication, orderController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
-router.post('/reset-password', validators.userResetPasswordValidator.store, controllers.userResetPasswordController.store);
-router.put('/reset-password', validators.userResetPasswordValidator.update, controllers.userResetPasswordController.update);
+router.post('/reset-password', validators.userResetPasswordValidator.store, userResetPasswordController.store);
+router.put('/reset-password', validators.userResetPasswordValidator.update, userResetPasswordController.update);
 
 // RETORNA UMA CHAVE JWT
 router.post('/sessions', validators.sessionValidators.store, sessionController.store);
