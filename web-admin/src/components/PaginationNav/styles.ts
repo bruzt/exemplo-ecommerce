@@ -17,23 +17,23 @@ export const Container = styled.div`
     ul li button {
         margin: 5px;
         padding: 10px 20px;
-        border: 0;
+        border: ${props => props.theme.title == 'light' ? '1px solid #111' : 0};
         border-radius: 2px;
         font-size: 25px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
         cursor: pointer;
     }
 
     ul li button:hover {
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     ul li button:active {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     ul li button.active {
-        background: #0D2235;
-        color: #eee;
+        background: ${props => props.theme.primary};
+        color: ${props => props.theme.color};
     }
 `;
