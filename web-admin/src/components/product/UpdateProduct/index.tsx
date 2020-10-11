@@ -88,6 +88,15 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
             await api.put(`/products/${product.id}`, data);
 
+            if(getFiles.length > 0){
+
+                const files = new FormData();
+
+                getFiles.forEach( (file) => files.append('file', file, file.name));
+
+                await api.post(`/products/${product.id}/images`, files);
+            }
+
             alert('Produto atualizado com sucesso');
 
             setUpdeting(false);
