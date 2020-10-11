@@ -156,6 +156,8 @@ module.exports = async (req, res) => {
 
         } else {
 
+            if(req.query.filter == 'id') order.splice(0, 0, ['id', 'DESC']);
+
             count = await ProductModel.count({
                 col: 'id',
                 where

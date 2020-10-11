@@ -89,7 +89,7 @@ export default function ListProducts(){
 
             } else {
                 
-                response = await api.get(`/products?${_page}`);
+                response = await api.get(`/products?${_page}&filter=id`);
             }
 
             //const sortedProductsById = response.data.products.sort( (prod1: Products, prod2: Products) => prod1.id > prod2.id ? -1 : 1);
