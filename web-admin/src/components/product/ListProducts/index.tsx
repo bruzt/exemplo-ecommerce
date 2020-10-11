@@ -192,12 +192,14 @@ export default function ListProducts(){
                 </tbody>
             </table>
 
-            <PaginationNav
-                totalPages={getTotalPages}
-                currentPage={_currentPage}
-                limitPageNav={5}
-                handlePagination={handlePagination}
-            />
+            {getTotalPages > 1 && (
+                <PaginationNav
+                    totalPages={getTotalPages}
+                    currentPage={_currentPage}
+                    limitPageNav={5}
+                    handlePagination={handlePagination}
+                />
+            )}
 
         </Container>
     );
