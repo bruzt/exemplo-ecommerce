@@ -14,6 +14,7 @@ import ListProducts from '../product/ListProducts';
 import AddProduct from '../product/AddProduct';
 import CategoriesList from '../category/ListCategories';
 import AddCategory from '../category/AddCategory';
+import ListOrders from '../order/ListOrders';
 
 type SelectedMenu = 
     "" |
@@ -156,7 +157,7 @@ export default function Main(){
 
                         {(getSelectedMenu == 'add-categories') && <AddCategory />}
 
-                        {(getSelectedMenu == 'orders-list') && <div>orders-list</div>}
+                        {(getSelectedMenu == 'orders-list') && <ListOrders />}
 
                         {(getSelectedMenu == 'update-orders') && <div>update-orders</div>}
                     </div>

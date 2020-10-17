@@ -12,6 +12,7 @@ const addressController = require('./controllers/addressController');
 const categoryController = require('./controllers/categoryController');
 const freightController = require('./controllers/freightController');
 const imageController = require('./controllers/imageController');
+const orderAdminController = require('./controllers/orderAdminController');
 const orderController = require('./controllers/orderController');
 const productController = require('./controllers/productController');
 const sessionController = require('./controllers/sessionController');
@@ -38,8 +39,11 @@ router.delete('/addresses/:id', validators.addressValidators.destroy, jwtAuthent
 // BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
 router.get('/orders', validators.orderValidators.index, jwtAuthentication, orderController.list);
 router.post('/orders', validators.orderValidators.store, jwtAuthentication, orderController.store);
-router.put('/orders/:id', validators.orderValidators.update, adminJwtAuthentication, orderController.update);
-router.delete('/orders/:id', validators.orderValidators.destroy, adminJwtAuthentication, orderController.destroy);
+
+// BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO PELO ADMIN
+router.get('/admin/orders', validators.orderAdminValidators.list, adminJwtAuthentication, orderAdminController.list);
+router.put('/admin/orders/:id', validators.orderAdminValidators.update, adminJwtAuthentication, orderAdminController.update);
+router.delete('/admin/orders/:id', validators.orderAdminValidators.destroy, adminJwtAuthentication, orderAdminController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
 router.post('/reset-password', validators.userResetPasswordValidator.store, userResetPasswordController.store);

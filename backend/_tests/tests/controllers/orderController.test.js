@@ -227,7 +227,7 @@ describe('orderController Test Suit', () => {
         expect(response.body.message).toBe("address not found");
     });
 
-    it('should return code 400 for "must have at least one product"', async () => {
+    it('should return code 400 for "must have at least one product" - store', async () => {
 
         const user = await factories.create('User');
         const address = await factories.create('Address', { user_id: user.id });
@@ -294,75 +294,5 @@ describe('orderController Test Suit', () => {
 
         expect(response.status).toBe(400);
         expect(response.body.message).toBe(`product id ${product.id} dont have enough stock`);
-    });
-
-    it('should update an order', async () => {
-
-        const user = await factories.create('User');
-        const address = await factories.create('Address', { user_id: user.id });
-        const category = await factories.create('Category');
-        const product = await factories.create('Product', { category_id: category.id });
-        const order = await factories.create('Order', { 
-            user_id: user.id, 
-            address_id: address.id, 
-            products_id: [product.id]  
-        });
-
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).put(`/orders/${order.id}`)
-            .set('authorization', 'Bearer ' + token)
-            .send({ status: "payment confirmed" });
-
-        expect(response.status).toBe(200);
-    });
-    
-    it('should return code 400 for "no update has been made"', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).put(`/orders/1`)
-            .set('authorization', 'Bearer ' + token)
-            .send({ status: "payment confirmed" });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("no update has been made");
-    });
-
-    it('should erase an order', async () => {
-
-        const user = await factories.create('User');
-        const address = await factories.create('Address', { user_id: user.id });
-        const category = await factories.create('Category');
-        const product = await factories.create('Product', { category_id: category.id });
-        const order = await factories.create('Order', { 
-            user_id: user.id, 
-            address_id: address.id, 
-            products_id: [product.id]  
-        });
-
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).delete(`/orders/${order.id}`)
-            .set('authorization', 'Bearer ' + token)
-    
-        expect(response.status).toBe(200);
-    });
-
-    it('should return code 400 for "order not found"', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).delete(`/orders/5`)
-            .set('authorization', 'Bearer ' + token)
-    
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("order not found");
     });
 });

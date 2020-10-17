@@ -2,6 +2,8 @@ const express = require('express');
 //const axios = require('axios');
 const pagarme = require('pagarme');
 
+const { emitNewOrder } = require('../../websocket/socketConnection');
+
 const OrderModel = require('../../models/OrderModel');
 const UserModel = require('../../models/UserModel');
 const ProductModel = require('../../models/ProductModel');
@@ -162,6 +164,21 @@ module.exports = async (req, res) => {
                 ...req.body.boleto
             });*/
         }
+
+        const newOrder = await OrderModel.findOne({
+            where: {
+                id: order.id
+            },
+            include: {
+                association: 'products',
+                attributes: ['id', 'title'],
+                through: { 
+                    attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
+                },
+            }
+        });
+    
+        emitNewOrder(newOrder);
         
         return res.json({ order, pagarme: response /*response.data*/ });
         
