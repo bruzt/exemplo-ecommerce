@@ -7,7 +7,7 @@ if(process.browser){
 }
 
 export default axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: process.env.BACKEND_URL,
     headers: {
         authorization: (token) ? `Bearer ${token}` : undefined
     }
