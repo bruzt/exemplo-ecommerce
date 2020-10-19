@@ -6,13 +6,15 @@ import api from '../../../services/api';
 
 import { Container } from './styles';
 
+import PaginationNav from '../../PaginationNav';
+
 interface IOrder {
     id: number;
     freight_name: string;
     freight_price: string;
     total_price: string;
     payment_method: string;
-    status: string;
+    status: "awaiting-payment" | "paid" | "dispatch" | "sent" | "received";
     boleto_url?: string;
     tracking_code?: string;
     createdAt: string;
@@ -84,25 +86,44 @@ export default function ListOrders() {
         });
     }
 
+    function handlePagination(page: number){
+
+        router.replace({
+            pathname: '/admin',
+            query: {
+                page
+            }
+        });
+    }
+
     return (
         <Container>
 
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Status</th>
+                        <th style={{ width: 50 }}>ID</th>
+                        <th style={{ width: 500 }}>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {getOrders.map( (order) => (
                         <tr key={order.id}>
                             <td>{order.id}</td>
-                            <td>{order.status}</td>
+                            <td className={order.status}>{order.status}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+            {_totalPages > 1 && (
+                <PaginationNav 
+                    currentPage={_currentPage}
+                    totalPages={_totalPages}
+                    limitPageNav={5}
+                    handlePagination={handlePagination}
+                />
+            )}
 
         </Container>
     );
