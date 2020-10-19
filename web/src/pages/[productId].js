@@ -202,7 +202,7 @@ export default function Product({ product }) {
     
                         <div className="breadcrumb">
                             <>
-                                {(product.category.parent_id) && (
+                                {(product.category.parent_id != null && product.category.parent_id != 0) && (
                                     <>
                                         {findCategoryFather(product.category.parent_id).reverse().map( (category, index) => (
                                             <React.Fragment key={index}>
