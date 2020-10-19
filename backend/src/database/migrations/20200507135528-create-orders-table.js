@@ -46,7 +46,7 @@ module.exports = {
             status: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                defaultValue: 'awaiting payment',
+                defaultValue: 'awaiting-payment',
             },
 
             boleto_url: {
