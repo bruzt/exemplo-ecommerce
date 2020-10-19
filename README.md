@@ -1,6 +1,6 @@
 # Protótipo de um e-commerce
 Backend: REST API feita com Express.js, banco de dados Postgres utilizando o ORM Sequelize.</br>
-Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas estáticas dos produtos com meta tags para maximizar a indexação de motores de busca.
+Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas estáticas (SSG) dos produtos com meta tags para maximizar a indexação de motores de busca (SEO).
 
 ## Backend
 - Validação de dados recebidos pelas rotas com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
@@ -47,11 +47,14 @@ sudo docker run -d \
 
 * Se você deseja usar outro banco você precisará alterar os dados no arquivo ".env.dev" dentro do diretório backend.
 
-No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, a mesma coisa no diretório web, execute o comando "npm run dev" para iniciar a aplicação, acesse no navegador o endereço "http://localhost:3000" e você deve ver a página inicial sem nenhum produto.
+No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, no diretório web, execute o comando "npm start" para iniciar a aplicação, acesse no navegador o endereço "http://localhost:3000" e você deve ver a página inicial sem nenhum produto.
 
-### Cadastrando um produto
+### Painel de controle
 
-Atualmente não existe uma interface administrativa (to-do), para cadastrar um produto você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
+Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com "npm install" e o inicie com o comando "npm start", depois acesse no navegador o endereço "http://localhost:3002". Para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
 
-Com o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
+<!-- 
+VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
+-->
+
 
