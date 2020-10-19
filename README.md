@@ -47,11 +47,11 @@ sudo docker run -d \
 
 * Se você deseja usar outro banco você precisará alterar os dados no arquivo ".env.dev" dentro do diretório backend.
 
-No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, a mesma coisa no diretório web, execute o comando "npm run dev" para iniciar a aplicação, acesse no navegador o endereço "http://localhost:3000" e você deve ver a página inicial sem nenhum produto.
+No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, no diretório web, execute o comando "npm start" para iniciar a aplicação, acesse no navegador o endereço "http://localhost:3000" e você deve ver a página inicial sem nenhum produto.
 
 ### Painel de controle
 
-Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com "npm install", o inicie com o comando "npm run dev" e depois acesse no navegador o endereço "http://localhost:3002", para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
+Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com "npm install", o inicie com o comando "npm start" e depois acesse no navegador o endereço "http://localhost:3002", para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
 
 <!-- 
 VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
