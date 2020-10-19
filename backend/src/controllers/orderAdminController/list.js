@@ -5,6 +5,9 @@ const OrderModel = require('../../models/OrderModel');
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
 
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+
     try {
 
         const count = await OrderModel.count({
@@ -13,6 +16,8 @@ module.exports = async (req, res) => {
         
         const orders = await OrderModel.findAll({
             order: [['id', 'DESC']],
+            limit,
+            offset,
             include: {
                 association: 'products',
                 attributes: ['id', 'title'],
