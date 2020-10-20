@@ -19,7 +19,7 @@ const http = require('http');
 require('./database/connection');
 
 const { socketConnection } = require('./websocket/socketConnection');
-const trimBody = require('./middlewares/trimBody');
+//const trimBody = require('./middlewares/trimBody');
 const routes = require('./routes');
 
 const app = express();
@@ -29,12 +29,13 @@ app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 
-app.use(trimBody);
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
+
+//app.use(trimBody);
 
 socketConnection(server);
 app.use(routes);
 
-app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 
 app.use(errors());
     
