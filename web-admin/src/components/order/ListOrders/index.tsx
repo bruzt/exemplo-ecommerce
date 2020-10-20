@@ -49,8 +49,10 @@ export default function ListOrders() {
     }, [_currentPage]);
 
     useEffect( () => {
-        socketOrders();
-        return () => _socket.close();
+        if(_currentPage == 1) {
+            socketOrders();
+            return () => _socket.close();
+        }
     }, [getOrders]);
     
     async function fetchOrders() {
@@ -71,18 +73,15 @@ export default function ListOrders() {
         if(!_socket) _socket = io(process.env.BACKEND_URL);
         
         _socket.on('newOrder', (message: IOrder) => {
-            
-            if(_currentPage == 1) {
+        
+            const newOrders = [ message, ...getOrders ];
 
-                const newOrders = [ message, ...getOrders ];
+            if(newOrders.length > _itemsPerPage) {
+                newOrders.pop();
+            } 
 
-                if(newOrders.length > _itemsPerPage) {
-                    newOrders.pop();
-                } 
-
-                setCountOrders(getCountOrders + 1);
-                setOrders(newOrders);
-            }
+            setCountOrders(getCountOrders + 1);
+            setOrders(newOrders);
         });
     }
 

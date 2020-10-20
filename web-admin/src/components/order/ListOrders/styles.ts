@@ -25,22 +25,22 @@ export const Container = styled.div`
     }
 
     table td.awaiting-payment {
-
+        background: ${props => props.theme.danger};
     }
 
     table td.paid {
-
+        background: ${props => props.theme.success};
     }
 
     table td.dispatch {
-
+        background: ${props => props.theme.dangerActive};
     }
 
     table td.sent {
-
+        background: ${props => props.theme.success};
     }
 
     table td.received {
-
+        background: ${props => props.theme.successActive};
     }
 `;
