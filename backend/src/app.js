@@ -15,17 +15,15 @@ const cors = require('cors');
 const path = require('path');
 const { errors } = require('celebrate');
 const http = require('http');
-const socketio = require('socket.io');
 
 require('./database/connection');
 
-const trimBody = require('./middlewares/trimBody');
 const { socketConnection } = require('./websocket/socketConnection');
+const trimBody = require('./middlewares/trimBody');
 const routes = require('./routes');
 
 const app = express();
 const server = http.createServer(app);
-const sIo = socketio(server);
 
 app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
@@ -33,7 +31,7 @@ app.use(express.json());
 
 app.use(trimBody);
 
-socketConnection(sIo);
+socketConnection(server);
 app.use(routes);
 
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));

@@ -1,15 +1,22 @@
+const { Server } = require('http');
+const socketio = require('socket.io');
 
+/** @type {SocketIO.Server} sock */
 let sock;
 
-/** @param {SocketIO.Server} io */
-function socketConnection(io) {
+/** @param {Server} server */
+function socketConnection(server) {
 
-    io.on('connection', (socket) => {
-
-        //console.log(socket.id);
-
-        sock = socket;
+    const io = socketio(server, {
+        transports: ['websocket']
     });
+
+    /*io.on('connection', (socket) => {
+
+        console.log(socket.id);
+    });*/
+
+    sock = io;
 }
 
 function emitNewOrder(newOrder){

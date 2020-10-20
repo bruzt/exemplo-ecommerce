@@ -165,23 +165,20 @@ module.exports = async (req, res) => {
             });*/
         }
 
-        if(process.env.NODE_ENV != 'test'){
-
-            const newOrder = await OrderModel.findOne({
-                where: {
-                    id: order.id
+        const newOrder = await OrderModel.findOne({
+            where: {
+                id: order.id
+            },
+            include: {
+                association: 'products',
+                attributes: ['id', 'title'],
+                through: { 
+                    attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
                 },
-                include: {
-                    association: 'products',
-                    attributes: ['id', 'title'],
-                    through: { 
-                        attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
-                    },
-                }
-            });
-        
-            emitNewOrder(newOrder);
-        }
+            }
+        });
+    
+        emitNewOrder(newOrder);
         
         return res.json({ order, pagarme: response /*response.data*/ });
         

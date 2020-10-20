@@ -70,7 +70,10 @@ export default function ListOrders() {
 
     async function socketOrders() {
 
-        if(!_socket) _socket = io(process.env.BACKEND_URL);
+        if(!_socket) _socket = io(process.env.BACKEND_URL, {
+            transports: ['websocket'],
+            upgrade: false
+        });
         
         _socket.on('newOrder', (message: IOrder) => {
         
