@@ -112,7 +112,15 @@ export default function ListOrders() {
                     {getOrders.map( (order) => (
                         <tr key={order.id}>
                             <td>{order.id}</td>
-                            <td className={order.status}>{order.status}</td>
+                            <td>
+                                <div className={`status ${order.status}`}>
+                                    {order.status == 'awaiting-payment' && <span>Aguardando pagamento</span>}
+                                    {order.status == 'paid' && <span>Pago</span>}
+                                    {order.status == 'dispatch' && <span>Expedição</span>}
+                                    {order.status == 'sent' && <span>Enviado</span>}
+                                    {order.status == 'received' && <span>Entregue</span>}
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

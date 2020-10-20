@@ -19,28 +19,35 @@ export const Container = styled.div`
     }
 
     table td {
-        text-align: center;
         background: ${props => props.theme.primary};
         height: 50px;
+        text-align: center;
     }
 
-    table td.awaiting-payment {
+    td div.status {
+        width: fit-content;
+        margin: 0 auto;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+    td div.awaiting-payment {
         background: ${props => props.theme.danger};
     }
 
-    table td.paid {
+    td div.paid {
         background: ${props => props.theme.success};
     }
 
-    table td.dispatch {
+    td div.dispatch {
         background: ${props => props.theme.dangerActive};
     }
 
-    table td.sent {
+    td div.sent {
         background: ${props => props.theme.success};
     }
 
-    table td.received {
+    td div.received {
         background: ${props => props.theme.successActive};
     }
 `;
