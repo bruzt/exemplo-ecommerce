@@ -1,16 +1,22 @@
 const express = require('express');
 const multer = require('multer');
 
+// Multer
 const multerConfig = require('./config/multerConfig');
-
-const autoRequireAll = require('./util/autoRequireAll');
-const jwtAuthentication = require('./middlewares/jwtAuthentication');
-const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
+const autoRequireAll = require('./util/autoRequireAll');
+
+// Authentication
+const jwtAuthentication = require('./middlewares/jwtAuthentication');
+const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
+
+// Validators
 const addressValidator = require('./middlewares/validators/addressValidator');
 const categoryValidator = require('./middlewares/validators/categoryValidator');
+const freightValidator = require('./middlewares/validators/freightValidator');
 
+// Controllers
 const addressController = require('./controllers/addressController');
 const categoryController = require('./controllers/categoryController');
 const freightController = require('./controllers/freightController');
@@ -72,6 +78,6 @@ router.post('/categories', categoryValidator.store, adminJwtAuthentication, cate
 router.put('/categories/:id', categoryValidator.update, adminJwtAuthentication, categoryController.update);
 
 // CALCULO DE FRETE
-router.post('/freight', validators.freightValidators.store, freightController.store);
+router.post('/freight', freightValidator.store, freightController.store);
 
 module.exports = router;
