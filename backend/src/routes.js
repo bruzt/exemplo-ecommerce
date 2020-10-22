@@ -5,8 +5,6 @@ const multer = require('multer');
 const multerConfig = require('./config/multerConfig');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
-const autoRequireAll = require('./util/autoRequireAll');
-
 // Authentication
 const jwtAuthentication = require('./middlewares/jwtAuthentication');
 const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
@@ -21,6 +19,7 @@ const orderValidator = require('./middlewares/validators/orderValidator');
 const productValidator = require('./middlewares/validators/productValidator');
 const sessionValidator = require('./middlewares/validators/sessionValidator');
 const userResetPasswordValidator = require('./middlewares/validators/userResetPasswordValidator');
+const userValidator = require('./middlewares/validators/userValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -34,16 +33,14 @@ const sessionController = require('./controllers/sessionController');
 const userController = require('./controllers/userController');
 const userResetPasswordController = require('./controllers/userResetPasswordController');
 
-const validators = autoRequireAll(__dirname, './middlewares/validators');
-
 const router = express.Router();
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE USUÁRIOS
 router.get('/users', userController.list);
-router.get('/users/:id', validators.userValidators.show, userController.show);
-router.post('/users', validators.userValidators.store, userController.store);
-router.put('/users', validators.userValidators.update, jwtAuthentication, userController.update);
-router.delete('/users', validators.userValidators.destroy, jwtAuthentication, userController.destroy);
+router.get('/users/:id', userValidator.show, userController.show);
+router.post('/users', userValidator.store, userController.store);
+router.put('/users', userValidator.update, jwtAuthentication, userController.update);
+router.delete('/users', userValidator.destroy, jwtAuthentication, userController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE ENDEREÇOS DE UM USUÁRIO
 router.get('/addresses', addressValidator.list, jwtAuthentication, addressController.list);
