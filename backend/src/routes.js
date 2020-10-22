@@ -19,6 +19,8 @@ const imageValidator = require('./middlewares/validators/imageValidator');
 const orderAdminValidator = require('./middlewares/validators/orderAdminValidator');
 const orderValidator = require('./middlewares/validators/orderValidator');
 const productValidator = require('./middlewares/validators/productValidator');
+const sessionValidator = require('./middlewares/validators/sessionValidator');
+const userResetPasswordValidator = require('./middlewares/validators/userResetPasswordValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -59,11 +61,11 @@ router.put('/admin/orders/:id', orderAdminValidator.update, adminJwtAuthenticati
 router.delete('/admin/orders/:id', orderAdminValidator.destroy, adminJwtAuthentication, orderAdminController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
-router.post('/reset-password', validators.userResetPasswordValidator.store, userResetPasswordController.store);
-router.put('/reset-password', validators.userResetPasswordValidator.update, userResetPasswordController.update);
+router.post('/reset-password', userResetPasswordValidator.store, userResetPasswordController.store);
+router.put('/reset-password', userResetPasswordValidator.update, userResetPasswordController.update);
 
 // RETORNA UMA CHAVE JWT
-router.post('/sessions', validators.sessionValidators.store, sessionController.store);
+router.post('/sessions', sessionValidator.store, sessionController.store);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
 router.get('/products', productValidator.list, productController.list);
