@@ -17,6 +17,7 @@ const categoryValidator = require('./middlewares/validators/categoryValidator');
 const freightValidator = require('./middlewares/validators/freightValidator');
 const imageValidator = require('./middlewares/validators/imageValidator');
 const orderAdminValidator = require('./middlewares/validators/orderAdminValidator');
+const orderValidator = require('./middlewares/validators/orderValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -48,8 +49,8 @@ router.put('/addresses/:id', addressValidator.update, jwtAuthentication, address
 router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, addressController.destroy);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
-router.get('/orders', validators.orderValidators.index, jwtAuthentication, orderController.list);
-router.post('/orders', validators.orderValidators.store, jwtAuthentication, orderController.store);
+router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);
+router.post('/orders', orderValidator.store, jwtAuthentication, orderController.store);
 
 // BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO PELO ADMIN
 router.get('/admin/orders', orderAdminValidator.list, adminJwtAuthentication, orderAdminController.list);
