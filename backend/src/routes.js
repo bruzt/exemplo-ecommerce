@@ -16,6 +16,7 @@ const addressValidator = require('./middlewares/validators/addressValidator');
 const categoryValidator = require('./middlewares/validators/categoryValidator');
 const freightValidator = require('./middlewares/validators/freightValidator');
 const imageValidator = require('./middlewares/validators/imageValidator');
+const orderAdminValidator = require('./middlewares/validators/orderAdminValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -51,9 +52,9 @@ router.get('/orders', validators.orderValidators.index, jwtAuthentication, order
 router.post('/orders', validators.orderValidators.store, jwtAuthentication, orderController.store);
 
 // BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO PELO ADMIN
-router.get('/admin/orders', validators.orderAdminValidators.list, adminJwtAuthentication, orderAdminController.list);
-router.put('/admin/orders/:id', validators.orderAdminValidators.update, adminJwtAuthentication, orderAdminController.update);
-router.delete('/admin/orders/:id', validators.orderAdminValidators.destroy, adminJwtAuthentication, orderAdminController.destroy);
+router.get('/admin/orders', orderAdminValidator.list, adminJwtAuthentication, orderAdminController.list);
+router.put('/admin/orders/:id', orderAdminValidator.update, adminJwtAuthentication, orderAdminController.update);
+router.delete('/admin/orders/:id', orderAdminValidator.destroy, adminJwtAuthentication, orderAdminController.destroy);
 
 // UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
 router.post('/reset-password', validators.userResetPasswordValidator.store, userResetPasswordController.store);
