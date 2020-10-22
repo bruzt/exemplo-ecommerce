@@ -18,6 +18,7 @@ const freightValidator = require('./middlewares/validators/freightValidator');
 const imageValidator = require('./middlewares/validators/imageValidator');
 const orderAdminValidator = require('./middlewares/validators/orderAdminValidator');
 const orderValidator = require('./middlewares/validators/orderValidator');
+const productValidator = require('./middlewares/validators/productValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -65,11 +66,11 @@ router.put('/reset-password', validators.userResetPasswordValidator.update, user
 router.post('/sessions', validators.sessionValidators.store, sessionController.store);
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UM PRODUTO
-router.get('/products', validators.productValidators.index, productController.list);
-router.get('/products/:id', validators.productValidators.show, productController.show);
-router.post('/products', validators.productValidators.store, adminJwtAuthentication, productController.store);
-router.put('/products/:id', validators.productValidators.update, adminJwtAuthentication, productController.update);
-router.delete('/products/:id', validators.productValidators.destroy, adminJwtAuthentication, productController.destroy);
+router.get('/products', productValidator.list, productController.list);
+router.get('/products/:id', productValidator.show, productController.show);
+router.post('/products', productValidator.store, adminJwtAuthentication, productController.store);
+router.put('/products/:id', productValidator.update, adminJwtAuthentication, productController.update);
+router.delete('/products/:id', productValidator.destroy, adminJwtAuthentication, productController.destroy);
 
 // ADICIONA, ALTERA OU REMOVE UMA IMAGEM DO PRODUTO
 router.post('/products/:id/images', imageValidator.store, adminJwtAuthentication, multer(multerConfig).any(), multerErrorHandler, imageController.store);
