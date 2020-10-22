@@ -9,6 +9,7 @@ const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 const multerErrorHandler = require('./middlewares/multerErrorHandler');
 
 const addressValidator = require('./middlewares/validators/addressValidator');
+const categoryValidator = require('./middlewares/validators/categoryValidator');
 
 const addressController = require('./controllers/addressController');
 const categoryController = require('./controllers/categoryController');
@@ -67,8 +68,8 @@ router.delete('/products/images/:id', validators.imageValidators.destroy, adminJ
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
 router.get('/categories', categoryController.list);
-router.post('/categories', validators.categoryValidators.store, adminJwtAuthentication, categoryController.store);
-router.put('/categories/:id', validators.categoryValidators.update, adminJwtAuthentication, categoryController.update);
+router.post('/categories', categoryValidator.store, adminJwtAuthentication, categoryController.store);
+router.put('/categories/:id', categoryValidator.update, adminJwtAuthentication, categoryController.update);
 
 // CALCULO DE FRETE
 router.post('/freight', validators.freightValidators.store, freightController.store);
