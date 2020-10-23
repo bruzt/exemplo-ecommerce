@@ -79,6 +79,7 @@ router.delete('/products/images/:id', imageValidator.destroy, adminJwtAuthentica
 router.get('/categories', categoryController.list);
 router.post('/categories', categoryValidator.store, adminJwtAuthentication, categoryController.store);
 router.put('/categories/:id', categoryValidator.update, adminJwtAuthentication, categoryController.update);
+router.delete('/categories/:id', categoryValidator.destroy, adminJwtAuthentication, categoryController.destroy);
 
 // CALCULO DE FRETE
 router.post('/freight', freightValidator.store, freightController.store);

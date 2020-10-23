@@ -7,5 +7,9 @@ module.exports = celebrate({
     
     [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().required(),
+    }),
+
+    [Segments.BODY]: Joi.object().keys({
+        transferToId: Joi.number().required(),
     })
 });
