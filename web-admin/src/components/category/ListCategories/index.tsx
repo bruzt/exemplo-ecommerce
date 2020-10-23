@@ -7,6 +7,7 @@ import { Container } from './styles';
 import PencilIcon from '../../generic/icons/Pencil';
 import TrashIcon from '../../generic/icons/TrashCan';
 import UpdateCategory from '../UpdateCategory';
+import DeleteCategory from '../DeleteCategory';
 
 export interface ICategory {
     id: number;
@@ -20,10 +21,15 @@ export default function ListCategories(){
     
     const [isUpdating, setUpdating] = useState(false);
     const [getUpdatingCategory, setUpdatingCategory] = useState<ICategory>({} as ICategory);
+    
+    const [isDeleting, setDeleting] = useState(false);
+    const [getDeletingCategory, setDeletingCategory] = useState<ICategory>({} as ICategory);
 
 	useEffect( () => {
-		if(isUpdating == false) fetchCategories();
-	}, [isUpdating]);
+        if(isUpdating == false && isDeleting == false) {
+            fetchCategories();
+        }
+	}, [isUpdating, isDeleting]);
 
 	async function fetchCategories(){
 
@@ -45,10 +51,17 @@ export default function ListCategories(){
         setUpdating(true);
     }
 
+    function handleDeleting(category: ICategory){
+
+        setDeletingCategory(category);
+        setDeleting(true);
+    }
+
 	return (
 		<Container>
             
             {isUpdating && <UpdateCategory updatingCategory={getUpdatingCategory} updating={setUpdating} />}
+            {isDeleting && <DeleteCategory deletingCategory={getDeletingCategory} deleting={setDeleting} />}
 			
 			<table>
                 <thead>
@@ -74,7 +87,7 @@ export default function ListCategories(){
                                         <button type='button' onClick={() => handleUpdate(category)}>
                                             <PencilIcon title='Editar' />
                                         </button>
-                                        <button type='button'>
+                                        <button type='button' onClick={() => handleDeleting(category)}>
                                             <TrashIcon title='Excluir' />
                                         </button>
                                     </div>

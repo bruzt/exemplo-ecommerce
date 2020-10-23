@@ -25,15 +25,15 @@ module.exports = async (req, res) => {
             }
         });
 
-        products.forEach( async (product) => {
+        for(let i = 0; i < products.length; i++){
             await ProductModel.update({
                 category_id: transferToId
             }, {
                 where: {
-                    id: product.id
+                    id: products[i].id
                 }
             });
-        });
+        }
 
         await category.destroy();
         
