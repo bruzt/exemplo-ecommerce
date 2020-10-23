@@ -76,6 +76,8 @@ export default function ListCategories(){
                     {getCategories.map( (category, index) => {
 
                         const [parentCategory] = getCategories.filter( (categoryItem) => categoryItem.id == category.parent_id);
+
+                        const haveChildren = getCategories.filter( (categoryItem) => categoryItem.parent_id == category.id);
                         
                         return (
                             <tr key={index}>
@@ -87,9 +89,15 @@ export default function ListCategories(){
                                         <button type='button' onClick={() => handleUpdate(category)}>
                                             <PencilIcon title='Editar' />
                                         </button>
-                                        <button type='button' onClick={() => handleDeleting(category)}>
-                                            <TrashIcon title='Excluir' />
-                                        </button>
+                                        {haveChildren.length > 0 
+                                            ? (
+                                                <span></span>
+                                            ) : (
+                                                <button type='button' onClick={() => handleDeleting(category)}>
+                                                    <TrashIcon title='Excluir' />
+                                                </button>
+                                            )
+                                        }
                                     </div>
                         </td>
                             </tr>
