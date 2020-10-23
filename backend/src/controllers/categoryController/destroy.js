@@ -19,6 +19,12 @@ module.exports = async (req, res) => {
         const categoryToTransfer = await CategoryModel.findByPk(transferToId);
         if(!categoryToTransfer) return res.status(400).json({ message: 'Category to transfer not found' });
 
+        const categories = await CategoryModel.findAll();
+
+        const hasChildren = categories.filter( (categoryItem) => categoryItem.parent_id == id);
+
+        if(hasChildren.length > 0) return res.status(400).json({ message: 'Category to delete must not have childrens' });
+
         const products = await ProductModel.findAll({
             where: {
                 category_id: id

@@ -185,4 +185,25 @@ describe('categoryController Test Suit', () => {
         expect(response.status).toBe(400);
         expect(response.body.message).toBe("Category to transfer not found");
     });
+
+    it('should return error 400 for "Category to delete must not have childrens"', async () => {
+
+        const user = await factories.create('User');
+        user.admin = true;
+        const token = user.generateToken();
+
+        const category1 = await factories.create('Category');
+        await factories.create('Category', { name: 'teste2', parent_id: category1.id });
+        await factories.create('Category', { name: 'teste3' });
+        
+        const response = await supertest(app).delete(`/categories/${category1.id}`)
+            .set('authorization', `Bearer ${token}`)
+            .send({
+                transferToId: 3
+            })
+        ;
+
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe("Category to delete must not have childrens");
+    });
 });
