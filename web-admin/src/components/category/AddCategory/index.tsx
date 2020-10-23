@@ -50,6 +50,7 @@ export default function AddCategory(){
 
             alert('Categoria cadastrada com sucesso');
 
+            fetchCategories();
             setName('');
             setParent('');
             
