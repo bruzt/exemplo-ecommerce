@@ -6,9 +6,9 @@ import formatCpf from '../utils/formatCpf';
 import formatPhone from '../utils/formatPhone';
 import formatZipCode from '../utils/formatZipCode';
 
-import { useUser } from '../context/userContext';
-import { useCart } from '../context/cartContext';
-import { useOrder } from '../context/orderContext';
+import { useUser } from '../contexts/userContext';
+import { useCart } from '../contexts/cartContext';
+import { useOrder } from '../contexts/orderContext';
 
 export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }) {
 

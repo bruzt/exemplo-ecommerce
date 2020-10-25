@@ -5,9 +5,9 @@ import api from '../services/api';
 import formatCpf from '../utils/formatCpf';
 import formatPhone from '../utils/formatPhone';
 
-import { useCart } from '../context/cartContext';
-import { useUser } from '../context/userContext';
-import { useOrder } from '../context/orderContext';
+import { useCart } from '../contexts/cartContext';
+import { useUser } from '../contexts/userContext';
+import { useOrder } from '../contexts/orderContext';
 
 export default function BoletoPayment({ getDisabledCreditCardButton, setDisabledCreditCardButton }) {
 

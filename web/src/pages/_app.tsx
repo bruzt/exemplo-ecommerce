@@ -3,10 +3,10 @@ import { AppProps } from 'next/app';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import { UserContextProvider } from '../context/userContext';
-import { OrderContextProvider } from '../context/orderContext';
-import { CartContextProvider } from '../context/cartContext';
-import { FilterBarContextProvider } from '../context/filterBarContext';
+import { UserContextProvider } from '../contexts/userContext';
+import { OrderContextProvider } from '../contexts/orderContext';
+import { CartContextProvider } from '../contexts/cartContext';
+import { FilterBarContextProvider } from '../contexts/filterBarContext';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 

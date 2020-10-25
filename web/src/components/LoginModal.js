@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useUser } from '../context/userContext';
+import { useUser } from '../contexts/userContext';
 
 import ForgotPasswordModal from './ForgotPasswordModal';
 

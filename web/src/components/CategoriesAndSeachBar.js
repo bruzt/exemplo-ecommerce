@@ -4,7 +4,7 @@ import { FaCaretDown, FaCaretRight, FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 
-import { useFilterBar } from '../context/filterBarContext';
+import { useFilterBar } from '../contexts/filterBarContext';
 
 export default function MenuAndSearchBar() {
 

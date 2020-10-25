@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import noImg from '../../../assets/img-n-disp.png';
 
-import { useUser } from '../../../context/userContext';
+import { useUser } from '../../../contexts/userContext';
 
 import { Container } from './styles';
 

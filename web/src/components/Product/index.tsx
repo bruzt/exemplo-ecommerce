@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
 
 import api from '../../services/api';
-import { useCart } from '../../context/cartContext';
-import { useFilterBar } from '../../context/filterBarContext';
+import { useCart } from '../../contexts/cartContext';
+import { useFilterBar } from '../../contexts/filterBarContext';
 
 import PageLayout from '../PageLayout';
 import ImageSlider from '../ImageSlider';

@@ -3,9 +3,9 @@ import { FaShoppingCart, FaSignInAlt, FaSignOutAlt, FaUserCircle } from 'react-i
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { useCart } from '../context/cartContext';
-import { useUser } from '../context/userContext';
-import { useOrder } from '../context/orderContext';
+import { useCart } from '../contexts/cartContext';
+import { useUser } from '../contexts/userContext';
+import { useOrder } from '../contexts/orderContext';
 
 import GlobalStyle from '../styles/GlobalStyle';
 import LoginModal from './LoginModal';

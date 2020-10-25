@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useOrder } from '../context/orderContext';
+import { useOrder } from '../contexts/orderContext';
 
 import PageLayout from '../components/PageLayout';
 import Cart from '../components/Cart';

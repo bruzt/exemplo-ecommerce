@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { useOrder } from '../context/orderContext';
+import { useOrder } from '../contexts/orderContext';
 
 export default function ThanksForBuy() {
 

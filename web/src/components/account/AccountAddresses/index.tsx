@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { useUser } from '../../../context/userContext';
+import { useUser } from '../../../contexts/userContext';
 
 import { Container } from './styles';
 

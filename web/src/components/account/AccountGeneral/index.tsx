@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import api from '../../../services/api';
 
-import { useUser } from '../../../context/userContext';
+import { useUser } from '../../../contexts/userContext';
 
 import { Container } from './styles';
 
