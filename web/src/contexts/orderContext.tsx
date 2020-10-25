@@ -1,11 +1,26 @@
 import React, { createContext, useContext, useState } from 'react';
 
+type OrdersName = 'cart' | 'address' | 'payment' | 'thanksForBuy';
+
+interface IProps {
+    children: React.ReactNode;
+}
+
+interface IUseOrder {
+    getOrder: OrdersName; 
+    setOrder: React.Dispatch<OrdersName>;
+    getOrderId: number | null;
+    setOrderId: React.Dispatch<number | null>;
+    getBoletoUrl: string;
+    setBoletoUrl: React.Dispatch<string>;
+}
+
 const Context = createContext({});
 
-export function OrderContextProvider({ children }){
+export function OrderContextProvider({ children }: IProps){
 
     const [getOrder, setOrder] = useState('cart');
-    const [getOrderId, setOrderId] = useState(null);
+    const [getOrderId, setOrderId] = useState<number | null>(null);
     const [getBoletoUrl, setBoletoUrl] = useState('');
 
     return (
@@ -24,7 +39,7 @@ export function OrderContextProvider({ children }){
 
 export function useOrder(){
 
-    const context = useContext(Context);
+    const context = useContext(Context) as IUseOrder;
 
     return context;
 }
