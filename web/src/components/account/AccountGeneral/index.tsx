@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import api from '../services/api';
+import api from '../../../services/api';
 
-import { useUser } from '../context/userContext';
+import { useUser } from '../../../context/userContext';
 
-export default function AccountGeneral(){
+import { Container } from './styles';
+
+export default function AccountGeneral() {
 
     const userContext = useUser();
 
@@ -16,30 +18,30 @@ export default function AccountGeneral(){
 
     const [getDisabledSubmitButton, setDisabledSubmitButton] = useState(true);
 
-    useEffect( () => {
+    useEffect(() => {
 
-        if(
+        if (
             (getName != userContext.getUser.name &&
-            getName.length > 2) ||
+                getName.length > 2) ||
             (getEmail != userContext.getUser.email &&
-            getEmail.length > 7) ||
+                getEmail.length > 7) ||
             getCurrentPassword.length > 5 &&
             getNewPassword.length > 5 &&
             getNewPassword == getConfirmNewPassword
-        ){
+        ) {
             setDisabledSubmitButton(false);
 
         } else setDisabledSubmitButton(true);
 
     }, [
-        getName, 
-        getEmail, 
-        getCurrentPassword, 
-        getNewPassword, 
+        getName,
+        getEmail,
+        getCurrentPassword,
+        getNewPassword,
         getConfirmNewPassword
     ]);
 
-    async function handleSubmit(event){
+    async function handleSubmit(event) {
 
         event.preventDefault();
 
@@ -51,20 +53,20 @@ export default function AccountGeneral(){
             currentPassword: (getCurrentPassword.length == 0) ? undefined : getCurrentPassword,
             newPassword: (getNewPassword.length == 0) ? undefined : getNewPassword
         }
-        
+
         try {
 
             await api.put('/users', data);
 
             const user = { ...userContext.getUser };
-            if(getName != userContext.getUser.name) user.name = data.name;
-            if(getEmail != userContext.getUser.email) user.email = data.email
+            if (getName != userContext.getUser.name) user.name = data.name;
+            if (getEmail != userContext.getUser.email) user.email = data.email
             userContext.setUser(user);
             setCurrentPassword('');
             setNewPassword('');
             setConfirmNewPassword('');
             alert('Salvo!')
-            
+
         } catch (error) {
             console.log(error);
             console.log(error.response);
@@ -75,7 +77,7 @@ export default function AccountGeneral(){
 
     return (
         <>
-            <section>
+            <Container>
 
                 {(Object.keys(userContext.getUser).length) > 0 && (
                     <form>
@@ -83,7 +85,7 @@ export default function AccountGeneral(){
 
                         <div className="form-group">
                             <label htmlFor="name">Nome</label>
-                            <input 
+                            <input
                                 type="text"
                                 id='name'
                                 value={getName}
@@ -93,7 +95,7 @@ export default function AccountGeneral(){
 
                         <div className="form-group">
                             <label htmlFor="email">e-mail</label>
-                            <input 
+                            <input
                                 type="email"
                                 id='email'
                                 value={getEmail}
@@ -103,11 +105,11 @@ export default function AccountGeneral(){
 
                         <div className='change-password-group'>
                             <h2>Trocar senha</h2>
-                            
+
                             <div className='row-group'>
                                 <div className="form-group">
                                     <label htmlFor="current-password">Senha Atual</label>
-                                    <input 
+                                    <input
                                         type="password"
                                         id='current-password'
                                         value={getCurrentPassword}
@@ -119,7 +121,7 @@ export default function AccountGeneral(){
                                     <label htmlFor="new-password">
                                         Nova senha <span>(no mínimo 6 dígitos)</span>
                                     </label>
-                                    <input 
+                                    <input
                                         type="password"
                                         id='new-password'
                                         value={getNewPassword}
@@ -129,7 +131,7 @@ export default function AccountGeneral(){
 
                                 <div className="form-group">
                                     <label htmlFor="confirm-new-password">Confirmar nova senha</label>
-                                    <input 
+                                    <input
                                         type="password"
                                         id='confirm-new-password'
                                         value={getConfirmNewPassword}
@@ -139,106 +141,18 @@ export default function AccountGeneral(){
                             </div>
                         </div>
 
-                        <button 
+                        <button
                             type="submit"
                             disabled={getDisabledSubmitButton}
-                            onClick={(event) => handleSubmit(event)} 
+                            onClick={(event) => handleSubmit(event)}
                         >
                             Salvar
-                        </button>
+                    </button>
 
                     </form>
                 )}
 
-            </section>
-
-            <style jsx>{`
-                section {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                section h1 {
-                    font-size: 30px;
-                }
-
-                section form {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    max-width: 600px;
-                    background: #0D2235;
-                    border-radius: 5px;
-                    padding: 20px 10px;
-                }
-
-                div.form-group {
-                    display: flex;
-                    flex-direction: column;
-                    width: 100%;
-                    max-width: 400px;
-                }
-
-                label {
-                    margin-left: 5px; 
-                    margin-top: 20px;
-                }
-
-                label span {
-                    font-size: 14px;
-                }
-
-                input {
-                    width: 100%;
-                    height: 40px;
-                    padding: 5px;
-                    font-size: 20px;
-                    border: 0;
-                    border-radius: 5px;
-                }
-
-                div.change-password-group {
-                    width: 100%;
-                    max-width: 300px;
-                    margin-top: 20px;
-                }
-
-                div.change-password-group h2 {
-                    margin-bottom: -10px;
-                }
-
-                button[type='submit'] {
-                    width: 100%;
-                    max-width: 300px;
-                    margin-top: 30px;
-                    font-size: 30px;
-                    padding: 5px 10px;
-                    border: 0;
-                    border-radius: 5px;
-                    background: #3E8C34;
-                    color: inherit;
-                }
-
-                button[type='submit']:hover {
-                    background: #41A933;
-                }
-
-                button[type='submit']:active {
-                    background: #3E8C34;
-                }
-
-                button[type='submit']:disabled {
-                    background: #a32e39;  
-                }
-
-                button[type='submit']:disabled:hover {
-                    background: #bf2232;  
-                }
-
-            `}</style>
+            </Container>
         </>
     );
-} 
+}
