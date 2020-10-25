@@ -4,13 +4,65 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
+import { IProduct } from '../pages/[productId]';
+
 const Context = createContext({});
 
-export function UserContextProvider({ children }){
+interface IProps {
+    children: React.ReactNode;
+}
+
+interface IUser {
+    id: number;
+    name: string;
+    email: string;
+    admin: boolean;
+    addresses: IAddress[];
+    orders: IOrder[];
+}
+
+interface IAddress {
+    id: number;
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    zipcode: string;
+}
+
+interface IOrder {
+    id: number;
+    freight_name: string;
+    freight_price: string;
+    total_price: string;
+    payment_method: string;
+    status: string;
+    boleto_url: string | null;
+    tracking_code: string | null;
+    createdAt: string;
+    address: IAddress;
+    products: IProduct[]
+}
+
+interface IUseUser {
+    getShowModal: boolean;  
+    getLogin: boolean;  
+    handleSwitchModal: () => void; 
+    logIn: (email: string, password: string) => Promise<boolean>;
+    logOut: () => void;
+    getUser: IUser;
+    setUser: React.Dispatch<React.SetStateAction<IUser>>;
+    addAddress: (address: IAddress) => Promise<boolean>;
+    deleteAddress: (id: number) =>  Promise<boolean>;
+    createUser: (name: string, email: string, password: string) =>  Promise<void>;
+}
+
+export function UserContextProvider({ children }: IProps){
 
     const [getLogin, setLogin] = useState(false);
     const [getShowModal, setShowModal] = useState(false);
-    const [getUser, setUser] = useState({});
+    const [getUser, setUser] = useState<IUser>({} as IUser);
     const [getToken, setToken] = useState('');
 
     const router = useRouter();
@@ -38,7 +90,7 @@ export function UserContextProvider({ children }){
 
         try {
             
-            const tokenPayload = jwt.decode(getToken);
+            const tokenPayload = jwt.decode(getToken) as { id: number };
     
             const response = await api.get('/users/' + tokenPayload.id);
     
@@ -64,7 +116,7 @@ export function UserContextProvider({ children }){
         else setShowModal(true);
     }
 
-    async function createUser(name, email, password){
+    async function createUser(name: string, email: string, password: string){
 
         try {
 
@@ -112,21 +164,11 @@ export function UserContextProvider({ children }){
         setLogin(false);
     }
 
-    /**
-     * @param {Object} addressObject
-     * @param {string} addressObject.street
-     * @param {string} addressObject.number
-     * @param {string} addressObject.district
-     * @param {string} addressObject.city
-     * @param {string} addressObject.state
-     * @param {string} addressObject.zipcode
-     * @returns {boolean}
-     */
-    async function addAddress(addressObject){
+    async function addAddress(address: IAddress){
 
         try {
 
-            const response = await api.post('/addresses', addressObject);
+            const response = await api.post('/addresses', address);
 
             const user = { ...getUser };
             user.addresses.push(response.data);
@@ -140,7 +182,7 @@ export function UserContextProvider({ children }){
         }
     }
 
-    async function deleteAddress(id){
+    async function deleteAddress(id: number){
 
         try {
 
@@ -160,18 +202,20 @@ export function UserContextProvider({ children }){
     }
 
     return (
-        <Context.Provider value={{ 
-            getShowModal,  
-            getLogin, 
-            handleSwitchModal, 
-            logIn, 
-            logOut, 
-            getUser,
-            setUser,
-            addAddress,
-            deleteAddress,
-            createUser
-        }}>
+        <Context.Provider 
+            value={{ 
+                getShowModal,  
+                getLogin, 
+                handleSwitchModal, 
+                logIn, 
+                logOut, 
+                getUser,
+                setUser,
+                addAddress,
+                deleteAddress,
+                createUser
+            }}
+        >
             {children}
         </Context.Provider>
     );
@@ -179,7 +223,7 @@ export function UserContextProvider({ children }){
 
 export function useUser(){
 
-    const context = useContext(Context);
+    const context = useContext(Context) as IUseUser;
 
     return context;
 }
