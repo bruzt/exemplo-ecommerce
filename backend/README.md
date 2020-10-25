@@ -14,11 +14,14 @@
 - PUT /addresses/:id 
 - DELETE /addresses/:id 
 
-### BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
+### BUSCA OU ADICIONA PEDIDOS DE UM USUÁRIO
 - GET /orders 
 - POST /orders 
-- PUT /orders/:id 
-- DELETE /orders/:id
+
+### BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO POR UM ADMIN
+- GET /admin/orders
+- PUT /admin/orders/:id 
+- DELETE /admin/orders/:id
 
 ### UPDATE DE SENHA POR EMAIL ("PERDEU A SENHA?")
 - POST /reset-password 
@@ -38,11 +41,11 @@
 - POST /products/:id/images 
 - DELETE /products/images/:id 
 
-### BUSCA, ADICIONA, ALTERA UMA CATEGORIA
+### BUSCA, ADICIONA, ALTERA OU REMOVE UMA CATEGORIA
 - GET /categories 
-- GET /categories/:id 
 - POST /categories 
 - PUT /categories/:id 
+- DELETE /categories/:id 
 
 ### CALCULO DE FRETE
 - POST /freight
