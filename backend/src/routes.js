@@ -48,11 +48,11 @@ router.post('/addresses', addressValidator.store, jwtAuthentication, addressCont
 router.put('/addresses/:id', addressValidator.update, jwtAuthentication, addressController.update);
 router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, addressController.destroy);
 
-// BUSCA, ADICIONA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO
+// BUSCA E ADICIONA PEDIDOS DE UM USUÁRIO
 router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);
 router.post('/orders', orderValidator.store, jwtAuthentication, orderController.store);
 
-// BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO PELO ADMIN
+// BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO POR UM ADMIN
 router.get('/admin/orders', orderAdminValidator.list, adminJwtAuthentication, orderAdminController.list);
 router.put('/admin/orders/:id', orderAdminValidator.update, adminJwtAuthentication, orderAdminController.update);
 router.delete('/admin/orders/:id', orderAdminValidator.destroy, adminJwtAuthentication, orderAdminController.destroy);
