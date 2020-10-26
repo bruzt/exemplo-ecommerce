@@ -1,8 +1,11 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
+import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
 import Product from '../components/Product';
+import Page404 from '../components/Page404';
 
 export interface IProduct {
     id: number;
@@ -28,7 +31,9 @@ export interface IProduct {
         id: number;
         name: string;
         parent_id: number;
-    }
+    };
+
+    message?: string;
 }
 
 interface IProps {
@@ -52,15 +57,35 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+    try {
+        
+        const response = await api.get<IProduct>(`/products/${params.productId}`);
+    
+        return {
+            props: { product: response.data }
+        };
 
-    const response = await api.get<IProduct>(`/products/${params.productId}`);
-
-    return {
-        props: { product: response.data }
+    } catch (error) {
+        return {
+            props: { product: false }
+        };
     }
 }
 
 export default function productId({ product }: IProps) {
-    
-    return <Product product={product} />
+
+    const router = useRouter();
+
+    if(router.isFallback){
+
+        return <FallbackLoadingSpinner />
+
+    } else if(!product){
+
+        return <Page404 />;
+
+    } else {
+
+        return <Product product={product} />;
+    }
 }
