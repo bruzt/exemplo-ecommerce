@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import api from '../services/api';
+import api from '../../services/api';
 
-import PageLayout from '../components/PageLayout';
-import ProductCard from '../components/ProductCard';
-import PaginationNav from '../components/PaginationNav';
+import { Container } from './styles';
 
-export default function Search() {
+import PageLayout from '../PageLayout';
+import ProductCard from '../ProductCard';
+import PaginationNav from '../PaginationNav';
+
+export default function SearchPage() {
 
     const [getProducts, setProducts] = useState([]);
     const [getFilter, setFilter] = useState('');
@@ -100,7 +102,7 @@ export default function Search() {
 
             <PageLayout>
 
-                <section>
+                <Container>
 
                     <div className='filter-row'>
                         <p>Filtrar por:&nbsp;</p>
@@ -127,67 +129,9 @@ export default function Search() {
                         limitPageNav={5}
                         handlePagination={handlePagination}
                     />
-                </section>
+                </Container>
 
             </PageLayout>
-
-            <style jsx>{`
-                section {
-                    min-height: 800px;
-                }
-
-                .product-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr 1fr;
-                    text-align: center;
-                    padding: 20px 0;
-                    grid-gap: 20px;
-                }
-
-                .filter-row {
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    margin: 20px 0 0 0;
-                    font-size: 20px;
-                }
-
-                .filter-row  #filter {
-                    font-size: inherit;
-                    border: 0;
-                    border-radius: 2px;
-                }
-
-                @media (max-width: 1200px) {
-                    padding: 0;
-
-                    .product-grid {
-                        grid-template-columns: 1fr 1fr 1fr;
-                        padding: 10px;
-                        grid-gap: 10px;
-                    }
-                }
-
-                @media (max-width: 900px) {
-                    padding: 0;
-
-                    .product-grid {
-                        grid-template-columns: 1fr 1fr;
-                        padding: 5px;
-                        grid-gap: 5px;
-                    }
-                }
-
-                @media (max-width: 600px) {
-                    padding: 0;
-
-                    .product-grid {
-                        grid-template-columns: 1fr;
-                        padding: 0;
-                        grid-gap: 0;
-                    }
-                }
-            `}</style>
         </>
-    )
+    );
 }
