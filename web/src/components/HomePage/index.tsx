@@ -2,28 +2,24 @@ import React, { useState, useEffect }/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
 import Link from 'next/link';
 
-import api from '../services/api';
+import api from '../../services/api';
 
-import PageLayout from '../components/PageLayout';
-import ProductCard from '../components/ProductCard';
+import { Container } from './styles';
 
-/*export async function getStaticProps() {
-//export async function getServerSideProps() {
+import PageLayout from '../PageLayout';
+import ProductCard from '../ProductCard';
 
-    const onSale = await api.get('/products?section=on-sale&limit=6');
-    const bestSellers = await api.get('/products?section=best-sellers&limit=6');
-    const news = await api.get('/products?section=news&limit=6');
+/*
+import { IProduct } from '../../pages/[productId]';
 
-    return {
-        props: { 
-            onSale: onSale.data.products,
-            bestSellers: bestSellers.data.products,
-            news: news.data.products
-        }
-    }
-}*/
-
-export default function Home(/*{ onSale, bestSellers, news }*/) {
+interface IProps {
+    onSale: IProduct;
+    bestSellers: IProduct;
+    news: IProduct;
+}
+*/
+ 
+export default function HomePage(/*{ onSale, bestSellers, news }: IProps*/) {
 
     const [onSale, setOnSale] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
@@ -64,7 +60,7 @@ export default function Home(/*{ onSale, bestSellers, news }*/) {
 
             <PageLayout>
 
-                <section>
+                <Container>
 
                     {onSale.length > 0 && (
                         <>
@@ -110,51 +106,9 @@ export default function Home(/*{ onSale, bestSellers, news }*/) {
                             </div>
                         </>
                     )}
-                </section>
+                </Container>
 
             </PageLayout>
-
-            <style jsx>{`
-                section {
-                    min-height: 800px;
-                }
-
-                .p-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr 1fr;
-                    text-align: center;
-                    padding: 20px 0;
-                    grid-gap: 20px;
-                }
-
-                h3 {
-                    margin: 20px 0 0 0;
-                }
-
-                @media (max-width: 1200px) {
-                    .p-grid {
-                        grid-template-columns: 1fr 1fr 1fr;
-                        padding: 10px;
-                        grid-gap: 10px;
-                    }
-                }
-
-                @media (max-width: 900px) {
-                    .p-grid {
-                        grid-template-columns: 1fr 1fr;
-                        padding: 5px;
-                        grid-gap: 5px;
-                    }
-                }
-
-                @media (max-width: 600px) {
-                    .p-grid {
-                        grid-template-columns: 1fr;
-                        padding: 0;
-                        grid-gap: 5px;
-                    }
-                }
-            `}</style>
         </>
-    )
+    );
 }
