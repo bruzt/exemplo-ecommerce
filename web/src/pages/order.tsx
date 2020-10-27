@@ -13,9 +13,7 @@ export default function Order() {
     const orderContext = useOrder();
 
     useEffect( () => {
-
         orderContext.setOrder('cart');
-
     }, []);
 
     return (
