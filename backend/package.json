@@ -26,7 +26,7 @@
     "nodemailer": "^6.4.14",
     "nodemailer-express-handlebars": "^4.0.0",
     "pagarme": "^4.13.0",
-    "pg": "^7.18.2",
+    "pg": "^8.4.2",
     "pg-hstore": "^2.3.3",
     "pm2": "^4.5.0",
     "sequelize": "^5.22.3",
