@@ -13,9 +13,9 @@ import ProductCard from '../ProductCard';
 import { IProduct } from '../../pages/[productId]';
 
 interface IProps {
-    onSale: IProduct;
-    bestSellers: IProduct;
-    news: IProduct;
+    onSale: IProduct[];
+    bestSellers: IProduct[];
+    news: IProduct[];
 }
 */
  

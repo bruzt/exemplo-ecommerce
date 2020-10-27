@@ -22,9 +22,9 @@ export async function getStaticProps() {
 }
 
 interface IProps {
-    onSale: IProduct;
-    bestSellers: IProduct;
-    news: IProduct;
+    onSale: IProduct[];
+    bestSellers: IProduct[];
+    news: IProduct[];
 }
 */
 
