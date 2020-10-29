@@ -22,17 +22,17 @@ interface IFreights {
     pac: {
         "Valor": string;
         "PrazoEntrega": string;
-        "MsgErro": {
-            [key: string]: any;
-        };
+        "MsgErro": string;
     };
     sedex: {
         "Valor": string;
         "PrazoEntrega": string;
-        "MsgErro": {
-            [key: string]: any;
-        };
+        "MsgErro": string;
     }
+}
+
+interface ICartProducts extends IProduct {
+    finalPrice: number;
 }
 
 interface IUseCart {
@@ -40,7 +40,7 @@ interface IUseCart {
     setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>; 
     addToCart: (newProduct: ICartItem) => void; 
     removeFromCart: (id: number) => void;
-    getProducts: IProduct[];
+    getProducts: ICartProducts[];
     setProducts: React.Dispatch<React.SetStateAction<IProduct[]>>;
     getSubtotalPrice: number;
     setSubtotalPrice: React.Dispatch<React.SetStateAction<number>>;
