@@ -1,8 +1,5 @@
 
-/**
- * @param {string | number} zipCode 
- */
-export default function formatZipCode(zipCode){
+export default function formatZipCode(zipCode: string | number){
 
     zipCode = String(zipCode);
 

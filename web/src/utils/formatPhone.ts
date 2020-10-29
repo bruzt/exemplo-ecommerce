@@ -1,8 +1,5 @@
 
-/**
- * @param {string | number} phone 
- */
-export default function formatPhone(phone){
+export default function formatPhone(phone: string | number){
         
     phone = String(phone);
 
