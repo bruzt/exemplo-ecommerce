@@ -1,13 +1,8 @@
 import validateCpf from './validateCpf';
 
-/**
- * @param {string | number} cpf 
- */
-export default function formatCpf(cpf){
+export default function formatCpf(cpf: string | number){
 
-    cpf = String(cpf);
-
-    cpf = cpf.replace(/[^0-9]/g, "");
+    cpf = String(cpf).replace(/[^0-9]/g, "");
 
     if (cpf.length == 11) {
 
