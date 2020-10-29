@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AccountMenu from '../components/account/AccountMenu';
+import AccountMenu from '../components/accountComponents/AccountMenu';
 
 export default function Account() {
 
