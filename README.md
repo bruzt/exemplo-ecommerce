@@ -5,8 +5,7 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 ## Backend
 - Validação de dados recebidos pelas rotas (headers, params, body e query) com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
 - Rotas para cadastro, atualização e remoção de usuários, endereços, categorias, produtos, upload de imagens de produtos e ordens de compra;
-- Rota para autenticação de usuário com JWT (json web token);
-- Upload de imagens do produto.
+- Rota para autenticação de usuário com JWT (Json Web Token);
 
 ## Frontend
 - Menu dropdown de categorias de produtos, montada automaticamente a partir das categorias cadastradas no banco de dados;
