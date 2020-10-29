@@ -7,6 +7,12 @@ import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
 import Product from '../components/Product';
 import Page404 from '../components/Page404';
 
+export interface IImage {
+    id: number;
+    url: string;
+    filename: string;
+}
+
 export interface IProduct {
     id: number;
     title: string;
@@ -22,11 +28,7 @@ export interface IProduct {
     height: string;
     width: string;
     createdAt: string;
-    images: Array<{
-        id: number;
-        url: string;
-        filename: string;
-    }>;
+    images: IImage[];
     category: {
         id: number;
         name: string;
