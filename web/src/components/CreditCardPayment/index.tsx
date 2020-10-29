@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import Loading from 'react-loader-spinner';
 
-import api from '../services/api';
-import formatCpf from '../utils/formatCpf';
-import formatPhone from '../utils/formatPhone';
-import formatZipCode from '../utils/formatZipCode';
+import api from '../../services/api';
+import formatCpf from '../../utils/formatCpf';
+import formatPhone from '../../utils/formatPhone';
+import formatZipCode from '../../utils/formatZipCode';
 
-import { useUser } from '../contexts/userContext';
-import { useCart } from '../contexts/cartContext';
-import { useOrder } from '../contexts/orderContext';
+import { Container } from './styles';
 
-export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }) {
+import { useUser } from '../../contexts/userContext';
+import { useCart } from '../../contexts/cartContext';
+import { useOrder } from '../../contexts/orderContext';
 
+interface IProps {
+    getDisabledBoletoButton: boolean;
+    setDisabledBoletoButton: React.Dispatch<boolean>;
+}
+
+export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }: IProps) {
+    
     const [getCardHolderName, setCardHolderName] = useState('');
     const [getCardNumber, setCardNumber] = useState('');
     const [getCardCvv, setCardCvv] = useState('');
@@ -64,7 +71,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
             if (
                 year == getCardExpirationYear &&
-                month > getCardExpirationMonth
+                month > Number(getCardExpirationMonth)
             ) {
                 setDisabledPayButton(true);
 
@@ -90,7 +97,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         getZipCode
     ]);
 
-    function handleCardNumber(value) {
+    function handleCardNumber(value: string | number) {
 
         let cardNumber = String(value);
 
@@ -109,7 +116,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         setCardNumber(cardNumber);
     }
 
-    function handleCardCvv(value) {
+    function handleCardCvv(value: string | number) {
 
         let cardCvv = String(value);
 
@@ -118,7 +125,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         setCardCvv(cardCvv);
     }
 
-    function handleCpf(value) {
+    function handleCpf(value: string | number) {
 
         const format = formatCpf(value);
 
@@ -138,7 +145,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         setZipCode(address.zipcode);
     }
 
-    async function handlePaySubmit(event) {
+    async function handlePaySubmit(event: FormEvent) {
 
         event.preventDefault();
 
@@ -230,10 +237,10 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
     }
 
     return (
-        <>
+        <Container>
             <h2>Cartão de Crédito</h2>
 
-            <form>
+            <form onSubmit={handlePaySubmit}>
                 <div className="grid-columns">
 
                     <div className='cc-form'>
@@ -460,7 +467,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                     <div>
                         <select
                             id='installments'
-                            onChange={(event) => setInstallments(event.target.value)}
+                            onChange={(event) => setInstallments(Number(event.target.value))}
                         >
                             <option value={1}>1x de R$ {Number(cartContext.getTotalPrice).toFixed(2)}</option>
                             <option value={2}>2x de R$ {Number(cartContext.getTotalPrice / 2).toFixed(2)} (sem juros)</option>
@@ -474,7 +481,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                     <button
                         type='submit'
                         disabled={getDisabledPayButton}
-                        onClick={(event) => handlePaySubmit(event)}
                     >
                         {(getDisabledBoletoButton) 
                             ? <Loading
@@ -489,239 +495,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 </div>
 
             </form>
-
-            <style jsx>{`   
-                .cc-form {
-                    background: #0D2235;
-                    border-radius: 5px;
-                    padding: 10px;
-                }
-
-                h2 {
-                    text-align: center;
-                    margin: 20px;
-                }
-
-                form {
-                    padding: 20px 0 0 0;
-                }
-
-                form .grid-columns {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    text-align: center;
-                    grid-gap: 5px;
-                }
-
-                .flex-column {
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .flex-row {
-                    display: flex;
-                    flex-direction: row;
-                
-                }
-
-                .flex-row div {
-                    margin: 0 5px;
-                }
-
-                .flex-row p {
-                    font-size: 30px;
-                    align-self: center;
-                }
-
-                .w-100 {
-                    width: 100%;
-                }
-
-                form div {
-                    margin: 10px 0 0 0;
-                }
-
-                form input, select {
-                    height: 40px;
-                    border: 0;
-                    border-radius: 5px;
-                    padding: 3px;
-                    font-size: 20px;
-                }
-
-                .justify-center {
-                    justify-content: center;
-                }
-
-                form .holder-name-label {
-                    margin: 28px 0 0 0;
-                }
-
-                form input#card-holder-name {
-                    text-align: center;
-                }
-
-                form input#card-number {
-                    width: 190px;
-                    text-align: center;
-                    align-self: center;
-                }
-
-                form input#cpf {
-                    width: 190px;
-                    text-align: center;
-                }
-
-                #cpf.invalid-value {
-                    border: 2px solid #a32e39;
-                }
-
-                form input#tel {
-                    width: 190px;
-                    text-align: center;
-                }
-
-                form input#card-cvv {
-                    width: 50px;
-                    text-align: center;
-                }
-
-                form input#card-expiration-month {
-                    width: 50px;
-                    text-align: center;
-                }
-
-                form input#card-expiration-year {
-                    width: 50px;
-                    text-align: center;
-                }
-
-                form button {
-                    width: 100px;
-                    height: 50px;
-                    margin: 20px 0 0 0;
-                }
-
-                form #street {
-                    width: 100%;
-                }
-
-                form #number {
-                    width: 150px;
-                    
-                }
-
-                form #neighborhood {
-                    width: 100%;
-                }
-
-                form #city {
-                    width: 100%;
-                }
-
-                form #state {
-                    width: 100%;
-                    min-width: 65px;   
-                    background: #fff;
-                }
-
-                form #zipcode {
-                    width: 150px;
-                    text-align: center;
-                }                
-
-                .same-addr-button {
-                    justify-content: flex-end;
-                }
-
-                .same-addr-button button {
-                    justify-self: flex-end;
-                    border: 0;
-                    border-radius: 5px;
-                    background: #16324C;
-                    color: inherit;
-                    cursor: pointer;
-                }
-
-                .same-addr-button button:hover {
-                    background: #1C4061;
-                }
-
-                .same-addr-button button:active {
-                    background: #16324C;
-                }
-
-                .button-total {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    font-size: 20px;
-                }
-
-                .button-total .freight-total {
-                    background: #0D2235;
-                    border-radius: 5px;
-                    padding: 10px;
-                }
-
-                .button-total .freight-total p + p + p {
-                    font-size: 30px;
-                    font-weight: bold;
-                }
-
-                .button-total button {
-                    border: 0;
-                    border-radius: 5px;
-                    width: 200px;
-                    height: 75px;
-                    background: #3E8C34;
-                    font-size: 20px;
-                    font-weight: bold;
-                    color: inherit;
-                    cursor: pointer;
-                }
-
-                .button-total button:hover {
-                    background: #41A933;
-                }
-
-                .button-total button:active {
-                    background: #3E8C34;
-                }
-
-                .button-total button:disabled {
-                    background: ${(getDisabledBoletoButton) ? '#3E8C34' : '#a32e39'};
-                }
-
-                .button-total button:disabled:hover {
-                    background: ${(getDisabledBoletoButton) ? '#41A933' : '#bf2232'};
-                }
-
-                @media (max-width: 768px) {
-                    form .grid-columns {
-                        grid-template-columns: 1fr;
-                    }
-                }
-
-                @media (max-width: 425px) {
-                    .button-total {
-                        flex-direction: column;
-                    }
-
-                    form input#card-number {
-                        width: 190px;
-                        
-                    }   
-
-                    form input#cpf {
-                        width: 190px;
-                    }
-
-                    form input#tel {
-                        width: 190px;
-                    }
-                }
-            `}</style>
-        </>
+        </Container>
     );
 }
