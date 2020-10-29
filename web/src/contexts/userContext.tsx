@@ -53,7 +53,7 @@ interface IUseUser {
     logOut: () => void;
     getUser: IUser;
     setUser: React.Dispatch<React.SetStateAction<IUser>>;
-    addAddress: (address: IAddress) => Promise<boolean>;
+    addAddress: (address: Omit<IAddress, "id">) => Promise<boolean>;
     deleteAddress: (id: number) =>  Promise<boolean>;
     createUser: (name: string, email: string, password: string) =>  Promise<void>;
 }
