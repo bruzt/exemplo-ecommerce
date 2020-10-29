@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import Head from 'next/head';
 
-import { useOrder } from '../contexts/orderContext';
+import { useOrder } from '../../contexts/orderContext';
 
-import CreditCardPayment from './CreditCardPayment';
-import BoletoPayment from './BoletoPayment';
+import { Container } from './styles';
+
+import CreditCardPayment from '../CreditCardPayment';
+import BoletoPayment from '../BoletoPayment';
 
 export default function PaymentMethod() {
-
-    const [getPaymentMethod, setPaymentMethod] = useState(null);
+	
+	const [getPaymentMethod, setPaymentMethod] = useState(null);
 
     const [getDisabledCreditCardButton, setDisabledCreditCardButton] = useState(false);
     const [getDisabledBoletoButton, setDisabledBoletoButton] = useState(false);
@@ -17,10 +19,8 @@ export default function PaymentMethod() {
     const orderContext = useOrder();
 
     useEffect( () => {
-
         orderContext.setOrderId(null);
         orderContext.setBoletoUrl('');
-
     }, []);
 
     return (
@@ -30,7 +30,7 @@ export default function PaymentMethod() {
                 <meta name="robots" content="noindex" />
             </Head>
 
-            <section>
+            <Container>
 
                 <button
                     type='button'
@@ -76,48 +76,7 @@ export default function PaymentMethod() {
                     />
                 )}
 
-            </section>
-
-            <style jsx>{`
-                section {
-                    min-height: 800px;
-                    padding: 20px 0;
-                }
-
-                h1 {
-                    text-align: center;
-                    margin: 20px;
-                }
-    
-                .back-button {
-                    border: 0;
-                    background: transparent;
-                    font-size: 30px;
-                    cursor: pointer;
-                    color: inherit;
-                }
-
-                .cc-boleto-buttons {
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                }
-
-                .cc-boleto-buttons button {
-                    font-size: 30px;
-                    padding: 20px 30px;
-                    margin: 10px;
-                    border: 0;
-                    border-radius: 5px;
-                    color: #0D2235;
-                    cursor: pointer;
-                }
-
-                .cc-boleto-buttons button:hover, .cc-boleto-buttons button.active {
-                    background: #0D2235;
-                    color: #eee;
-                }
-            `}</style>
-        </>
-    );
+            </Container>
+		</>
+	);
 }
