@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import api from '../../services/api';
-import { useCart } from '../../contexts/cartContext';
-import { useFilterBar } from '../../contexts/filterBarContext';
+import api from '../../../services/api';
+import { useCart } from '../../../contexts/cartContext';
+import { useFilterBar } from '../../../contexts/filterBarContext';
 
 import { Container } from './styles';
 
-import PageLayout from '../PageLayout';
+import PageLayout from '../../PageLayout';
 import ImageSlider from '../ImageSlider';
 
-import { IProduct } from '../../pages/[productId]';
+import { IProduct } from '../../../pages/[productId]';
 
 interface IProps {
     product: IProduct;

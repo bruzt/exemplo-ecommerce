@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import api from '../services/api';
 
 import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
-import Product from '../components/Product';
+import Product from '../components/productComponents/Product';
 import Page404 from '../components/Page404';
 
 export interface IImage {

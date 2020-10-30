@@ -1,11 +1,12 @@
 import React from "react";
 import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import noImg from '../../assets/img-n-disp.png';
+import noImg from '../../../assets/img-n-disp.png';
 
 import { Container } from './styles';
 
-import { IImage } from '../../pages/[productId]';
+import { IImage } from '../../../pages/[productId]';
 
 interface IProps {
 	images: IImage[];
