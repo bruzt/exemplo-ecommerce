@@ -23,7 +23,7 @@ export default function ProductCard({ product }: IProps) {
 
     return (
         <Container>
-            <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
+            <Link href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
                 <a title={product.title}>
                     <div className='p-card'>
                         <div className='img-container'>
