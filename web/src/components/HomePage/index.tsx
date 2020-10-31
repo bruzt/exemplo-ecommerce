@@ -1,15 +1,15 @@
-import React, { useState, useEffect }/*, { useState, useEffect }*/ from 'react';
+import React/*, { useState, useEffect }*/ from 'react';
 import Head from 'next/head'
 import Link from 'next/link';
 
-import api from '../../services/api';
+//import api from '../../services/api';
 
 import { Container } from './styles';
 
 import PageLayout from '../PageLayout';
 import ProductCard from '../ProductCard';
 
-/*
+
 import { IProduct } from '../../pages/[productId]';
 
 interface IProps {
@@ -17,10 +17,10 @@ interface IProps {
     bestSellers: IProduct[];
     news: IProduct[];
 }
-*/
  
-export default function HomePage(/*{ onSale, bestSellers, news }: IProps*/) {
-
+export default function HomePage({ onSale, bestSellers, news }: IProps) {
+    
+    /*
     const [onSale, setOnSale] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
     const [news, setNews] = useState([]);
@@ -48,6 +48,7 @@ export default function HomePage(/*{ onSale, bestSellers, news }: IProps*/) {
             alert('Erro, não foi possivel obter os produtos, tente novamente');
         }
     }
+    */
 
     return (
         <>
