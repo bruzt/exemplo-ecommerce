@@ -51,6 +51,10 @@ export const Container = styled.div`
         align-items: center;
     }
 
+    .modal-content form.nono-animation {
+        animation: nono-animation 500ms, fade paused;
+    }
+
     .modal-content form .input-group  {
         display: flex;
         flex-direction: column;
@@ -122,5 +126,19 @@ export const Container = styled.div`
     .create-forgot a {
         cursor: pointer;
         margin: 10px 0 0 0;
+    }
+
+    @keyframes nono-animation {
+        0%, 100% {
+            transform: translateX(0);
+        }
+
+        33% {
+            transform: translateX(-10%);
+        }
+
+        66% {
+            transform: translateX(10%);
+        }
     }
 `;

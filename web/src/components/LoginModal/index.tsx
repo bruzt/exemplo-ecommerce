@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useUser } from '../../contexts/userContext';
 
@@ -16,7 +16,9 @@ export default function LoginModal() {
     const [getDisabledButton, setDisabledButton] = useState(true);
 
     const [getCreateNewAccount, setCreateNewAccount] = useState(false);
-    const [getForgotPassword, setForgotPassword] = useState(false);
+	const [getForgotPassword, setForgotPassword] = useState(false);
+
+	const [getNonoAnimation, setNonoAnimation] = useState(false);
 
     const userContext = useUser();
 
@@ -57,8 +59,13 @@ export default function LoginModal() {
         } else {
 
             const result = await userContext.logIn(getEmail, getPassword);
-            
-            if(!result) alert('Erro ao logar');
+			
+			if(!result) alert('Erro ao logar');
+			
+			setNonoAnimation(true);
+			setTimeout( () => {
+				setNonoAnimation(false);
+			}, 500)
         }
     }
 
@@ -81,7 +88,7 @@ export default function LoginModal() {
 					? <ForgotPasswordModal setForgotPassword={setForgotPassword} />    
 					: (
 						<>
-							<form>
+							<form className={`${getNonoAnimation ? 'nono-animation' : ''}`}>
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-name">Nome completo</label>
