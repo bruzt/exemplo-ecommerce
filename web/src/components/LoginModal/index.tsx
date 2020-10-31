@@ -20,7 +20,12 @@ export default function LoginModal() {
 
 	const [getNonoAnimation, setNonoAnimation] = useState(false);
 
-    const userContext = useUser();
+	const userContext = useUser();
+	const formRef = useRef(null);
+
+	useEffect( () => {
+		formRef.current.addEventListener('animationend', () => setNonoAnimation(false));
+	}, []);
 
     useEffect( () => {
 
@@ -63,9 +68,6 @@ export default function LoginModal() {
 			if(!result) alert('Erro ao logar');
 			
 			setNonoAnimation(true);
-			setTimeout( () => {
-				setNonoAnimation(false);
-			}, 500)
         }
     }
 
@@ -88,7 +90,7 @@ export default function LoginModal() {
 					? <ForgotPasswordModal setForgotPassword={setForgotPassword} />    
 					: (
 						<>
-							<form className={`${getNonoAnimation ? 'nono-animation' : ''}`}>
+							<form ref={formRef} className={`${getNonoAnimation ? 'nono-animation' : ''}`}>
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-name">Nome completo</label>
