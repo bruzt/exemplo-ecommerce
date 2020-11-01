@@ -71,6 +71,8 @@ export const Container = styled.section`
     }
 
     td.name {
+        max-width: 500px;
+
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
