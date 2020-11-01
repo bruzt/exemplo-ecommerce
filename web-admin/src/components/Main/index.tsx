@@ -10,11 +10,11 @@ import { Container, Menu, MainContainer } from './styles';
 
 import Header from '../Header';
 import Footer from '../Footer';
-import ListProducts from '../product/ListProducts';
-import AddProduct from '../product/AddProduct';
-import CategoriesList from '../category/ListCategories';
-import AddCategory from '../category/AddCategory';
-import ListOrders from '../order/ListOrders';
+import ListProducts from '../productComponents/ListProducts';
+import AddProduct from '../productComponents/AddProduct';
+import CategoriesList from '../categoryComponents/ListCategories';
+import AddCategory from '../categoryComponents/AddCategory';
+import ListOrders from '../orderComponents/ListOrders';
 
 type SelectedMenu = 
     "" |

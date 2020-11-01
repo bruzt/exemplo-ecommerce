@@ -4,8 +4,8 @@ import api from '../../../services/api';
 
 import { Container } from './styles';
 
-import PencilIcon from '../../generic/icons/Pencil';
-import TrashIcon from '../../generic/icons/TrashCan';
+import PencilIcon from '../../genericComponents/icons/Pencil';
+import TrashIcon from '../../genericComponents/icons/TrashCan';
 import UpdateCategory from '../UpdateCategory';
 import DeleteCategory from '../DeleteCategory';
 

@@ -7,7 +7,7 @@ import api from '../../services/api';
 
 import { Container } from './styles';
 
-import Button from '../generic/Button';
+import Button from '../genericComponents/Button';
 
 interface ITokenPayload {
     id: number;
