@@ -16,7 +16,7 @@ export default createGlobalStyle`
     body {
         background: ${props => props.theme.background};
         color: ${props => props.theme.color};
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: Roboto, Arial, Helvetica, sans-serif;
         font-size: 16px;
     }
 
