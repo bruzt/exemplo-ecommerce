@@ -4,7 +4,7 @@ export const Container = styled.section`
     
     min-height: 800px;
 
-    .p-grid {
+    div.product-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
         padding: 20px 0;
@@ -17,27 +17,29 @@ export const Container = styled.section`
         margin: 20px 0 0 0;
     }
 
-    @media (max-width: 1200px) {
-        .p-grid {
+    @media (max-width: 1110px) {
+
+        h3 {
+            text-align: center;
+        }
+
+        div.product-grid {
             grid-template-columns: 1fr 1fr 1fr;
-            padding: 10px;
-            grid-gap: 10px;
         }
     }
 
-    @media (max-width: 900px) {
-        .p-grid {
+    @media (max-width: 855px) {
+
+        div.product-grid {
             grid-template-columns: 1fr 1fr;
-            padding: 5px;
-            grid-gap: 5px;
         }
     }
 
-    @media (max-width: 600px) {
-        .p-grid {
+    @media (max-width: 570px) {
+        padding: 0;
+
+        div.product-grid {
             grid-template-columns: 1fr;
-            padding: 0;
-            grid-gap: 5px;
         }
     }
 `;

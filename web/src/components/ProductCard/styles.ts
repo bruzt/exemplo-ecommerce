@@ -4,7 +4,7 @@ export const Container = styled.div`
 
     position: relative;
 
-    width: 270px;
+    width: 100%;
     height: 450px;
 
     border: 3px solid ${props => props.theme.primary};
