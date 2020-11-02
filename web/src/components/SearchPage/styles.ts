@@ -4,12 +4,12 @@ export const Container = styled.div`
     
     min-height: 800px;
 
-    .product-grid {
+    div.product-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        text-align: center;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         padding: 20px 0;
-        grid-gap: 20px;
+        grid-gap: 5px;
+        justify-items: center;
     }
 
     .filter-row {
@@ -26,33 +26,29 @@ export const Container = styled.div`
         border-radius: 2px;
     }
 
-    @media (max-width: 1200px) {
-        padding: 0;
+    h2 {
+        margin-top: 50px;
+        text-align: center;
+    }
 
-        .product-grid {
+    @media (max-width: 1110px) {
+
+        div.product-grid {
             grid-template-columns: 1fr 1fr 1fr;
-            padding: 10px;
-            grid-gap: 10px;
         }
     }
 
-    @media (max-width: 900px) {
-        padding: 0;
+    @media (max-width: 855px) {
 
-        .product-grid {
+        div.product-grid {
             grid-template-columns: 1fr 1fr;
-            padding: 5px;
-            grid-gap: 5px;
         }
     }
 
-    @media (max-width: 600px) {
-        padding: 0;
+    @media (max-width: 570px) {
 
-        .product-grid {
+        div.product-grid {
             grid-template-columns: 1fr;
-            padding: 0;
-            grid-gap: 0;
         }
     }
 `;

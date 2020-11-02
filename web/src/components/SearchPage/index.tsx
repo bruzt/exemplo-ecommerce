@@ -20,7 +20,7 @@ export default function SearchPage() {
     const router = useRouter();
 
     const currentPage = Number(router.query.page) || 1;
-    const _itemsPerPage = 15;
+    const _itemsPerPage = 16;
 
     useEffect( () => {
 
@@ -116,19 +116,28 @@ export default function SearchPage() {
                             <option value="biggest-price">Maior Preço</option>
                         </select>
                     </div>
+
+                    {getProducts.length === 0 && (
+                        <h2>Nada encontrado</h2>
+                    )}
                    
                     <div className="product-grid">
 
-                        {getProducts.map( (product) => <ProductCard product={product} key={product.id} />)}
+                        {getProducts.length > 0 && (
+                            getProducts.map( (product) => <ProductCard product={product} key={product.id} />)
+                        )}
 
                     </div>
 
-                    <PaginationNav
-                        totalPages={getTotalPages}
-                        currentPage={currentPage}
-                        limitPageNav={5}
-                        handlePagination={handlePagination}
-                    />
+                    {getTotalPages > 1 && (
+                        <PaginationNav
+                            totalPages={getTotalPages}
+                            currentPage={currentPage}
+                            limitPageNav={5}
+                            handlePagination={handlePagination}
+                        />
+                    )}
+
                 </Container>
 
             </PageLayout>

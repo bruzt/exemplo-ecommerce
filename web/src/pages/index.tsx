@@ -9,9 +9,9 @@ import { IProduct } from './[productId]';
 //export async function getStaticProps() {
 export async function getServerSideProps() {
 
-    const onSale = await api.get('/products?section=on-sale&limit=6');
-    const bestSellers = await api.get('/products?section=best-sellers&limit=6');
-    const news = await api.get('/products?section=news&limit=6');
+    const onSale = await api.get('/products?section=on-sale&limit=8');
+    const bestSellers = await api.get('/products?section=best-sellers&limit=8');
+    const news = await api.get('/products?section=news&limit=8');
 
     return {
         props: { 
