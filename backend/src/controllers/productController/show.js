@@ -26,11 +26,7 @@ module.exports = async (req, res) => {
 
         if(!product) return res.status(400).json({ message: 'product not found' });
 
-        const productObj = product.toJSON();
-
-        productObj.finalPrice = calcFinalPrice(product.price, product.discount_percent);
-
-        return res.json(productObj);
+        return res.json(product);
         
     } catch (error) {
         console.error(error);

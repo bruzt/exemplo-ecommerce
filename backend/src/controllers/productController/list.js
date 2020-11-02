@@ -186,15 +186,8 @@ module.exports = async (req, res) => {
                 ]
             });
         }
-
-        const productsObj = products.map( (product) => {
-
-            const productObj = product.toJSON();
-            productObj.finalPrice = calcFinalPrice(product.price, product.discount_percent);
-            return productObj;
-        });
         
-        return res.json({ count, products: productsObj });
+        return res.json({ count, products: products });
         
     } catch (error) {
         console.error(error);

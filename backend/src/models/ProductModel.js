@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
+const calcFinalPrice = require('../util/calcFinalPrice');
+
 const OrdersProducts = require('./OrdersProductsModel');
 
 class ProductModel extends Model {
@@ -21,11 +23,28 @@ class ProductModel extends Model {
             length: DataTypes.DECIMAL,
             height: DataTypes.DECIMAL,
             width: DataTypes.DECIMAL,
+            
+            finalPrice: DataTypes.VIRTUAL,
 
         }, {
             tableName: 'products',
+            hooks: {
+                afterFind(product){
+
+                    if(product) {
+                        if(Array.isArray(product)){
+    
+                            for(const prod of product){
+                                prod.finalPrice = calcFinalPrice(prod.price, prod.discount_percent);
+                            }
+                        } else {
+                            product.finalPrice = calcFinalPrice(product.price, product.discount_percent);
+                        }
+                    }
+                }
+            },
             sequelize: connection,
-            paranoid: true
+            paranoid: true,
         });
     }
 
