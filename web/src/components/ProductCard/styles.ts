@@ -4,20 +4,23 @@ export const Container = styled.div`
 
     position: relative;
 
-    width: 300px;
+    width: 270px;
     height: 450px;
 
+    border: 3px solid ${props => props.theme.primary};
     border-radius: 5px;
     overflow: hidden;
-    padding: 3px;
-    background: #0D2235;
+    background: ${props => props.theme.primary};
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
+    transition: background-color 500ms;
+
     &:hover {
-        box-shadow: 5px 5px #16324C;    
+        /*box-shadow: 3px 3px #16324C;*/
+        background: transparent;
     }
 
     a, 
@@ -30,8 +33,8 @@ export const Container = styled.div`
 
     span.discount {
         position: absolute;
-        top: 3px;
-        right: 3px;
+        top: 0px;
+        right: 0px;
         z-index: 5;
 
         background: #41773A;
@@ -41,8 +44,8 @@ export const Container = styled.div`
 
     span.lacking {
         position: absolute;
-        top: 3px;
-        right: 3px;
+        top: 0px;
+        right: 0px;
         z-index: 5;
 
         background: #a32e39;
@@ -70,6 +73,7 @@ export const Container = styled.div`
 
     div.title-container span.title {
         font-size: 20px;
+        text-align: center;
        
         overflow: hidden;
         text-overflow: ellipsis;

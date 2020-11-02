@@ -6,10 +6,11 @@ export const Container = styled.section`
 
     .p-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        text-align: center;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         padding: 20px 0;
-        grid-gap: 20px;
+        grid-gap: 5px;
+
+        justify-items: center;
     }
 
     h3 {
