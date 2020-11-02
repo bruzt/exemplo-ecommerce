@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import api from '../../../services/api';
 import { useCart } from '../../../contexts/cartContext';
-import { useFilterBar } from '../../../contexts/filterBarContext';
+import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
 
 import { Container } from './styles';
 
@@ -26,10 +26,6 @@ export default function Product({ product }: IProps) {
     const cartContext = useCart();
     const router = useRouter();
     const filterBarContext = useFilterBar();
-
-    const finalPrice = (getProduct.discount_percent == 0)
-        ? Number(getProduct.price).toFixed(2)
-        : (Number(getProduct.price) - (Number(getProduct.price) * (getProduct.discount_percent / 100))).toFixed(2);
 
     useEffect(() => {
 
@@ -96,9 +92,9 @@ export default function Product({ product }: IProps) {
         router.push('/order');
     }
 
-    function findCategoryFather(fatherId) {
+    function findCategoryFather(fatherId: number) {
 
-        const categories = [];
+        const categories: ICategory[] = [];
 
         const [father] = filterBarContext.getCategories.filter((category) => fatherId == category.id);
 
@@ -192,7 +188,7 @@ export default function Product({ product }: IProps) {
                         <div className='buy-card'>
                             <h2>Preço</h2>
                             {(getProduct.discount_percent > 0) ? <p className='original-price'>R$ {Number(getProduct.price).toFixed(2)}</p> : false}
-                            <p className='price'>R$ {finalPrice} a unidade</p>
+                            <p className='price'>R$ {getProduct.finalPrice} a unidade</p>
                             {(getProduct.quantity_stock > 0)
                                 ? (getProduct.discount_percent > 0)
                                     ? <p className='discount'>-{getProduct.discount_percent}%</p>
@@ -201,7 +197,7 @@ export default function Product({ product }: IProps) {
                             }
                             <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(event.target.value)} /></p>
                             <p>Disponível: {getProduct.quantity_stock}</p>
-                            <p className='total'>Total: R$ {(Number(finalPrice) * getQuantity).toFixed(2)}</p>
+                            <p className='total'>Total: R$ {(Number(getProduct.finalPrice) * getQuantity).toFixed(2)}</p>
                             <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
                                 Adicionar ao carrinho
                             </button>
@@ -217,7 +213,6 @@ export default function Product({ product }: IProps) {
                             <p>Comprimento: {product.length}cm</p>
                             <p>Altura: {product.height}cm</p>
                             <p>Largura: {product.width}cm</p>
-                            {/*<p>Diametro: {product.diameter}cm</p>*/}
                         </div>
                     </div>
 

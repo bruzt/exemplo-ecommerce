@@ -34,8 +34,7 @@ export interface IProduct {
         name: string;
         parent_id: number;
     };
-
-    message?: string;
+    finalPrice: string;
 }
 
 interface IProps {
