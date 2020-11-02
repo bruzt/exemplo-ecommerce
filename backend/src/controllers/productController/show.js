@@ -1,5 +1,7 @@
 const express = require('express');
 
+const calcFinalPrice = require('../../util/calcFinalPrice');
+
 const ProductModel = require('../../models/ProductModel');
 
 /** @param {express.Request} req * @param {express.Response} res */
@@ -24,7 +26,11 @@ module.exports = async (req, res) => {
 
         if(!product) return res.status(400).json({ message: 'product not found' });
 
-        return res.json(product);
+        const productObj = product.toJSON();
+
+        productObj.finalPrice = calcFinalPrice(product.price, product.discount_percent);
+
+        return res.json(productObj);
         
     } catch (error) {
         console.error(error);

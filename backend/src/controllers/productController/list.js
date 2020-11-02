@@ -2,9 +2,11 @@ const express = require('express');
 const { Op } = require('sequelize');
 
 const findCategoriesChildrenIds = require('../../util/findCategoriesChildrenIds');
+const calcFinalPrice = require('../../util/calcFinalPrice');
 
 const ProductModel = require('../../models/ProductModel');
 const CategoryModel = require('../../models/CategoryModel');
+
 
 //const ilike = (process.env.NODE_ENV == 'test') ? Op.like : Op.iLike;
 
@@ -184,8 +186,15 @@ module.exports = async (req, res) => {
                 ]
             });
         }
+
+        const productsObj = products.map( (product) => {
+
+            const productObj = product.toJSON();
+            productObj.finalPrice = calcFinalPrice(product.price, product.discount_percent);
+            return productObj;
+        });
         
-        return res.json({ count, products: products });
+        return res.json({ count, products: productsObj });
         
     } catch (error) {
         console.error(error);
