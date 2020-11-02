@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import noImg from '../../assets/img-n-disp.png';
 
+import { useCart } from '../../contexts/cartContext';
+
 import { Container } from './styles';
 
 import { IProduct } from '../../pages/[productId]';
@@ -12,20 +14,35 @@ interface IProps {
 }
 
 export default function ProductCard({ product }: IProps) {
+
+    const cartContext = useCart();
 	
 	const discount = (product.discount_percent != 0)
         ? '-' + product.discount_percent + '%'
         : null;
 
-    const finalPrice = (product.discount_percent != 0)
-        ? (Number(product.price) - (Number(product.price) * (product.discount_percent / 100))).toFixed(2)
-        : Number(product.price).toFixed(2);
+    function handleAddToCart(id: number){
+
+        cartContext.addToCart({ id, qtd: 1 });
+        alert('Produto adicionado ao carrinho');
+    }
 
     return (
         <Container>
+
+
             <Link href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
                 <a title={product.title}>
-                    <div className='p-card'>
+
+                    {(product.quantity_stock > 0) 
+                        ? (discount) 
+                            ? <span className='discount'>{discount}</span>
+                            : null
+                        : <span className='lacking'>Em falta</span>
+                    }
+
+                    <div className="product-info">
+
                         <div className='img-container'>
                             <img
                                 //src={product.images[0] && product.images[0].url}
@@ -33,23 +50,28 @@ export default function ProductCard({ product }: IProps) {
                                 alt={'imagem-' + product.title.split(' ').join('-')}
                             />
                         </div>
-                        <div className='title-price'>
-                            <p className='title'>{product.title}</p>
-                            <div className='price-discount'>
-                                {(discount) ? <p className='original-price'>R$ {Number(product.price).toFixed(2)}</p> : false}
-                                <p className='price'>R$ {finalPrice}</p>
+            
+                        <div className='title-container'>
+                            <span className='title'>{product.title}</span>
+                        </div>
 
-                                {(product.quantity_stock > 0) 
-                                    ? (discount) 
-                                        ? <p className='discount'>{discount}</p>
-                                        : null
-                                    : <p className='lacking'>Em falta</p>
-                                }
-                            </div>
+                        <div className='price-and-discount'>
+                            {(discount) ? <span className='original-price'>R$ {Number(product.price).toFixed(2)}</span> : <span></span>}
+                            
+                            <span className='price'>R$ {product.finalPrice}</span>
                         </div>
                     </div>
                 </a>
             </Link>
+
+            <button 
+                type='button'
+                disabled={product.quantity_stock === 0}
+                onClick={() => handleAddToCart(product.id)}
+            >
+                Adicionar ao carrinho
+            </button>
+
 		</Container>
 	);
 }

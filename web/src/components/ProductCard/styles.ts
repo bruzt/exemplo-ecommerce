@@ -2,35 +2,75 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 
-    .p-card {
-        border-radius: 5px;
-        max-height: 350px;
-        overflow: hidden;
-        padding: 10px;
-        background: #0D2235;
-    }
+    position: relative;
 
-    .p-card:hover {
+    width: 300px;
+    height: 450px;
+
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 3px;
+    background: #0D2235;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &:hover {
         box-shadow: 5px 5px #16324C;    
     }
 
-    .p-card img {
-        width: 100%;
-        max-width: 475px;
-        height: auto;
-    }
+    a, 
+    div.product-info {
+        height: 100%;
 
-    .p-card .title-price {
-        height: 100px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 
-    .p-card .title {
-        font-size: 15px;
+    span.discount {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        z-index: 5;
+
+        background: #41773A;
+        padding: 10px 15px;
+        font-size: 20px;
+    }
+
+    span.lacking {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        z-index: 5;
+
+        background: #a32e39;
+        padding: 10px 15px;
+        font-size: 20px;
+    }
+
+    div.img-container {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        overflow: hidden;
+    }
+
+    div.img-container img {
+        width: 100%;
+        /*max-width: 475px;*/
+        height: 200px;
+        object-fit: cover;
+    }
+
+    div.title-container {
         margin-top: 10px;
-        
+    }
+
+    div.title-container span.title {
+        font-size: 20px;
+       
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -38,24 +78,18 @@ export const Container = styled.div`
         -webkit-box-orient: vertical;
     }
 
-    .p-card .price-discount {
-        margin: 10px 0 0 0;
+    div.price-and-discount {
+        /*margin-top: 10px;*/
+        /*height: 1fr;*/
+
         display: flex;
-        justify-content: space-around;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-evenly;
         align-items: center;
     }
 
-    .p-card .price-discount .discount {
-        background: #41773A;
-        padding: 5px 10px;
-    }
-
-    .p-card .price-discount .lacking {
-        background: #a32e39;
-        padding: 5px 10px;
-    }
-
-    .p-card .price-discount .price {
+    div.price-and-discount span.price {
         font-size: 30px;
         font-weight: bold;
         padding: 5px 10px;
@@ -67,18 +101,33 @@ export const Container = styled.div`
         -webkit-box-orient: vertical;
     }
 
-    .p-card .price-discount .original-price {
+    div.price-and-discount span.original-price {
         text-decoration: line-through;
     }
 
-    .img-container {
-        height: 200px;
-    }
+    button {
+        cursor: pointer;
+        height: 60px;
+        border: 0;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
 
-    .img-container img {
-        width: auto;
-        max-width: 325px;
-        height: auto;
-        max-height: 200px;
+        background: ${props => props.theme.success};
+        color: ${props => props.theme.color};
+
+        font-size: 20px;
+
+        &:hover {
+            background: ${props => props.theme.successActive    };
+        }
+
+        &:active {
+            background: ${props => props.theme.success};
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
+            cursor: not-allowed;
+        }
     }
 `;
