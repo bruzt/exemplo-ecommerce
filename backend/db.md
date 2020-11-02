@@ -8,7 +8,7 @@ sudo docker run -d \
     -e POSTGRES_PASSWORD=123 \
     -e POSTGRES_DB=ecommerce-tests \
     -p 5432:5432 \
-    postgres:12.3
+    postgres:13.0
 ```
 
 ```
