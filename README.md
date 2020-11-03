@@ -21,13 +21,7 @@ Frontend: Feita com React.js utilizando o framework Next.js para gerar páginas 
 - Tela da conta do usuário, onde ele pode alterar suas informações de cadastro (nome, email e senha), adicionar ou remover endereços e visualizar suas ordens de compra.
 
 <p align="center">
-  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce1.png?raw=true">
-</p>
-<p align="center">
-  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce2.png?raw=true">
-</p>
-<p align="center">
-  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce3.png?raw=true">
+  <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce1.gif?raw=true">
 </p>
 
 ## Para testar
