@@ -9,9 +9,9 @@ export const Container = styled.section`
     grid-template-areas: 
         "breadcrumb breadcrumb"
         "title title"
-        "slider-container cart-card"
-        "description cart-card"
-        "html-body cart-card"
+        "slider-container buy-card-container"
+        "description buy-card-container"
+        "html-body buy-card-container"
     ;
 
     div.breadcrumb {
@@ -34,14 +34,21 @@ export const Container = styled.section`
         margin-bottom: 20px;
     }
 
+    div.img-slider-container,
+    div.description,
+    div.html-body {
+        padding: 10px;
+        background: ${props => props.theme.secondary};
+    }
 
     div.img-slider-container {
         grid-area: slider-container;
+
+        width: 100%;
+        max-width: 700px;
     }
 
     .img-container {
-        width: 100%;
-        max-width: 700px;
         height: 400px;
         
         display: flex;
@@ -49,7 +56,7 @@ export const Container = styled.section`
     }
 
     .buy-card-container {
-        grid-area: cart-card;
+        grid-area: buy-card-container;
         height: 100%;
         display: flex;
         flex-direction: row;
@@ -138,7 +145,7 @@ export const Container = styled.section`
 
     .description {
         grid-area: description;
-        margin: 10px 0;
+        padding: 10px 0;
         line-height: 25px;
     }
 
@@ -151,28 +158,31 @@ export const Container = styled.section`
 
         overflow-x: hidden;
 
-        margin-top: 20px;
-        padding-bottom: 20px;
+        padding-top: 20px;
     }
 
-    @media (max-width: 1180px) {
-        padding: 0;
+    @media (max-width: 1120px) {
 
-        grid-template-columns: 100vw;
-        grid-template-rows: 60px minmax(40px, auto) 425px 425px auto 1fr;
-        grid-template-areas: 
-            "breadcrumb"
-            "title"
-            "slider-container"
-            "cart-card"
-            "description"
-            "html-body"
-        ;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-        div.img-slider-container, div.buy-card-container, div.description, div.html-body  {
+        div.breadcrumb,
+        h1,
+        div.img-slider-container, 
+        div.buy-card-container, 
+        div.description, 
+        div.html-body  {
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        div.buy-card-container {
+            margin: 10px 0;
+
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
     }
 `;
