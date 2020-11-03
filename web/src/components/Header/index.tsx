@@ -7,7 +7,6 @@ import { useCart } from '../../contexts/cartContext';
 import { useUser } from '../../contexts/userContext';
 import { useOrder } from '../../contexts/orderContext';
 
-import GlobalStyle from '../../styles/GlobalStyle';
 import LoginModal from '../LoginModal';
 import CategoriesAndSeachBar from '../CategoriesAndSeachBar';
 
@@ -22,7 +21,6 @@ export default function Header() {
 
     return (
         <Container>
-            <GlobalStyle />
 
             {(userContext.getShowModal) ? <LoginModal /> : false}  
 
