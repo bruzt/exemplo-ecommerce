@@ -84,7 +84,7 @@ export default function Cart() {
 
             if(cartContext.getProducts[i]){
 
-                totalPrice += cartContext.getProducts[i].finalPrice * cartContext.getCart[i].qtd;
+                totalPrice += Number(cartContext.getProducts[i].finalPrice) * cartContext.getCart[i].qtd;
             }
         }
 
@@ -272,7 +272,7 @@ export default function Cart() {
                                             </span>
                                         </td>
                                         <td className='td-total'>
-                                            R$ {(product.finalPrice * cartContext.getCart[index].qtd).toFixed(2)}
+                                            R$ {(Number(product.finalPrice) * cartContext.getCart[index].qtd).toFixed(2)}
                                         </td>
                                     </tr>
                                 ))}

@@ -99,6 +99,7 @@ export default function AccountMyShoppings() {
                                             />
                                         </div>
                                         <span className='product-price'>{product.title}</span>
+                                        <span>{product.orders_products.quantity_buyed}</span>
                                         <span>R$ {Number(product.orders_products.product_price).toFixed(2)}</span>
                                     </a>
                                 </Link>

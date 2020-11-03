@@ -31,16 +31,12 @@ interface IFreights {
     }
 }
 
-interface ICartProducts extends IProduct {
-    finalPrice: number;
-}
-
 interface IUseCart {
     getCart: ICartItem[]; 
     setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>; 
     addToCart: (newProduct: ICartItem) => void; 
     removeFromCart: (id: number) => void;
-    getProducts: ICartProducts[];
+    getProducts: IProduct[];
     setProducts: React.Dispatch<React.SetStateAction<IProduct[]>>;
     getSubtotalPrice: number;
     setSubtotalPrice: React.Dispatch<React.SetStateAction<number>>;

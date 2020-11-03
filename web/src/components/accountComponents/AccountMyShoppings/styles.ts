@@ -61,7 +61,7 @@ export const Container = styled.section`
         cursor: pointer;
 
         display: grid;
-        grid-template-columns: 100px 600px 150px;
+        grid-template-columns: 100px 1fr 50px 150px;
         grid-gap: 10px;
     }
 
@@ -89,6 +89,8 @@ export const Container = styled.section`
     }
 
     a.card-product span {
+        padding-top: 15px;
+
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;

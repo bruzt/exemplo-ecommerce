@@ -20,7 +20,7 @@ export default function ForgotPass() {
 
     useEffect(() => {
 
-        if (router.query.token) setToken(router.query.token);
+        if (router.query.token) setToken(router.query.token as string);
 
     }, [router.query.token]);
 

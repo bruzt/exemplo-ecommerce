@@ -31,6 +31,14 @@ interface IAddress {
     zipcode: string;
 }
 
+interface IOrderProduct extends IProduct {
+    orders_products: {
+        quantity_buyed: number;
+        product_price: string;
+        product_discount_percent: string;
+    }
+}
+
 interface IOrder {
     id: number;
     freight_name: string;
@@ -42,7 +50,7 @@ interface IOrder {
     tracking_code: string | null;
     createdAt: string;
     address: IAddress;
-    products: IProduct[]
+    products: IOrderProduct[]
 }
 
 interface IUseUser {
