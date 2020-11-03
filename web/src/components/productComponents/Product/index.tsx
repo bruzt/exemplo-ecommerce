@@ -179,7 +179,7 @@ export default function Product({ product }: IProps) {
 
                     <div className='img-slider-container'>
 
-                        <ImageSlider images={product.images} />
+                        <ImageSlider images={getProduct.images || product.images} />
 
                     </div>
 
@@ -187,17 +187,17 @@ export default function Product({ product }: IProps) {
 
                         <div className='buy-card'>
                             <h2>Preço</h2>
-                            {(getProduct.discount_percent > 0) ? <p className='original-price'>R$ {Number(getProduct.price).toFixed(2)}</p> : false}
-                            <p className='price'>R$ {getProduct.finalPrice} a unidade</p>
-                            {(getProduct.quantity_stock > 0)
-                                ? (getProduct.discount_percent > 0)
-                                    ? <p className='discount'>-{getProduct.discount_percent}%</p>
+                            {((getProduct.discount_percent || product.discount_percent) > 0) ? <p className='original-price'>R$ {Number(getProduct.price || product.price).toFixed(2)}</p> : false}
+                            <p className='price'>R$ {getProduct.finalPrice || product.finalPrice} a unidade</p>
+                            {((getProduct.quantity_stock || product.quantity_stock) > 0)
+                                ? ((getProduct.discount_percent || product.discount_percent) > 0)
+                                    ? <p className='discount'>-{getProduct.discount_percent || product.discount_percent}%</p>
                                     : null
                                 : <p className='lacking'>Em falta</p>
                             }
                             <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(event.target.value)} /></p>
-                            <p>Disponível: {getProduct.quantity_stock}</p>
-                            <p className='total'>Total: R$ {(Number(getProduct.finalPrice) * getQuantity).toFixed(2)}</p>
+                            <p>Disponível: {getProduct.quantity_stock || product.quantity_stock}</p>
+                            <p className='total'>Total: R$ {(Number((getProduct.finalPrice || product.finalPrice)) * getQuantity).toFixed(2)}</p>
                             <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
                                 Adicionar ao carrinho
                             </button>
@@ -207,12 +207,12 @@ export default function Product({ product }: IProps) {
 
                     <div className='description'>
                         <div>
-                            <p>{product.description}</p>
+                            <p>{getProduct.description || product.description}</p>
                             <br />
-                            <p>Peso: {product.weight}kg</p>
-                            <p>Comprimento: {product.length}cm</p>
-                            <p>Altura: {product.height}cm</p>
-                            <p>Largura: {product.width}cm</p>
+                            <p>Peso: {getProduct.weight || product.weight}kg</p>
+                            <p>Comprimento: {getProduct.length || product.length}cm</p>
+                            <p>Altura: {getProduct.height || product.height}cm</p>
+                            <p>Largura: {getProduct.width || product.width}cm</p>
                         </div>
                     </div>
 
