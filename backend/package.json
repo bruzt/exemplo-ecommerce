@@ -6,7 +6,9 @@
   "scripts": {
     "start": "npm run prod",
     "dev": "cross-env NODE_ENV=development nodemon src/server.js --ignore _tests",
-    "prod": "cross-env NODE_ENV=production sequelize db:migrate && cross-env NODE_ENV=production pm2 start src/server.js",
+    "preprod": "cross-env NODE_ENV=production sequelize db:migrate",
+    "prod": "cross-env NODE_ENV=production pm2 start src/server.js",
+    "postprod": "pm2 logs",
     "test": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=test jest",
     "posttest": "node _tests/utils/deleteDbFile.js"
   },
@@ -30,6 +32,7 @@
     "pg-hstore": "^2.3.3",
     "pm2": "^4.5.0",
     "sequelize": "^5.22.3",
+    "sequelize-cli": "^5.5.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
@@ -42,7 +45,6 @@
     "faker": "^4.1.0",
     "jest": "^25.5.4",
     "nodemon": "^2.0.6",
-    "sequelize-cli": "^5.5.1",
     "sqlite3": "^5.0.0",
     "supertest": "^4.0.2"
   }
