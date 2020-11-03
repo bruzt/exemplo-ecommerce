@@ -27,41 +27,9 @@ export default createGlobalStyle`
 
     input, select, textarea {
         background: #eee;
-        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    input, select, textarea, button {
+        font-family: Roboto, Arial, Helvetica, sans-serif;
     }
 `;
-
-/*import React from 'react';
-
-export default function GlobalStyle() {
-
-    return (
-        <style jsx global>{`
-            * {
-                margin: 0;
-                padding: 0;
-                outline: 0;
-                box-sizing: border-box;
-            }
-
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                background: #1C4061;
-                color: #eee;
-                font-family: Arial, Helvetica, sans-serif;
-            }
-
-            a {
-                text-decoration: none;
-                color: inherit;
-            }
-
-            input, select {
-                background: #eee;
-            }
-        `}</style>
-    );
-}*/

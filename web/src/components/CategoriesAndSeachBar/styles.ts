@@ -144,10 +144,7 @@ export const CategoryDropdownMenu = styled.div`
     }
 
     ul li.category-menu.active {
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
+        border-radius: 5px 5px 0 0;
         border-bottom: 1px solid #16324C;
     }
 
