@@ -12,7 +12,7 @@ export const Container = styled.section`
 
     table {
         width: 100%;
-        border-spacing: 0 5px;
+        border-spacing: 0;  
     }
 
     .th-image {
@@ -27,14 +27,21 @@ export const Container = styled.section`
         width: 15%; 
     }
 
+    thead tr {
+        background: ${props => props.theme.primary};
+        height: 50px;
+    }
+
     tbody tr {
-        background: #0D2235;
+        background: ${props => props.theme.secondary};
+    }
+
+    tbody tr + tr td {
+        border-top: 1px solid ${props => props.theme.background};
     }
 
     .td-image {
         text-align: center;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
     }
 
     .td-image img {
@@ -112,8 +119,6 @@ export const Container = styled.section`
     .td-total {
         text-align: center;
         font-weight: bold;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
     }
 
     .freight-total {
@@ -125,10 +130,9 @@ export const Container = styled.section`
         width: 300px;
         font-size: 25px;
         font-weight: bold;
-        margin: 20px 30px 0 0;
+        margin-top: 20px;
         background: #0D2235;
         padding: 20px;
-        border-radius: 5px;
     }
 
     .total-price p + p + p {
@@ -229,8 +233,7 @@ export const Container = styled.section`
         flex-direction: column;
         align-items: flex-start;
         background: #0D2235;
-        padding: 5px;
-        border-radius: 5px;
+        padding: 5px;   
     }
 
     .choose-freight span {
@@ -240,11 +243,9 @@ export const Container = styled.section`
     }
 
     .choose-freight span input {
-        margin: 0 10px 0 0;
-    }
-
-    .choose-freight input {
-        width: 20px;
+        margin-right: 10px;
+        width: 15px;
+        cursor: pointer;
     }
 
     @media (max-width: 800px) {

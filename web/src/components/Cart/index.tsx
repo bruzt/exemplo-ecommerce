@@ -23,14 +23,11 @@ export default function Cart() {
     const orderContext = useOrder();
 
     useEffect(() => {
-        
         cartContext.resetFreight();
         fetchProducts();
-
     }, []);
 
     useEffect(() => {
-
         calcTotalPrice();
 
     }, [cartContext.getProducts, cartContext.getCart, cartContext.getFreightSelected]);
@@ -69,7 +66,7 @@ export default function Cart() {
         cartContext.setProducts(products);
     }
 
-    function handleZipCode(value){
+    function handleZipCode(value: string){
 
         cartContext.resetFreight();
 
@@ -96,7 +93,7 @@ export default function Cart() {
         cartContext.setTotalPrice(Number(totalPrice.toFixed(2)));
     }
 
-    function verifyQtd({ id, qtd }) {
+    function verifyQtd({ id, qtd }: { id: number, qtd: number }) {
 
         cartContext.resetFreight();
 
@@ -116,7 +113,7 @@ export default function Cart() {
         cartContext.addToCart({ id, qtd });
     }
 
-    function handleFreightCheck(name){
+    function handleFreightCheck(name: string){
 
         if(name == 'pac') cartContext.setFreightSelected('pac');
         else if (name == 'sedex') cartContext.setFreightSelected('sedex');
@@ -324,11 +321,11 @@ export default function Cart() {
                                             <span>
                                                 <input 
                                                     type="radio" 
-                                                    name='pac'
+                                                    id='pac'
                                                     checked={cartContext.getFreightSelected == 'pac' ? true : false} 
-                                                    onChange={(event) => handleFreightCheck(event.target.name)} 
+                                                    onChange={() => handleFreightCheck('pac')} 
                                                 /> 
-                                                <p>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</p>
+                                                <label htmlFor='pac'>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</label>
                                             </span>
                                         )}
                                         
@@ -340,11 +337,11 @@ export default function Cart() {
                                             <span>
                                                 <input 
                                                     type="radio" 
-                                                    name='sedex'
+                                                    id='sedex'
                                                     checked={cartContext.getFreightSelected == 'sedex' ? true : false} 
-                                                    onChange={(event) => handleFreightCheck(event.target.name)} 
+                                                    onChange={() => handleFreightCheck('sedex')} 
                                                 /> 
-                                                <p>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</p>  
+                                                <label htmlFor='sedex'>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</label>  
                                             </span>
                                         )}
                                     </div>
