@@ -126,6 +126,8 @@ export const Container = styled.section`
         color: inherit;
         background: #3E8C34;
 
+        transition: background-color .5s;
+
         &:hover {
             background: #41A933;
         }
@@ -140,7 +142,7 @@ export const Container = styled.section`
     }
 
     .buy-card button p {
-        margin: 5px 0 0 0;
+        margin-top: 5px;
     }
 
     .description {

@@ -65,7 +65,7 @@ export const Container = styled.section`
     }
 
     .td-name .order-discount {
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         max-height: 27px;
         padding: 5px 10px;
         margin: 0 0 0 10px;
@@ -98,18 +98,18 @@ export const Container = styled.section`
         border-radius: 2px;
         font-weight: bold;
         cursor: pointer;
-    }
 
-    .td-qtd button:active {
-        background: #3E8C34;
+        &:active {
+            background: ${props => props.theme.success};
+        }
     }
 
     .td-qtd button#remove {
-        background: #a32e39;
-    }
-    
-    .td-qtd button#remove:active { 
-        background: #bf2232;
+        background: ${props => props.theme.danger};
+
+        &:active {
+            background: ${props => props.theme.dangerActive};
+        }
     }
 
     .td-qtd input {
@@ -131,11 +131,14 @@ export const Container = styled.section`
         font-size: 25px;
         font-weight: bold;
         margin-top: 20px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         padding: 20px;
+
+        display: flex;
+        flex-direction: column;
     }
 
-    .total-price p + p + p {
+    .total-price span.total {
         font-size: 30px;
     }
 
@@ -145,37 +148,40 @@ export const Container = styled.section`
         margin: 10px 0 0 0;
         border: 0;
         border-radius: 5px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
         color: inherit;
 
+        transition: background-color .5s;
+
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
         }
     }
 
     .total-price button.login {
-        background: #EED202;
-        color: #0D2235;
+        background: ${props => props.theme.warning};
+        color: ${props => props.theme.primary};
+
+        transition: background-color .5s;
 
         &:hover {
-            background: #f0dc4d;
+            background: ${props => props.theme.warningActive};
         }
 
         &:active {
-            background: #EED202;
+            background: ${props => props.theme.warning};
         }
-    }
-
-    .total-price button:disabled {
-        background: #a32e39;
-        color: inherit;
     }
 
     .calc-freight {
@@ -212,7 +218,7 @@ export const Container = styled.section`
     }
 
     .calc-freight button:active {
-        background: #3E8C34;
+        background: ${props => props.theme.success};
     }
 
     /* remove arrows from input[type="number"] Chrome, Safari, Edge, Opera */
@@ -232,7 +238,7 @@ export const Container = styled.section`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         padding: 5px;   
     }
 

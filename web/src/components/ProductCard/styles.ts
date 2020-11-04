@@ -121,8 +121,10 @@ export const Container = styled.div`
 
         font-size: 20px;
 
+        transition: background-color .5s;
+
         &:hover {
-            background: ${props => props.theme.successActive    };
+            background: ${props => props.theme.successActive};
         }
 
         &:active {

@@ -350,12 +350,15 @@ export default function Cart() {
                             </div>
 
                             <div className="total-price">
-                                <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                                <p>Frete: R$ {(cartContext.getFreightSelected) ? (
-                                    Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)
-                                ) : ( '0.00' )
-                                }</p>
-                                <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
+                                <span>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</span>
+                                <span>
+                                    Frete: R$ {(cartContext.getFreightSelected) 
+                                        ? (
+                                            Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)
+                                        ) : ( '0.00' )
+                                    }
+                                </span>
+                                <span className='total'>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</span>
                                 
                                 {(userContext.getLogin) ? (
                                     (cartContext.getFreightSelected == null) ? (
