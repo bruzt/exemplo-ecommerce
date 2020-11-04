@@ -113,14 +113,17 @@ export function CartContextProvider({ children }: IProps){
 
     function removeFromCart(id: number){
 
-        resetFreight();
+        if(confirm("Tem certeza que deseja remover esse item?")){
 
-        const cart = getCart.filter( (product) => product.id != id);
-        const products = getProducts.filter( (product) => product.id != id);
-        
-        sessionStorage.setItem('cart', JSON.stringify(cart));
-        setCart(cart);
-        setProducts(products);
+            resetFreight();
+    
+            const cart = getCart.filter( (product) => product.id != id);
+            const products = getProducts.filter( (product) => product.id != id);
+            
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+            setCart(cart);
+            setProducts(products);
+        }
     }
 
     function resetFreight(){
