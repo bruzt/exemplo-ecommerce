@@ -1,39 +1,14 @@
 const supertest = require('supertest');
 
-const truncate = require('../../utils/truncate');
-const factories = require('../../utils/factories');
-const app = require('../../../src/app');
+const truncate = require('../../../testUtils/truncate');
+const factories = require('../../../testUtils/factories');
+const app = require('../../../app');
 
 describe('userResetPasswordController Test Suit', () => {
 
     beforeEach( () => {
               
         return truncate();
-    });
-
-    it('should send a email with token to reset password', async () => {
-
-        const user = await factories.create('User', {
-            email: 'um@dois.tres'
-        });
-
-        const response = await supertest(app).post('/reset-password')
-            .send({
-                email: user.email
-            });
-
-        expect(response.status).toBe(200);
-    });
-
-    it('should return code 400 for "user not found" - store', async () => {
-
-        const response = await supertest(app).post('/reset-password')
-            .send({
-                email: 'um@dois.tres'
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("user not found");
     });
 
     it('should change the password with valid token', async () => {
