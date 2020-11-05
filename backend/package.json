@@ -10,7 +10,7 @@
     "prod": "cross-env NODE_ENV=production pm2 start src/server.js",
     "postprod": "pm2 logs",
     "test": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=test jest",
-    "posttest": "node _tests/utils/deleteDbFile.js"
+    "posttest": "node src/testUtils/deleteDbFile.js"
   },
   "keywords": [],
   "author": "",
