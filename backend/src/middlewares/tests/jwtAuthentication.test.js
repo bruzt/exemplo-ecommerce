@@ -1,6 +1,6 @@
-const factories = require('../../utils/factories');
-const jwtAuthentication = require('../../../src/middlewares/jwtAuthentication'); 
-const truncate = require('../../utils/truncate');
+const factories = require('../../testUtils/factories');
+const jwtAuthentication = require('../jwtAuthentication'); 
+const truncate = require('../../testUtils/truncate');
 
 describe('Middleware jwtAuthentication Test Suit', () => {
 
