@@ -1,113 +1,16 @@
 const supertest = require('supertest');
 
-const truncate = require('../../utils/truncate');
-const factories = require('../../utils/factories');
-const app = require('../../../src/app');
-const ProductModel = require('../../../src/models/ProductModel');
+const truncate = require('../../../testUtils/truncate');
+const factories = require('../../../testUtils/factories');
+const app = require('../../../app');
 
-describe('categoryController Test Suit', () => {
+const ProductModel = require('../../../models/ProductModel');
+
+describe('addressController Test Suit', () => {
 
     beforeEach( () => {
        
         return truncate();
-    });
-
-    it('should show all categories', async () => {
-
-        for(let i = 0; i < 3; i++){
-            
-            await factories.create('Category', {
-                name: 'a' + i
-            });
-        }
-
-        const response = await supertest(app).get(`/categories`);
-        
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBe(3);
-    });
-
-    it('should add a category', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).post('/categories')
-            .set('authorization', `Bearer ${token}`)
-            .send({
-                name: 'Eletronicos'
-            });
-
-        expect(response.status).toBe(200);
-        expect(response.body.name).toBe('Eletronicos');
-    });
-
-    it('should add a category with a parent', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-        const category = await factories.create('Category');
-
-        const response = await supertest(app).post('/categories')
-            .set('authorization', `Bearer ${token}`)
-            .send({
-                name: 'Eletronicos',
-                parent_id: category.id
-            });
-
-        expect(response.status).toBe(200);
-        expect(response.body.parent_id).toBe(category.id);
-    });
-
-    it('should return code 400 for "parent category id not found"', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).post('/categories')
-            .set('authorization', `Bearer ${token}`)
-            .send({
-                name: 'Eletronicos',
-                parent_id: 5
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('parent category id not found');
-    });
-
-    it('should update a category', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-        const category = await factories.create('Category');
-
-        const response = await supertest(app).put(`/categories/${category.id}`)
-            .set('authorization', `Bearer ${token}`)
-            .send({
-                name: 'Jogos'
-            })
-
-        expect(response.status).toBe(200);
-    });
-
-    it('should return code 400 for "no update has been made"', async () => {
-
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).put(`/categories/44`)
-            .set('authorization', `Bearer ${token}`)
-            .send({
-                name: 'testecat'
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('no update has been made');
     });
 
     it('should delete a category', async () => {
