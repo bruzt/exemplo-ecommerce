@@ -39,6 +39,10 @@ async function generateSiteMap(){
         </urlset>
     `;
 
+    fs.writeFileSync('public/robots.txt', `
+        user-agent: *
+        sitemap: ${process.env.SITE_DOMAIN}/sitemap.xml
+    `);
     fs.writeFileSync('public/sitemap.xml', sitemap);
 }
 
