@@ -14,7 +14,7 @@ module.exports = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    storage: (process.env.NODE_ENV === 'test') ? './_tests/database.sqlite' : undefined,
+    storage: (process.env.NODE_ENV === 'test') ? './database.sqlite' : undefined,
     define: {
         timestamps: true,
         underscored: true, // snake_case
