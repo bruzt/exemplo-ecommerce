@@ -1,10 +1,9 @@
 const supertest = require('supertest');
 const jwt = require('jsonwebtoken');
 
-const truncate = require('../../utils/truncate');
-const factories = require('../../utils/factories');
-const app = require('../../../src/app');
-
+const truncate = require('../../../testUtils/truncate');
+const factories = require('../../../testUtils/factories');
+const app = require('../../../app');
 
 describe('sessionController Test Suit', () => {
 
