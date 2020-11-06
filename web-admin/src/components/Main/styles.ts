@@ -19,6 +19,10 @@ export const Menu = styled.div`
         position: relative;
     }
 
+    li a {
+        width: 100%;
+    }
+
     li span {
         position: relative;
         left: 10px;
