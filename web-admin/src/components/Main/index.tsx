@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head'
 import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-
-import api from '../../services/api';
 
 import { Container, Menu, MainContainer } from './styles';
 
@@ -19,11 +17,7 @@ import ListOrders from '../orderComponents/ListOrders';
 
 export default function Main(){
 
-    const router = useRouter()
-
-    useEffect( () => {
-        if(!api.defaults.headers.authorization) router.replace('/');
-    }, []);
+    const router = useRouter();
 
     return (
         <>

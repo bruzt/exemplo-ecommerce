@@ -1,25 +1,14 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-
-import api from '../../services/api';
 
 import { Container } from './styles';
 
 import { useTheme } from '../../contexts/ThemeContext';
+import { useLoginLogout } from '../../contexts/LoginLogoutContext';
 
 export default function Header() {
 
-    const router = useRouter();
     const themeContext = useTheme();
-
-    function logOut(){
-
-        api.defaults.headers.authorization = undefined;
-
-        sessionStorage.removeItem('token');
-
-        router.push('/');
-    }
+    const loginLogoutContext = useLoginLogout();
     
     return (
         <Container>
@@ -46,7 +35,7 @@ export default function Header() {
             </div>
 
             <div>
-                <button type='button' onClick={() => logOut()}>
+                <button type='button' onClick={() => loginLogoutContext.logout()}>
                     Logout
                 </button>
             </div>

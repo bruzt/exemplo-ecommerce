@@ -1,66 +1,24 @@
 import React, { FormEvent, useState } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import jwt from 'jsonwebtoken';
-
-import api from '../../services/api';
 
 import { Container } from './styles';
 
-import Button from '../genericComponents/Button';
+import { useLoginLogout } from '../../contexts/LoginLogoutContext';
 
-interface ITokenPayload {
-    id: number;
-    admin: boolean;
-}
+import Button from '../genericComponents/Button';
 
 export default function Login(){
 
     const [getEmail, setEmail] = useState('');
     const [getPassword, setPassword] = useState('');
 
-    const router = useRouter();
+    const loginLogoutContext = useLoginLogout();
 
-    if(process.browser){
-        const token = sessionStorage.getItem('token');
-
-        if(token) session(token);
-    }
-
-    async function onSubmit(event: FormEvent) {
+    function onSubmit(event: FormEvent) {
         
         event.preventDefault();
 
-        try {
-
-            const response = await api.post('/sessions', {
-                email: getEmail,
-                password: getPassword
-            });
-
-            session(response.data.token);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao fazer login');
-        }
-    }
-
-    function session(token: string){
-
-         const tokenPayload: ITokenPayload = jwt.decode(token) as ITokenPayload;
-
-         if(tokenPayload.admin){
-
-             sessionStorage.setItem('token', token);
-     
-             api.defaults.headers.authorization = `Bearer ${token}`;
-     
-             router.push('/admin?menu=products-list');
-
-         } else {
-             alert('Conta não autorizada');
-         }
+        loginLogoutContext.login(getEmail, getPassword);
     }
 
     return (
