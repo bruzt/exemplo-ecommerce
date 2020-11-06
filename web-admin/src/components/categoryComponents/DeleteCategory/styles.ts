@@ -4,8 +4,6 @@ export const Container = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    margin: -50px;
-    padding: 100px;
     z-index: 10;
     background: rgba(1, 1, 1, 0.5);
 
@@ -15,6 +13,8 @@ export const Container = styled.div`
     form {
         width: 500px;
         height: fit-content;
+
+        margin-top: 200px;
         background: ${(props) => props.theme.primary};
         border-radius: 4px;
         padding: 10px;
@@ -55,7 +55,7 @@ export const Container = styled.div`
         flex-direction: column;
         align-items: center;
 
-        padding: 20px;
+        padding-bottom: 20px;
     }
 
     main > * {
