@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
+import GlobalStyles from '../styles/GlobalStyles';
 import darkTheme from '../styles/darkTheme';
 import lightTheme from '../styles/lightTheme';
 
@@ -33,6 +34,7 @@ export function ThemeContextProvider({ children }: ThemeContextProviderProps){
             }}
         >
             <ThemeProvider theme={getTheme}>
+                <GlobalStyles />
                 {children}
             </ThemeProvider>
         </Context.Provider>

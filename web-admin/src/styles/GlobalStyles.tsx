@@ -20,10 +20,10 @@ export default createGlobalStyle`
         font-size: 16px;
     }
 
-    /*a {
+    a {
         text-decoration: none;
         color: inherit;
-    }*/
+    }
 
     input, select, textarea {
         background: #eee;
