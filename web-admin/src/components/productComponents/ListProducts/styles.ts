@@ -3,10 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.section`
     position: relative;
 
-    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    h2 {
+        margin-top: 50px;
+    }
 
     & > form {
         width: fit-content;
@@ -26,6 +29,7 @@ export const Container = styled.section`
         border-bottom-left-radius: 4px;
         width: 350px;
         padding: 0 5px;
+        text-align: center;
     }
 
     & > form button {
@@ -38,23 +42,21 @@ export const Container = styled.section`
     table {
         margin-top: 20px;
         font-size: 20px;
-        border-spacing: 0 5px;
+        border-spacing: 0 1px;
+    }
+
+    table thead tr {
+        background: ${props => props.theme.primary};
+        height: 40px;
+    }
+
+    table tbody tr {
+        background: ${(props) => props.theme.secondary};
     }
 
     table td {
         text-align: center;
         line-height: 50px;
-        background: ${(props) => props.theme.primary};
-    }
-
-    table td:first-child {
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-    }
-
-    table td:last-child {
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
     }
 
     div.img-container {

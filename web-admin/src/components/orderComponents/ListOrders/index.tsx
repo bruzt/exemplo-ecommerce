@@ -93,6 +93,7 @@ export default function ListOrders() {
         router.replace({
             pathname: '/admin',
             query: {
+                ...router.query,
                 page
             }
         });
@@ -100,6 +101,8 @@ export default function ListOrders() {
 
     return (
         <Container>
+
+            <h2>Lista de Ordens de compra</h2>
 
             <table>
                 <thead>

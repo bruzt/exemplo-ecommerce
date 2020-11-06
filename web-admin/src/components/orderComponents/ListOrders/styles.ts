@@ -4,22 +4,32 @@ export const Container = styled.div`
     width: 100%;
     height: 100%;
 
-    padding: 10px;
-    padding-top: 20px;
-
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
 
+    h2 {
+        margin-top: 50px;
+    }
+
     table {
-        border-spacing: 0 5px;
+        border-spacing: 0 1px;
         line-height: 20px;
         font-size: 20px;
+
+        margin-top: 50px;
+    }
+
+    table thead tr {
+        background: ${props => props.theme.primary};
+        height: 40px;
+    }
+
+    table tbody tr {
+        background: ${props => props.theme.secondary};
     }
 
     table td {
-        background: ${props => props.theme.primary};
         height: 50px;
         text-align: center;
     }

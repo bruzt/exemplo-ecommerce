@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
-//import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { AxiosResponse } from 'axios';
 
 import api from '../../../services/api';
@@ -45,16 +45,15 @@ export default function ListProducts(){
 
     const [getSeachBar, setSeachBar] = useState('');
 
-    const [getCurrentPage, setCurrentPage] = useState(1);
     const [getTotalPages, setTotalPages] = useState(1);
 
 
     const [getUpdeting, setUpdeting] = useState(false);
     const [getUpdetingProduct, setUpdetingProduct] = useState<IProduct>({} as IProduct);
 
-    //const router = useRouter();
+    const router = useRouter();
 
-    const _currentPage = getCurrentPage; //Number(router.query.page) || 1;
+    const _currentPage = Number(router.query.page) || 1;
     const _itemsPerPage = 15;
     const _page = `offset=${(_currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`;  
 
@@ -118,15 +117,13 @@ export default function ListProducts(){
 
     function handlePagination(value: number){
 
-        /*router.push({
+        router.push({
             pathname: '/admin',
             query: {
                 ...router.query,
                 page: value
             }
-        });*/
-
-        setCurrentPage(value);
+        });
     }
 
     function handleUpdateModal(product: IProduct){
@@ -140,10 +137,15 @@ export default function ListProducts(){
 
             {getUpdeting && <UpdateProduct product={getUpdetingProduct} setUpdeting={setUpdeting} />}
             
-            <h1>Lista de produtos</h1>
+            <h2>Lista de produtos</h2>
 
             <form onSubmit={onSubmit}>
-                <input type="text" value={getSeachBar} onChange={(event) => setSeachBar(event.target.value)} />
+                <input 
+                    type="text" 
+                    value={getSeachBar} 
+                    onChange={(event) => setSeachBar(event.target.value)} 
+                    placeholder='Nome ou ID do produto'
+                />
                 <button type='submit'>
                     <FaSearch size={16} />
                 </button>
