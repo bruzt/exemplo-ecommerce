@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head'
 import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import api from '../../services/api';
 
@@ -16,19 +17,7 @@ import CategoriesList from '../categoryComponents/ListCategories';
 import AddCategory from '../categoryComponents/AddCategory';
 import ListOrders from '../orderComponents/ListOrders';
 
-type SelectedMenu = 
-    "" |
-    "products-list" |
-    "add-products" |
-    "categories-list" |
-    "add-categories" |
-    "orders-list" |
-    "update-orders"
-;
-
 export default function Main(){
-
-    const [getSelectedMenu, setSelectedMenu] = useState<SelectedMenu>('');
 
     const router = useRouter()
 
@@ -66,7 +55,7 @@ export default function Main(){
                         >
 
                             <nav>
-                                <input type="checkbox" id='products-cb' /> 
+                                <input type="checkbox" id='products-cb' defaultChecked={true} /> 
                                 <div className='cb-label'>
                                     <div className="icon">
                                         <FaCaretRight /> 
@@ -75,17 +64,20 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li
-                                        className={`${(getSelectedMenu == "products-list") ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu("products-list")}
-                                    >
-                                        <span>Listar</span>
+                                    <li className={`${(router.query.menu == "products-list") ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=products-list'>
+                                            <a>
+                                                <span>Listar</span>
+                                            </a>
+                                        </Link>
                                     </li>
-                                    <li
-                                        className={`${(getSelectedMenu == 'add-products') ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu('add-products')}        
-                                    >
-                                        <span>Adicionar</span>
+
+                                    <li className={`${(router.query.menu == 'add-product') ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=add-product'>
+                                            <a>
+                                                <span>Adicionar</span>
+                                            </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </nav>
@@ -100,17 +92,19 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li
-                                        className={`${(getSelectedMenu == 'categories-list') ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu('categories-list')} 
-                                    >
-                                        <span>Listar</span>
+                                    <li className={`${(router.query.menu == 'categories-list') ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=categories-list'>
+                                            <a>
+                                                <span>Listar</span>
+                                            </a>
+                                        </Link>
                                     </li>
-                                    <li
-                                        className={`${(getSelectedMenu == 'add-categories') ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu('add-categories')} 
-                                    >
-                                        <span>Adicionar</span>
+                                    <li className={`${(router.query.menu == 'add-category') ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=add-category'>
+                                            <a>
+                                                <span>Adicionar</span>
+                                            </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </nav>
@@ -127,18 +121,20 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li
-                                        className={`${(getSelectedMenu == 'orders-list') ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu('orders-list')} 
-                                    >
-                                        <span>Listar</span>
+                                    <li className={`${(router.query.menu == 'orders-list') ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=orders-list'>
+                                            <a>
+                                                <span>Listar</span>
+                                            </a>
+                                        </Link>
                                     </li>
-                                    <li
-                                        className={`${(getSelectedMenu == 'update-orders') ? 'active' : ''}`} 
-                                        onClick={() => setSelectedMenu('update-orders')} 
-                                    >
-                                        <span>Atualizar</span>
-                                    </li>
+                                    {/*<li className={`${(router.query.menu == 'update-order') ? 'active' : ''}`}>
+                                        <Link href='/admin?menu=update-order'>
+                                            <a>
+                                                <span>Atualizar</span>
+                                            </a>
+                                        </Link>
+                                    </li>*/}
                                 </ul>
                             </nav>
                             
@@ -149,17 +145,17 @@ export default function Main(){
 
                 <MainContainer>
                     <div id='content'>
-                        {(getSelectedMenu == 'products-list') && <ListProducts />}
+                        {(router.query.menu == 'products-list') && <ListProducts />}
 
-                        {(getSelectedMenu == 'add-products') && <AddProduct />}
+                        {(router.query.menu == 'add-product') && <AddProduct />}
 
-                        {(getSelectedMenu == 'categories-list') && <CategoriesList />}
+                        {(router.query.menu == 'categories-list') && <CategoriesList />}
 
-                        {(getSelectedMenu == 'add-categories') && <AddCategory />}
+                        {(router.query.menu == 'add-category') && <AddCategory />}
 
-                        {(getSelectedMenu == 'orders-list') && <ListOrders />}
+                        {(router.query.menu == 'orders-list') && <ListOrders />}
 
-                        {(getSelectedMenu == 'update-orders') && <div>update-orders</div>}
+                        {(router.query.menu == 'update-order') && <div>update-order</div>}
                     </div>
                 </MainContainer>
             </Container>

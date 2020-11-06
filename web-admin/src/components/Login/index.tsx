@@ -56,7 +56,7 @@ export default function Login(){
      
              api.defaults.headers.authorization = `Bearer ${token}`;
      
-             router.push('/admin');
+             router.push('/admin?menu=products-list');
 
          } else {
              alert('Conta não autorizada');
@@ -77,13 +77,13 @@ export default function Login(){
                     <hr/>
 
                     <div className="input-group">
-                        <label htmlFor="">e-mail</label>
-                        <input type="email" value={getEmail} onChange={(event) => setEmail(event.target.value)} />
+                        <label htmlFor="email">e-mail</label>
+                        <input type="email" id='email' value={getEmail} onChange={(event) => setEmail(event.target.value)} />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="">Senha</label>
-                        <input type="password" value={getPassword} onChange={(event) => setPassword(event.target.value)} />
+                        <label htmlFor="password">Senha</label>
+                        <input type="password" id='password' value={getPassword} onChange={(event) => setPassword(event.target.value)} />
                     </div>
 
                     <Button type='submit'>
