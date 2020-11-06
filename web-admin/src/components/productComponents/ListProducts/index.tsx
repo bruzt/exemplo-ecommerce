@@ -132,6 +132,21 @@ export default function ListProducts(){
         setUpdetingProduct(product);
     }
 
+    async function handleDeleteProduct(id: number) {
+        if(confirm('Tem certeza que deseja deletar esse produto?')){
+            try {
+
+                await api.delete(`/products/${id}`);
+
+                fetchProducts();
+
+            } catch (error) {
+                console.log(error);
+                alert('Erro ao deletar produto');
+            }
+        }            
+    }
+
     return (
         <Container>
 
@@ -184,7 +199,7 @@ export default function ListProducts(){
                                     <button type='button' onClick={() => handleUpdateModal(product)}>
                                         <PencilIcon title='Editar' />
                                     </button>
-                                    <button type='button'>
+                                    <button type='button' onClick={() => handleDeleteProduct(product.id)}>
                                         <TrashIcon title='Excluir' />
                                     </button>
                                 </div>
