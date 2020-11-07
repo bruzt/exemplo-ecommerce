@@ -10,12 +10,10 @@ module.exports = async (req) => {
     let response, pac, sedex;
     
     try {
-        const source = axios.CancelToken.source();
+        let source = axios.CancelToken.source();
         
         setTimeout(() => {
-
             source.cancel();
-
         }, 5000);
         
         response = await axios.get(`http://correios-server.herokuapp.com/frete/prazo?nCdServico=04510&sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&nVlDiametro=0&nVlValorDeclarado=0&sCdMaoPropria=n&sCdAvisoRecebimento=n`, {
@@ -35,12 +33,10 @@ module.exports = async (req) => {
     
     try {
 
-        const source = axios.CancelToken.source();
+        let source = axios.CancelToken.source();
         
         setTimeout(() => {
-
             source.cancel();
-
         }, 5000);
                                
         response = await axios.get(`http://correios-server.herokuapp.com/frete/prazo?nCdServico=04014&sCepOrigem=13490000&sCepDestino=${req.body.destZipCode}&nVlPeso=${req.body.weight}&nCdFormato=1&nVlComprimento=${req.body.length}&nVlAltura=${req.body.height}&nVlLargura=${req.body.width}&nVlDiametro=0&nVlValorDeclarado=0&sCdMaoPropria=n&sCdAvisoRecebimento=n`, {
