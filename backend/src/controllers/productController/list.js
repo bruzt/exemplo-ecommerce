@@ -2,7 +2,6 @@ const express = require('express');
 const { Op } = require('sequelize');
 
 const findCategoriesChildrenIds = require('../../util/findCategoriesChildrenIds');
-const calcFinalPrice = require('../../util/calcFinalPrice');
 
 const ProductModel = require('../../models/ProductModel');
 const CategoryModel = require('../../models/CategoryModel');
