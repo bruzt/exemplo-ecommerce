@@ -105,7 +105,7 @@ export default function ListOrders() {
     return (
         <Container>
 
-            <h2>Lista de Ordens de compra</h2>
+            <h2>Lista de ordens de compra</h2>
 
             <table>
                 <thead>

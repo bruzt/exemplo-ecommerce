@@ -62,6 +62,8 @@ export default function AddCategory(){
 
     return (
         <Container>
+
+            <h2>Adicionar categoria</h2>
             
             <form onSubmit={onSubmit}>
 

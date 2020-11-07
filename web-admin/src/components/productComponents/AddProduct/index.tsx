@@ -119,6 +119,8 @@ export default function AddProduct() {
     return (
         <Container>
 
+            <h2>Adicionar produto</h2>
+
             <form onSubmit={onSubmit}>
 
                 <div className="input-group">

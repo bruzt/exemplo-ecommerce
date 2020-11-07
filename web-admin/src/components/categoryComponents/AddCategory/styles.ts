@@ -5,10 +5,13 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
 
+    h2 {
+        margin: 50px 0;
+    }
+
     form {
         width: 500px;
         height: 250px;
-        margin-top: 50px;
         background: ${(props) => props.theme.primary};
         border-radius: 4px;
 
