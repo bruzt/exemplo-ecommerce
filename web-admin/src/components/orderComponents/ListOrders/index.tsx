@@ -4,6 +4,9 @@ import io from 'socket.io-client';
 
 import api from '../../../services/api';
 
+import Pencil from '../../genericComponents/icons/Pencil';
+import TrashCan from '../../genericComponents/icons/TrashCan';
+
 import { Container } from './styles';
 
 import PaginationNav from '../../PaginationNav';
@@ -109,6 +112,7 @@ export default function ListOrders() {
                     <tr>
                         <th style={{ width: 50 }}>ID</th>
                         <th style={{ width: 500 }}>Status</th>
+                        <th style={{ width: 100 }}>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -123,6 +127,15 @@ export default function ListOrders() {
                                     {order.status == 'sent' && <span>Enviado</span>}
                                     {order.status == 'received' && <span>Entregue</span>}
                                 </div>
+                            </td>
+                            <td className='actions '>
+                                <button type='button'>
+                                    <Pencil />
+                                </button>
+
+                                <button type='button'>
+                                    <TrashCan />
+                                </button>
                             </td>
                         </tr>
                     ))}

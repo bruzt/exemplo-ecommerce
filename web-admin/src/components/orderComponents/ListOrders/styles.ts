@@ -29,6 +29,11 @@ export const Container = styled.div`
         background: ${props => props.theme.secondary};
     }
 
+    td.actions {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
     table td {
         height: 50px;
         text-align: center;
@@ -59,5 +64,11 @@ export const Container = styled.div`
 
     td div.received {
         background: ${props => props.theme.successActive};
+    }
+
+    td button {
+        cursor: pointer;
+        background: transparent;
+        border: 0;
     }
 `;
