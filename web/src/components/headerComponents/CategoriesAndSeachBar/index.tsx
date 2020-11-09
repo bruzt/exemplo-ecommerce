@@ -3,6 +3,7 @@ import { FaCaretDown, FaCaretRight, FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import Link from 'next/link';
+import { FaBars } from 'react-icons/fa';
 
 import api from '../../../services/api';
 
@@ -11,7 +12,9 @@ import { IProduct } from '../../../pages/[productId]';
 
 import noImage from '../../../assets/img-n-disp.png';
 
-import { Container, CategoryDropdownMenu } from './styles';
+import { Container, CategoryDropdownMenu, SearchBarForm } from './styles';
+
+import MobileMenu from '../MobileMenu';
 
 let timeoutId: number;
 let firstRender = true;
@@ -21,6 +24,8 @@ export default function CategoriesAndSeachBar() {
     const [getActiveCategoryMenu, setActiveCategoryMenu] = useState(false);
 
     const [getProducts, setProducts] = useState<IProduct[]>([]);
+
+    const [getMobileMenuActive, setMobileMenuActive] = useState(false);
 
     const router = useRouter();
     const filterBarContext = useFilterBar();
@@ -36,6 +41,14 @@ export default function CategoriesAndSeachBar() {
         else firstRender = false;
 
     }, [filterBarContext.getSearchBarText]);
+
+    useEffect( () => {
+        let body;
+        if(process.browser) body = document.getElementById('root');
+
+        if(getMobileMenuActive) body.style.overflow = 'hidden';
+        else body.style.overflow = 'initial';
+    }, [getMobileMenuActive]);
 
     function debounceFetchSearchProducts(){
 
@@ -64,6 +77,8 @@ export default function CategoriesAndSeachBar() {
     function handleSearch(event: FormEvent) {
 
         event.preventDefault();
+
+        setMobileMenuActive(false);
 
         if(String(filterBarContext.getSearchBarText).length > 0){
 
@@ -147,60 +162,76 @@ export default function CategoriesAndSeachBar() {
         );
     }
 
+    function SearchBar(){
+        return (
+            <SearchBarForm onSubmit={handleSearch}>
+                <div>
+                    <input
+                        type="text"
+                        placeholder='Pesquise o seu produto'
+                        value={filterBarContext.getSearchBarText}
+                        onChange={(event) => filterBarContext.setSearchBarText(event.target.value)}
+                    />
+                    <button type='submit'>
+                        <FaSearch />
+                    </button>
+                </div>
+
+                <ClickAwayListener onClickAway={() => setProducts([])}>
+                    <ul className="dropdown-search">
+                        {getProducts.map( (product) => (
+                            <li key={product.id}>
+                                <Link href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
+                                    <a onClick={() => setMobileMenuActive(false)}>
+                                        <div className="img-container">
+                                                {product.images.length > 0
+                                                    ? (
+                                                        <img 
+                                                            src={`${process.env.BACKEND_URL}/uploads/${product.images[0].filename}`} 
+                                                            alt={product.title} 
+                                                        />
+                                                    ) : (
+                                                        <img 
+                                                            src={noImage} 
+                                                            alt='sem imagem' 
+                                                        />
+                                                    )
+                                                }  
+                                        </div>
+                                        <span className='title'>{product.title}</span>
+                                        <span className='price'><span>R$&nbsp;</span>{product.price}</span>
+                                    </a>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </ClickAwayListener>
+            </SearchBarForm>
+        );
+    }
+
     return (
         <Container>
-            <nav>
-                <div className="limit-center">
+            <div className="limit-center">
 
-                    {categoryTree()}    
+                {categoryTree()}    
 
-                    <form onSubmit={handleSearch}>
-                        <div>
-                            <input
-                                type="text"
-                                placeholder='Pesquise o seu produto'
-                                value={filterBarContext.getSearchBarText}
-                                onChange={(event) => filterBarContext.setSearchBarText(event.target.value)}
-                            />
-                            <button type='submit'>
-                                <FaSearch />
-                            </button>
-                        </div>
+                {SearchBar()}
 
-                        <ClickAwayListener onClickAway={() => setProducts([])}>
-                            <ul className="dropdown-search">
-                                {getProducts.map( (product) => (
-                                    <li key={product.id}>
-                                        <Link href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
-                                            <a>
-                                                <div className="img-container">
-                                                        {product.images.length > 0
-                                                            ? (
-                                                                <img 
-                                                                    src={`${process.env.BACKEND_URL}/uploads/${product.images[0].filename}`} 
-                                                                    alt={product.title} 
-                                                                />
-                                                            ) : (
-                                                                <img 
-                                                                    src={noImage} 
-                                                                    alt='sem imagem' 
-                                                                />
-                                                            )
-                                                        }  
-                                                </div>
-                                                <span className='title'>{product.title}</span>
-                                                <span className='price'><span>R$&nbsp;</span>{product.price}</span>
-                                            </a>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </ClickAwayListener>
-                    </form>
+                <span></span>
+            </div>
 
-                    <span></span>
-                </div>
-            </nav>
+            <div className='mobile-menu'>
+                <button 
+                type='button'
+                onClick={() => setMobileMenuActive(true)}
+                >
+                    <FaBars size={30} />                                    
+                </button>
+            </div>
+
+            {getMobileMenuActive && <MobileMenu setMobileMenuActive={setMobileMenuActive} searchBar={SearchBar} />}
+        
         </Container>
     );
 }

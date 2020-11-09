@@ -1,35 +1,66 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.nav`
 
-    nav {
-        width: 100%;
-        height: 50px;
-        background: #16324C;
-    }
+    width: 100%;
+    height: 50px;
+    background: ${props => props.theme.secondary};
 
-    nav .limit-center {
+    div.limit-center {
         width: 100%;
         height: 100%;
         max-width: 1100px;
         margin: 0 auto;
+    }
+
+    div.limit-center {
+        width: 100%;
+        
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    nav .limit-center form {
-        position: relative;
+    div.mobile-menu {
+        display: none !important;
 
-        width: 400px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
     }
 
-    nav .limit-center form > div {
+    div.mobile-menu button {
+        width: 50px;
+        height: 100%;
+        border: 0;
+        background: ${props => props.theme.secondary};
+        color: ${props => props.theme.color};
+        cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+        div.limit-center {
+            display: none !important;
+        }
+
+        div.mobile-menu {
+            display: flex !important;
+        }
+    }
+`;
+
+export const SearchBarForm = styled.form`
+    
+    position: relative;
+    width: 400px;
+
+    & > div {
         display: flex;
         align-items: center;
     }
 
-    nav .limit-center form input {
+    input {
         width: 100%;
         height: 40px;
         padding: 5px;
@@ -40,7 +71,7 @@ export const Container = styled.div`
         text-align: center;
     }
 
-    nav .limit-center form button {
+    button {
         width: 40px;
         height: 40px;
 
@@ -50,7 +81,7 @@ export const Container = styled.div`
         border-bottom-right-radius: 5px;
     }  
 
-    nav .limit-center form ul.dropdown-search {
+    ul.dropdown-search {
         position: absolute;
         top: 45px;
         z-index: 10;
@@ -60,7 +91,7 @@ export const Container = styled.div`
         list-style: none;
     }
 
-    form ul.dropdown-search li {
+    ul.dropdown-search li {
         color: #111;
         margin-bottom: 5px;
     }
@@ -72,12 +103,12 @@ export const Container = styled.div`
         justify-content: space-between;
     }
 
-    form ul.dropdown-search li div.img-container {
+    ul.dropdown-search li div.img-container {
         width: 100px;
         height: 45px;
     }
 
-    form ul.dropdown-search li img {
+    ul.dropdown-search li img {
         width: auto;
         height: 45px;
     }
@@ -106,17 +137,6 @@ export const Container = styled.div`
 
     li span.price > span {
         font-size: 15px;
-    }
-
-    @media (max-width: 900px) {
-        nav .limit-center form input {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        nav .limit-center form button {
-            margin: 0;
-        }
     }
 `;
 
