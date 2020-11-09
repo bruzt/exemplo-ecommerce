@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useUser } from '../../contexts/userContext';
+import { useUser } from '../../../contexts/userContext';
 
-import ForgotPasswordModal from '../ForgotPasswordModal';
+import ForgotPasswordModal from '../../ForgotPasswordModal';
 
 import { Container } from './styles';
 

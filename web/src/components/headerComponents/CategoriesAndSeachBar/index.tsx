@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import Link from 'next/link';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import { ICategory, useFilterBar } from '../../contexts/filterBarContext';
-import { IProduct } from '../../pages/[productId]';
+import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
+import { IProduct } from '../../../pages/[productId]';
 
-import noImage from '../../assets/img-n-disp.png';
+import noImage from '../../../assets/img-n-disp.png';
 
 import { Container, CategoryDropdownMenu } from './styles';
 

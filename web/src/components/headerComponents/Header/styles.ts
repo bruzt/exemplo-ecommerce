@@ -101,6 +101,16 @@ export const Container = styled.div`
         margin: 0;
     }
 
+    @media (max-width: 600px) {
+        div.login-cart {
+            justify-content: flex-end;
+        }
+
+        div.login-cart div.login {
+            display: none;
+        }
+    }
+
     @media (max-width: 425px) {
 
         div.login-cart {

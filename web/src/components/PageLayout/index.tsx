@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container } from './styles';
 
-import Header from '../Header';
+import Header from '../headerComponents/Header';
 import Footer from '../Footer';
 
 interface IProps {
