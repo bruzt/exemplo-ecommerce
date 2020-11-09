@@ -63,7 +63,7 @@ export default function ListCategories(){
             {isUpdating && <UpdateCategory updatingCategory={getUpdatingCategory} updating={setUpdating} />}
             {isDeleting && <DeleteCategory deletingCategory={getDeletingCategory} deleting={setDeleting} />}
 
-            <h2>Lista de Categorias</h2>
+            <h2>Lista de categorias</h2>
 			
 			<table>
                 <thead>
