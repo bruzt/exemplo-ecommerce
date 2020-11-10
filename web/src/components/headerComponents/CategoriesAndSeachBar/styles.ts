@@ -53,7 +53,8 @@ export const Container = styled.nav`
 export const SearchBarForm = styled.form`
     
     position: relative;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
 
     & > div {
         display: flex;
