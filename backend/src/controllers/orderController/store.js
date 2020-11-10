@@ -165,22 +165,23 @@ module.exports = async (req, res) => {
             });*/
         }
 
-        const newOrder = await OrderModel.findOne({
-            where: {
-                id: order.id
-            },
+        const newOrder = await OrderModel.findByPk(order.id, {
             include: {
                 association: 'products',
                 attributes: ['id', 'title'],
                 through: { 
                     attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
                 },
+                include: {
+                    association: 'images',
+                    attributes: ['id', 'filename'],
+                }
             }
         });
     
         emitNewOrder(newOrder);
         
-        return res.json({ order, pagarme: response /*response.data*/ });
+        return res.json({ order: newOrder, pagarme: response /*response.data*/ });
         
     } catch (error) {
         console.error(error);
