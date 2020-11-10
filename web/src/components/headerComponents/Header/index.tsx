@@ -50,7 +50,7 @@ export default function Header() {
                             : ((userContext.getUser) 
                                 ? (
                                     <div className="dropdown">
-                                        <span>Olá, {userContext.getUser.name.split(' ')[0]}</span>
+                                        <span className='name'>Olá, {userContext.getUser.name.split(' ')[0]}</span>
                                         <div className="dropdown-content">
                                             <p
                                                 onClick={() => router.push({

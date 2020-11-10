@@ -29,9 +29,20 @@ export const Container = styled.div`
         max-width: 250px;
     }
 
+    div.login {
+        width: 100%;
+    }
+
     .dropdown {
         position: relative;
-        display: inline-block;
+        width: fit-content !important;
+    }
+
+    .dropdown span.name {
+        width: 150px;
+        
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .dropdown-content {
