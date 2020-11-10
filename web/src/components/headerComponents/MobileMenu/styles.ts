@@ -31,7 +31,7 @@ export const Container = styled.div`
     }
 
     div.user-login div.user-menu {
-        width: 300px;
+        width: 250px;
     }
 
     div.menu-header button {
@@ -68,7 +68,27 @@ export const Container = styled.div`
         align-items: center;
     }
 
-    div.menu-body form {
+    div.menu-body > * {
         margin-top: 50px;
+    }
+
+    div.category-menu {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    details {
+        margin-left: 20px;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+    details summary.last-child {
+        list-style: none;
+        list-style-type: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
     }
 `;

@@ -1,10 +1,12 @@
 import React from 'react';
-import { FaTimes, FaSearch, FaSignInAlt } from 'react-icons/fa';
+import { FaTimes, FaSignInAlt } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { Container } from './styles';
 
 import { useUser } from '../../../contexts/userContext';
+import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
 
 interface IProps {
     setMobileMenuActive: React.Dispatch<boolean>;
@@ -14,6 +16,7 @@ interface IProps {
 export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
 
     const userContext = useUser();
+    const filterBarContext = useFilterBar();
     const router = useRouter();
 
     function handleLoginModal(){
@@ -34,6 +37,54 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
     function handleUserLogout(){
         setMobileMenuActive(false);
         userContext.logOut()
+    }
+
+    function categoryTree(){
+
+        return filterBarContext.getCategories.map( category => {
+                        
+            if(category.parent_id == null || category.parent_id == 0) {
+                return (
+                    <details key={category.id}>
+                        <summary>{category.name}</summary>
+                        {buildCategoryTree(category)}
+                    </details>
+                );
+            }
+        });
+    }
+
+    function buildCategoryTree(fatherCategory: ICategory){
+
+        const children = filterBarContext.getCategories.filter(child => child.parent_id == fatherCategory.id)
+
+        return children.map( child => {
+
+            const childs = filterBarContext.getCategories.filter( (category) => child.id == category.parent_id);
+            let hasChildren = false;
+            if (childs.length > 0) hasChildren = true;
+            
+            if(hasChildren){
+                return (
+                    <details key={child.id}>
+                        <summary>{child.name}</summary>
+                        {buildCategoryTree(child)}
+                    </details>
+                );
+            } else {
+                return (
+                    <details>
+                        <summary className='last-child'>
+                            <Link href={`${process.env.SITE_DOMAIN}/search?categoryId=${child.id}&category=${child.name}`}>
+                                <a onClick={() => setMobileMenuActive(false)}>
+                                    <span>{child.name}</span>
+                                </a>
+                            </Link>
+                        </summary>
+                    </details>
+                );
+            }
+        });
     }
 
     return (
@@ -81,6 +132,10 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
             <div className="menu-body">
 
                 {searchBar()}
+
+                <div className="category-menu">
+                    {categoryTree()}
+                </div>
 
             </div>
 
