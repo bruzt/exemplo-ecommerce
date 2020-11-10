@@ -13,7 +13,11 @@ module.exports = async (req, res) => {
             attributes: { exclude: ['password'] },
             include: {
                 association: 'orders',
-                required: false
+                required: false,
+                include: {
+                    association: 'products',
+                    attributes: ['id', 'title'],
+                }
             }
         });
 
