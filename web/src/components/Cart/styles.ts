@@ -264,10 +264,14 @@ export const Container = styled.section`
         }
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 670px) {
         .freight-total {
             flex-direction: column;
             align-items: center;
+        }
+
+        .calc-freight {
+            margin: 20px 0 0 0;
         }
     }
 `;
