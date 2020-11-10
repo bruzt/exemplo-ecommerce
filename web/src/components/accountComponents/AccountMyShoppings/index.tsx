@@ -15,7 +15,7 @@ export default function AccountMyShoppings() {
 
     const orders = [...userContext.getUser.orders].reverse();
 
-    function handleOpenTab(id) {
+    function handleOpenTab(id: number) {
 
         if (getOpenOrderTab.includes(id)) {
 
