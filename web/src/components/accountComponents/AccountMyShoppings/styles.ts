@@ -147,7 +147,16 @@ export const Container = styled.section`
         div.scroll-x {
             max-width: 100vw;
             overflow-x: scroll;
+
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE 10+ */
+            
+            &::-webkit-scrollbar {
+                width: 0px;
+                background: transparent; /* Chrome/Safari/Webkit */
+            }
         }
+
 
         div.card {
             width: 1000px;
