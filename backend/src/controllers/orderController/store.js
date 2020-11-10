@@ -157,7 +157,7 @@ module.exports = async (req, res) => {
             });
 
             order.boleto_url = response.boleto_url;
-            order.save();
+            await order.save();
             
             /*response = await axios.post('https://api.pagar.me/1/transactions', {
                 api_key: process.env.PAGARME_API_KEY,
