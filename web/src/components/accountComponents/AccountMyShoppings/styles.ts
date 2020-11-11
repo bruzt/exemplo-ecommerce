@@ -117,17 +117,18 @@ export const Container = styled.section`
     }
 
     .order-card span.product-title {
-        position: relative;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .order-card span.product-title span:nth-child(1) {
+        width: 100%;
     }
 
     .order-card span.product-discount {
-        position: absolute;
-        top: 20%;
-        right: 5px;
-        z-index: 10;
-
+        width: fit-content !important;
         background: ${props => props.theme.success};
-        width: fit-content;
         padding: 5px 10px;
     }
 

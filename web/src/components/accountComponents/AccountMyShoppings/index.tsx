@@ -113,13 +113,15 @@ export default function AccountMyShoppings() {
                                                         />
                                                     </div>
                                                     <span className='product-title'>
-                                                        {product.title}
-                                                        {Number(product.orders_products.product_discount_percent) > 0 && (
-                                                            <span className='product-discount'>{product.orders_products.product_discount_percent}%</span>
-                                                        )}
+                                                        <span>{product.title}</span>
+                                                        <span>
+                                                            {Number(product.orders_products.product_discount_percent) > 0 && (
+                                                                <span className='product-discount'>{product.orders_products.product_discount_percent}%</span>
+                                                            )}
+                                                        </span>
                                                     </span>
                                                     <span>{product.orders_products.quantity_buyed}</span>
-                                                    <span>R$ {finalPrice}</span>
+                                                    <span>R$ {(Number(finalPrice) * product.orders_products.quantity_buyed).toFixed(2)}</span>
                                                 </a>
                                             </Link>
                                         );
