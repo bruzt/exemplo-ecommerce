@@ -243,14 +243,23 @@ export const Container = styled.section`
         flex-direction: column;
         justify-content: flex-end;
     }
-
-    @media (max-width: 425px) {
+    
+    @media (max-width: 600px) {
         .addr-grid {
             grid-template-columns: 1fr;
         }
 
         .add-addr-form {
             max-width: 100%;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .add-select-buttons,
+        .flex-row {
+            flex-direction: column;
+            align-items: center;
+
         }
     }
 `;
