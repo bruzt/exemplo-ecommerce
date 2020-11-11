@@ -164,4 +164,13 @@ export const Container = styled.section`
             grid-template-columns: 1fr;
         }
     }
+
+    @media (max-width: 400px) {
+        div.line-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 `;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 
 import { useUser } from '../../../contexts/userContext';
@@ -90,7 +90,7 @@ export default function AccountAddresses() {
         }
     }
 
-    function handleAddAddress(event) {
+    function handleAddAddress(event: FormEvent) {
 
         event.preventDefault();
 
