@@ -29,7 +29,8 @@ export const Container = styled.div`
         flex-direction: column;
     }
 
-    .flex-row {
+    .flex-row,
+    .flex-row-2 {
         display: flex;
         flex-direction: row;
     
@@ -212,9 +213,7 @@ export const Container = styled.div`
         form .grid-columns {
             grid-template-columns: 1fr;
         }
-    }
-
-    @media (max-width: 425px) {
+        
         .button-total {
             flex-direction: column;
         }
@@ -230,6 +229,17 @@ export const Container = styled.div`
 
         form input#tel {
             width: 190px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .flex-row {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cc-form {
+            padding: 0 0 10px 0;
         }
     }
 `;

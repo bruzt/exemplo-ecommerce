@@ -282,7 +282,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                             <div className='flex-column'>
                                 <label htmlFor="card-expiration-month">Vencimento</label>
-                                <div className='flex-row'>
+                                <div className='flex-row-2'>
                                     <select
                                         id="card-expiration-month"
                                         value={getCardExpirationMonth}

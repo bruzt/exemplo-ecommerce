@@ -38,4 +38,10 @@ export const Container = styled.section`
         background: #0D2235;
         color: #eee;
     }
+
+    @media (max-width: 600px) {
+        .cc-boleto-buttons {
+            flex-direction: column;
+        }
+    }
 `;
