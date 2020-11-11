@@ -85,25 +85,37 @@ export default function AccountMyShoppings() {
                                 </div>
                             </button>
 
-                            {(getOpenOrderTab.includes(order.id)) && order.products.map((product) => (
-                                <Link
-                                    key={product.id}
-                                    href='/[productId]'
-                                    as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}
-                                >
-                                    <a className='card-product' onClick={() => console.log(product)}>
-                                        <div className="img-container">
-                                            <img
-                                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
-                                                alt={'imagem-' + product.title.split(' ').join('-')}
-                                            />
-                                        </div>
-                                        <span className='product-price'>{product.title}</span>
-                                        <span>{product.orders_products.quantity_buyed}</span>
-                                        <span>R$ {Number(product.orders_products.product_price).toFixed(2)}</span>
-                                    </a>
-                                </Link>
-                            ))}
+                            {(getOpenOrderTab.includes(order.id)) && order.products.map((product) => {
+
+                                const product_price = Number(product.orders_products.product_price);
+                                const product_discount_percent = Number(product.orders_products.product_discount_percent);
+
+                                const finalPrice = (product_price - (product_price * (product_discount_percent/100))).toFixed(2);
+
+                                return (
+                                    <Link
+                                        key={product.id}
+                                        href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}
+                                    >
+                                        <a className='card-product' onClick={() => console.log(product)}>
+                                            <div className="img-container">
+                                                <img
+                                                    src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
+                                                    alt={'imagem-' + product.title.split(' ').join('-')}
+                                                />
+                                            </div>
+                                            <span className='product-title'>
+                                                {product.title}
+                                                {Number(product.orders_products.product_discount_percent) > 0 && (
+                                                    <span className='product-discount'>{product.orders_products.product_discount_percent}%</span>
+                                                )}
+                                            </span>
+                                            <span>{product.orders_products.quantity_buyed}</span>
+                                            <span>R$ {finalPrice}</span>
+                                        </a>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 ))}

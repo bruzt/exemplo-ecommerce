@@ -100,6 +100,21 @@ export const Container = styled.section`
         white-space: nowrap;
     }
 
+    a.card-product span.product-title {
+        position: relative;
+    }
+
+    a.card-product span.product-discount {
+        position: absolute;
+        top: 20%;
+        right: 5px;
+        z-index: 10;
+
+        background: ${props => props.theme.success};
+        width: fit-content;
+        padding: 5px 10px;
+    }
+
     a.boleto-link {
         padding: 5px;
         background: #EED202;
