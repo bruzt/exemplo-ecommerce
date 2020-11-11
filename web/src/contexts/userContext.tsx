@@ -192,20 +192,22 @@ export function UserContextProvider({ children }: IProps){
 
     async function deleteAddress(id: number){
 
-        try {
-
-            await api.delete('/addresses/' + id);
-
-            const user = { ...getUser };
-            const addresses = user.addresses.filter( (address) => address.id != id);
-            user.addresses = addresses;
-            setUser(user);
-
-            return true;
-            
-        } catch (error) {
-            console.error(error);
-            return false;
+        if(confirm('Tem certeza que deseja deletar esse endereço?')){
+            try {
+    
+                await api.delete('/addresses/' + id);
+    
+                const user = { ...getUser };
+                const addresses = user.addresses.filter( (address) => address.id != id);
+                user.addresses = addresses;
+                setUser(user);
+    
+                return true;
+                
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
         }
     }
 
