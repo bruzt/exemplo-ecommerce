@@ -54,7 +54,7 @@ export const Container = styled.section`
         grid-template-columns: 100px 1fr 1fr 1fr;
     }
 
-    a.card-product {
+    .order-card {
         background: #0D2235;
         border-top: 1px solid #16324C;
         padding: 5px;
@@ -65,14 +65,30 @@ export const Container = styled.section`
         grid-gap: 10px;
     }
 
-    a.card-product:last-child {
+    .order-card:last-child {
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
     }
 
-    a.card-product:hover {
+    .order-card:hover {
         background: #16324C;
     }
+
+    .order-card.freight-card {
+        display: flex;
+        align-items: center;
+        
+        & > span:nth-child(1){
+            width: 710px;
+
+            text-align: center;
+        }
+    }
+
+    .order-card.freight-card span {
+        padding: 0;
+    }
+
 
     div.img-container {
         display: flex;
@@ -88,7 +104,7 @@ export const Container = styled.section`
         max-height: 50px;
     }
 
-    a.card-product span {
+    .order-card span {
         padding-top: 15px;
 
         overflow: hidden;
@@ -100,11 +116,11 @@ export const Container = styled.section`
         white-space: nowrap;
     }
 
-    a.card-product span.product-title {
+    .order-card span.product-title {
         position: relative;
     }
 
-    a.card-product span.product-discount {
+    .order-card span.product-discount {
         position: absolute;
         top: 20%;
         right: 5px;
