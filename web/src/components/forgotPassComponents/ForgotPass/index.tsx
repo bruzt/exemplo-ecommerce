@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import api from '../../services/api';
+import api from '../../../services/api';
 
-import PageLayout from '../PageLayout';
+import PageLayout from '../../PageLayout';
 
 import { Container } from './styles';
 

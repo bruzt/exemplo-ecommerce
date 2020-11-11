@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 import { useUser } from '../../../contexts/userContext';
 
-import ForgotPasswordModal from '../../ForgotPasswordModal';
+import ForgotPasswordModal from '../../forgotPassComponents/ForgotPasswordModal';
 
 import { Container } from './styles';
 
