@@ -3,11 +3,11 @@ import { FaArrowLeft } from 'react-icons/fa';
 import Head from 'next/head';
 import axios from 'axios';
 
-import formatZipCode from '../../utils/formatZipCode';
+import formatZipCode from '../../../utils/formatZipCode';
 
-import { useUser } from '../../contexts/userContext';
-import { useCart } from '../../contexts/cartContext';
-import { useOrder } from '../../contexts/orderContext';
+import { useUser } from '../../../contexts/userContext';
+import { useCart } from '../../../contexts/cartContext';
+import { useOrder } from '../../../contexts/orderContext';
 
 import { Container } from './styles';
 

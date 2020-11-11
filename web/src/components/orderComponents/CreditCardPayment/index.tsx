@@ -1,16 +1,16 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import Loading from 'react-loader-spinner';
 
-import api from '../../services/api';
-import formatCpf from '../../utils/formatCpf';
-import formatPhone from '../../utils/formatPhone';
-import formatZipCode from '../../utils/formatZipCode';
+import api from '../../../services/api';
+import formatCpf from '../../../utils/formatCpf';
+import formatPhone from '../../../utils/formatPhone';
+import formatZipCode from '../../../utils/formatZipCode';
 
 import { Container } from './styles';
 
-import { useUser } from '../../contexts/userContext';
-import { useCart } from '../../contexts/cartContext';
-import { useOrder } from '../../contexts/orderContext';
+import { useUser } from '../../../contexts/userContext';
+import { useCart } from '../../../contexts/cartContext';
+import { useOrder } from '../../../contexts/orderContext';
 
 interface IProps {
     getDisabledBoletoButton: boolean;

@@ -7,8 +7,7 @@ import Link from 'next/link';
 import { Container } from './styles';
 
 import PageLayout from '../PageLayout';
-import ProductCard from '../ProductCard';
-
+import ProductCard from '../productComponents/ProductCard';
 
 import { IProduct } from '../../pages/[productId]';
 

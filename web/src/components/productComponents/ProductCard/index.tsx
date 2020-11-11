@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 
-import noImg from '../../assets/img-n-disp.png';
+import noImg from '../../../assets/img-n-disp.png';
 
-import { useCart } from '../../contexts/cartContext';
+import { useCart } from '../../../contexts/cartContext';
 
 import { Container } from './styles';
 
-import { IProduct } from '../../pages/[productId]';
+import { IProduct } from '../../../pages/[productId]';
 
 interface IProps {
 	product: IProduct;

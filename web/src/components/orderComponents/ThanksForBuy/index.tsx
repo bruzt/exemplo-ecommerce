@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { useOrder } from '../../contexts/orderContext';
+import { useOrder } from '../../../contexts/orderContext';
 
 import { Container } from './styles';
 

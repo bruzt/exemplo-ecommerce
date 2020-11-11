@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import Head from 'next/head';
 
-import { useOrder } from '../../contexts/orderContext';
+import { useOrder } from '../../../contexts/orderContext';
 
 import { Container } from './styles';
 

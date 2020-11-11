@@ -4,9 +4,9 @@ import { useOrder } from '../contexts/orderContext';
 
 import PageLayout from '../components/PageLayout';
 import Cart from '../components/Cart';
-import SelectAddress from '../components/SelectAddress';
-import PaymentMethod from '../components/PaymentMethod';
-import ThanksForBuy from '../components/ThanksForBuy';
+import SelectAddress from '../components/orderComponents/SelectAddress';
+import PaymentMethod from '../components/orderComponents/PaymentMethod';
+import ThanksForBuy from '../components/orderComponents/ThanksForBuy';
 
 export default function Order() {
 

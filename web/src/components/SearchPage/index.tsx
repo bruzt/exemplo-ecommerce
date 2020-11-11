@@ -7,7 +7,7 @@ import api from '../../services/api';
 import { Container } from './styles';
 
 import PageLayout from '../PageLayout';
-import ProductCard from '../ProductCard';
+import ProductCard from '../productComponents/ProductCard';
 import PaginationNav from '../PaginationNav';
 
 export default function SearchPage() {
