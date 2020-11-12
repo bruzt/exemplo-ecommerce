@@ -35,6 +35,7 @@ describe('orderController Test Suit', () => {
             .set('authorization', 'Bearer ' + token);
 
         expect(response.status).toBe(200);
-        expect(response.body.length).toBe(2);
+        expect(response.body.count).toBe(2);
+        expect(response.body.orders.length).toBe(2);
     });
 });
