@@ -19,6 +19,7 @@ export const Container = styled.nav`
         border-radius: 2px;
         font-size: 25px;
         color: #0D2235;
+        cursor: pointer;
     }
 
     ul li button:hover {

@@ -5,4 +5,9 @@ module.exports = celebrate({
         authorization: Joi.string().required()
     })
     .unknown(),
+
+    [Segments.QUERY]: Joi.object().keys({
+        limit: Joi.number(),
+        offset: Joi.number(),
+    })
 });

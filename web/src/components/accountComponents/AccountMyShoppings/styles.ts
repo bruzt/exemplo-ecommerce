@@ -6,16 +6,15 @@ export const Container = styled.section`
     justify-content: center;
     align-items: center;
 
-    h1 {
-        font-size: 30px;
-        margin-bottom: 20px;
+    h2 {
+        margin-bottom: 50px;
     }
 
     div.scroll-x {
         width: 100%;
     }
 
-    button[type='button'] {
+    div.card button[type='button'] {
         width: 100%;
         border: 0;
         color: inherit;
@@ -77,6 +76,11 @@ export const Container = styled.section`
     .order-card.freight-card {
         display: flex;
         align-items: center;
+        cursor: default;
+
+        &:hover {
+            background: ${props => props.theme.primary};
+        }
         
         & > span:nth-child(1){
             width: 710px;

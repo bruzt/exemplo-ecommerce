@@ -15,28 +15,6 @@ module.exports = async (req, res) => {
                 association: 'addresses',
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
                 required: false
-            },
-            {
-                association: 'orders',
-                attributes: { exclude: ['updatedAt', 'address_id', 'user_id'] },
-                required: false,
-                include: [{
-                    association: 'address',
-                    attributes: { exclude: ['createdAt', 'updatedAt', 'user_id']},
-                    required: false
-                },
-                {
-                    association: 'products',
-                    attributes: ['id', 'title'],
-                    through: { attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] },
-                    required: false,
-                    paranoid: false,
-                    include: {
-                        association: 'images',
-                        attributes: { exclude: ['product_id', 'createdAt', 'updatedAt'] },
-                        required: false
-                    }
-                }]
             }]
         });
 

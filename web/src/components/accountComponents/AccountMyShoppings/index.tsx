@@ -1,19 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import noImg from '../../../assets/img-n-disp.png';
-
-import { useUser } from '../../../contexts/userContext';
+import api from '../../../services/api';
 
 import { Container } from './styles';
+import noImg from '../../../assets/img-n-disp.png';
+
+import PaginationNav from '../../PaginationNav';
+
+import { IProduct } from '../../../pages/[productId]';
+import { IAddress } from '../../../contexts/userContext';
+
+interface IOrderProduct extends IProduct {
+    orders_products: {
+        quantity_buyed: number;
+        product_price: string;
+        product_discount_percent: string;
+    }
+}
+
+interface IOrder {
+    id: number;
+    freight_name: string;
+    freight_price: string;
+    total_price: string;
+    payment_method: string;
+    status: string;
+    boleto_url: string | null;
+    tracking_code: string | null;
+    createdAt: string;
+    address: IAddress;
+    products: IOrderProduct[]
+}
 
 export default function AccountMyShoppings() {
 
-    const userContext = useUser();
+    const [getOpenOrderTab, setOpenOrderTab] = useState<number[]>([]);
 
-    const [getOpenOrderTab, setOpenOrderTab] = useState([]);
+    const [getOrders, setOrders] = useState<IOrder[]>([]);
+    const [getTotalPages, setTotalPages] = useState<number>(1);
 
-    const orders = [...userContext.getUser.orders].reverse();
+    const router = useRouter();
+
+    const currentPage = Number(router.query.page) || 1;
+    const _itemsPerPage = 5;
+
+    useEffect( () => {
+        fetchOrders();
+    }, [router.query.page]);
+
+    async function fetchOrders() {
+
+        const offset = (currentPage - 1) * _itemsPerPage;
+        const page = `?limit=${_itemsPerPage}&offset=${offset}`;
+        
+        try {
+
+            const response = await api.get(`/orders${page}`);
+
+            setTotalPages(Math.ceil(response.data.count/_itemsPerPage));
+            setOrders(response.data.orders);
+            
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao buscar ordens de compra');
+        }
+    }
 
     function handleOpenTab(id: number) {
 
@@ -32,13 +85,24 @@ export default function AccountMyShoppings() {
         }
     }
 
+    function handlePagination(page: number){
+
+        router.push({
+            pathname: '/account',
+            query: {
+                ...router.query,
+                page
+            }
+        });
+    }
+
     return (
         <>
             <Container>
 
-                <h1>Minhas compras</h1>
+                <h2>Minhas compras</h2>
 
-                {orders && orders.map((order) => (
+                {getOrders.map((order) => (
 
                     <div key={order.id} className="scroll-x">
 
@@ -87,7 +151,6 @@ export default function AccountMyShoppings() {
                             
                             {(getOpenOrderTab.includes(order.id)) && (
                                 <>
-                                
                                     <div className="order-card freight-card">
                                         <span>Frete: {order.freight_name.toUpperCase()}</span>
                                         <span>R$ {order.freight_price}</span>
@@ -131,6 +194,15 @@ export default function AccountMyShoppings() {
                         </div>
                     </div>
                 ))}
+
+                {getTotalPages > 1 && (
+                    <PaginationNav 
+                        currentPage={currentPage}
+                        totalPages={getTotalPages}
+                        limitPageNav={5}
+                        handlePagination={handlePagination}
+                    />
+                )}
 
             </Container>
         </>

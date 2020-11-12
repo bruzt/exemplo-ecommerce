@@ -37,17 +37,4 @@ describe('orderController Test Suit', () => {
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(2);
     });
-
-    it('should return code 400 for "user not found" - index', async () => {
-
-        const user = await factories.create('User');
-        const token = user.generateToken();
-        await user.destroy();
-
-        const response = await supertest(app).get(`/orders`)
-            .set('authorization', 'Bearer ' + token);
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('user not found');
-    });
 });

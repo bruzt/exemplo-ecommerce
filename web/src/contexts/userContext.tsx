@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
-import { IProduct } from '../pages/[productId]';
-
 const Context = createContext({});
 
 interface IProps {
@@ -18,10 +16,9 @@ interface IUser {
     email: string;
     admin: boolean;
     addresses: IAddress[];
-    orders: IOrder[];
 }
 
-interface IAddress {
+export interface IAddress {
     id: number;
     street: string;
     number: string;
@@ -29,28 +26,6 @@ interface IAddress {
     city: string;
     state: string;
     zipcode: string;
-}
-
-interface IOrderProduct extends IProduct {
-    orders_products: {
-        quantity_buyed: number;
-        product_price: string;
-        product_discount_percent: string;
-    }
-}
-
-interface IOrder {
-    id: number;
-    freight_name: string;
-    freight_price: string;
-    total_price: string;
-    payment_method: string;
-    status: string;
-    boleto_url: string | null;
-    tracking_code: string | null;
-    createdAt: string;
-    address: IAddress;
-    products: IOrderProduct[]
 }
 
 interface IUseUser {
