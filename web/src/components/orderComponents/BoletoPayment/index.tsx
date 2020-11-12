@@ -104,10 +104,6 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 }
             });
 
-            const user = { ...userContext.getUser };
-            user.orders.push(response.data.order);
-            userContext.setUser(user);
-
             cartContext.orderFinished();
 
             orderContext.setOrderId(response.data.order.id);

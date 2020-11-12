@@ -219,10 +219,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 }
             });
 
-            const user = { ...userContext.getUser };
-            user.orders.push(response.data.order);
-            userContext.setUser(user);
-
             cartContext.orderFinished();
 
             orderContext.setOrderId(response.data.order.id);
