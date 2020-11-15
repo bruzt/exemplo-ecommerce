@@ -3,6 +3,8 @@ import { FaShoppingCart, FaSignInAlt, FaSignOutAlt, FaUserCircle } from 'react-i
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import logo from '../../../assets/logo.jpg'
+
 import { useCart } from '../../../contexts/cartContext';
 import { useUser } from '../../../contexts/userContext';
 import { useOrder } from '../../../contexts/orderContext';
@@ -28,7 +30,7 @@ export default function Header() {
                 <div className='limit-center'>
                     <Link href='/'>
                         <img
-                            src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
+                            src={logo}
                             alt='logo'
                             title='Home'
                         />

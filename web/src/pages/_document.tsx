@@ -46,6 +46,11 @@ export default class MyDocument extends Document {
                 <Head>
                     <meta charSet="utf-8" />
                     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"></link>
+                
+                    <link rel="manifest" href="/manifest.json" />
+                    <meta name='mobile-web-app-capable' content='yes' />
+                    <meta name='apple-mobile-web-app-capable' content='yes' />
+                
                 </Head>
                 <body id='root'>
                     <Main />
