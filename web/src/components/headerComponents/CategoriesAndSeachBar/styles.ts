@@ -26,17 +26,25 @@ export const Container = styled.nav`
 
         width: 100%;
         height: 100%;
+
         display: flex;
         justify-content: flex-end;
+        align-items: center;
     }
 
     div.mobile-menu button {
         width: 50px;
-        height: 100%;
+        height: 40px;
+        margin-right: 5px;
         border: 0;
-        background: ${props => props.theme.secondary};
+        border-radius: 4px;
+        background: ${props => props.theme.primary};
         color: ${props => props.theme.color};
         cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     @media (max-width: 600px) {
