@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
 import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
-import Product from '../components/productComponents/Product';
+import ProductPage from '../components/productComponents/ProductPage';
 import Page404 from '../components/Page404';
 
 export interface IImage {
@@ -75,7 +75,25 @@ export async function getStaticProps({ params }) {
 
 export default function productId({ product }: IProps) {
 
+    const [getProduct, setProduct] = useState<IProduct>();
+
     const router = useRouter();
+
+    useEffect(() => {
+        fetchProduct();
+    }, []);
+
+    async function fetchProduct() {
+        try {
+            const response = await api.get(`/products/${product.id}`);
+
+            setProduct(response.data);
+
+        } catch (error) {
+            console.error(error);
+            alert('Erro, recarregue a página');
+        }
+    }
 
     if(router.isFallback){
 
@@ -87,6 +105,6 @@ export default function productId({ product }: IProps) {
 
     } else {
 
-        return <Product product={product} />;
+        return <ProductPage product={getProduct || product} />;
     }
 }
