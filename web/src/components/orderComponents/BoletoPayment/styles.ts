@@ -16,7 +16,7 @@ export const Container = styled.div`
     }
 
     form.boleto-form .freight-total {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
     }
@@ -38,7 +38,7 @@ export const Container = styled.div`
     }
 
     form.boleto-form .inputs .input-group input {
-        border: 0;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-radius: 5px;
         margin: 0 5px;
         height: 40px;
@@ -48,7 +48,7 @@ export const Container = styled.div`
     }
 
     form.boleto-form .inputs .input-group input.invalid-cpf {
-        border: 1px solid red;
+        border: 1px solid ${props => props.theme.danger};
     }
 
     form.boleto-form button {
@@ -56,26 +56,26 @@ export const Container = styled.div`
         border-radius: 5px;
         width: 200px;
         height: 75px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         font-size: 20px;
         font-weight: bold;
         color: inherit;
         cursor: pointer;
 
         &:hover {
-            background: #41A933;    
+            background: ${props => props.theme.successActive};   
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
 
         &:disabled:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 

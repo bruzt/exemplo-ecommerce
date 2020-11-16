@@ -13,7 +13,7 @@ export const Container = styled.section`
     a.menu-item {
         width: 100%;
         height: 50px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         cursor: pointer;
         
         display: flex;
@@ -22,19 +22,19 @@ export const Container = styled.section`
     }
 
     a.menu-item:hover {
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     a.menu-item:active {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     a.menu-item.active {
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     a.menu-item + a.menu-item {
-        border-top: 1px solid #1C4061;
+        border-top: 1px solid ${props => props.theme.secondary};
     }
 
     div.content {

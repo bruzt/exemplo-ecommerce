@@ -26,7 +26,7 @@ export const Container = styled.div`
     .forgot-password input#forgot-pass-input {
         width: 100%;
         height: 40px;
-        border: 0;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-radius: 5px;
         margin: 10px 0 0 0;
         padding: 5px;
@@ -42,24 +42,25 @@ export const Container = styled.div`
         border: 0;
         border-radius: 5px;
         cursor: pointer;
-        background: #3E8C34;
-        color: inherit;
-        font-size: 15px;
+        background: ${props => props.theme.success};
+        color: ${props => props.theme.color};
+        font-size: 20px;
+        font-weight: bold;
 
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
 
         &:disabled:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 

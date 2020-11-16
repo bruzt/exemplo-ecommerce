@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.section`
 
     padding: 20px 0;
-    min-height: 500px;
+    min-height: calc(100vh - 350px);
 
     display: flex;
     flex-direction: column;
@@ -19,18 +19,18 @@ export const Container = styled.section`
     }
 
     a {
-        background: #0D2235;
-        color: #eee;
+        background: ${props => props.theme.primary};
+        color: ${props => props.theme.color};
         font-size: 20px;
         padding: 10px 20px;
         border-radius: 5px;
-    }
 
-    a:hover {
-        background: #16324C;
-    }
+        &:hover {
+            background: ${props => props.theme.secondary};
+        }
 
-    a:active {
-        background: #0D2235;
+        &:active {
+            background: ${props => props.theme.primary};
+        }
     }
 `;

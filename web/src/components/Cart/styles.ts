@@ -171,7 +171,7 @@ export const Container = styled.section`
 
     .total-price button.login {
         background: ${props => props.theme.warning};
-        color: ${props => props.theme.primary};
+        color: #111;
 
         transition: background-color .5s;
 
@@ -199,7 +199,7 @@ export const Container = styled.section`
         height: 30px;
         font-size: 25px;  
         padding: 0 0 0 2px;  
-        border: 0;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-top-left-radius: 5px;
         border-bottom-left-radius: 5px;
         text-align: center;
@@ -209,11 +209,11 @@ export const Container = styled.section`
     .calc-freight button {
         width: 30px;
         height: 30px;
-        border: 0;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
         cursor: pointer;
-        color: black;
+        color: #111;
         background: #eee;
     }
 

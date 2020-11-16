@@ -23,7 +23,7 @@ export const Container = styled.section`
     }
 
     div.address-card {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         padding: 10px;
         border-radius: 5px;
         height: 200px;
@@ -38,17 +38,17 @@ export const Container = styled.section`
         border: 0;
         border-radius: 5px;
         padding: 5px 10px;
-        background: #a32e39;
+        background: ${props => props.theme.danger};
         cursor: pointer;
         color: inherit;
     }
 
     div.card-header button:hover {
-        background: #bf2232;
+        background: ${props => props.theme.dangerActive};
     }
 
     div.card-header button:active {
-        background: #a32e39;
+        background: ${props => props.theme.danger};
     }
 
     div.card-body {
@@ -68,7 +68,7 @@ export const Container = styled.section`
 
     form {
         margin-top: 30px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
         width: 100%;
@@ -138,25 +138,25 @@ export const Container = styled.section`
         border-radius: 5px;
         padding: 10px 20px;
         font-size: 20px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         color: inherit;
         cursor: pointer;
     }
 
     form button[type='submit']:hover {
-        background: #41A933;
+        background: ${props => props.theme.successActive};
     }
 
     form button[type='submit']:active {
-        background: #3E8C34;
+        background: ${props => props.theme.success};
     }
 
     form button[type='submit']:disabled {
-        background: #a32e39;
+        background: ${props => props.theme.danger};
     }
 
     form button[type='submit']:disabled:hover {
-        background: #bf2232;
+        background: ${props => props.theme.dangerActive};
     }
 
     @media (max-width: 768px) {

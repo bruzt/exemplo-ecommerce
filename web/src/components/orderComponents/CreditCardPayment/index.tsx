@@ -460,19 +460,17 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                         <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
                     </div>
 
-                    <div>
-                        <select
-                            id='installments'
-                            onChange={(event) => setInstallments(Number(event.target.value))}
-                        >
-                            <option value={1}>1x de R$ {Number(cartContext.getTotalPrice).toFixed(2)}</option>
-                            <option value={2}>2x de R$ {Number(cartContext.getTotalPrice / 2).toFixed(2)} (sem juros)</option>
-                            <option value={3}>3x de R$ {Number(cartContext.getTotalPrice / 3).toFixed(2)} (sem juros)</option>
-                            <option value={4}>4x de R$ {Number(cartContext.getTotalPrice / 4).toFixed(2)} (sem juros)</option>
-                            <option value={5}>5x de R$ {Number(cartContext.getTotalPrice / 5).toFixed(2)} (sem juros)</option>
-                            <option value={6}>6x de R$ {Number(cartContext.getTotalPrice / 6).toFixed(2)} (sem juros)</option>
-                        </select>
-                    </div>
+                    <select
+                        id='installments'
+                        onChange={(event) => setInstallments(Number(event.target.value))}
+                    >
+                        <option value={1}>1x de R$ {Number(cartContext.getTotalPrice).toFixed(2)}</option>
+                        <option value={2}>2x de R$ {Number(cartContext.getTotalPrice / 2).toFixed(2)} (sem juros)</option>
+                        <option value={3}>3x de R$ {Number(cartContext.getTotalPrice / 3).toFixed(2)} (sem juros)</option>
+                        <option value={4}>4x de R$ {Number(cartContext.getTotalPrice / 4).toFixed(2)} (sem juros)</option>
+                        <option value={5}>5x de R$ {Number(cartContext.getTotalPrice / 5).toFixed(2)} (sem juros)</option>
+                        <option value={6}>6x de R$ {Number(cartContext.getTotalPrice / 6).toFixed(2)} (sem juros)</option>
+                    </select>
 
                     <button
                         type='submit'

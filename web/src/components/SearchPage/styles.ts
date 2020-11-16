@@ -22,8 +22,9 @@ export const Container = styled.div`
 
     .filter-row  #filter {
         font-size: inherit;
-        border: 0;
-        border-radius: 2px;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-radius: 4px;
+        cursor: pointer;
     }
 
     h2 {

@@ -10,7 +10,7 @@ export const Container = styled.section`
         background: transparent;
         font-size: 30px;
         cursor: pointer;
-        color: inherit;
+        color: ${props => props.theme.color};
     }
 
     h1 {
@@ -24,7 +24,7 @@ export const Container = styled.section`
         grid-gap: 10px;
 
         min-height: 220px;
-        border: 1px solid #0D2235;
+        border: 1px solid ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
     }
@@ -35,17 +35,17 @@ export const Container = styled.section`
 
     .addr-card {
         border-radius: 5px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         height: 220px;
     }
 
     .selected {
-        border: 3px solid #3E8C34;
+        border: 3px solid ${props => props.theme.success};
 
     }
 
     .selected.disabled {
-        border: 3px solid #a32e39;
+        border: 3px solid ${props => props.theme.danger};
     }
 
     .addr-card .addr-data a div {
@@ -65,17 +65,18 @@ export const Container = styled.section`
         padding: 4px 8px;
         border: 0;
         border-radius: 5px;
-        background: #a32e39;
+        background: ${props => props.theme.danger};
         cursor: pointer;
+
+        &:hover {
+            background: ${props => props.theme.dangerActive};
+        }
+
+        &:active {
+            background: ${props => props.theme.danger};
+        }
     }
 
-    .addr-data .addr-remove button:hover {
-        background: #bf2232;
-    }
-
-    .addr-data .addr-remove button:active {
-        background: #a32e39;
-    }
 
     .addr-data p {
         font-size: 20px;
@@ -101,41 +102,42 @@ export const Container = styled.section`
         border-radius: 5px;
         font-size: 20px;
         cursor: pointer;                 
-        color: inherit;   
+        color: ${props => props.theme.color};;   
     }
 
     .add-select-buttons .add-button {
-        background: #0D2235;
-    }
+        background: ${props => props.theme.primary};
 
-    .add-select-buttons .add-button:hover {
-        background: #16324C;
-    }
+        &:hover {
+            background: ${props => props.theme.secondary};
+        }
 
-    .add-select-buttons .add-button:active {
-        background: #0D2235;
+        &:active {
+            background: ${props => props.theme.primary};
+        }
     }
     
     .add-select-buttons .select-button {
-        background: #3E8C34;
+        background: ${props => props.theme.success};
+        color: ${props => props.theme.color};
+
+        &:hover {
+            background: ${props => props.theme.successActive};
+        }
+
+        &:active {
+            background: ${props => props.theme.success};
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
+        }
+
+        &:disabled:hover {
+            background: ${props => props.theme.dangerActive};
+        }
     }
 
-    .add-select-buttons .select-button:hover {
-        background: #41A933;
-    }
-
-    .add-select-buttons .select-button:active {
-        background: #3E8C34;
-    }
-
-    .add-select-buttons .select-button:disabled {
-        background: #a32e39;
-        color: inherit;
-    }
-
-    .add-select-buttons .select-button:disabled:hover {
-        background: #bf2232;
-    }
 
     .add-addr-form {
         display: flex;
@@ -145,7 +147,7 @@ export const Container = styled.section`
         padding: 20px;
         width: 480px;
         max-width: 50%;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     .flex-row {
@@ -201,7 +203,7 @@ export const Container = styled.section`
     .add-addr-form #state {
         width: 100%;
         min-width: 65px;   
-        background: #fff;
+        background: #eee;
     }
 
     .add-addr-form #zipcode {
@@ -216,25 +218,25 @@ export const Container = styled.section`
         align-self: center;
         border: 0;
         border-radius: 5px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         font-size: 20px;
         cursor: pointer;
         color: inherit;
 
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
 
         &:disabled:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 

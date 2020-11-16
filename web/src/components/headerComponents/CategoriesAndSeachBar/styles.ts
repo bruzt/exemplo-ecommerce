@@ -159,7 +159,7 @@ export const CategoryDropdownMenu = styled.div`
     ul li { 
         width: 200px; 
         height: 40px; 
-        background: #0D2235; 
+        background: ${props => props.theme.primary};
         float: left; 
         line-height: 40px; 
         font-size: 20px;
@@ -174,7 +174,7 @@ export const CategoryDropdownMenu = styled.div`
 
     ul li.category-menu.active {
         border-radius: 5px 5px 0 0;
-        border-bottom: 1px solid #16324C;
+        border-bottom: 1px solid ${props => props.theme.secondary};
     }
 
     ul li p {
@@ -185,15 +185,15 @@ export const CategoryDropdownMenu = styled.div`
     }
                 
     ul li:hover { 
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     ul li:active { 
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     li + li {
-        border-top: 1px solid #16324C;
+        border-top: 1px solid ${props => props.theme.secondary};
     } 
 
     li > ul {

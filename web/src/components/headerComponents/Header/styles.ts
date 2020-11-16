@@ -4,7 +4,7 @@ export const Container = styled.div`
 
     header {
         height: 100px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     div.limit-center {
@@ -49,7 +49,7 @@ export const Container = styled.div`
         display: none;
         position: absolute;
         background-color: #eee;
-        color: #0D2235;
+        color: #111;
         min-width: 160px;   
         z-index: 10;
         top: 22px;
@@ -67,7 +67,7 @@ export const Container = styled.div`
     }
 
     .dropdown-content p:hover {
-        background: #c8c8c8;
+        background: #ddd;
     }
 
     button.login-button, .dropdown {
@@ -79,7 +79,7 @@ export const Container = styled.div`
         font-size: 20px;
         font-weight: bold;
         cursor: pointer;
-        color: #eee;
+        color: ${props => props.theme.color};
 
         display: flex;
         align-items: center;
@@ -101,7 +101,7 @@ export const Container = styled.div`
     div.cart-number {
         position: absolute;
         margin: 0 0 0 40px;
-        background: #8f182a;
+        background: ${props => props.theme.danger};
         padding: 1px 5px;
         border-radius: 20px;
         z-index: 20;

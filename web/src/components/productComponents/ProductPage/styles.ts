@@ -17,7 +17,7 @@ export const Container = styled.section`
     div.breadcrumb {
         grid-area: breadcrumb;
         padding: 10px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
         margin-bottom: 20px;
@@ -71,7 +71,7 @@ export const Container = styled.section`
         width: 100%;
         max-width: 400px;
         height: 400px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
         margin: 0 0 0 10px;
@@ -97,12 +97,12 @@ export const Container = styled.section`
     }
 
     .buy-card .discount {
-        background: #41773A;
+        background: ${props => props.theme.success};
         padding: 10px 20px;
     }
 
     .buy-card .lacking {
-        background: #a32e39;
+        background: ${props => props.theme.danger};
         padding: 10px 20px;
     }
 
@@ -124,20 +124,20 @@ export const Container = styled.section`
         font-size: 20px;
         font-weight: bold;
         color: inherit;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
 
         transition: background-color .5s;
 
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
     }
 

@@ -18,7 +18,7 @@ export const Container = styled.section`
         width: 100%;
         border: 0;
         color: inherit;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         padding: 10px;
         border-top-right-radius: 5px;
         border-top-left-radius: 5px;
@@ -33,11 +33,11 @@ export const Container = styled.section`
     }
 
     button[type='button']:hover {
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     button[type='button']:active {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
     }
 
     div.card {
@@ -54,8 +54,8 @@ export const Container = styled.section`
     }
 
     .order-card {
-        background: #0D2235;
-        border-top: 1px solid #16324C;
+        background: ${props => props.theme.primary};
+        border-top: 1px solid ${props => props.theme.secondary};
         padding: 5px;
         cursor: pointer;
 
@@ -70,7 +70,7 @@ export const Container = styled.section`
     }
 
     .order-card:hover {
-        background: #16324C;
+        background: ${props => props.theme.secondary};
     }
 
     .order-card.freight-card {
@@ -138,31 +138,31 @@ export const Container = styled.section`
 
     a.boleto-link {
         padding: 5px;
-        background: #EED202;
+        background: ${props => props.theme.warning};
         border-radius: 5px;
-        color: #0D2235;
+        color: #111;
         cursor: alias;
     }
 
     span.paid {
         padding: 5px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         border-radius: 5px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
     }
 
     span.dispatch {
         padding: 5px;
-        background: #43a836;
+        background: ${props => props.theme.success};
         border-radius: 5px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
     }
 
     span.tracking-code {
         padding: 5px;
-        background: #44c734;
+        background: ${props => props.theme.successActive};
         border-radius: 5px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
         font-size: 18px;
         cursor: copy;
     }
@@ -173,9 +173,9 @@ export const Container = styled.section`
     
     span.refused {
         padding: 5px;
-        background: #a32e39;
+        background: ${props => props.theme.danger};
         border-radius: 5px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
     }
 
     @media (max-width: 768px) {
@@ -192,7 +192,6 @@ export const Container = styled.section`
                 background: transparent; /* Chrome/Safari/Webkit */
             }
         }
-
 
         div.card {
             width: 1000px;

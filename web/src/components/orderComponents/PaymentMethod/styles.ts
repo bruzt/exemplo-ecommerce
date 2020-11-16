@@ -15,7 +15,7 @@ export const Container = styled.section`
         background: transparent;
         font-size: 30px;
         cursor: pointer;
-        color: inherit;
+        color: ${props => props.theme.color};
     }
 
     .cc-boleto-buttons {
@@ -28,16 +28,18 @@ export const Container = styled.section`
         font-size: 30px;
         padding: 20px 30px;
         margin: 10px;
-        border: 0;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-radius: 5px;
-        color: #0D2235;
+        color: ${props => props.theme.primary};
         cursor: pointer;
+
+        &:hover, 
+        &.active {
+            background: ${props => props.theme.primary};
+            color: ${props => props.theme.color};
+        }
     }
 
-    .cc-boleto-buttons button:hover, .cc-boleto-buttons button.active {
-        background: #0D2235;
-        color: #eee;
-    }
 
     @media (max-width: 600px) {
         .cc-boleto-buttons {

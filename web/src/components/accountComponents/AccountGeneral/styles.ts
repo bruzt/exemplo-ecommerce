@@ -16,7 +16,7 @@ export const Container = styled.section`
         align-items: center;
         width: 100%;
         max-width: 600px;
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 20px 10px;
     }
@@ -64,23 +64,24 @@ export const Container = styled.section`
         padding: 5px 10px;
         border: 0;
         border-radius: 5px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         color: inherit;
+        cursor: pointer;
     }
 
     button[type='submit']:hover {
-        background: #41A933;
+        background: ${props => props.theme.successActive};
     }
 
     button[type='submit']:active {
-        background: #3E8C34;
+        background: ${props => props.theme.success};
     }
 
     button[type='submit']:disabled {
-        background: #a32e39;  
+        background: ${props => props.theme.danger};  
     }
 
     button[type='submit']:disabled:hover {
-        background: #bf2232;  
+        background: ${props => props.theme.dangerActive};  
     }
 `;

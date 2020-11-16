@@ -2,18 +2,17 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     
-    position: fixed; /* Stay in place */
-    z-index: 30; /* Sit on top */
+    position: fixed; 
+    z-index: 30; 
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(1, 1, 1, 0.9); 
 
     .modal-content {
-        background-color: #0D2235;
+        background-color: ${props => props.theme.primary};
         margin: 10% auto; /* 15% from the top and centered */
         padding: 20px;
         width: 100%;
@@ -33,11 +32,12 @@ export const Container = styled.div`
         border: 0;
         border-radius: 5px;
         font-weight: bold;
-        background: #a32e39;
+        background: ${props => props.theme.danger};
+        color: ${props => props.theme.color};
         cursor: pointer;
 
         &:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 
@@ -78,7 +78,7 @@ export const Container = styled.div`
         height: 40px;
         font-size: 20px;
         padding: 5px;
-        border: 1px solid #60615b;
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-radius: 5px;
     }
 
@@ -88,29 +88,29 @@ export const Container = styled.div`
         height: 50px;
         border: 0;
         border-radius: 5px;
-        background: #3E8C34;
-        font-size: 15px;
+        background: ${props => props.theme.success};
+        font-size: 20px;
         cursor: pointer;
-        color: inherit;
+        color: ${props => props.theme.color};
 
         display: flex;
         justify-content: center;
         align-items: center;
 
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
 
         &:disabled:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 

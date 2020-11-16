@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
 
     .cc-form {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
     }
@@ -85,7 +85,7 @@ export const Container = styled.div`
     }
 
     #cpf.invalid-value {
-        border: 2px solid #a32e39;
+        border: 2px solid ${props => props.theme.danger};
     }
 
     form input#tel {
@@ -134,7 +134,7 @@ export const Container = styled.div`
     form #state {
         width: 100%;
         min-width: 65px;   
-        background: #fff;
+        background: #eee;
     }
 
     form #zipcode {
@@ -150,17 +150,17 @@ export const Container = styled.div`
         justify-self: flex-end;
         border: 0;
         border-radius: 5px;
-        background: #16324C;
-        color: inherit;
+        background: ${props => props.theme.secondary};
+        color: ${props => props.theme.color};
         cursor: pointer;
-    }
 
-    .same-addr-button button:hover {
-        background: #1C4061;
-    }
+        &:hover {
+            background:${props => props.theme.background};
+        }
 
-    .same-addr-button button:active {
-        background: #16324C;
+        &:active {
+            background: ${props => props.theme.secondary};
+        }
     }
 
     .button-total {
@@ -171,7 +171,7 @@ export const Container = styled.div`
     }
 
     .button-total .freight-total {
-        background: #0D2235;
+        background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
     }
@@ -181,31 +181,35 @@ export const Container = styled.div`
         font-weight: bold;
     }
 
+    .button-total select#installments {
+        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0}
+    }
+
     .button-total button {
         border: 0;
         border-radius: 5px;
         width: 200px;
         height: 75px;
-        background: #3E8C34;
+        background: ${props => props.theme.success};
         font-size: 20px;
         font-weight: bold;
-        color: inherit;
+        color: ${props => props.theme.color};
         cursor: pointer;
 
         &:hover {
-            background: #41A933;
+            background: ${props => props.theme.successActive};
         }
 
         &:active {
-            background: #3E8C34;
+            background: ${props => props.theme.success};
         }
 
         &:disabled {
-            background: #a32e39;
+            background: ${props => props.theme.danger};
         }
 
         &:disabled:hover {
-            background: #bf2232;
+            background: ${props => props.theme.dangerActive};
         }
     }
 
