@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { AxiosResponse } from 'axios';
 
 import api from '../../services/api';
 
@@ -13,7 +14,6 @@ import PaginationNav from '../PaginationNav';
 export default function SearchPage() {
 
     const [getProducts, setProducts] = useState([]);
-    const [getFilter, setFilter] = useState('');
 
     const [getTotalPages, setTotalPages] = useState(1);
 
@@ -23,20 +23,18 @@ export default function SearchPage() {
     const _itemsPerPage = 16;
 
     useEffect( () => {
-
         fetchProducts();
-
     }, [router.query]);
 
     async function fetchProducts(){
 
         try {
 
-            let response;
+            let response: AxiosResponse<any>;
 
             let filter = '';
-            if(getFilter == "lowest-price") filter = '&filter=lowest-price';
-            else if(getFilter == "biggest-price") filter = '&filter=biggest-price';
+            if(router.query.filter == "lowest-price") filter = '&filter=lowest-price';
+            else if(router.query.filter == "biggest-price") filter = '&filter=biggest-price';
 
             const page = `&offset=${(currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`
             
@@ -69,9 +67,7 @@ export default function SearchPage() {
         }
     }
 
-    function handleChangeFilter(value){
-
-        setFilter(value);
+    function handleChangeFilter(value: string){
 
         router.push({
             pathname: '/search',
@@ -82,7 +78,7 @@ export default function SearchPage() {
         });
     }
 
-    function handlePagination(value){
+    function handlePagination(value: number){
 
         router.push({
             pathname: '/search',
@@ -108,10 +104,10 @@ export default function SearchPage() {
                         <p>Filtrar por:&nbsp;</p>
                         <select 
                             id="filter"
-                            value={getFilter}
+                            value={router.query.filter}
                             onChange={(event) => handleChangeFilter(event.target.value)}
                         >
-                            <option value=""></option>
+                            <option value="">Relevância</option>
                             <option value="lowest-price">Menor Preço</option>
                             <option value="biggest-price">Maior Preço</option>
                         </select>
