@@ -81,6 +81,7 @@ export const Container = styled.div`
         margin-left: 20px;
         padding: 4px;
         cursor: pointer;
+        color: #eee;
     }
 
     details summary.last-child {

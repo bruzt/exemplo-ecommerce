@@ -112,7 +112,7 @@ export const Container = styled.div`
         margin: 0;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
         div.login-cart {
             justify-content: flex-end;
         }

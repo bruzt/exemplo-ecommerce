@@ -4,10 +4,13 @@ import { useRouter } from 'next/router';
 import ClickAwayListener from 'react-click-away-listener';
 import Link from 'next/link';
 import { FaBars } from 'react-icons/fa';
+import Switch from "react-switch";
+import { FiSun, FiMoon } from 'react-icons/fi';
 
 import api from '../../../services/api';
 
 import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
+import { useTheme } from '../../../contexts/themeContext';
 import { IProduct } from '../../../pages/[productId]';
 
 import noImage from '../../../assets/img-n-disp.png';
@@ -29,6 +32,7 @@ export default function CategoriesAndSeachBar() {
 
     const router = useRouter();
     const filterBarContext = useFilterBar();
+    const themeContext = useTheme();
 
     useEffect( () => {
         return () => firstRender = true;
@@ -113,6 +117,12 @@ export default function CategoriesAndSeachBar() {
                 category: String(category.name).split(' ').join('-')
             }
         });
+    }
+
+    function handleChangeTheme(checked: boolean){
+
+        if(checked) themeContext.changeThemeTo('light');
+        else themeContext.changeThemeTo('dark');
     }
 
     function categoryTree(){
@@ -214,20 +224,32 @@ export default function CategoriesAndSeachBar() {
         <Container>
             <div className="limit-center">
 
-                {categoryTree()}    
+                <div className="category-and-searchbar">
+                    {categoryTree()}    
 
-                {SearchBar()}
+                    {SearchBar()}
 
-                <span></span>
-            </div>
+                    <span></span>
+                </div>
 
-            <div className='mobile-menu'>
-                <button 
-                type='button'
-                onClick={() => setMobileMenuActive(true)}
-                >
-                    <FaBars size={30} />                                    
-                </button>
+                <Switch
+                    id='react-switch'
+                    onChange={handleChangeTheme} 
+                    checked={themeContext.getTheme.title === 'light'}
+                    checkedIcon={<FiSun size={20} />}
+                    uncheckedIcon={<FiMoon size={20} />}
+                    offColor='#111'
+                    onColor='#eee'
+                />
+
+                <div className='mobile-menu'>
+                    <button 
+                    type='button'
+                    onClick={() => setMobileMenuActive(true)}
+                    >
+                        <FaBars size={30} />                                    
+                    </button>
+                </div>
             </div>
 
             {getMobileMenuActive && <MobileMenu setMobileMenuActive={setMobileMenuActive} searchBar={SearchBar} />}

@@ -11,9 +11,13 @@ export const Container = styled.nav`
         height: 100%;
         max-width: 1100px;
         margin: 0 auto;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    div.limit-center {
+    div.limit-center .category-and-searchbar {
         width: 100%;
         
         display: flex;
@@ -47,13 +51,21 @@ export const Container = styled.nav`
         align-items: center;
     }
 
-    @media (max-width: 600px) {
-        div.limit-center {
+    div.react-switch-bg svg {
+        margin: 4px 3px;
+    }
+
+    @media (max-width: 650px) {
+        div.limit-center .category-and-searchbar {
             display: none !important;
         }
 
-        div.mobile-menu {
+        div.limit-center div.mobile-menu {
             display: flex !important;
+        }
+
+        div.limit-center {
+            padding-left: 10px;
         }
     }
 `;
