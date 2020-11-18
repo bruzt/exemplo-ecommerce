@@ -13,6 +13,10 @@ describe('userController Test Suit', () => {
 
     it('should list all users on db', async () => {
 
+        const user = await factories.create('User');
+        user.admin = true;
+        const token = user.generateToken();
+
         for(let i=0; i < 3; i++){
 
             await factories.create('User', {
@@ -21,8 +25,10 @@ describe('userController Test Suit', () => {
         }
 
         const response = await supertest(app).get('/users')
+            .set('authorization', 'Bearer ' + token)
+        ;
         
         expect(response.status).toBe(200);
-        expect(Object.keys(response.body).length).toBe(3);
+        expect(Object.keys(response.body).length).toBe(4);
     });
 });

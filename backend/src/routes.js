@@ -36,7 +36,7 @@ const userResetPasswordController = require('./controllers/userResetPasswordCont
 const router = express.Router();
 
 // BUSCA, ADICIONA, ALTERA OU REMOVE USUÁRIOS
-router.get('/users', userController.list);
+router.get('/users', userValidator.list, adminJwtAuthentication, userController.list);
 router.get('/users/:id', userValidator.show, userController.show);
 router.post('/users', userValidator.store, userController.store);
 router.put('/users', userValidator.update, jwtAuthentication, userController.update);

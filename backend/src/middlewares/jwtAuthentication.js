@@ -10,6 +10,8 @@ module.exports = function verifyJwt(req, res, next) {
     
     const { authorization } = req.headers;
 
+    if(!authorization) return res.status(400).json({ message: 'authorization is required' });
+
     const splitBearer = authorization.split(' ');
 
     if(splitBearer.length !== 2 || splitBearer[0] !== "Bearer") return res.status(400).json({ message: 'invalid credentials' });
