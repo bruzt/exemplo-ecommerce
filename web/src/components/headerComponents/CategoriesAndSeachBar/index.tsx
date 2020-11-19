@@ -222,6 +222,9 @@ export default function CategoriesAndSeachBar() {
 
     return (
         <Container>
+
+            {getMobileMenuActive && <MobileMenu setMobileMenuActive={setMobileMenuActive} searchBar={SearchBar} />}
+
             <div className="limit-center">
 
                 <div className="category-and-searchbar">
@@ -232,15 +235,21 @@ export default function CategoriesAndSeachBar() {
                     <span></span>
                 </div>
 
-                <Switch
-                    id='react-switch'
-                    onChange={handleChangeTheme} 
-                    checked={themeContext.getTheme.title === 'light'}
-                    checkedIcon={<FiSun size={20} />}
-                    uncheckedIcon={<FiMoon size={20} />}
-                    offColor='#111'
-                    onColor='#eee'
-                />
+                <div 
+                    className='switch-container'
+                    title={themeContext.getTheme.title === 'dark' ? 'Tema: Noite' : 'Tema: Dia'}
+                >
+                    <Switch
+                        id='react-switch'
+                        
+                        onChange={handleChangeTheme} 
+                        checked={themeContext.getTheme.title === 'light'}
+                        checkedIcon={<FiSun size={20} />}
+                        uncheckedIcon={<FiMoon size={20} />}
+                        offColor='#444'
+                        onColor='#eee'
+                    />
+                </div>
 
                 <div className='mobile-menu'>
                     <button 
@@ -250,10 +259,7 @@ export default function CategoriesAndSeachBar() {
                         <FaBars size={30} />                                    
                     </button>
                 </div>
-            </div>
-
-            {getMobileMenuActive && <MobileMenu setMobileMenuActive={setMobileMenuActive} searchBar={SearchBar} />}
-        
+            </div>        
         </Container>
     );
 }

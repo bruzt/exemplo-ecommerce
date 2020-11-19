@@ -25,6 +25,10 @@ export const Container = styled.nav`
         align-items: center;
     }
 
+    div.limit-center > div.switch-container {
+        height: 28px;
+    }
+
     div.mobile-menu {
         display: none !important;
 
