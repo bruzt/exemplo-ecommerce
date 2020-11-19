@@ -150,7 +150,7 @@ export default function AccountMyShoppings() {
                             </button>
                             
                             {(getOpenOrderTab.includes(order.id)) && (
-                                <>
+                                <div className='order-content'>
                                     <div className="order-card freight-card">
                                         <span>Frete: {order.freight_name.toUpperCase()}</span>
                                         <span>R$ {order.freight_price}</span>
@@ -189,7 +189,7 @@ export default function AccountMyShoppings() {
                                             </Link>
                                         );
                                     })}
-                                </>
+                                </div>
                             )}
                         </div>
                     </div>

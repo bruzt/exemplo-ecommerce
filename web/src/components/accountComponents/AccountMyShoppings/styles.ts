@@ -17,28 +17,29 @@ export const Container = styled.section`
     div.card button[type='button'] {
         width: 100%;
         border: 0;
-        color: inherit;
-        background: ${props => props.theme.primary};
         padding: 10px;
+        color: ${props => props.theme.color};
+        background: ${props => props.theme.primary};
         border-top-right-radius: 5px;
         border-top-left-radius: 5px;
         border-bottom-right-radius: 5px;
         border-bottom-left-radius: 5px;
         cursor: pointer;
+        
+        &.tab-open {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        &:hover {
+            background: ${props => props.theme.secondary};
+        }
+
+        &:active {
+            background: ${props => props.theme.primary};
+        }
     }
 
-    button[type='button'].tab-open {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    button[type='button']:hover {
-        background: ${props => props.theme.secondary};
-    }
-
-    button[type='button']:active {
-        background: ${props => props.theme.primary};
-    }
 
     div.card {
         width: 100%;
@@ -51,6 +52,7 @@ export const Container = styled.section`
 
         display: grid;
         grid-template-columns: 100px 1fr 1fr 1fr;
+        align-items: center;
     }
 
     .order-card {
@@ -176,6 +178,19 @@ export const Container = styled.section`
         background: ${props => props.theme.danger};
         border-radius: 5px;
         color: ${props => props.theme.primary};
+    }
+
+    div.order-content {
+        animation: open-tab 0.5s ease-out;
+    }
+
+    @keyframes open-tab {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 
     @media (max-width: 768px) {
