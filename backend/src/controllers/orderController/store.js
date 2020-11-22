@@ -1,6 +1,7 @@
 const express = require('express');
 //const axios = require('axios');
 const pagarme = require('pagarme');
+const crypto = require('crypto');
 
 const { emitNewOrder } = require('../../websocket/socketConnection');
 
@@ -119,13 +120,15 @@ module.exports = async (req, res) => {
             await products[i].save();
         }
         
-        //if(process.env.NODE_ENV == 'test') return res.json(order);
+        order.postback_key = crypto.randomBytes(20).toString('hex');
+        const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
         
         let response;
         
         if(req.body.credit_card){
 
             req.body.credit_card.payment_method = 'credit_card';
+            req.body.credit_card.postback_url = postback_url;
 
             const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
             response = await client.transactions.create({
@@ -138,17 +141,17 @@ module.exports = async (req, res) => {
             });*/
 
             order.status = response.status; //response.data.status;
-            await order.save();
             
         } else if(req.body.boleto){
 
             req.body.boleto.payment_method = 'boleto';
-
+            req.body.boleto.capture = true; // retorna o link para o boleto
+            //req.body.boleto.postback_url = postback_url;
+             
             let date = new Date();
             date.setDate(date.getDate() + 3);
             req.body.boleto.boleto_expiration_date = `${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${(date.getDate() < 10) ? `0${date.getDate()}` : date.getDate() }`;
             
-            req.body.boleto.capture = true; // retorna o link para o boleto
             req.body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
 
             const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
@@ -157,7 +160,6 @@ module.exports = async (req, res) => {
             });
 
             order.boleto_url = response.boleto_url;
-            await order.save();
             
             /*response = await axios.post('https://api.pagar.me/1/transactions', {
                 api_key: process.env.PAGARME_API_KEY,
@@ -165,7 +167,9 @@ module.exports = async (req, res) => {
             });*/
         }
 
-        const newOrder = await OrderModel.findByPk(order.id, {
+        await order.save();
+
+        const newOrder = await order.reload({
             include: {
                 association: 'products',
                 attributes: ['id', 'title'],
@@ -177,7 +181,17 @@ module.exports = async (req, res) => {
                     attributes: ['id', 'filename'],
                 }*/
             }
-        });
+        })
+
+        /*const newOrder = await OrderModel.findByPk(order.id, {
+            include: {
+                association: 'products',
+                attributes: ['id', 'title'],
+                through: { 
+                    attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
+                },
+            }
+        });*/
     
         emitNewOrder(newOrder);
         

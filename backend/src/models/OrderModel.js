@@ -15,6 +15,7 @@ class OrderModel extends Model {
             status: DataTypes.STRING,
             boleto_url: DataTypes.STRING,
             tracking_code: DataTypes.STRING,
+            postback_key: DataTypes.STRING,
 
         }, {
             tableName: 'orders',
