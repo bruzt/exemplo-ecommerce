@@ -172,16 +172,16 @@ module.exports = async (req, res) => {
                 through: { 
                     attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
                 },
-                include: {
+                /*include: {
                     association: 'images',
                     attributes: ['id', 'filename'],
-                }
+                }*/
             }
         });
     
         emitNewOrder(newOrder);
         
-        return res.json({ order: newOrder, pagarme: response /*response.data*/ });
+        return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response /*response.data*/ });
         
     } catch (error) {
         console.error(error);
