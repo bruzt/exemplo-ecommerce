@@ -51,26 +51,22 @@ export function UserContextProvider({ children }: IProps){
     const router = useRouter();
 
     useEffect( () => {
-
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
 
         if(token) setToken(token);
-
     }, []);
 
     useEffect( () => {
-
         if(getToken.length > 0){
 
+            localStorage.setItem('token', getToken);
             api.defaults.headers.authorization = "Bearer " + getToken;   
             
             fetchUser();
         }
-
     }, [getToken]);
 
     async function fetchUser(){
-
         try {
             
             const tokenPayload = jwt.decode(getToken) as { id: number };
@@ -79,16 +75,14 @@ export function UserContextProvider({ children }: IProps){
     
             setUser(response.data);
 
-            sessionStorage.setItem('token', getToken);
             setLogin(true);
             setShowModal(false);
 
         } catch (error) {
-
             console.log(error);
             
             api.defaults.headers.authorization = undefined;
-            sessionStorage.removeItem('token');
+            localStorage.removeItem('token');
             setLogin(false);
         }
     }
@@ -117,8 +111,7 @@ export function UserContextProvider({ children }: IProps){
         }
     }
 
-    async function logIn(email, password){
-
+    async function logIn(email: string, password: string){
         try {
 
             const response = await api.post('/sessions', {
@@ -142,7 +135,7 @@ export function UserContextProvider({ children }: IProps){
 
         api.defaults.headers.authorization = undefined;
 
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
 
         setLogin(false);
     }
