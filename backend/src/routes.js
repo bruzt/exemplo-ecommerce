@@ -18,8 +18,8 @@ const orderAdminValidator = require('./controllers/orderAdminController/validato
 const orderValidator = require('./controllers/orderController/validators');
 const productValidator = require('./controllers/productController/validators');
 const sessionValidator = require('./controllers/sessionController/validators');
+const userValidator = require('./controllers/userController/validators');
 const userResetPasswordValidator = require('./controllers/userResetPasswordController/validators');
-const userValidator = require('./middlewares/validators/userValidator');
 
 // Controllers
 const addressController = require('./controllers/addressController');
