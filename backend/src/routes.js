@@ -11,7 +11,7 @@ const adminJwtAuthentication = require('./middlewares/adminJwtAuthentication');
 
 // Validators
 const addressValidator = require('./controllers/addressController/validators');
-const categoryValidator = require('./middlewares/validators/categoryValidator');
+const categoryValidator = require('./controllers/categoryController/validators');
 const freightValidator = require('./middlewares/validators/freightValidator');
 const imageValidator = require('./middlewares/validators/imageValidator');
 const orderAdminValidator = require('./middlewares/validators/orderAdminValidator');
