@@ -17,7 +17,7 @@ const imageValidator = require('./controllers/imageController/validators');
 const orderAdminValidator = require('./controllers/orderAdminController/validators');
 const orderValidator = require('./controllers/orderController/validators');
 const productValidator = require('./controllers/productController/validators');
-const sessionValidator = require('./middlewares/validators/sessionValidator');
+const sessionValidator = require('./controllers/sessionController/validators');
 const userResetPasswordValidator = require('./middlewares/validators/userResetPasswordValidator');
 const userValidator = require('./middlewares/validators/userValidator');
 
