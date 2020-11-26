@@ -1,6 +1,7 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
+import queryString from 'query-string';
 
 import api from '../services/api';
 
@@ -20,18 +21,25 @@ interface ThemeContextProviderProps {
 
 const Context = createContext({});
 
-let isLogged = false;
+let firstRender = true;
 
 export function LoginLogoutContextProvider({ children }: ThemeContextProviderProps) {
 
     const router = useRouter();
 
-    if(process.browser && isLogged == false){
+    const [getToken, setToken] = useState('');
 
-        const token = sessionStorage.getItem('token');
-        if (token) session(token);
-        else if(router.pathname !== '/') router.replace('/');
-    }
+    useEffect( () => {
+        if(process.browser){
+            const token = localStorage.getItem('token');
+            if (token) setToken(token);
+        }
+    }, []);
+
+    useEffect( () => {
+        if(firstRender === false) session(getToken);
+        firstRender = false;
+    }, [getToken])
 
     async function login(email: string, password: string) {
         try {
@@ -49,27 +57,35 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
         }
     }
 
-    function session(token: string) {
+    async function session(token: string) {
         
         const tokenPayload: ITokenPayload = jwt.decode(token) as ITokenPayload;
 
-        if (tokenPayload.admin) {
+        try {
 
-            sessionStorage.setItem('token', token);
+            if (tokenPayload.admin == false) return alert('Conta não autorizada');
 
+            localStorage.setItem('token', token);
             api.defaults.headers.authorization = `Bearer ${token}`;
+
+            // confirm if the token is valid
+            await api.get(`/users/${tokenPayload.id}`);
+
+            const menuQueryString = queryString.parse(router.asPath)['/admin?menu'];
+
+            const menu = menuQueryString ? menuQueryString : 'products-list';
             
-            isLogged = true;
             router.push({
                 pathname: '/admin',
                 query: {
-                    menu: 'products-list',
+                    menu
                 }
             });
 
-        } else {
-            isLogged = false;
-            alert('Conta não autorizada');
+        } catch (error) {
+            console.error(error);
+            alert('Erro ao buscar usuário');
+            logout();
         }
     }
 
@@ -77,7 +93,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
         api.defaults.headers.authorization = undefined;
 
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
 
         router.push('/');
     }
