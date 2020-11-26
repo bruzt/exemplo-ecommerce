@@ -49,7 +49,7 @@ export default function Main(){
                         >
 
                             <nav>
-                                <input type="checkbox" id='products-cb' defaultChecked={true} /> 
+                                <input type="checkbox" id='products-cb' defaultChecked={router.query.menu == "products-list"} /> 
                                 <div className='cb-label'>
                                     <div className="icon">
                                         <FaCaretRight /> 
@@ -77,7 +77,7 @@ export default function Main(){
                             </nav>
 
                             <nav>
-                                <input type="checkbox" id='categories-cb' /> 
+                                <input type="checkbox" id='categories-cb' defaultChecked={router.query.menu == 'categories-list'} /> 
                                 <div className='cb-label' >
                                     <div className="icon">
                                         <FaCaretRight /> 
@@ -104,7 +104,7 @@ export default function Main(){
                             </nav>
 
                             <nav>
-                                <input type="checkbox" id='orders-cb' /> 
+                                <input type="checkbox" id='orders-cb' defaultChecked={router.query.menu == 'orders-list'} /> 
                                 <div className='cb-label' >
                                     <div className="icon">
                                         <FaCaretRight /> 
