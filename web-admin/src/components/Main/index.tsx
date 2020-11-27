@@ -49,7 +49,11 @@ export default function Main(){
                         >
 
                             <nav>
-                                <input type="checkbox" id='products-cb' defaultChecked={router.query.menu == "products-list"} /> 
+                                <input 
+                                    type="checkbox" 
+                                    id='products-cb' 
+                                    defaultChecked={router.query.menu == "products-list" || router.query.menu == 'add-product'} 
+                                /> 
                                 <div className='cb-label'>
                                     <div className="icon">
                                         <FaCaretRight /> 
@@ -77,7 +81,11 @@ export default function Main(){
                             </nav>
 
                             <nav>
-                                <input type="checkbox" id='categories-cb' defaultChecked={router.query.menu == 'categories-list'} /> 
+                                <input 
+                                    type="checkbox" 
+                                    id='categories-cb' 
+                                    defaultChecked={router.query.menu == 'categories-list' || router.query.menu == 'add-category'} 
+                                /> 
                                 <div className='cb-label' >
                                     <div className="icon">
                                         <FaCaretRight /> 
