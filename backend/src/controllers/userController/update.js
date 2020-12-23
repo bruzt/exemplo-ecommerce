@@ -1,12 +1,15 @@
 const express = require('express');
 
 const UserModel = require('../../models/UserModel');
+const validateCpf = require('../../util/validateCpf');
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
 
     const { id } = req.tokenPayload;
-    const { name, email, currentPassword, newPassword } = req.body;
+    const { name, email, cpf, currentPassword, newPassword } = req.body;
+
+    if(cpf && validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
 
     try {
 
@@ -32,6 +35,7 @@ module.exports = async (req, res) => {
         const updated = await user.update({
                 name,
                 email,
+                cpf,
                 password
             },
             { 

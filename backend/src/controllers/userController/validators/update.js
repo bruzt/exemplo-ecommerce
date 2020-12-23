@@ -9,7 +9,8 @@ module.exports = celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string(), 
         email: Joi.string().email(),
-        currentPassword: Joi.string(),
-        newPassword: Joi.string(),
+        cpf: Joi.string().length(11),
+        currentPassword: Joi.string().min(6),
+        newPassword: Joi.string().min(6),
     }).min(1)
 });
