@@ -14,6 +14,7 @@ interface IUser {
     id: number;
     name: string;
     email: string;
+    cpf: string;
     admin: boolean;
     addresses: IAddress[];
 }
@@ -38,7 +39,7 @@ interface IUseUser {
     setUser: React.Dispatch<React.SetStateAction<IUser>>;
     addAddress: (address: Omit<IAddress, "id">) => Promise<boolean>;
     deleteAddress: (id: number) =>  Promise<boolean>;
-    createUser: (name: string, email: string, password: string) =>  Promise<void>;
+    createUser: (name: string, email: string, cpf: string, password: string) =>  Promise<void>;
 }
 
 export function UserContextProvider({ children }: IProps){
@@ -93,13 +94,16 @@ export function UserContextProvider({ children }: IProps){
         else setShowModal(true);
     }
 
-    async function createUser(name: string, email: string, password: string){
+    async function createUser(name: string, email: string, cpf: string, password: string){
+
+        cpf = cpf.replace('.', '').replace('.', '').replace('-', '')
 
         try {
 
             const response = await api.post('/users', {
                 name,
                 email,
+                cpf,
                 password
             });
 

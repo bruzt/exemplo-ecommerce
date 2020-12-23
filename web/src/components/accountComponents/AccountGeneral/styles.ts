@@ -58,6 +58,7 @@ export const Container = styled.section`
 
     button[type='submit'] {
         width: 100%;
+        height: 60px;
         max-width: 300px;
         margin-top: 30px;
         font-size: 30px;

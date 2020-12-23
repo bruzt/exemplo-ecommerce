@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, FormEvent } from 'react';
+
+import formatCpf from '../../../utils/formatCpf';
 
 import { useUser } from '../../../contexts/userContext';
 
@@ -10,6 +12,7 @@ export default function LoginModal() {
 	
 	const [getName, setName] = useState('');
     const [getEmail, setEmail] = useState('');
+    const [getCpf, setCpf] = useState('');
     const [getPassword, setPassword] = useState('');
     const [getConfirmPassword, setConfirmPassword] = useState('');
 
@@ -32,9 +35,10 @@ export default function LoginModal() {
         if(getCreateNewAccount){
             if(
                 getName.length > 3 &&
-                getEmail.length > 7 &&
+				getEmail.length > 7 &&
+				formatCpf(getCpf).valid &&
                 getPassword.length > 5 &&
-                getConfirmPassword == getPassword
+                getConfirmPassword == getPassword 
             ){
                 setDisabledButton(false);
             } else {
@@ -51,15 +55,15 @@ export default function LoginModal() {
             }
         }
 
-    }, [getName, getEmail, getPassword, getConfirmPassword]);
+    }, [getName, getEmail, getCpf, getPassword, getConfirmPassword]);
 
-    async function handleCreateOrLogin(event){
+    async function onSubmit(event: FormEvent){
 
         event.preventDefault();
 
         if(getCreateNewAccount){
 
-            userContext.createUser(getName, getEmail, getPassword);
+            userContext.createUser(getName, getEmail, getCpf, getPassword);
 
         } else {
 
@@ -69,7 +73,14 @@ export default function LoginModal() {
 			
 			setNonoAnimation(true);
         }
-    }
+	}
+	
+	function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>){
+
+		const formatedCpf = formatCpf(event.target.value).cpf;
+
+		setCpf(formatedCpf);
+	}
 
     return (
         <Container>
@@ -90,7 +101,11 @@ export default function LoginModal() {
 					? <ForgotPasswordModal setForgotPassword={setForgotPassword} />    
 					: (
 						<>
-							<form ref={formRef} className={`${getNonoAnimation ? 'nono-animation' : ''}`}>
+							<form 
+								ref={formRef} 
+								className={`${getNonoAnimation ? 'nono-animation' : ''}`}
+								onSubmit={onSubmit}
+							>
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-name">Nome completo</label>
@@ -112,6 +127,19 @@ export default function LoginModal() {
 										onChange={(event) => setEmail(event.target.value.trim())}
 									/>
 								</div>
+								
+								{(getCreateNewAccount) && (
+									<div className="input-group">
+										<label htmlFor="login-cpf">CPF</label>
+										<input 
+											type='text' 
+											id="login-cpf"
+											maxLength={14}
+											value={getCpf}
+											onChange={handleSetCpf}
+										/>
+									</div>
+								)}
 
 								<div className="input-group">
 									<label htmlFor="login-password">
@@ -141,7 +169,6 @@ export default function LoginModal() {
 									type="submit" 
 									className='login-button'
 									disabled={getDisabledButton}
-									onClick={(event) => handleCreateOrLogin(event)}
 								>
 									{(getCreateNewAccount) ? 'Cadastrar' : 'Entrar'}
 								</button>
