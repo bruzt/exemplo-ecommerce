@@ -6,7 +6,7 @@ const app = require('../../../app');
 
 const ProductModel = require('../../../models/ProductModel');
 
-describe('addressController Test Suit', () => {
+describe('categoryController Destroy Test Suit', () => {
 
     beforeEach( () => {
        
@@ -19,7 +19,7 @@ describe('addressController Test Suit', () => {
         user.admin = true;
         const token = user.generateToken();
 
-        const category1 = await factories.create('Category');
+        const category1 = await factories.create('Category', { name: 'categoria 1' });
         const category2 = await factories.create('Category', { name: 'categoria 2' });
         const product = await factories.create('Product', { category_id: category1.id });
 
