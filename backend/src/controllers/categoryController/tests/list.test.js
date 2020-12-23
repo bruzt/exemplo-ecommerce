@@ -4,7 +4,7 @@ const truncate = require('../../../testUtils/truncate');
 const factories = require('../../../testUtils/factories');
 const app = require('../../../app');
 
-describe('addressController Test Suit', () => {
+describe('categoryController List Test Suit', () => {
 
     beforeEach( () => {
        
