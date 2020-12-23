@@ -4,7 +4,7 @@ const truncate = require('../../../testUtils/truncate');
 const factories = require('../../../testUtils/factories');
 const app = require('../../../app');
 
-describe('userController Test Suit', () => {
+describe('userController List Test Suit', () => {
 
     beforeEach( () => {
               
@@ -17,10 +17,13 @@ describe('userController Test Suit', () => {
         user.admin = true;
         const token = user.generateToken();
 
+        const cpfs = ["71314297082", "30581023056", "97938138061"];
+
         for(let i=0; i < 3; i++){
 
             await factories.create('User', {
-                email: `email${i}@teste.com`
+                email: `email${i}@teste.com`,
+                cpf: cpfs[i]
             });
         }
 

@@ -11,6 +11,7 @@ class UserModel extends Model {
 
             name: DataTypes.STRING,
             email: DataTypes.STRING,
+            cpf: DataTypes.STRING,
             password: DataTypes.STRING,
             admin: DataTypes.BOOLEAN,
             reset_password_token: DataTypes.STRING,

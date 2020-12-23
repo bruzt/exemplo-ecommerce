@@ -8,6 +8,7 @@ const models = autoRequireAll(__dirname, '../models');
 factory.define('User', models.UserModel, {
     name: faker.name.findName(),
     email: faker.internet.email(),
+    cpf: "88819141078",
     password: faker.internet.password(),
 });
 
