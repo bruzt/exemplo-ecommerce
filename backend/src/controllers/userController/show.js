@@ -13,7 +13,15 @@ module.exports = async (req, res) => {
     try {
         
         let user = await UserModel.findByPk(id, { 
-            attributes: ['id', 'name', 'email', 'admin'],
+            attributes: { 
+                exclude: [
+                    'password', 
+                    'reset_password_token', 
+                    'reset_password_expires',
+                    'createdAt',
+                    'updatedAt'
+                ]
+            },
             include: [{
                 association: 'addresses',
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
