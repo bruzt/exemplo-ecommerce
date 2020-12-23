@@ -1,7 +1,7 @@
 # Protótipo de um e-commerce
-Backend: REST API feita com Express.js, banco de dados Postgres utilizando o ORM Sequelize.</br>
-Frontend (web): Feita com React.js utilizando o framework Next.js para gerar páginas estáticas (SSG) dos produtos com meta tags para maximizar a indexação de motores de busca (SEO).</br>
-Painel de Controle (web-admin): Também ReactJS com o framework Next.js, área acessivel apenas para administradores gerenciarem produtos, categorias e ordens de compra.
+<strong>Backend</strong>: REST API feita com Express.js, banco de dados Postgres utilizando o ORM Sequelize.</br>
+<strong>Frontend (web)</strong>: Feita com React.js utilizando o framework Next.js para gerar páginas estáticas (SSG) dos produtos com meta tags para maximizar a indexação de motores de busca (SEO).</br>
+<strong>Painel de Controle (web-admin)</strong>: Também ReactJS com o framework Next.js, área acessivel apenas para administradores gerenciarem produtos, categorias e ordens de compra.
 
 ## Backend
 - Validação de dados recebidos pelas rotas (headers, params, body e query) com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
