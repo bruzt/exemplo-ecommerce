@@ -80,6 +80,10 @@ export const Container = styled.div`
         padding: 5px;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
         border-radius: 5px;
+
+        &.invalid {
+            border: 2px solid ${props => props.theme.danger};
+        }
     }
 
     .modal-content form .login-button {

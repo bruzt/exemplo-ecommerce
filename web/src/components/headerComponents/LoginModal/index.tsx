@@ -135,6 +135,7 @@ export default function LoginModal() {
 											type='text' 
 											id="login-cpf"
 											maxLength={14}
+											className={`${formatCpf(getCpf).valid == false ? 'invalid' : ''}`}
 											value={getCpf}
 											onChange={handleSetCpf}
 										/>
