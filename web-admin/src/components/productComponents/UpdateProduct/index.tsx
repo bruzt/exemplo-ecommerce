@@ -26,15 +26,18 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getDescription, setDescription] = useState(product.description);
 
     const [getPrice, setPrice] = useState(String(product.price));
-    const [getDiscount, setDiscount] = useState(String(product.discount_percent));
     const [getQtdStock, setQtdStock] = useState(String(product.quantity_stock));
     const [getCategoryId, setCategoryId] = useState(String(product.category.id));
     const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
-
+    
     const [getWeight, setWeight] = useState(product.weight.replace(',', '.'));
     const [getLength, setLength] = useState(product.length);
     const [getHeight, setHeight] = useState(product.height);
     const [getWidth, setWidth] = useState(product.width);
+
+    const [getDiscount, setDiscount] = useState(String(product.discount_percent));
+    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(serializeDateBr(product.discount_datetime_start));
+    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(serializeDateBr(product.discount_datetime_end));
 
     const [getHtmlBody, setHtmlBody] = useState(product.html_body);
     
@@ -42,8 +45,11 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
         fetchCategories();
     }, []);
 
+    function serializeDateBr(date: string) {
+        return new Date(new Date(date).setHours(new Date(date).getHours() - 3)).toJSON().slice(0,19);
+    }
+
     async function fetchCategories() {
-        
         try {
 
             const response = await api.get('/categories');
@@ -75,6 +81,8 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
             price: Number(getPrice),
             quantity_stock: Number(getQtdStock),
             discount_percent: Number(getDiscount),
+            discount_datetime_start: getDiscountDatetimeStart ? getDiscountDatetimeStart : undefined,
+            discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
             category_id: Number(getCategoryId),
             tangible: Boolean(Number(getTangible)),
             weight: getWeight.replace('.', ','),
@@ -145,18 +153,6 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                             id='product-price' 
                             value={getPrice} 
                             onChange={(event) => setPrice(event.target.value)} 
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="product-discount">Desconto (%)</label>
-                        <input 
-                            type="number" 
-                            min="0"
-                            max='100'
-                            id='product-discount' 
-                            value={getDiscount} 
-                            onChange={(event) => setDiscount(event.target.value)} 
                         />
                     </div>
 
@@ -233,6 +229,41 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                             id='product-width' 
                             value={getWidth} 
                             onChange={(event) => setWidth(event.target.value)} 
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="input-group">
+                        <label htmlFor="product-discount">Desconto (%)</label>
+                        <input 
+                            type="number" 
+                            min="0"
+                            max='100'
+                            id='product-discount' 
+                            value={getDiscount} 
+                            onChange={(event) => setDiscount(event.target.value)} 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="datetime-start">Início do desconto</label>
+                        <input
+                            type="datetime-local"
+                            id="datetime-start"
+                            
+                            value={getDiscountDatetimeStart}
+                            onChange={(event) => setDiscountDatetimeStart(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="datetime-start">Fim do desconto</label>
+                        <input
+                            type="datetime-local"
+                            id="datetime-start"
+                            value={getDiscountDatetimeEnd}
+                            onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
                         />
                     </div>
                 </div>

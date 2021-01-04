@@ -93,7 +93,7 @@ export const Container = styled.div`
     }
 
     & > form div.form-row {
-        width: fit-content;
+        width: 100%;
 
         display: flex;
         justify-content: space-between;
