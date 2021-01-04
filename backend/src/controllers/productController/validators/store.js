@@ -15,10 +15,14 @@ module.exports = celebrate({
         quantity_stock: Joi.number().required(),
         quantity_sold: Joi.number(),
         discount_percent: Joi.number(),
+        discount_datetime_start: Joi.date(),
+        discount_datetime_end: Joi.date(),
         tangible: Joi.boolean().required(),
         weight: Joi.string().required(),
         length: Joi.number().required(),
         height: Joi.number().required(),
         width: Joi.number().required(),
+    }).preferences({
+        abortEarly: false
     })
 });

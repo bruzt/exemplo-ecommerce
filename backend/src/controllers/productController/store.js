@@ -10,6 +10,9 @@ module.exports = async (req, res) => {
     
     try {
 
+        if(req.body.discount_datetime_start) req.body.discount_datetime_start = new Date(req.body.discount_datetime_start);
+        if(req.body.discount_datetime_end) req.body.discount_datetime_end = new Date(req.body.discount_datetime_end);
+
         const category = await CategoryModel.findByPk(req.body.category_id);
 
         if(!category) return res.status(400).json({ message: 'category not found' });

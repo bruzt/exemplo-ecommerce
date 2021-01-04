@@ -57,6 +57,16 @@ module.exports = {
                 defaultValue: 0
             },
 
+            discount_datetime_start: {
+                type: Sequelize.DATE,
+                allowNull: true
+            },
+
+            discount_datetime_end: {
+                type: Sequelize.DATE,
+                allowNull: true
+            },
+
             tangible: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,

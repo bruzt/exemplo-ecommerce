@@ -17,6 +17,8 @@ class ProductModel extends Model {
             quantity_stock: DataTypes.INTEGER,
             quantity_sold: DataTypes.INTEGER,
             discount_percent: DataTypes.DECIMAL,
+            discount_datetime_start: DataTypes.DATE,
+            discount_datetime_end: DataTypes.DATE,
             category_id: DataTypes.INTEGER,
             tangible: DataTypes.BOOLEAN,
             weight: DataTypes.STRING,
