@@ -23,15 +23,18 @@ export default function AddProduct() {
     const [getDescription, setDescription] = useState('');
 
     const [getPrice, setPrice] = useState('');
-    const [getDiscount, setDiscount] = useState('0');
     const [getQtdStock, setQtdStock] = useState('0');
     const [getCategory, setCategory] = useState('0');
     const [getTangible, setTangible] = useState(1);
-
+    
     const [getWeight, setWeight] = useState('');
     const [getLength, setLength] = useState('');
     const [getHeight, setHeight] = useState('');
     const [getWidth, setWidth] = useState('');
+
+    const [getDiscount, setDiscount] = useState('0');
+    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(null);
+    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(null);
 
     const [getHtmlText, setHtmlText] = useState('');
 
@@ -71,13 +74,15 @@ export default function AddProduct() {
             description: getDescription,
             price: Number(getPrice),
             quantity_stock: Number(getQtdStock),
-            discount_percent: Number(getDiscount),
             category_id: Number(getCategory),
             tangible: Boolean(Number(getTangible)),
             weight: String(getWeight).replace('.', ','),
             length: Number(getLength),
             height: Number(getHeight),
             width: Number(getWidth),
+            discount_percent: Number(getDiscount),
+            discount_datetime_start: getDiscountDatetimeStart ? getDiscountDatetimeStart : undefined,
+            discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
             html_body: getHtmlText.trim().length > 0 ? String(getHtmlText) : undefined
         }
 
@@ -159,22 +164,10 @@ export default function AddProduct() {
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="product-discount">Desconto (%)</label>
-                        <input
-                            type="number"
-                            min="0"
-                            max='100'
-                            id='product-discount'
-                            value={getDiscount}
-                            onChange={(event) => setDiscount(event.target.value)}
-                        />
-                    </div>
-
-                    <div className="input-group">
                         <label htmlFor="product-stock">Qtd em Estoque</label>
                         <input
                             type="number"
-                            min="0" 
+                            min="0"
                             id='product-stock'
                             value={getQtdStock}
                             onChange={(event) => setQtdStock(event.target.value)}
@@ -251,6 +244,40 @@ export default function AddProduct() {
                             id="product-width"
                             value={getWidth}
                             onChange={(event) => setWidth(event.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className="form-line">
+                    <div className="input-group">
+                        <label htmlFor="product-discount">Desconto (%)</label>
+                        <input
+                            type="number"
+                            min="0"
+                            max='100'
+                            id='product-discount'
+                            value={getDiscount}
+                            onChange={(event) => setDiscount(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="datetime-start">Início do desconto</label>
+                        <input
+                            type="datetime-local"
+                            id="datetime-start"
+                            value={getDiscountDatetimeStart}
+                            onChange={(event) => setDiscountDatetimeStart(event.target.value)}
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label htmlFor="datetime-start">Fim do desconto</label>
+                        <input
+                            type="datetime-local"
+                            id="datetime-start"
+                            value={getDiscountDatetimeEnd}
+                            onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
                         />
                     </div>
                 </div>

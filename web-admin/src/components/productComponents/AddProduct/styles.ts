@@ -27,6 +27,8 @@ export const Container = styled.div`
     }
 
     & > form div.input-group {
+        width: 100%;
+        
         display: flex;
         flex-direction: column;
     }
