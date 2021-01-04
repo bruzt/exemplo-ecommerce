@@ -20,6 +20,8 @@ export interface IProduct {
     description: string;
     price: number;
     discount_percent: number;
+    discount_datetime_start: string;
+    discount_datetime_end: string;
     quantity_stock: number;
     category: ICategory;
     tangible: boolean;
