@@ -15,6 +15,8 @@ module.exports = celebrate({
         quantity_stock: Joi.number(),
         quantity_sold: Joi.number(),
         discount_percent: Joi.number(),
+        discount_datetime_start: Joi.date(),
+        discount_datetime_end: Joi.date(),
         tangible: Joi.boolean(),
         weight: Joi.string(),
         length: Joi.number(),
