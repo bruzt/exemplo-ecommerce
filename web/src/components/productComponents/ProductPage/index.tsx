@@ -9,6 +9,7 @@ import { Container } from './styles';
 
 import PageLayout from '../../PageLayout';
 import ImageSlider from '../ImageSlider';
+import OnSaleCountDown from '../OnSaleCountdown';
 
 import { IProduct } from '../../../pages/[productId]';
 
@@ -21,11 +22,11 @@ export default function Product({ product }: IProps) {
     const [getQuantity, setQuantity] = useState(1);
     const [getBuyButtonDisabled, setBuyButtonDisabled] = useState(false);
 
+    const [getIsOnSale, setIsOnSale] = useState(product.isOnSale);
+
     const cartContext = useCart();
     const router = useRouter();
     const filterBarContext = useFilterBar();
-
-    
 
     useEffect(() => {
         if (product.quantity_stock == 0) {
@@ -35,7 +36,7 @@ export default function Product({ product }: IProps) {
         }
     }, [product]);
 
-    function handleQuantity(value) {
+    function handleQuantity(value: number) {
 
         if (product.quantity_stock > 0) {
 
@@ -59,7 +60,6 @@ export default function Product({ product }: IProps) {
                 setQuantity(value);
                 setBuyButtonDisabled(false);
             }
-
         }
     }
 
@@ -86,7 +86,7 @@ export default function Product({ product }: IProps) {
         return categories;
     }
 
-    function handleCategorySearch(category) {
+    function handleCategorySearch(category: ICategory) {
 
         router.push({
             pathname: '/search',
@@ -97,6 +97,8 @@ export default function Product({ product }: IProps) {
             }
         });
     }
+
+    
 
     return (
         <>
@@ -164,21 +166,31 @@ export default function Product({ product }: IProps) {
                     <div className='buy-card-container'>
 
                         <div className='buy-card'>
-                            <h2>Preço</h2>
-                            {(product.discount_percent > 0) ? <p className='original-price'>R$ {Number(product.price).toFixed(2)}</p> : false}
-                            <p className='price'>R$ {product.finalPrice} a unidade</p>
-                            {(product.quantity_stock > 0)
-                                ? (product.discount_percent > 0)
-                                    ? <p className='discount'>-{product.discount_percent}%</p>
-                                    : null
-                                : <p className='lacking'>Em falta</p>
-                            }
-                            <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(event.target.value)} /></p>
-                            <p>Disponível: {product.quantity_stock}</p>
-                            <p className='total'>Total: R$ {(Number(product.finalPrice) * getQuantity).toFixed(2)}</p>
-                            <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
-                                Adicionar ao carrinho
-                            </button>
+
+                            {getIsOnSale && (
+                                <OnSaleCountDown 
+                                    product={product}
+                                    setIsOnSale={setIsOnSale}
+                                />
+                            )}
+
+                            <div className="buy-card-infos">
+                                <h2>Preço</h2>
+                                {(getIsOnSale) ? <p className='original-price'>R$ {Number(product.price).toFixed(2)}</p> : false}
+                                {(product.quantity_stock > 0)
+                                    ? (getIsOnSale)
+                                        ? <p className='discount'>-{product.discount_percent}%</p>
+                                        : null
+                                    : <p className='lacking'>Em falta</p>
+                                }
+                                <p className='price'>R$ {getIsOnSale ? product.finalPrice : product.price} a unidade</p>
+                                <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(Number(event.target.value))} /></p>
+                                <p>Disponível: {product.quantity_stock}</p>
+                                <p className='total'>Total: R$ {(Number(getIsOnSale ? product.finalPrice : product.price) * getQuantity).toFixed(2)}</p>
+                                <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
+                                    Adicionar ao carrinho
+                                </button>
+                            </div>
                         </div>
 
                     </div>

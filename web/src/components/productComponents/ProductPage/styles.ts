@@ -58,10 +58,9 @@ export const Container = styled.section`
     .buy-card-container {
         grid-area: buy-card-container;
         height: 100%;
-        display: flex;
-        flex-direction: row;
         margin: 0;
-        justify-content: space-between;
+
+        display: flex;
     }
 
     .buy-card {
@@ -69,17 +68,31 @@ export const Container = styled.section`
         top: 5px;
 
         width: 100%;
-        max-width: 400px;
-        height: 400px;
+        height: fit-content;
+
+        margin-left: 10px;
+    }
+
+    .buy-card .buy-card-infos {
+        height: 100%;
+
         background: ${props => props.theme.primary};
-        border-radius: 5px;
+        border-radius: 0 0 5px 5px;
         padding: 10px;
-        margin: 0 0 0 10px;
 
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
+
+        & > * {
+            margin-top: 20px;
+        }
+    }
+
+    .countdown span {
+        margin-left: 10px;
+        font-size: 25px;
     }
 
     .buy-card .price {
