@@ -135,18 +135,23 @@ export const SearchBarForm = styled.form`
 
     ul.dropdown-search li img {
         width: auto;
+        max-width: 45px;
         height: 45px;
+
+        object-fit: cover;
     }
 
     ul.dropdown-search li span.title {
         width: 100%;
-        padding: 0 5px;
+        height: 45px;
+        padding: 10px 5px;
         font-size: 20px;
+        line-height: 30px;
 
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
-        -webkit-line-clamp: 2; /* number of lines to show */
+        -webkit-line-clamp: 1; /* number of lines to show */
         -webkit-box-orient: vertical;
     }
 

@@ -209,7 +209,7 @@ export default function CategoriesAndSeachBar() {
                                                 }  
                                         </div>
                                         <span className='title'>{product.title}</span>
-                                        <span className='price'><span>R$&nbsp;</span>{product.price}</span>
+                                        <span className='price'><span>R$&nbsp;</span>{product.finalPrice}</span>
                                     </a>
                                 </Link>
                             </li>
