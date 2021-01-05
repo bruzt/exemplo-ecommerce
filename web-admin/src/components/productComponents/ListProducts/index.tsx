@@ -18,10 +18,12 @@ export interface IProduct {
     id: number;
     title: string;
     description: string;
-    price: number;
+    price: string;
+    finalPrice: string;
     discount_percent: number;
     discount_datetime_start: string;
     discount_datetime_end: string;
+    isOnSale: boolean;
     quantity_stock: number;
     category: ICategory;
     tangible: boolean;
@@ -174,8 +176,8 @@ export default function ListProducts(){
                         <th style={{ width: 50 }}>ID</th>
                         <th style={{ width: 100 }}>Imagem</th>
                         <th style={{ width: 500 }}>Nome</th>
-                        <th style={{ width: 150 }}>Preço</th>
                         <th style={{ width: 100 }}>Desconto</th>
+                        <th style={{ width: 150 }}>Preço</th>
                         <th style={{ width: 100 }}>Estoque</th>
                         <th style={{ width: 100 }}>Ações</th>
                     </tr>
@@ -193,8 +195,8 @@ export default function ListProducts(){
                                 </div>
                             </td>
                             <td className='name'>{product.title}</td>
-                            <td>R$ {product.price}</td>
-                            <td>{product.discount_percent}</td>
+                            <td>{product.isOnSale ? product.discount_percent + '%' : '-'}</td>
+                            <td>R$ {product.finalPrice}</td>
                             <td>{product.quantity_stock}</td>
                             <td id='td-actions'>
                                 <div>

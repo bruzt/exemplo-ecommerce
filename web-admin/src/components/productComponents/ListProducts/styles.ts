@@ -41,6 +41,7 @@ export const Container = styled.section`
 
     table {
         margin-top: 20px;
+        margin-bottom: 5px;
         font-size: 20px;
         border-spacing: 0 1px;
     }
