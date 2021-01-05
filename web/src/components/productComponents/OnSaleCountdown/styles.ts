@@ -4,8 +4,6 @@ export const Container = styled.div`
 
     background: ${props => props.theme.secondary};
 
-    border-radius: 5px 5px 0 0;
-
     .countdown {
         width: 100%;
         height: 50px;
@@ -13,5 +11,9 @@ export const Container = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .countdown span {
+        margin-left: 10px;
     }
 `;
