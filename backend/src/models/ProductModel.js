@@ -1,6 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 const calcFinalPrice = require('../util/calcFinalPrice');
+const isOnSale = require('../util/isOnSale');
 
 const OrdersProducts = require('./OrdersProductsModel');
 
@@ -27,6 +28,7 @@ class ProductModel extends Model {
             width: DataTypes.DECIMAL,
             
             finalPrice: DataTypes.VIRTUAL,
+            isOnSale: DataTypes.VIRTUAL,
 
         }, {
             tableName: 'products',
@@ -35,12 +37,19 @@ class ProductModel extends Model {
 
                     if(product) {
                         if(Array.isArray(product)){
-    
                             for(const prod of product){
-                                prod.finalPrice = calcFinalPrice(prod.price, prod.discount_percent);
+
+                                prod.isOnSale = isOnSale(prod);
+
+                                if(prod.isOnSale) prod.finalPrice = calcFinalPrice(prod.price, prod.discount_percent);
+                                else prod.finalPrice = prod.price;
                             }
                         } else {
-                            product.finalPrice = calcFinalPrice(product.price, product.discount_percent);
+
+                            product.isOnSale = isOnSale(product);
+
+                            if(product.isOnSale) product.finalPrice = calcFinalPrice(product.price, product.discount_percent);
+                            else product.finalPrice = product.price;
                         }
                     }
                 }
@@ -49,6 +58,8 @@ class ProductModel extends Model {
             paranoid: true,
         });
     }
+
+    ///////////////////////////////////////
 
     static associate(models){
 
