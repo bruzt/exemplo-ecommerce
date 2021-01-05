@@ -19,9 +19,13 @@ export interface IProduct {
     description: string;
     html_body: string;
     price: string;
+    finalPrice: string;
     quantity_stock: number;
     quantity_sold: number;
-    discount_percent:   number;
+    discount_percent: number;
+    discount_datetime_start: string;
+    discount_datetime_end: string;
+    isOnSale: boolean;
     tangible: boolean;
     weight: string;
     length: string;
@@ -34,7 +38,6 @@ export interface IProduct {
         name: string;
         parent_id: number;
     };
-    finalPrice: string;
 }
 
 interface IProps {
