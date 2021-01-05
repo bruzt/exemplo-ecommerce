@@ -77,7 +77,6 @@ export const Container = styled.section`
         height: 100%;
 
         background: ${props => props.theme.primary};
-        border-radius: 0 0 5px 5px;
         padding: 10px;
 
         display: flex;
