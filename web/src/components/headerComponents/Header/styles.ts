@@ -15,11 +15,17 @@ export const Container = styled.div`
         justify-content: space-between;
     }
 
+    header a {
+        width: fit-content;
+        height: 90px;
+        
+        align-self: center;
+        cursor: pointer;
+    }
+
     header img {
         max-width: 100%;
         height: 90px;
-        align-self: center;
-        cursor: pointer;
     }
 
     div.login-cart {

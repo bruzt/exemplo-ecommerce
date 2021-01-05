@@ -37,11 +37,13 @@ export default function Header() {
                 <header>
                     <div className='limit-center'>
                         <Link href='/'>
-                            <img
-                                src={logo}
-                                alt='logo'
-                                title='Home'
-                            />
+                            <a>
+                                <img
+                                    src={logo}
+                                    alt='logo'
+                                    title='Home'
+                                />
+                            </a>
                         </Link>
 
                         <div className='login-cart'>
