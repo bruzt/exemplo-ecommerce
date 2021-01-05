@@ -5,14 +5,13 @@ import { IProduct } from '../../../pages/[productId]';
 
 import { Container } from './styles';
 
-let timeoutId: number;
-
 interface IProps {
 	product: IProduct;
 	setIsOnSale: React.Dispatch<boolean>;
+	timeoutId: number;
 }
 
-export default function OnSaleCountdown({ product, setIsOnSale }: IProps) {
+export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IProps) {
 
 	const [getDays, setDays] = useState(0);
     const [getHours, setHours] = useState(0);

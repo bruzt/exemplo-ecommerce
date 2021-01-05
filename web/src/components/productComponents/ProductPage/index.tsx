@@ -17,6 +17,8 @@ interface IProps {
     product: IProduct;
 }
 
+let timeoutId: number;
+
 export default function Product({ product }: IProps) {
 
     const [getQuantity, setQuantity] = useState(1);
@@ -98,8 +100,6 @@ export default function Product({ product }: IProps) {
         });
     }
 
-    
-
     return (
         <>
             <Head>
@@ -171,6 +171,7 @@ export default function Product({ product }: IProps) {
                                 <OnSaleCountDown 
                                     product={product}
                                     setIsOnSale={setIsOnSale}
+                                    timeoutId={timeoutId}
                                 />
                             )}
 
