@@ -53,14 +53,16 @@ export const Container = styled.div`
         font-size: 20px;
     }
 
-    div.img-container {
+    figure.img-container {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+
+        height: 200px;
 
         overflow: hidden;
     }
 
-    div.img-container img {
+    figure.img-container img {
         width: 100%;
         /*max-width: 475px;*/
         height: 200px;
