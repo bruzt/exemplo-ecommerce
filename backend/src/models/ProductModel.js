@@ -39,17 +39,21 @@ class ProductModel extends Model {
                         if(Array.isArray(product)){
                             for(const prod of product){
 
+                                prod.price = String(Number(prod.price).toFixed(2));
+
                                 prod.isOnSale = isOnSale(prod);
 
-                                if(prod.isOnSale) prod.finalPrice = calcFinalPrice(prod.price, prod.discount_percent);
-                                else prod.finalPrice = prod.price;
+                                if(prod.isOnSale) prod.finalPrice = String(calcFinalPrice(prod.price, prod.discount_percent));
+                                else prod.finalPrice = String(Number(prod.price).toFixed(2));
                             }
                         } else {
+
+                            product.price = String(Number(product.price).toFixed(2));
 
                             product.isOnSale = isOnSale(product);
 
                             if(product.isOnSale) product.finalPrice = calcFinalPrice(product.price, product.discount_percent);
-                            else product.finalPrice = product.price;
+                            else product.finalPrice = String(Number(product.price).toFixed(2));
                         }
                     }
                 }
