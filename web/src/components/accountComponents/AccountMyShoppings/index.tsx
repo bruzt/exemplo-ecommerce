@@ -117,6 +117,7 @@ export default function AccountMyShoppings() {
                                     <span>Data: {Intl.DateTimeFormat('pt-BR').format(new Date(order.createdAt))}</span>
                                     <span>Total: R$ {Number(order.total_price).toFixed(2)}</span>
 
+                                    {(order.status == 'processing') && <span className='processing'>Processando</span>}
                                     {(order.status == 'awaiting-payment') &&
                                         <a
                                             href={order.boleto_url}

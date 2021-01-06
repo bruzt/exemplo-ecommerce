@@ -138,6 +138,13 @@ export const Container = styled.section`
         padding: 5px 10px;
     }
 
+    span.processing {
+        padding: 5px;
+        background: ${props => props.theme.warningActive};
+        border-radius: 5px;
+        color: #111;
+    }
+
     a.boleto-link {
         padding: 5px;
         background: ${props => props.theme.warning};
