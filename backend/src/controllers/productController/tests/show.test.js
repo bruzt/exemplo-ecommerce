@@ -27,6 +27,26 @@ describe('productController Test Suit', () => {
         expect(response.body.id).toBe(product.id);
     });
 
+    it('should show an specific on sale product from db', async () => {
+
+        const dateNow = new Date();
+        const dateFuture = new Date(Number(dateNow) + 60000);
+
+        const category = await factories.create('Category');
+        const product = await factories.create('Product', { 
+            category_id: category.id,
+            discount_percent: 10,
+            discount_datetime_start: dateNow,
+            discount_datetime_end: dateFuture,
+        });
+        
+        const response = await supertest(app).get(`/products/${product.id}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.id).toBe(product.id);
+        expect(response.body.isOnSale).toBe(true);
+    });
+
     it('should return code 400 for "product not found"', async () => {
 
         const response = await supertest(app).get(`/products/6`);
