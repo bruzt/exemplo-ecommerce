@@ -82,7 +82,7 @@ module.exports = async (req, res) => {
         // add products to order and subtract from stock
         for(let i = 0; i < products.length; i++){
             
-            const unit_price = (products[i].discount_percent > 0)
+            const unit_price = (products[i].isOnSale)
             ? Number(String(Number(products[i].price - (products[i].price * (products[i].discount_percent/100))).toFixed(2)).replace('.', ''))
             : Number(String(Number(products[i].price).toFixed(2)).replace('.', ''));
             
@@ -111,7 +111,7 @@ module.exports = async (req, res) => {
                 through: {
                     quantity_buyed: quantity_buyed[i],
                     product_price: products[i].price,
-                    product_discount_percent: products[i].discount_percent
+                    product_discount_percent: products[i].isOnSale ? products[i].discount_percent : null,
                 }
             });
             
