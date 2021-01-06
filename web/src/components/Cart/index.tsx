@@ -42,18 +42,16 @@ export default function Cart() {
 
                 const response = await api.get(`/products/${cartContext.getCart[i].id}`);
 
-                const finalPrice = (response.data.discount_percent == 0)
-                    ? Number(response.data.price).toFixed(2)
-                    : (response.data.price - (response.data.price * (response.data.discount_percent / 100))).toFixed(2);
-
-                products.push({ finalPrice, ...response.data });
+                products.push(response.data);
 
                 if(cartContext.getCart[i].qtd > response.data.quantity_stock){
 
-                    const product = { ...cartContext.getCart[i] };
-                    product.qtd = response.data.quantity_stock;
+                    const cart = [ ...cartContext.getCart ]
+                    cart[i].qtd = response.data.quantity_stock;
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
                     
-                    cartContext.setCart([product]);
+                    cartContext.setCart(cart);
                 }
 
             } catch (error) {
@@ -226,7 +224,7 @@ export default function Cart() {
                                             <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
                                                 <a>
                                                     <span className='over-hidden'>{product.title}</span>
-                                                    {(product.discount_percent != 0)
+                                                    {(product.isOnSale)
                                                         ? <span className='order-discount'>-{product.discount_percent}%</span>
                                                         : null
                                                     }
