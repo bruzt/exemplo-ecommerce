@@ -123,6 +123,7 @@ module.exports = async (req, res) => {
         const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
         
         let response;
+        const reference_key = `${order.id}!${Number(order.createdAt)}`;
         const client = await pagarMeClient();
         
         ////////////////////////////////////
@@ -132,7 +133,7 @@ module.exports = async (req, res) => {
 
             req.body.credit_card.payment_method = 'credit_card';
             req.body.credit_card.postback_url = postback_url;
-            req.body.credit_card.reference_key = order.id;
+            req.body.credit_card.reference_key = reference_key;
 
             await client.transactions.create({
                 ...req.body.credit_card
@@ -141,9 +142,7 @@ module.exports = async (req, res) => {
             response = await new Promise( (resolve, reject) => {
                 setTimeout( async () => {
                     try {
-                        const pmRes = await client.transactions.find({
-                            reference_key: order.id
-                        });
+                        const pmRes = await client.transactions.find({ reference_key });
                         resolve(pmRes[0]);
                     } catch (error) {
                         reject(error);
@@ -161,7 +160,7 @@ module.exports = async (req, res) => {
             req.body.boleto.payment_method = 'boleto';
             req.body.boleto.capture = true; // retorna o link para o boleto
             req.body.boleto.postback_url = postback_url;
-            req.body.boleto.reference_key = order.id;
+            req.body.boleto.reference_key = reference_key;
              
             let date = new Date();
             date.setDate(date.getDate() + 3);
@@ -176,9 +175,7 @@ module.exports = async (req, res) => {
             response = await new Promise( (resolve, reject) => {
                 setTimeout( async () => {
                     try {
-                        const pmRes = await client.transactions.find({
-                            reference_key: order.id
-                        });
+                        const pmRes = await client.transactions.find({ reference_key });
                         resolve(pmRes[0]);
                     } catch (error) {
                         reject(error);
