@@ -1,6 +1,5 @@
 const express = require('express');
-//const axios = require('axios');
-const pagarme = require('pagarme');
+const pagarMeClient = require('../../services/pagarMeClient');
 const crypto = require('crypto');
 
 const { emitNewOrder } = require('../../websocket/socketConnection');
@@ -124,29 +123,45 @@ module.exports = async (req, res) => {
         const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
         
         let response;
+        const client = await pagarMeClient();
         
+        ////////////////////////////////////
+        // PAGAMENTO CARTAO CREDITO
+        ///////////////////////////////////
         if(req.body.credit_card){
 
             req.body.credit_card.payment_method = 'credit_card';
             req.body.credit_card.postback_url = postback_url;
+            req.body.credit_card.reference_key = order.id;
 
-            const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
-            response = await client.transactions.create({
+            await client.transactions.create({
                 ...req.body.credit_card
             });
-            
-            /*response = await axios.post('https://api.pagar.me/1/transactions', {
-                api_key: process.env.PAGARME_API_KEY,
-                ...req.body.credit_card
-            });*/
+
+            response = await new Promise( (resolve, reject) => {
+                setTimeout( async () => {
+                    try {
+                        const pmRes = await client.transactions.find({
+                            reference_key: order.id
+                        });
+                        resolve(pmRes[0]);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 1000);
+            });
 
             order.status = response.status; //response.data.status;
             
+        ////////////////////////////////////
+        // PAGAMENTO BOLETO
+        ///////////////////////////////////
         } else if(req.body.boleto){
 
             req.body.boleto.payment_method = 'boleto';
             req.body.boleto.capture = true; // retorna o link para o boleto
-            //req.body.boleto.postback_url = postback_url;
+            req.body.boleto.postback_url = postback_url;
+            req.body.boleto.reference_key = order.id;
              
             let date = new Date();
             date.setDate(date.getDate() + 3);
@@ -154,18 +169,26 @@ module.exports = async (req, res) => {
             
             req.body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
 
-            const client = await pagarme.client.connect({ api_key: process.env.PAGARME_API_KEY });
-            response = await client.transactions.create({
+            await client.transactions.create({
                 ...req.body.boleto
             });
 
+            response = await new Promise( (resolve, reject) => {
+                setTimeout( async () => {
+                    try {
+                        const pmRes = await client.transactions.find({
+                            reference_key: order.id
+                        });
+                        resolve(pmRes[0]);
+                    } catch (error) {
+                        reject(error);
+                    }
+                }, 1000);
+            });
+
             order.boleto_url = response.boleto_url;
-            
-            /*response = await axios.post('https://api.pagar.me/1/transactions', {
-                api_key: process.env.PAGARME_API_KEY,
-                ...req.body.boleto
-            });*/
         }
+        ///////////////////////////////////////////////////
 
         await order.save();
 
@@ -181,21 +204,11 @@ module.exports = async (req, res) => {
                     attributes: ['id', 'filename'],
                 }*/
             }
-        })
-
-        /*const newOrder = await OrderModel.findByPk(order.id, {
-            include: {
-                association: 'products',
-                attributes: ['id', 'title'],
-                through: { 
-                    attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
-                },
-            }
-        });*/
+        });
     
         emitNewOrder(newOrder);
         
-        return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response /*response.data*/ });
+        return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response });
         
     } catch (error) {
         console.error(error);
