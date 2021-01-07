@@ -17,7 +17,7 @@ interface IOrder {
     freight_price: string;
     total_price: string;
     payment_method: string;
-    status: "awaiting-payment" | "paid" | "dispatch" | "sent" | "received";
+    status: "processing" | "awaiting-payment" | "paid" | "dispatch" | "sent" | "received";
     boleto_url?: string;
     tracking_code?: string;
     createdAt: string;
@@ -121,6 +121,7 @@ export default function ListOrders() {
                             <td>{order.id}</td>
                             <td>
                                 <div className={`status ${order.status}`}>
+                                    {order.status == 'processing' && <span>Processando</span>}
                                     {order.status == 'awaiting-payment' && <span>Aguardando pagamento</span>}
                                     {order.status == 'paid' && <span>Pago</span>}
                                     {order.status == 'dispatch' && <span>Expedição</span>}
