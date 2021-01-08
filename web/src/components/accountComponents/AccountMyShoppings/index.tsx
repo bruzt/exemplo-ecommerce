@@ -26,7 +26,7 @@ interface IOrder {
     freight_price: string;
     total_price: string;
     payment_method: string;
-    status: string;
+    status: 'processing' | 'waiting_payment' | 'paid' | 'dispatch' | 'sent' | 'received' | 'refused';
     boleto_url: string | null;
     tracking_code: string | null;
     createdAt: string;
@@ -118,7 +118,7 @@ export default function AccountMyShoppings() {
                                     <span>Total: R$ {Number(order.total_price).toFixed(2)}</span>
 
                                     {(order.status == 'processing') && <span className='processing'>Processando</span>}
-                                    {(order.status == 'awaiting-payment') &&
+                                    {(order.status == 'waiting_payment') &&
                                         <a
                                             href={order.boleto_url}
                                             target="_blank"
