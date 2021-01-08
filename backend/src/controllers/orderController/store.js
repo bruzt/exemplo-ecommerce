@@ -1,5 +1,5 @@
 const express = require('express');
-const pagarMeClient = require('../../services/pagarMeClient');
+const pagarMeClient = require('../../services/pagarMe/pagarMeClient');
 const crypto = require('crypto');
 
 const { emitNewOrder } = require('../../websocket/socketConnection');
@@ -120,7 +120,7 @@ module.exports = async (req, res) => {
         }
         
         order.postback_key = crypto.randomBytes(20).toString('hex');
-        const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
+        //const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
         
         let response;
         const reference_key = `${order.id}!${Number(order.createdAt)}`;
@@ -132,14 +132,14 @@ module.exports = async (req, res) => {
         if(req.body.credit_card){
 
             req.body.credit_card.payment_method = 'credit_card';
-            req.body.credit_card.postback_url = postback_url;
+            //req.body.credit_card.postback_url = postback_url;
             req.body.credit_card.reference_key = reference_key;
 
-            await client.transactions.create({
+            response = await client.transactions.create({
                 ...req.body.credit_card
             });
 
-            response = await new Promise( (resolve, reject) => {
+            /*response = await new Promise( (resolve, reject) => {
                 setTimeout( async () => {
                     try {
                         const pmRes = await client.transactions.find({ reference_key });
@@ -148,9 +148,9 @@ module.exports = async (req, res) => {
                         reject(error);
                     }
                 }, 1000);
-            });
+            });*/
 
-            order.status = response.status; //response.data.status;
+            order.status = response.status;
             
         ////////////////////////////////////
         // PAGAMENTO BOLETO
@@ -159,7 +159,7 @@ module.exports = async (req, res) => {
 
             req.body.boleto.payment_method = 'boleto';
             req.body.boleto.capture = true; // retorna o link para o boleto
-            req.body.boleto.postback_url = postback_url;
+            //req.body.boleto.postback_url = postback_url;
             req.body.boleto.reference_key = reference_key;
              
             let date = new Date();
@@ -168,11 +168,11 @@ module.exports = async (req, res) => {
             
             req.body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
 
-            await client.transactions.create({
+            response = await client.transactions.create({
                 ...req.body.boleto
             });
 
-            response = await new Promise( (resolve, reject) => {
+            /*response = await new Promise( (resolve, reject) => {
                 setTimeout( async () => {
                     try {
                         const pmRes = await client.transactions.find({ reference_key });
@@ -181,7 +181,7 @@ module.exports = async (req, res) => {
                         reject(error);
                     }
                 }, 1000);
-            });
+            });*/
 
             order.boleto_url = response.boleto_url;
         }
