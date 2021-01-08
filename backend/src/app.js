@@ -18,6 +18,7 @@ const http = require('http');
 
 require('./database/connection');
 
+const pagarMeperiodicCheck = require('./services/pagarMe/periodicCheck');
 const { socketConnection } = require('./websocket/socketConnection');
 //const trimBody = require('./middlewares/trimBody');
 const routes = require('./routes');
@@ -37,5 +38,7 @@ socketConnection(server);
 app.use(routes);
 
 app.use(errors());
+
+pagarMeperiodicCheck();
     
 module.exports = server;
