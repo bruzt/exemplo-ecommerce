@@ -1,5 +1,6 @@
 const express = require('express');
-const { Op } = require('sequelize');
+const sequelize = require('sequelize');
+const { Op } = sequelize;
 
 const findCategoriesChildrenIds = require('../../util/findCategoriesChildrenIds');
 
@@ -28,11 +29,17 @@ module.exports = async (req, res) => {
     let where = null;
 
     if(req.query.section == 'on-sale'){
-
+        
         where = {
-            discount_percent: {
-                [Op.gt]: 0
-            }
+            [Op.and]: [
+                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_start')), '<=', sequelize.fn('NOW')),
+                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_end')), '>', sequelize.fn('NOW')),
+                {
+                    discount_percent: {
+                        [Op.gt]: 0
+                    }
+                }
+            ]
         };
 
     } else if(req.query.section == 'best-sellers'){
@@ -43,7 +50,7 @@ module.exports = async (req, res) => {
             quantity_sold: {
                 [Op.gt]: 0
             }
-        }
+        };
 
     } else if(req.query.section == 'news'){
 
@@ -54,7 +61,7 @@ module.exports = async (req, res) => {
 
         where = {
             createdAt: { [Op.gte]: date }
-        }
+        };
     }
 
     if(req.query.filter == 'lowest-price') order.splice(0, 0, ['price', 'ASC']);
