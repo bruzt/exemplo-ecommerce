@@ -84,7 +84,6 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
         } catch (error) {
             console.error(error);
-            alert('Erro ao buscar usuário');
             logout();
         }
     }
