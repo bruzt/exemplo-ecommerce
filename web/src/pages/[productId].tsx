@@ -83,7 +83,7 @@ export default function productId({ product }: IProps) {
     const router = useRouter();
 
     useEffect(() => {
-        fetchProduct();
+        if(router.isFallback === false && product) fetchProduct();
     }, []);
 
     async function fetchProduct() {
