@@ -23,6 +23,7 @@ export default function Cart() {
     const orderContext = useOrder();
 
     useEffect(() => {
+        if(process.browser) window.scrollTo({ top: 0 });
         cartContext.resetFreight();
         fetchProducts();
     }, []);
