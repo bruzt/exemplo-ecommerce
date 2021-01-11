@@ -14,7 +14,7 @@ interface IProps {
 	product: IProduct;
 }
 
-let timeoutId: number;
+let timeoutId: NodeJS.Timeout;
 
 export default function ProductCard({ product }: IProps) {
 

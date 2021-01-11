@@ -8,7 +8,7 @@ import { Container } from './styles';
 interface IProps {
 	product: IProduct;
 	setIsOnSale: React.Dispatch<boolean>;
-	timeoutId: number;
+	timeoutId: NodeJS.Timeout;
 }
 
 export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IProps) {

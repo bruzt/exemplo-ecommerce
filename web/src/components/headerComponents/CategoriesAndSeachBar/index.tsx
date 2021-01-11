@@ -19,7 +19,7 @@ import { Container, CategoryDropdownMenu, SearchBarForm } from './styles';
 
 import MobileMenu from '../MobileMenu';
 
-let timeoutId: number;
+let timeoutId: NodeJS.Timeout;
 let firstRender = true;
 
 export default function CategoriesAndSeachBar() {
