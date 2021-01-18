@@ -26,6 +26,7 @@ export interface IProduct {
     discount_datetime_start: string;
     discount_datetime_end: string;
     isOnSale: boolean;
+    dateNow: string;
     tangible: boolean;
     weight: string;
     length: string;

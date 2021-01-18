@@ -31,7 +31,7 @@ export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IPr
 			const startDate = new Date(product.discount_datetime_start);
 			const endDate = new Date(product.discount_datetime_end);
 
-			const milliseconds = Number(new Date()) - Number(endDate);
+			const milliseconds = Number(new Date(product.dateNow)) - Number(endDate);
 
 			clearTimeout(timeoutId);
 
@@ -41,7 +41,7 @@ export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IPr
 	
 	function loopCountdown(milliseconds: number, startDate: Date, endDate: Date){
 
-		const dateNow = new Date();
+		const dateNow = new Date(product.dateNow);
 		
 		if(startDate <= dateNow && endDate >= dateNow) {
 
