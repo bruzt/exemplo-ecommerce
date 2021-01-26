@@ -7,7 +7,6 @@ const factories = require('../../../testUtils/factories');
 const app = require('../../../app');
 
 const credit_card = {
-    "amount": 2400,
     "installments": 2,
     "card_number": "4111111111111111",
     "card_cvv": "546",
@@ -41,7 +40,6 @@ const credit_card = {
     },
     "shipping": {
         "name": "Jajau Lalau",
-        "fee": 2000,
         "address": {
             "street": "rau lalau",
             "street_number": "55a",
@@ -52,7 +50,36 @@ const credit_card = {
             "country": "br",
         }
     },
-}
+};
+
+const boleto = {
+    "customer": {
+        "external_id": "1",
+        "name": "Jajau Lalau",
+        "email": "teste1@teste.com",
+        "type": "individual",
+        "country": "br",
+        "phone_numbers": ["+5519999999999"],
+        "documents": [
+            {
+            "type": "cpf",
+            "number": "99999999999"
+            }
+        ]
+    },
+    "shipping": {
+        "name": "Jajau Lalau",
+        "address": {
+            "street": "rau lalau",
+            "street_number": "55a",
+            "neighborhood": "bairro haha",
+            "city": "cordeirópolis",
+            "state": "sp",
+            "zipcode": "13490000",
+            "country": "br",
+        }
+    },
+};
 
 describe('orderController Test Suit', () => {
 
@@ -77,7 +104,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 30.77,
-                total_price: 80.55,
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
@@ -102,40 +128,10 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 30.77,
-                total_price: 80.55,
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
-                boleto: {
-                    amount: 5000,
-                    "customer": {
-                        "external_id": "1",
-                        "name": "Jajau Lalau",
-                        "email": "teste1@teste.com",
-                        "type": "individual",
-                        "country": "br",
-                        "phone_numbers": ["+5519999999999"],
-                        "documents": [
-                            {
-                            "type": "cpf",
-                            "number": "99999999999"
-                            }
-                        ]
-                    },
-                    "shipping": {
-                        "name": "Jajau Lalau",
-                        "fee": 2000,
-                        "address": {
-                            "street": "rau lalau",
-                            "street_number": "55a",
-                            "neighborhood": "bairro haha",
-                            "city": "cordeirópolis",
-                            "state": "sp",
-                            "zipcode": "13490000",
-                            "country": "br",
-                        }
-                    },
-                }
+                boleto
             });
 
         expect(response.status).toBe(200);
@@ -157,7 +153,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 3077,
-                total_price: 8055,
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
@@ -181,7 +176,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 3077,
-                total_price: 8055,
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: 1,
@@ -203,7 +197,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 3077,
-                total_price: 8055,
                 quantity_buyed: [2],
                 products_id: [],
                 address_id: address.id,
@@ -225,7 +218,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 3077,
-                total_price: 8055,
                 quantity_buyed: [2],
                 products_id: [1],
                 address_id: address.id,
@@ -250,7 +242,6 @@ describe('orderController Test Suit', () => {
             .send({
                 freight_name: 'sedex',
                 freight_price: 3077,
-                total_price: 8055,
                 quantity_buyed: [5],
                 products_id: [product.id],
                 address_id: address.id,

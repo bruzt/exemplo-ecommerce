@@ -34,11 +34,16 @@ describe('productController Test Suit', () => {
 
     it('should list all products - section "on-sale"', async () => {
 
+        const dateStart = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
+        const dateEnd = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString();
+
         const category = await factories.create('Category');
 
         await factories.create('Product', { category_id: category.id });
         await factories.create('Product', { 
             discount_percent: 10,
+            discount_datetime_start: dateStart,
+            discount_datetime_end: dateEnd,
             category_id: category.id,
         });
 

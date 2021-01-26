@@ -30,10 +30,12 @@ module.exports = async (req, res) => {
 
     if(req.query.section == 'on-sale'){
         
+        const dateNow = new Date();
+
         where = {
             [Op.and]: [
-                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_start')), '<=', sequelize.fn('NOW')),
-                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_end')), '>', sequelize.fn('NOW')),
+                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_start')), '<=', dateNow),
+                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_end')), '>', dateNow),
                 {
                     discount_percent: {
                         [Op.gt]: 0
