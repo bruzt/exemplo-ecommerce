@@ -2,6 +2,8 @@ const express = require('express');
 const pagarMeClient = require('../../services/pagarMe/pagarMeClient');
 const crypto = require('crypto');
 
+const sequelizeConnection = require('../../database/connection');
+
 const { emitNewOrder } = require('../../websocket/socketConnection');
 
 const OrderModel = require('../../models/OrderModel');
@@ -21,6 +23,8 @@ module.exports = async (req, res) => {
     } = req.body;
 
     const user_id = req.tokenPayload.id;
+
+    const transaction = await sequelizeConnection.transaction();
 
     try {
 
@@ -73,6 +77,8 @@ module.exports = async (req, res) => {
             total_price: total_price.toFixed(2), 
             address_id,
             payment_method: (req.body.credit_card) ? 'credit_card' : 'boleto'
+        }, {
+            transaction
         });
         
         if(req.body.credit_card) req.body.credit_card.items = [];
@@ -111,12 +117,15 @@ module.exports = async (req, res) => {
                     quantity_buyed: quantity_buyed[i],
                     product_price: products[i].price,
                     product_discount_percent: products[i].isOnSale ? products[i].discount_percent : null,
-                }
+                },
+                transaction
             });
             
             products[i].quantity_sold += quantity_buyed[i];
             products[i].quantity_stock -= quantity_buyed[i];
-            await products[i].save();
+            await products[i].save({
+                transaction
+            });
         }
         
         order.postback_key = crypto.randomBytes(20).toString('hex');
@@ -187,7 +196,8 @@ module.exports = async (req, res) => {
         }
         ///////////////////////////////////////////////////
 
-        await order.save();
+        //await order.save();
+        await transaction.commit();
 
         const newOrder = await order.reload({
             include: {
@@ -208,6 +218,7 @@ module.exports = async (req, res) => {
         return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response });
         
     } catch (error) {
+        await transaction.rollback();
         console.error(error);
         return res.status(500).json({ message: 'internal error' });
     }
