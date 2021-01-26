@@ -55,7 +55,6 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
         setDisabledCreateBoletoButton(true);
         setDisabledCreditCardButton(true);
 
-        const amount = Number(String(cartContext.getTotalPrice).replace('.', ''));
         const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
         const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
         const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
@@ -71,9 +70,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 address_id: address.id,
                 freight_name: cartContext.getFreightSelected,
                 freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')),
-                total_price: cartContext.getTotalPrice,
                 boleto: {
-                    amount,
                     customer: {
                         external_id: String(userContext.getUser.id),
                         name: userContext.getUser.name,
@@ -90,7 +87,6 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                     },
                     shipping: {
                         name: userContext.getUser.name,
-                        fee: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '')),
                         address: {
                             street: address.street,
                             street_number: address.number,

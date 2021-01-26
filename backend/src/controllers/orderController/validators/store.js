@@ -13,7 +13,6 @@ module.exports = celebrate({
         products_id: Joi.array().items(Joi.number().required()).required(),
         address_id: Joi.number().required(),
         credit_card: Joi.object().keys({
-            amount: Joi.number().required(),
             installments: Joi.number().required(),
             card_number: Joi.string().required(),
             card_cvv: Joi.string().required(),
@@ -57,7 +56,6 @@ module.exports = celebrate({
             }).required(),
         }),
         boleto: Joi.object().keys({
-            amount: Joi.number().required(),
             customer: {
                 external_id: Joi.string().required(),
                 name: Joi.string().required(),

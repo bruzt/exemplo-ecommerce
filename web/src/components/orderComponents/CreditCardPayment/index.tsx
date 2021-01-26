@@ -152,7 +152,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         setDisabledPayButton(true);
         setDisabledBoletoButton(true);
 
-        const amount = Number(String(cartContext.getTotalPrice).replace('.', ''));
         const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
         const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
         const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
@@ -169,9 +168,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 address_id: address.id,
                 freight_name: cartContext.getFreightSelected,
                 freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')),
-                total_price: cartContext.getTotalPrice,
                 credit_card: {
-                    amount,
                     installments: Number(getInstallments),
                     card_number: String(getCardNumber).replace(/ /g, ''),
                     card_cvv: getCardCvv,
@@ -205,7 +202,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                     },
                     shipping: {
                         name: userContext.getUser.name,
-                        fee: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '')),
                         address: {
                             street: address.street,
                             street_number: address.number,
