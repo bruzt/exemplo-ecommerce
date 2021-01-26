@@ -9,7 +9,6 @@ module.exports = celebrate({
     [Segments.BODY]: Joi.object().keys({
         freight_name: Joi.string().required(),
         freight_price: Joi.number().required(),
-        total_price: Joi.number().required(),
         quantity_buyed: Joi.array().items(Joi.number().required()).required(),
         products_id: Joi.array().items(Joi.number().required()).required(),
         address_id: Joi.number().required(),
@@ -45,8 +44,7 @@ module.exports = celebrate({
                 }).required()
             }).required(),
             shipping: Joi.object().keys({
-                name: Joi.string().required(),
-                fee: Joi.number().required(), 
+                name: Joi.string().required(), 
                 address: Joi.object().keys({
                     street: Joi.string().required(),
                     street_number: Joi.string().required(),
@@ -86,7 +84,6 @@ module.exports = celebrate({
             },*/
             shipping: {
                 name: Joi.string().required(),
-                fee: Joi.number().required(),
                 address: {
                     street: Joi.string().required(),
                     street_number: Joi.string().required(),

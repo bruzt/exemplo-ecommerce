@@ -1,6 +1,6 @@
 const express = require('express');
 const pagarMeClient = require('../../services/pagarMe/pagarMeClient');
-const crypto = require('crypto');
+//const crypto = require('crypto');
 
 const sequelizeConnection = require('../../database/connection');
 
@@ -17,8 +17,7 @@ module.exports = async (req, res) => {
         products_id, 
         quantity_buyed, 
         freight_name,
-        freight_price, 
-        total_price, 
+        freight_price,
         address_id 
     } = req.body;
 
@@ -62,19 +61,18 @@ module.exports = async (req, res) => {
         
         if(errorProduct) return res.status(400).json({ message: errorProduct });
 
-        // calculates total price with discounts
-        /*let total_price = 0;
-        for(let i = 0; i < products.length; i++){
-
-            total_price += products[i].price - (products[i].price * (products[i].discount_percent/100));
-        }    */
+        // calculates total price
+        let total_price = 0;
+        for(let i = 0; i < products.length; i++) {
+            total_price += Number(products[i].finalPrice) * Number(quantity_buyed[i]);
+        }
         
         // create order
         const order = await OrderModel.create({ 
             user_id, 
             freight_name,
-            freight_price: freight_price.toFixed(2), 
-            total_price: total_price.toFixed(2), 
+            freight_price: Number(freight_price).toFixed(2), 
+            total_price, 
             address_id,
             payment_method: (req.body.credit_card) ? 'credit_card' : 'boleto'
         }, {
@@ -87,16 +85,12 @@ module.exports = async (req, res) => {
         // add products to order and subtract from stock
         for(let i = 0; i < products.length; i++){
             
-            const unit_price = (products[i].isOnSale)
-            ? Number(String(Number(products[i].price - (products[i].price * (products[i].discount_percent/100))).toFixed(2)).replace('.', ''))
-            : Number(String(Number(products[i].price).toFixed(2)).replace('.', ''));
-            
             if(req.body.credit_card){
                 
                 req.body.credit_card.items.push({
                     id: String(products[i].id),
                     title: products[i].title,
-                    unit_price,
+                    unit_price: String(products[i].finalPrice).replace('.', ''),
                     quantity: quantity_buyed[i],
                     tangible: products[i].tangible
                 });
@@ -106,7 +100,7 @@ module.exports = async (req, res) => {
                 req.body.boleto.items.push({
                     id: String(products[i].id),
                     title: products[i].title,
-                    unit_price,
+                    unit_price: String(products[i].finalPrice).replace('.', ''),
                     quantity: quantity_buyed[i],
                     tangible: products[i].tangible
                 });
@@ -128,12 +122,15 @@ module.exports = async (req, res) => {
             });
         }
         
-        order.postback_key = crypto.randomBytes(20).toString('hex');
+        //order.postback_key = crypto.randomBytes(20).toString('hex');
         //const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
         
         let response;
         const reference_key = `${order.id}!${Number(order.createdAt)}`;
         const client = await pagarMeClient();
+
+        const productsAmount = String(total_price).replace('.', '');
+        const shippingFee = String(Number(freight_price).toFixed(2)).replace('.', '');
         
         ////////////////////////////////////
         // PAGAMENTO CARTAO CREDITO
@@ -141,6 +138,9 @@ module.exports = async (req, res) => {
         if(req.body.credit_card){
 
             req.body.credit_card.payment_method = 'credit_card';
+            req.body.credit_card.amount = String(Number(productsAmount) + Number(shippingFee));
+            req.body.credit_card.shipping.fee = shippingFee;
+
             //req.body.credit_card.postback_url = postback_url;
             req.body.credit_card.reference_key = reference_key;
 
@@ -167,6 +167,9 @@ module.exports = async (req, res) => {
         } else if(req.body.boleto){
 
             req.body.boleto.payment_method = 'boleto';
+            req.body.boleto.amount = String(Number(productsAmount) + Number(shippingFee));
+            req.body.boleto.shipping.fee = shippingFee;
+
             req.body.boleto.capture = true; // retorna o link para o boleto
             //req.body.boleto.postback_url = postback_url;
             req.body.boleto.reference_key = reference_key;
@@ -196,7 +199,7 @@ module.exports = async (req, res) => {
         }
         ///////////////////////////////////////////////////
 
-        //await order.save();
+        await order.save({ transaction });
         await transaction.commit();
 
         const newOrder = await order.reload({
