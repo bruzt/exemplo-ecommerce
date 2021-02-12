@@ -12,6 +12,7 @@ export const Container = styled.div`
     .circle {
         width: 50px;
         height: 50px;
+        flex-shrink: 0;
 
         display: flex;
         justify-content: center;
@@ -32,15 +33,14 @@ export const Container = styled.div`
         }
     }
 
-    .line {
+    .bar {
         width: 100%;
-        max-width: 300px;
         height: 5px;
 
         background: ${props => props.theme.secondary};
     }
 
-    .line .progress {
+    .bar .progress {
         width: 0px;
         height: 100%;
 

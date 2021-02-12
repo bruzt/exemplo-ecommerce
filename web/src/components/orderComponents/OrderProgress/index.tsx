@@ -19,7 +19,7 @@ export default function OrderProgress() {
 				<FaShoppingCart color='#eee' size={25} />
 			</div>
 
-			<div className="line">
+			<div className="bar">
 				<div className={`progress ${orderContext.getOrderFlowNumber >= 2 ? 'active' : ''}`}></div>
 			</div>
 
@@ -30,7 +30,7 @@ export default function OrderProgress() {
 				<FaMapMarkerAlt color='#eee' size={25} />
 			</div>
 
-			<div className="line">
+			<div className="bar">
 				<div className={`progress ${orderContext.getOrderFlowNumber >= 3 ? 'active' : ''}`}></div>
 			</div>
 
@@ -41,7 +41,7 @@ export default function OrderProgress() {
 				<FaMoneyCheckAlt color='#eee' size={25} />
 			</div>
 
-			<div className="line">
+			<div className="bar">
 				<div className={`progress ${orderContext.getOrderFlowNumber >= 4 ? 'active' : ''}`}></div>
 			</div>
 
