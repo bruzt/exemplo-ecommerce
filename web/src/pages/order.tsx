@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useOrder } from '../contexts/orderContext';
 
 import PageLayout from '../components/PageLayout';
-import Cart from '../components/Cart';
+import Cart from '../components/orderComponents/Cart';
 import SelectAddress from '../components/orderComponents/SelectAddress';
 import PaymentMethod from '../components/orderComponents/PaymentMethod';
 import ThanksForBuy from '../components/orderComponents/ThanksForBuy';

@@ -1,18 +1,18 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import api from '../../services/api';
+import api from '../../../services/api';
 import Link from 'next/link';
 import { FaSearchLocation, FaBan } from 'react-icons/fa';
 import Loading from 'react-loader-spinner';
 import Head from 'next/head';
 
-import formatZipCode from '../../utils/formatZipCode';
-import noImg from '../../assets/img-n-disp.png';
+import formatZipCode from '../../../utils/formatZipCode';
+import noImg from '../../../assets/img-n-disp.png';
 
 import { Container } from './styles';
 
-import { useUser } from '../../contexts/userContext';
-import { useCart } from '../../contexts/cartContext';
-import { useOrder } from '../../contexts/orderContext';
+import { useUser } from '../../../contexts/userContext';
+import { useCart } from '../../../contexts/cartContext';
+import { useOrder } from '../../../contexts/orderContext';
 
 export default function Cart() {
     
