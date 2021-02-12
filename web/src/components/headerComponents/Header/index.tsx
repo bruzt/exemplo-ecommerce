@@ -8,7 +8,7 @@ import logo from '../../../assets/logo.jpg'
 
 import { useCart } from '../../../contexts/cartContext';
 import { useUser } from '../../../contexts/userContext';
-import { useOrder } from '../../../contexts/orderContext';
+//import { useOrder } from '../../../contexts/orderContext';
 import { useTheme } from '../../../contexts/themeContext';
 
 import LoginModal from '../LoginModal';
@@ -20,7 +20,7 @@ export default function Header() {
 	
 	const userContext = useUser();
     const cartContext = useCart();
-    const orderContext = useOrder();
+    //const orderContext = useOrder();
     const router = useRouter();
     const themeContext = useTheme();
 
