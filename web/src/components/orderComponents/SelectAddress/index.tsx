@@ -173,7 +173,7 @@ export default function SelectAddress() {
                     type='button'
                     title='Voltar'
                     className='back-button'
-                    onClick={() => orderContext.setOrder('cart')}
+                    onClick={() => orderContext.setOrderFlowNumber(1)}
                 >
                     <FaArrowLeft />
                 </button>
@@ -234,7 +234,7 @@ export default function SelectAddress() {
                     <button
                         className='select-button'
                         disabled={getDisabledGoToPaymentButton}
-                        onClick={() => orderContext.setOrder('payment')}
+                        onClick={() => orderContext.setOrderFlowNumber(3)}
                     >
                         Ir para pagamento
                     </button>

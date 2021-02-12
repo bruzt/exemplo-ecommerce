@@ -13,17 +13,17 @@ export default function Order() {
     const orderContext = useOrder();
 
     useEffect( () => {
-        orderContext.setOrder('cart');
+        orderContext.setOrderFlowNumber(1);
     }, []);
 
     return (
         <>
             <PageLayout>
 
-                {(orderContext.getOrder == 'cart') && <Cart />}
-                {(orderContext.getOrder == 'address') && <SelectAddress />}
-                {(orderContext.getOrder == 'payment') && <PaymentMethod />}
-                {(orderContext.getOrder == 'thanksForBuy') && <ThanksForBuy />}
+                {(orderContext.getOrderFlowNumber == 1) && <Cart />}
+                {(orderContext.getOrderFlowNumber == 2) && <SelectAddress />}
+                {(orderContext.getOrderFlowNumber == 3) && <PaymentMethod />}
+                {(orderContext.getOrderFlowNumber == 4) && <ThanksForBuy />}
 
             </PageLayout>
         </>

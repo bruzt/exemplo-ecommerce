@@ -86,7 +86,7 @@ export default function Header() {
 
                             <div className='icon' title='Carrinho de compras'>
                                 <Link href='/order'>
-                                    <a onClick={() => orderContext.setOrder('cart')}>
+                                    <a /*onClick={() => orderContext.setOrderFlowNumber(1)}*/>
                                         <div className='cart-number'>
                                             <p>{cartContext.getCart.length}</p>
                                         </div>

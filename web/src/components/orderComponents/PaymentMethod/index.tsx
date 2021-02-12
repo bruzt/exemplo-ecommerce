@@ -36,7 +36,7 @@ export default function PaymentMethod() {
                     type='button'
                     className='back-button'
                     title='Voltar'
-                    onClick={() => orderContext.setOrder('address')}
+                    onClick={() => orderContext.setOrderFlowNumber(2)}
                 >
                     <FaArrowLeft />
                 </button>

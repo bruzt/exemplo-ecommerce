@@ -370,7 +370,7 @@ export default function Cart() {
                                     ) : (
                                         <button 
                                             type='button'
-                                            onClick={() => orderContext.setOrder('address')}
+                                            onClick={() => orderContext.setOrderFlowNumber(2)}
                                             disabled={(cartContext.getCart.length == 0) ? true : false }
                                         >
                                             {(cartContext.getCart.length == 0) ? <FaBan /> : 'Fechar Pedido' }

@@ -104,7 +104,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
 
             orderContext.setOrderId(response.data.order.id);
             orderContext.setBoletoUrl(response.data.pagarme.boleto_url);
-            orderContext.setOrder('thanksForBuy');
+            orderContext.setOrderFlowNumber(4);
 
         } catch (error) {
             console.log(error);

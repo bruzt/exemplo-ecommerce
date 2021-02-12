@@ -218,7 +218,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
             cartContext.orderFinished();
 
             orderContext.setOrderId(response.data.order.id);
-            orderContext.setOrder('thanksForBuy');
+            orderContext.setOrderFlowNumber(4);
 
         } catch (error) {
             console.error(error);
