@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 
+    h2 {
+        text-align: center;
+        margin: 25px;
+    }
+
     .cc-form {
         background: ${props => props.theme.primary};
         border-radius: 5px;
         padding: 10px;
-    }
-
-    h2 {
-        text-align: center;
-        margin: 20px;
     }
 
     form {

@@ -2,12 +2,15 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     
-    min-height: 800px;
-    padding: 20px 0;
+    min-height: calc(100vh - 400px);
 
     h1 {
         text-align: center;
-        margin: 25px 0;
+        margin-bottom: 25px;
+    }
+
+    h1.empty {
+        margin-top: 50px;
     }
 
     table {

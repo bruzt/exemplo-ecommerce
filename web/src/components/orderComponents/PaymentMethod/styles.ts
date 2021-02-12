@@ -3,11 +3,10 @@ import styled from 'styled-components';
 export const Container = styled.section`
 
     min-height: 800px;
-    padding: 20px 0;
     
     h1 {
         text-align: center;
-        margin: 20px;
+        margin-bottom: 25px;
     }
 
     .back-button {

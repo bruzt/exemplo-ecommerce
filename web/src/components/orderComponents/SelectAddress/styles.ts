@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.section`
 
     min-height: 800px;
-    padding: 20px 0;
 
     .back-button {
         border: 0;
@@ -15,7 +14,7 @@ export const Container = styled.section`
 
     h1 {
         text-align: center;
-        margin: 20px;
+        margin-bottom: 25px;
     }
 
     .addr-grid {

@@ -5,7 +5,7 @@ export const Container = styled.div`
 
     h2 {
         text-align: center;
-        margin: 20px;
+        margin: 25px;
     }
 
     form.boleto-form {

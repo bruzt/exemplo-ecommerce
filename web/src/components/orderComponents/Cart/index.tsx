@@ -194,7 +194,7 @@ export default function Cart() {
             <Container>
                 {(cartContext.getProducts.length == 0) 
                 ? (
-                    <h1>Carrinho vazio</h1>
+                    <h1 className='empty'>Carrinho vazio</h1>
                 ) 
                 : (
                     <>

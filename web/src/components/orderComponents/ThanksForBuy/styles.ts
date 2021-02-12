@@ -2,12 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    padding: 20px 0;
-    min-height: calc(100vh - 350px);
+    min-height: calc(100vh - 500px);
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
                 
     * {
