@@ -1,11 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
 
-/**
- * 1 = cart
- * 2 = address
- * 3 = payment
- * 4 = thanks for buy (order creation confirmation)
- */
 type OrderFlowNumber = 1 | 2 | 3 | 4;
 
 interface IProps {
@@ -13,8 +7,22 @@ interface IProps {
 }
 
 interface IUseOrder {
-    getOrderFlowNumber: OrderFlowNumber; 
+    /**
+     * 1 = cart;
+     * 2 = address;
+     * 3 = payment;
+     * 4 = thanks for buy (order creation confirmation);
+     */
+    getOrderFlowNumber: OrderFlowNumber;
+
+    /**
+     * 1 = cart;
+     * 2 = address;
+     * 3 = payment;
+     * 4 = thanks for buy (order creation confirmation);
+     */
     setOrderFlowNumber: React.Dispatch<OrderFlowNumber>;
+
     getOrderId: number | null;
     setOrderId: React.Dispatch<number | null>;
     getBoletoUrl: string;
@@ -23,27 +31,27 @@ interface IUseOrder {
 
 const Context = createContext({});
 
-export function OrderContextProvider({ children }: IProps){
+export function OrderContextProvider({ children }: IProps) {
 
     const [getOrderFlowNumber, setOrderFlowNumber] = useState<OrderFlowNumber>(1);
     const [getOrderId, setOrderId] = useState<number | null>(null);
     const [getBoletoUrl, setBoletoUrl] = useState('');
 
     return (
-        <Context.Provider value={{ 
-                getOrderFlowNumber, 
-                setOrderFlowNumber,
-                getOrderId,
-                setOrderId,
-                getBoletoUrl,
-                setBoletoUrl
-            }}>
+        <Context.Provider value={{
+            getOrderFlowNumber,
+            setOrderFlowNumber,
+            getOrderId,
+            setOrderId,
+            getBoletoUrl,
+            setBoletoUrl
+        }}>
             {children}
         </Context.Provider>
     );
 }
 
-export function useOrder(){
+export function useOrder() {
 
     const context = useContext(Context) as IUseOrder;
 
