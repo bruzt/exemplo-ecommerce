@@ -1,5 +1,6 @@
+# Sequelize/Postgres
 
-# Dev Postgres
+## Dev Postgres
 
 ```
 sudo docker run -d \
@@ -31,10 +32,22 @@ npx sequelize db:migrate:undo
 
 # Sonic
 
+## Sonic Dev
+
 ```
 sudo docker run -d \
     -e AUTH_PASSWORD=a8uY3TgP \
     -p 1491:1491 \
-    --name sonic \
+    --name sonic-dev \
+    bruzt/sonic-env:v1.3.0
+```
+
+## Sonic Test
+
+```
+sudo docker run -d \
+    -e AUTH_PASSWORD=test \
+    -p 1491:1491 \
+    --name sonic-test \
     bruzt/sonic-env:v1.3.0
 ```
