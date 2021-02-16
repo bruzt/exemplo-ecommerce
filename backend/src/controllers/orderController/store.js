@@ -2,7 +2,7 @@ const express = require('express');
 const pagarMeClient = require('../../services/pagarMe/pagarMeClient');
 //const crypto = require('crypto');
 
-const sequelizeConnection = require('../../database/connection');
+const sequelizeConnection = require('../../database/sequelize/connection');
 
 const { emitNewOrder } = require('../../websocket/socketConnection');
 

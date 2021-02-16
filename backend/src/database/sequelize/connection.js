@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 
-const autoRequireAll = require('../util/autoRequireAll');
-const databaseConfig = require('../config/databaseConfig');
+const autoRequireAll = require('../../util/autoRequireAll');
+const databaseConfig = require('../../config/databaseConfig');
 
-const models = autoRequireAll(__dirname, '../models');
+const models = autoRequireAll(__dirname, '../../models');
 
 const connection = new Sequelize(databaseConfig);
 

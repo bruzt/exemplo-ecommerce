@@ -1,5 +1,5 @@
 
-const sequelize = require('../database/connection');
+const sequelize = require('../database/sequelize/connection');
 
 module.exports = () => {
 

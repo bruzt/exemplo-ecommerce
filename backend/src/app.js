@@ -16,7 +16,7 @@ const path = require('path');
 const { errors } = require('celebrate');
 const http = require('http');
 
-require('./database/connection');
+require('./database/sequelize/connection');
 
 const pagarMeperiodicCheck = require('./services/pagarMe/periodicCheck');
 const { socketConnection } = require('./websocket/socketConnection');
