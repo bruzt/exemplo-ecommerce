@@ -1,5 +1,6 @@
 const express = require('express');
 
+const sonicIngest = require('../../database/sonic/ingest');
 const ProductModel = require('../../models/ProductModel');
 const CategoryModel = require('../../models/CategoryModel');
 
@@ -18,6 +19,8 @@ module.exports = async (req, res) => {
         if(!category) return res.status(400).json({ message: 'category not found' });
 
         const product = await ProductModel.create(req.body);
+
+        await sonicIngest(product.id, product.title);
 
         return res.json(product);
         
