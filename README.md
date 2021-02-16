@@ -7,6 +7,7 @@
 - Validação de dados recebidos pelas rotas (headers, params, body e query) com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
 - Rotas para cadastro, atualização e remoção de usuários, endereços, categorias, produtos, upload de imagens de produtos e ordens de compra;
 - Rota para autenticação de usuário com JWT (Json Web Token);
+- Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos.
 
 ## Frontend
 - Menu dropdown de categorias de produtos, montada automaticamente a partir das categorias cadastradas no banco de dados;
@@ -28,7 +29,7 @@
 
 ## Para testar
 
-Se você deseja testar esse app basta instalar os pacotes com "npm install" nos diretórios backend e web, iniciar um banco de dados postgres com o comando (requer [Docker](https://www.docker.com/)):
+Se você deseja testar esse app basta instalar os pacotes com ``` npm install ``` nos diretórios backend e web, iniciar um banco de dados postgres com [Docker](https://www.docker.com/):
 
 ```
 sudo docker run -d \
@@ -40,13 +41,21 @@ sudo docker run -d \
     postgres:13.1
 ```
 
-* Se você deseja usar outro banco você precisará alterar os dados no arquivo ".env.dev" dentro do diretório backend.
+E [Sonic](https://github.com/valeriansaliou/sonic):
 
-No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando "npx sequelize db:migrate" e inicie a API com o comando "npm run dev", depois, no diretório web, execute o comando "npm start" para iniciar a aplicação, acesse no navegador o endereço "http://localhost:3000" e você deve ver a página inicial sem nenhum produto.
+```
+sudo docker run -d \
+    -e AUTH_PASSWORD=a8uY3TgP \
+    -p 1491:1491 \
+    --name sonic-dev \
+    bruzt/sonic-env:v1.3.0
+```
+
+No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando ``` npx sequelize db:migrate ``` e inicie a API com o comando ``` npm run dev ```, depois, no diretório web, execute o comando ``` npm start ``` para iniciar a aplicação, acesse no navegador o endereço ``` http://localhost:3000 ``` e você deve ver a página inicial sem nenhum produto.
 
 ### Painel de controle
 
-Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com "npm install" e o inicie com o comando "npm start", depois acesse no navegador o endereço "http://localhost:3002". Para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de "false" para "true".
+Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com ``` npm install ``` e o inicie com o comando ``` npm start ```, depois acesse no navegador o endereço ``` http://localhost:3002 ```. Para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de ``` false ``` para ``` true ```.
 
 <!-- 
 VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
