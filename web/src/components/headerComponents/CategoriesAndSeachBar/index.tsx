@@ -61,7 +61,7 @@ export default function CategoriesAndSeachBar() {
         timeoutId = setTimeout( async () => {
             try {
 
-                if(filterBarContext.getSearchBarText.length > 0){
+                if(filterBarContext.getSearchBarText.length > 2){
 
                     const response = await api.get(`/products?limit=5&title=${filterBarContext.getSearchBarText}`);
     
@@ -75,17 +75,20 @@ export default function CategoriesAndSeachBar() {
                 console.error(error);
                 alert('Erro ao buscar produtos');
             }
-        }, 500);
+        }, 1000);
     }
 
     function handleSearch(event: FormEvent) {
 
         event.preventDefault();
 
-        setMobileMenuActive(false);
-
+        clearTimeout(timeoutId);
+        setProducts([]);
+        
         if(String(filterBarContext.getSearchBarText).length > 0){
-
+            
+            setMobileMenuActive(false);
+            
             delete router.query.categoryId;
             delete router.query.category;
 
