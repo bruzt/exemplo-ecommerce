@@ -1,8 +1,8 @@
 const express = require('express');
 
-const sonicIngest = require('../../database/sonic/ingest');
 const ProductModel = require('../../models/ProductModel');
 const CategoryModel = require('../../models/CategoryModel');
+const { ingestProduct } = require('../../database/sonic/ingest');
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
 
         const product = await ProductModel.create(req.body);
 
-        await sonicIngest(product.id, product.title);
+        await ingestProduct(product.id, product.title);
 
         return res.json(product);
         

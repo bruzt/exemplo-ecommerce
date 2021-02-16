@@ -2,12 +2,11 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { Op } = sequelize;
 
-const sonicSearch = require('../../database/sonic/search');
 const findCategoriesChildrenIds = require('../../util/findCategoriesChildrenIds');
 
 const ProductModel = require('../../models/ProductModel');
 const CategoryModel = require('../../models/CategoryModel');
-
+const { searchProduct } = require('../../database/sonic/search');
 
 //const ilike = (process.env.NODE_ENV == 'test') ? Op.like : Op.iLike;
 
@@ -38,7 +37,7 @@ module.exports = async (req, res) => {
 
         if(req.query.title){
 
-            const ids = await sonicSearch(req.query.title, limit, offset);
+            const ids = await searchProduct(req.query.title, limit, offset);
             
             if(Array.isArray(ids) && ids.length > 0){
                 

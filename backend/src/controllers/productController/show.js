@@ -1,7 +1,5 @@
 const express = require('express');
 
-const calcFinalPrice = require('../../util/calcFinalPrice');
-
 const ProductModel = require('../../models/ProductModel');
 
 /** @param {express.Request} req * @param {express.Response} res */
