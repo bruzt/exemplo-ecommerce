@@ -1,5 +1,6 @@
 
 const sequelize = require('../database/sequelize/connection');
+const { ingest } = require('../database/sonic/connection');
 
 module.exports = () => {
 
@@ -10,7 +11,8 @@ module.exports = () => {
             return [
                 //sequelize.models[key].truncate({ cascade: true, restartIdentity: true }),
                 sequelize.models[key].destroy({ truncate: true, force: true }),
-                sequelize.query(`DELETE FROM sqlite_sequence WHERE name = '${sequelize.models[key].tableName}'`)
+                sequelize.query(`DELETE FROM sqlite_sequence WHERE name = '${sequelize.models[key].tableName}'`),
+                ingest.flushc('products')
             ]
         }));
     }
