@@ -52,4 +52,14 @@
 
 ## Executar testes automatizados
 
-Instale os pacotes com "npm install" e execute o comando "npm test".
+Instale os pacotes com ``` npm install ``` e inicie o [Sonic](https://github.com/valeriansaliou/sonic) com [Docker](https://www.docker.com/):
+
+```
+sudo docker run -d \
+    -e AUTH_PASSWORD=test \
+    -p 1491:1491 \
+    --name sonic-test \
+    bruzt/sonic-env:v1.3.0
+```
+
+Execute o comando ``` npm test ``` para iniciar os testes, depois de terminado você pode entrar no diretório "coverage/lcov-report" que será gerado na raiz do projeto e abrir o arquivo "index.html" no seu navegador para ver a cobertura de código.
