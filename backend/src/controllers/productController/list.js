@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('sequelize');
 const { Op } = sequelize;
 
+const sonicSearch = require('../../database/sonic/search');
 const findCategoriesChildrenIds = require('../../util/findCategoriesChildrenIds');
 
 const ProductModel = require('../../models/ProductModel');
@@ -20,101 +21,97 @@ module.exports = async (req, res) => {
     const limit = req.query.limit;
     const offset = req.query.offset;
 
-    let order = [
-        ['quantity_stock', 'DESC'],
-        ['discount_percent', 'DESC'],
-        ['quantity_sold', 'DESC'],
-    ];
-
-    let where = null;
-
-    if(req.query.section == 'on-sale'){
-        
-        const dateNow = new Date();
-
-        where = {
-            [Op.and]: [
-                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_start')), '<=', dateNow),
-                sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_end')), '>', dateNow),
-                {
-                    discount_percent: {
-                        [Op.gt]: 0
-                    }
-                }
-            ]
-        };
-
-    } else if(req.query.section == 'best-sellers'){
-
-        order.move(2, 0);
-
-        where = {
-            quantity_sold: {
-                [Op.gt]: 0
-            }
-        };
-
-    } else if(req.query.section == 'news'){
-
-        order.splice(0, 0, ['createdAt', 'DESC']);
-
-        let date = new Date();
-        date.setMonth(date.getMonth() - 1);
-
-        where = {
-            createdAt: { [Op.gte]: date }
-        };
-    }
-
-    if(req.query.filter == 'lowest-price') order.splice(0, 0, ['price', 'ASC']);
-    else if(req.query.filter == 'biggest-price') order.splice(0, 0, ['price', 'DESC']);
-
     try {
+
+        let order = [
+            ['quantity_stock', 'DESC'],
+            ['discount_percent', 'DESC'],
+            ['quantity_sold', 'DESC'],
+        ];
+    
+        if(req.query.filter == 'lowest-price') order.splice(0, 0, ['price', 'ASC']);
+        else if(req.query.filter == 'biggest-price') order.splice(0, 0, ['price', 'DESC']);
+        if(req.query.filter == 'id') order.splice(0, 0, ['id', 'DESC']);
 
         let products = [];
         let count = 0;
 
         if(req.query.title){
 
-            const title = req.query.title.split(' ').map( (word) => `%${word}%`);
+            const ids = await sonicSearch(req.query.title, limit, offset);
+            
+            if(Array.isArray(ids) && ids.length > 0){
+                
+                count = await ProductModel.count({
+                    col: 'id',
+                    where: {
+                        id: ids
+                    }
+                });
+    
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    where: {
+                        id: ids
+                    },
+                    order,
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url', 'filename'],
+                            required: false,
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }
+                    ]
+                });
 
-            count = await ProductModel.count({
-                col: 'id',
-                where: {
-                    title: { 
-                        [Op.iLike]: {
-                            [Op.any]: title
+            } else {
+
+                const splitedTitle = req.query.title.split(' ').map( (word) => `%${word}%`);
+    
+                count = await ProductModel.count({
+                    col: 'id',
+                    where: {
+                        title: { 
+                            [Op.iLike]: {
+                                [Op.any]: splitedTitle
+                            }
                         }
                     }
-                }
-            });
-
-            products = await ProductModel.findAll({
-                attributes: { 
-                    exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
-                },
-                where: {
-                    title: { 
-                        [Op.iLike]: {
-                            [Op.any]: title
+                });
+    
+                products = await ProductModel.findAll({
+                    attributes: { 
+                        exclude: ['createdAt', 'updatedAt', 'deletedAt', 'category_id'] 
+                    },
+                    where: {
+                        title: { 
+                            [Op.iLike]: {
+                                [Op.any]: splitedTitle
+                            }
                         }
-                    }
-                },
-                limit,
-                offset,
-                order,
-                include: [
-                    {
-                        association: 'images',
-                        attributes: ['id', 'url', 'filename'],
-                        required: false,
-                    },                    
-                    {
-                        association: 'category',
-                        attributes: { exclude: ['createdAt', 'updatedAt'] },
-                    }
-                ]
-            });
+                    },
+                    limit,
+                    offset,
+                    order,
+                    include: [
+                        {
+                            association: 'images',
+                            attributes: ['id', 'url', 'filename'],
+                            required: false,
+                        },                    
+                        {
+                            association: 'category',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }
+                    ]
+                });
+            }
 
         } else if(req.query.category){
 
@@ -166,7 +163,45 @@ module.exports = async (req, res) => {
 
         } else {
 
-            if(req.query.filter == 'id') order.splice(0, 0, ['id', 'DESC']);
+            let where = null;
+    
+            if(req.query.section == 'on-sale'){
+                
+                const dateNow = new Date();
+        
+                where = {
+                    [Op.and]: [
+                        sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_start')), '<=', dateNow),
+                        sequelize.where(sequelize.fn('date', sequelize.col('discount_datetime_end')), '>', dateNow),
+                        {
+                            discount_percent: {
+                                [Op.gt]: 0
+                            }
+                        }
+                    ]
+                };
+        
+            } else if(req.query.section == 'best-sellers'){
+        
+                order.move(2, 0);
+        
+                where = {
+                    quantity_sold: {
+                        [Op.gt]: 0
+                    }
+                };
+        
+            } else if(req.query.section == 'news'){
+        
+                order.splice(0, 0, ['createdAt', 'DESC']);
+        
+                let date = new Date();
+                date.setMonth(date.getMonth() - 1);
+        
+                where = {
+                    createdAt: { [Op.gte]: date }
+                };
+            }
 
             count = await ProductModel.count({
                 col: 'id',
