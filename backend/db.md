@@ -28,3 +28,13 @@ npx sequelize db:migrate
 
 npx sequelize db:migrate:undo
 ```
+
+# Sonic
+
+```
+sudo docker run -d \
+    -e AUTH_PASSWORD=a8uY3TgP \
+    -p 1491:1491 \
+    --name sonic \
+    bruzt/sonic-env:v1.3.0
+```
