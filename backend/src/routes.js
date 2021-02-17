@@ -51,7 +51,6 @@ router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, add
 // BUSCA E ADICIONA PEDIDOS DE UM USUÁRIO
 router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);
 router.post('/orders', orderValidator.store, jwtAuthentication, orderController.store);
-router.post('/orders/:key', orderValidator.storePostback, orderController.storePostback);
 
 // BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO POR UM ADMIN
 router.get('/admin/orders', orderAdminValidator.list, adminJwtAuthentication, orderAdminController.list);
