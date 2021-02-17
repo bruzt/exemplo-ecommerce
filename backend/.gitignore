@@ -4,3 +4,4 @@ uploads/*
 !.gitkeep
 coverage/
 database.sqlite
+database.sqlite-journal
