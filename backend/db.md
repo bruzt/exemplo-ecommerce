@@ -45,7 +45,7 @@ sudo docker run -d \
 ## Sonic Test
 
 ```
-sudo docker run -d \
+sudo docker run -d --rm \
     -e AUTH_PASSWORD=test \
     -p 1491:1491 \
     --name sonic-test \
