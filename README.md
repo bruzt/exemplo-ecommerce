@@ -7,7 +7,8 @@
 - Validação de dados recebidos pelas rotas (headers, params, body e query) com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
 - Rotas para cadastro, atualização e remoção de usuários, endereços, categorias, produtos, upload de imagens de produtos e ordens de compra;
 - Rota para autenticação de usuário com JWT (Json Web Token);
-- Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos.
+- Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos;
+- Integração com a API de pagamentos [Pagar.me](https://pagar.me/), para pagamentos com cartão de crédito e boleto.
 
 ## Frontend
 - Menu dropdown de categorias de produtos, montada automaticamente a partir das categorias cadastradas no banco de dados;
@@ -19,7 +20,6 @@
 - Contagem regressiva quando o produto está com desconto, no card e na página;
 - Carrinho de compra, montrando preço total, botões para aumentar e diminuir quantidade ou remover do carrinho, integração com a API dos correios para calculo de frete;
 - Página para seleção do endereço de entrega, podendo cadastrar um novo endereço ou apagar um já cadastrado (podendo ter vários endereços cadastrados por usuário);
-- Página de pagamento integrado com a API de pagamentos do Pagar.me, podendo escolher entre cartão de crédito ou boleto;
 - Tela de confirmação de compra, no caso de boleto exibe link para boleto;
 - Tela da conta do usuário, onde ele pode alterar suas informações de cadastro (nome, email e senha), adicionar ou remover endereços e visualizar suas ordens de compra.
 
