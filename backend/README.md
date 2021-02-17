@@ -55,7 +55,7 @@
 Instale os pacotes com ``` npm install ``` e inicie o [Sonic](https://github.com/valeriansaliou/sonic) com [Docker](https://www.docker.com/):
 
 ```
-sudo docker run -d \
+sudo docker run -d --rm \
     -e AUTH_PASSWORD=test \
     -p 1491:1491 \
     --name sonic-test \
