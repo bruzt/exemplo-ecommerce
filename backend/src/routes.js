@@ -71,7 +71,7 @@ router.post('/products', productValidator.store, adminJwtAuthentication, product
 router.put('/products/:id', productValidator.update, adminJwtAuthentication, productController.update);
 router.delete('/products/:id', productValidator.destroy, adminJwtAuthentication, productController.destroy);
 
-// ADICIONA, ALTERA OU REMOVE UMA IMAGEM DO PRODUTO
+// ADICIONA OU REMOVE UMA IMAGEM DO PRODUTO
 router.post('/products/:id/images', imageValidator.store, adminJwtAuthentication, multer(multerConfig).any(), multerErrorHandler, imageController.store);
 router.delete('/products/images/:id', imageValidator.destroy, adminJwtAuthentication, imageController.destroy);
 
