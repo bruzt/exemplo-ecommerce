@@ -47,7 +47,7 @@ export default function OrderProgress() {
 
 			<div 
 				className={`circle ${orderContext.getOrderFlowNumber >= 4 ? 'active' : ''}`}
-				title='Confirmação do pedido'
+				title='Confirmação'
 			>
 				<FaCheck color='#eee' size={25} />
 			</div>
