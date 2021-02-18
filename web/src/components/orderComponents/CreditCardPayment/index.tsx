@@ -215,10 +215,10 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 }
             });
 
-            cartContext.orderFinished();
-
             orderContext.setOrderId(response.data.order.id);
             orderContext.setOrderFlowNumber(4);
+            
+            cartContext.cleanCart();
 
         } catch (error) {
             console.error(error);

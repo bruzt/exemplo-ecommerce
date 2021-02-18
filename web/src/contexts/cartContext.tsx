@@ -52,7 +52,7 @@ interface IUseCart {
     setAddressId: React.Dispatch<React.SetStateAction<number | null>>;
     getFreightMeasures: iFreightMeasures | null;
     setFreightMeasures: React.Dispatch<React.SetStateAction<iFreightMeasures | null>>;
-    orderFinished: () => void;
+    cleanCart: () => void;
     resetFreight: () => void;
 }
 
@@ -132,7 +132,7 @@ export function CartContextProvider({ children }: IProps){
         setFreightPrice(0);
     }
 
-    function orderFinished(){
+    function cleanCart(){
 
         setCart([]);
         setProducts([]);
@@ -163,7 +163,7 @@ export function CartContextProvider({ children }: IProps){
             setAddressId,
             getFreightMeasures,
             setFreightMeasures,
-            orderFinished,
+            cleanCart,
             resetFreight
         }}>
             {children}
