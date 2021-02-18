@@ -5,7 +5,7 @@ import dompurify from 'dompurify';
 
 import 'suneditor/dist/css/suneditor.min.css';
 
-import sunEditorLangPtBr from '../../utils/sunEditorLangPtBr';
+//import sunEditorLangPtBr from '../../utils/sunEditorLangPtBr';
 
 import { Container } from './styles';
 
@@ -18,13 +18,13 @@ function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
 
     function setContentTimeOut(){
 
-        let timer = 0;
+        let timeoutId: NodeJS.Timeout;
 
         return function(content: string){
 
-            clearTimeout(timer);
+            clearTimeout(timeoutId);
 
-            timer = setTimeout( () => {
+            timeoutId = setTimeout( () => {
                 onEditorChange(content)
             }, 1000);
         }
@@ -46,7 +46,7 @@ function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
         <Container {...rest}>
            
             <SunEditor
-                lang={sunEditorLangPtBr}
+                lang="pt_br" /*sunEditorLangPtBr*/
                 setDefaultStyle={`
                     width: 100%;
                     max-width: 800px;
