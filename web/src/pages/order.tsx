@@ -22,7 +22,7 @@ export default function Order() {
     return (
         <PageLayout>
 
-            {cartContext.getCart.length > 0 && <OrderProgress />}
+            {(cartContext.getCart.length > 0 || orderContext.getOrderFlowNumber == 4) && <OrderProgress />}
 
             {(orderContext.getOrderFlowNumber == 1) && <Cart />}
             {(orderContext.getOrderFlowNumber == 2) && <SelectAddress />}
