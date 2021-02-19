@@ -249,9 +249,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                     <div className="input-group">
                         <label htmlFor="datetime-start">Início do desconto</label>
                         <input
-                            type="datetime-local"
-                            id="datetime-start"
-                            
+                            type="datetime-local"                            
                             value={getDiscountDatetimeStart}
                             onChange={(event) => setDiscountDatetimeStart(event.target.value)}
                         />
@@ -261,7 +259,6 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <label htmlFor="datetime-start">Fim do desconto</label>
                         <input
                             type="datetime-local"
-                            id="datetime-start"
                             value={getDiscountDatetimeEnd}
                             onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
                         />

@@ -265,7 +265,6 @@ export default function AddProduct() {
                         <label htmlFor="datetime-start">Início do desconto</label>
                         <input
                             type="datetime-local"
-                            id="datetime-start"
                             value={getDiscountDatetimeStart}
                             onChange={(event) => setDiscountDatetimeStart(event.target.value)}
                         />
@@ -275,7 +274,6 @@ export default function AddProduct() {
                         <label htmlFor="datetime-start">Fim do desconto</label>
                         <input
                             type="datetime-local"
-                            id="datetime-start"
                             value={getDiscountDatetimeEnd}
                             onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
                         />
