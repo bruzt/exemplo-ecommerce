@@ -1,5 +1,6 @@
 const { Server } = require('http');
 const socketio = require('socket.io');
+const jwt = require('jsonwebtoken');
 
 /** @type {SocketIO.Server} sock */
 let sock;
@@ -11,10 +12,27 @@ function socketConnection(server) {
         transports: ['websocket']
     });
 
-    /*io.on('connection', (socket) => {
+    io.on('connection', (socket) => {
 
-        console.log(socket.id);
-    });*/
+        try {
+            const auth = socket.request._query['authorization'];
+
+            if(auth == null) throw new Error();
+            
+            jwt.verify(auth, process.env.APP_SECRET);
+
+            const tokenData = jwt.decode(auth);
+
+            if(tokenData.admin == false) throw new Error();
+            
+            //console.log('connected')
+
+        } catch (error) {
+            socket.disconnect();
+
+            //console.log('disconnected')
+        }
+    });
 
     sock = io;
 }
