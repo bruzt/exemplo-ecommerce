@@ -47,7 +47,7 @@ sudo docker run -d \
 ```
 sudo docker run -d --rm \
     -e AUTH_PASSWORD=test \
-    -p 1491:1491 \
+    -p 1492:1491 \
     --name sonic-test \
     bruzt/sonic-env:v1.3.0
 ```

@@ -35,7 +35,7 @@ export default function CategoriesAndSeachBar() {
     const themeContext = useTheme();
 
     useEffect( () => {
-        return () => firstRender = true;
+        return () => { firstRender = true; }
     }, []);
 
     useEffect( () => {

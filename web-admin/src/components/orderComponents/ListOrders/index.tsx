@@ -54,7 +54,7 @@ export default function ListOrders() {
     useEffect( () => {
         if(_currentPage == 1) {
             socketOrders();
-            return () => _socket.close();
+            return () => { _socket.close(); }
         }
     }, [getOrders]);
     

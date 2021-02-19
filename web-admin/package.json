@@ -11,28 +11,28 @@
     "axios": "^0.21.1",
     "dompurify": "^2.2.6",
     "jsonwebtoken": "^8.5.1",
-    "next": "^10.0.4",
-    "query-string": "^6.13.8",
+    "next": "^10.0.7",
+    "query-string": "^6.14.0",
     "re-resizable": "^6.9.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^3.11.0",
     "socket.io-client": "^2.4.0",
     "styled-components": "^5.2.1",
-    "suneditor-react": "^2.14.10"
+    "suneditor-react": "^2.15.2"
   },
   "devDependencies": {
-    "@types/dompurify": "^2.2.0",
+    "@types/dompurify": "^2.2.1",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/node": "^14.14.20",
-    "@types/react": "^16.14.2",
-    "@types/socket.io-client": "^1.4.34",
+    "@types/node": "^14.14.30",
+    "@types/react": "^16.14.4",
+    "@types/socket.io-client": "^1.4.35",
     "@types/styled-components": "^5.1.7",
     "@types/styled-jsx": "^2.2.8",
-    "@typescript-eslint/eslint-plugin": "^4.12.0",
-    "@typescript-eslint/parser": "^4.12.0",
-    "eslint": "^7.17.0",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
     "eslint-plugin-react": "^7.22.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.9"
   }
 }
