@@ -35,6 +35,8 @@ interface IOrder {
     }>;
 }
 
+let _socket: SocketIOClient.Socket;
+
 export default function ListOrders() {
 
     const [getOrders, setOrders] = useState<IOrder[]>([]);
@@ -45,7 +47,6 @@ export default function ListOrders() {
     const _itemsPerPage = 15;
     const _totalPages = Math.ceil(getCountOrders/_itemsPerPage);
     const _currentPage = Number(router.query.page) || 1;
-    let _socket: SocketIOClient.Socket;
 
     useEffect( () => {
         fetchOrders();
@@ -53,8 +54,13 @@ export default function ListOrders() {
 
     useEffect( () => {
         if(_currentPage == 1) {
+
             socketOrders();
-            return () => { _socket.close(); }
+
+            return () => { 
+                _socket.close();
+                _socket = null;
+            }
         }
     }, [getOrders]);
     
@@ -75,7 +81,10 @@ export default function ListOrders() {
 
         if(!_socket) _socket = io(process.env.BACKEND_URL, {
             transports: ['websocket'],
-            upgrade: false
+            upgrade: false,
+            query: {
+                authorization: localStorage.getItem('token')
+            }
         });
         
         _socket.on('newOrder', (message: IOrder) => {
