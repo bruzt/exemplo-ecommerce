@@ -7,6 +7,7 @@
 - Validação de dados recebidos pelas rotas (headers, params, body e query) com o pacote [Celebrate](https://github.com/arb/celebrate), para garantir que os dados são do tipo correto;
 - Rotas para cadastro, atualização e remoção de usuários, endereços, categorias, produtos, upload de imagens de produtos e ordens de compra;
 - Rota para autenticação de usuário com JWT (Json Web Token);
+- Conecção Web Socket com [Socket.io](https://github.com/socketio/socket.io) para acompanhamento das ordens de compra em tempo real no painel de controle.
 - Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos;
 - Integração com a API de pagamentos [Pagar.me](https://pagar.me/), para pagamentos com cartão de crédito e boleto.
 
