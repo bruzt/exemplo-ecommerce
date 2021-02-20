@@ -16,7 +16,7 @@ module.exports = async function periodicCheck() {
     });
 
     let client;
-    if(orders.length > 0) client = await pagarMeClient();
+    if(orders.length > 0 && client == null) client = await pagarMeClient();
     
     for(const order of orders){
         
@@ -34,5 +34,5 @@ module.exports = async function periodicCheck() {
 
     timeoutId = setTimeout( () => {
         periodicCheck();
-    }, 43200000); // roda a cada 12 horas
+    }, 21600000); // executa a cada 6 horas
 }
