@@ -7,88 +7,127 @@ import { Container } from './styles';
 import Button from '../../genericComponents/Button';
 
 interface ICategory {
-    id: number;
-    name: string;
-    parent_id: number;
+	id: number;
+	name: string;
+	parent_id: number;
 }
 
-export default function AddCategory(){
+export default function AddCategory() {
 
-    const [getCategories, setCategories] = useState<ICategory[]>([]);
+	const [getCategories, setCategories] = useState<ICategory[]>([]);
 
-    const [getName, setName] = useState('');
-    const [getParent, setParent] = useState('0');
+	const [getName, setName] = useState('');
+	const [getParent, setParent] = useState('0');
 
-    useEffect( () => {
-        fetchCategories();
-    }, []);
+	useEffect(() => {
+		fetchCategories();
+	}, []);
 
-    async function fetchCategories(){
+	async function fetchCategories() {
 
-        try {
+		try {
 
-            const response = await api.get('/categories');
+			const response = await api.get('/categories');
 
-            setCategories(response.data);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao buscar categorias');
-        }
-    }
+			setCategories(response.data);
 
-    async function onSubmit(event: FormEvent) {
-        
-        event.preventDefault();
+		} catch (error) {
+			console.log(error);
+			alert('Erro ao buscar categorias');
+		}
+	}
 
-        try {
+	async function onSubmit(event: FormEvent) {
 
-            await api.post('/categories', {
-                name: getName,
-                parent_id: Number(getParent)
-            });
+		event.preventDefault();
 
-            alert('Categoria cadastrada com sucesso');
+		try {
 
-            fetchCategories();
-            setName('');
-            setParent('');
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao cadastrar categoria');
-        }
-    }
+			await api.post('/categories', {
+				name: getName,
+				parent_id: Number(getParent)
+			});
 
-    return (
-        <Container>
+			alert('Categoria cadastrada com sucesso');
 
-            <h2>Adicionar categoria</h2>
-            
-            <form onSubmit={onSubmit}>
+			fetchCategories();
+			setName('');
+			setParent('');
 
-                <div className="input-box">
-                    <label htmlFor="category-name">Nova categoria</label>
-                    <input type="text" id='category-name' value={getName} onChange={(event) => setName(event.target.value)} />
-                </div>
+		} catch (error) {
+			console.log(error);
+			alert('Erro ao cadastrar categoria');
+		}
+	}
 
-                <div className="input-box">
-                    <label htmlFor="category-parent">Pai</label>
+	function categoryTree() {
 
-                    <select id="category-parent" value={getParent} onChange={(event) => setParent(event.target.value)}>
-                        <option value={'0'}></option>
-                        {getCategories.map( (category, index) => {
-                            return <option key={index} value={String(category.id)}>{category.name}</option>
-                        })}
+		return getCategories.map(category => {
 
-                    </select>
-                </div>
+			if (category.parent_id == null || category.parent_id == 0) {
+				return (
+					<details key={category.id}>
+						<summary>{category.name} ({category.id})</summary>
+						{buildCategoryTree(category)}
+					</details>
+				);
+			}
+		});
+	}
 
-                <Button type='submit'>
-                    Cadastrar
+	function buildCategoryTree(fatherCategory: ICategory) {
+
+		const children = getCategories.filter(child => child.parent_id == fatherCategory.id)
+
+		return children.map(child => {
+
+			const childs = getCategories.filter((category) => child.id == category.parent_id);
+
+			let hasChildren = false;
+			if (childs.length > 0) hasChildren = true;
+
+			return (
+				<details key={child.id}>
+					<summary className={hasChildren ? '' : 'last-child'}>{child.name} ({child.id})</summary>
+					{hasChildren && buildCategoryTree(child)}
+				</details>
+			);
+		});
+	}
+
+	return (
+		<Container>
+
+			<h2>Adicionar categoria</h2>
+
+			<form onSubmit={onSubmit}>
+
+				<div className="input-box">
+					<label htmlFor="category-name">Nova categoria</label>
+					<input type="text" id='category-name' value={getName} onChange={(event) => setName(event.target.value)} />
+				</div>
+
+				<div className="input-box">
+					<label htmlFor="category-parent">Pai</label>
+
+					<select id="category-parent" value={getParent} onChange={(event) => setParent(event.target.value)}>
+						<option value={'0'}></option>
+						{getCategories.map((category, index) => {
+							return <option key={index} value={String(category.id)}>{category.id} - {category.name}</option>
+						})}
+
+					</select>
+				</div>
+
+				<Button type='submit'>
+					Cadastrar
                 </Button>
-            </form>
+			</form>
 
-        </Container>
-    );
+			<div className="categoryTree">
+				{categoryTree()}
+			</div>
+
+		</Container>
+	);
 }

@@ -38,4 +38,20 @@ export const Container = styled.div`
         font-size: 20px;
         padding: 4px;
     }
+
+    .categoryTree {
+        width: 500px;
+
+        margin-top: 50px;
+    }
+
+    .categoryTree details > details {
+        margin: 5px 0 0 10px;
+    }
+
+    .categoryTree .last-child {
+        list-style: none;
+
+        margin-left: 5px;
+    }
 `;
