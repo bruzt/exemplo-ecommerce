@@ -7,8 +7,10 @@ export default async function list(req: Request, res: Response){
     try {
 
         const users = await UserModel.find();
+
+        const serializedUsers = users.map( (user) => ({ ...user, password: undefined, tempPassword: undefined }) );
         
-        return res.json(users);
+        return res.json(serializedUsers);
 
     } catch (error) {
         console.log(error);

@@ -4,14 +4,14 @@ import UserModel from '../../models/UserModel';
 
 export default async function show(req: Request, res: Response) {
 
-    const { id } = req.tokenPayload;
+    const { userId } = req.tokenPayload;
     const paramsId = Number(req.params.id);
 
-    if(id !== paramsId) return res.status(400).json({ message: 'token id must be equal to params id' });
+    if(userId !== paramsId) return res.status(400).json({ message: 'token id must be equal to params id' });
 
     try {
 
-        const user = await UserModel.findOne(id);
+        const user = await UserModel.findOne(userId);
         
         /*let user = await UserModel.findByPk(id, { 
             attributes: { 
@@ -31,8 +31,10 @@ export default async function show(req: Request, res: Response) {
         });*/
 
         if(!user) return res.status(400).json({ message: 'user not found'});
+
+        const serializedUser = { ...user, password: undefined, tempPassword: undefined };
     
-        return res.json(user);
+        return res.json(serializedUser);
 
     } catch (error) {
         console.error(error);

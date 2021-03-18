@@ -29,7 +29,7 @@ export default class UserModel extends BaseEntity {
 	@Column()
 	cpf!: string;
 
-	@Column({ select: false })
+	@Column()
 	password!: string;
 
 	@Column()
@@ -50,7 +50,7 @@ export default class UserModel extends BaseEntity {
 	@DeleteDateColumn({ name: 'deleted_at' })
 	deleted_at?: Date;
 
-	private tempPassword?: string;
+	tempPassword?: string;
 
 	///////////////////////////////////////////
 

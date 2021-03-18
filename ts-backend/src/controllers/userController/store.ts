@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import UserModel from '../../models/UserModel';
-//import validateCpf from '../../util/validateCpf';
+import validateCpf from '../../utils/validateCPF';
 
 interface IBody extends ReadableStream<Uint8Array> {
     name: string;
@@ -24,16 +24,16 @@ export default async function store(req: Request, res: Response){
         });
 
         if(user?.email === email) return res.status(400).json({ message: 'email already in use' });
-        if(user?.cpf === cpf) return res.status(400).json({ message: 'cpf already in use' });
-        //if(validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
+        if(user?.cpf === cpf) return res.status(400).json({ message: 'CPF already in use' });
+        if(validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
         
         const newUser = UserModel.create({ name, email, cpf, password });
 
         await newUser.save();
 
-        newUser.password = 'null';
+        const serializedUser = { ...newUser, password: undefined, tempPassword: undefined };
 
-        return res.json({ user: newUser, token: newUser.generateJwt() });
+        return res.json({ user: serializedUser, token: newUser.generateJwt() });
 
     } catch (error) {
         console.error(error);
