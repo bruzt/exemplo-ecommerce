@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "rimraf ./build && tsc",
     "prod": "cross-env NODE_ENV=production node build/src/server.js",
-    "start": "npm run build && npm run prod"
+    "start": "npm run build && npm run prod",
+    "dev:migration:run": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "celebrate": "^13.0.4",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

@@ -5,6 +5,7 @@ import {
 	Column,
 	CreateDateColumn,
 	UpdateDateColumn,
+	DeleteDateColumn,
 	AfterLoad,
 	BeforeInsert,
 	BeforeUpdate
@@ -20,28 +21,34 @@ export default class UserModel extends BaseEntity {
 	id!: number;
 
 	@Column()
+	name!: string;
+
+	@Column()
 	email!: string;
 
 	@Column()
 	cpf!: string;
 
-	@Column()
+	@Column({ select: false })
 	password!: string;
 
 	@Column()
 	admin!: boolean;
 
 	@Column()
-	reset_password_token!: string;
+	reset_password_token?: string;
 
 	@Column()
-	reset_password_expires!: Date;
+	reset_password_expires?: Date;
 
 	@CreateDateColumn({ name: 'created_at' })
 	created_at!: Date;
 
 	@UpdateDateColumn({ name: 'updated_at' })
 	updated_at!: Date;
+
+	@DeleteDateColumn({ name: 'deleted_at' })
+	deleted_at?: Date;
 
 	private tempPassword?: string;
 
