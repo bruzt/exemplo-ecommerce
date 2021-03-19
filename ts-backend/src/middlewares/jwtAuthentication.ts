@@ -2,23 +2,23 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
 export default function jwtAuthentication(req: Request, res: Response, next: NextFunction) {
-    
-    const { authorization } = req.headers;
 
-    try {
+	const { authorization } = req.headers;
 
-    if(!authorization) throw new Error();
+	try {
 
-    const splitBearer = authorization.split(' ');
+		if (!authorization) throw new Error();
 
-    if(splitBearer.length !== 2 || splitBearer[0] !== "Bearer") throw new Error();
+		const splitBearer = authorization.split(' ');
 
-    req.tokenPayload = jwt.verify(splitBearer[1], process.env.APP_SECRET as string) as ITokenPayload;
+		if (splitBearer.length !== 2 || splitBearer[0] !== "Bearer") throw new Error();
 
-    return next();
+		req.tokenPayload = jwt.verify(splitBearer[1], process.env.APP_SECRET as string) as ITokenPayload;
 
-    } catch(error){
-        
-        return res.status(400).json({ message: 'invalid credentials' });
-    }
+		return next();
+
+	} catch (error) {
+
+		return res.status(400).json({ message: 'invalid credentials' });
+	}
 }
