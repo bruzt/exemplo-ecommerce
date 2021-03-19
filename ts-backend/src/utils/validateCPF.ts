@@ -19,14 +19,14 @@ export default function validateCpf(cpf: string | number) {
         return false;
     }
     
-    let soma = 0;
+    let sum = 0;
     let i = 0;
     let j = 10;
 
     while(i < 9){
         while(j > 1){
 
-            soma += Number(cpf[i]) * j;
+            sum += Number(cpf[i]) * j;
 
             i++;
             j--;
@@ -34,18 +34,18 @@ export default function validateCpf(cpf: string | number) {
         }
     }
 
-    const first = (soma*10)%11;
+    const first = (sum*10)%11;
 
     if(first != Number(cpf[9])) return false;
     
-    soma = 0;
+    sum = 0;
     i = 0;
     j = 11;
 
     while(i < 10){
         while(j > 1){
 
-            soma += Number(cpf[i]) * j;
+            sum += Number(cpf[i]) * j;
 
             i++;
             j--;
@@ -53,7 +53,7 @@ export default function validateCpf(cpf: string | number) {
         }
     }
     
-    const second = (soma*10)%11;
+    const second = (sum*10)%11;
 
     if(second != Number(cpf[10])) return false;
     
