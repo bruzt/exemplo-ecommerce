@@ -15,6 +15,7 @@ const router = express.Router();
 router.get('/users', userValidators.list, adminJwtAuthentication, userController.list);
 router.get('/users/:id', userValidators.show, jwtAuthentication, userController.show);
 router.post('/users', userValidators.store, userController.store);
+router.put('/users', userValidators.update, jwtAuthentication, userController.update);
 
 router.post('/sessions', sessionController.store);
 

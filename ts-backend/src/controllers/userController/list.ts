@@ -6,11 +6,11 @@ export default async function list(req: Request, res: Response){
 
     try {
 
-        const users = await UserModel.find();
-
-        const serializedUsers = users.map( (user) => ({ ...user, password: undefined, tempPassword: undefined }) );
+        const users = await UserModel.find({
+            select: ['id', 'name', 'email', 'cpf', 'admin']
+        });
         
-        return res.json(serializedUsers);
+        return res.json(users);
 
     } catch (error) {
         console.log(error);

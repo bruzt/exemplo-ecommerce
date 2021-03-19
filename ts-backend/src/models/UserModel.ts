@@ -71,6 +71,8 @@ export default class UserModel extends BaseEntity {
 		}
 	}
 
+	///////////////////////////////////////////
+
 	checkPassword(password: string) {
 		return bcrypt.compare(password, this.password);
 	}
@@ -79,7 +81,7 @@ export default class UserModel extends BaseEntity {
 		return { token: jwt.sign({ userId: this.id, admin: this.admin }, process.env.APP_SECRET as string, { expiresIn: '12h' }) };
 	}
 
-	////////////////////////////////////////
+	///////////////////////////////////////////
 
 	/*
 	@OneToMany(() => AddressModel, address => address.user)
