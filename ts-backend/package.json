@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "build": "rimraf ./build && tsc",
-    "prod": "cross-env NODE_ENV=production node build/src/server.js",
+    "prod": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend build/src/server.js",
+    "postprod": "pm2 logs",
     "start": "npm run build && npm run prod",
     "dev:migration:run": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run"
   },
@@ -32,6 +33,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
+    "pm2": "^4.5.5",
     "typeorm": "^0.2.31"
   }
 }
