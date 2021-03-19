@@ -35,6 +35,8 @@ describe('userController List Test Suit', () => {
         });
         user.admin = true;
 
+        user.save();
+
         const { token } = user.generateJwt();
 
         // save 3 users on db
@@ -55,6 +57,6 @@ describe('userController List Test Suit', () => {
         ;
         
         expect(response.status).toBe(200);
-        expect(Object.keys(response.body).length).toBe(3);
+        expect(Object.keys(response.body).length).toBe(4);
     });
 });
