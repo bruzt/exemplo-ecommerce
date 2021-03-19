@@ -10,6 +10,7 @@ import addressController from './controllers/addressController';
 
 // validators
 import userValidator from './controllers/userController/validators';
+import sessionValidator from './controllers/sessionController/validators';
 import addressValidator from './controllers/addressController/validators';
 
 const router = express.Router();
@@ -20,9 +21,10 @@ router.post('/users', userValidator.store, userController.store);
 router.put('/users', userValidator.update, jwtAuthentication, userController.update);
 router.delete('/users', userValidator.destroy, jwtAuthentication, userController.destroy);
 
-router.post('/sessions', sessionController.store);
+router.post('/sessions', sessionValidator.store, sessionController.store);
 
 router.get('/addresses', addressValidator.list, jwtAuthentication, addressController.list);
 router.post('/addresses', addressValidator.store, jwtAuthentication, addressController.store);
+router.put('/addresses/:id', addressValidator.update, jwtAuthentication, addressController.update);
 
 export default router;
