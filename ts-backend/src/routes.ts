@@ -6,9 +6,11 @@ import adminJwtAuthentication from './middlewares/adminJwtAuthentication';
 // controllers
 import userController from './controllers/userController';
 import sessionController from './controllers/sessionController';
+import addressController from './controllers/addressController';
 
 // validators
 import userValidator from './controllers/userController/validators';
+import addressValidator from './controllers/addressController/validators';
 
 const router = express.Router();
 
@@ -19,5 +21,7 @@ router.put('/users', userValidator.update, jwtAuthentication, userController.upd
 router.delete('/users', userValidator.destroy, jwtAuthentication, userController.destroy);
 
 router.post('/sessions', sessionController.store);
+
+router.get('/addresses', addressValidator.list, jwtAuthentication, addressController.list);
 
 export default router;
