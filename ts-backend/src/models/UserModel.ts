@@ -53,7 +53,7 @@ export default class UserModel extends BaseEntity {
 	@DeleteDateColumn({ name: 'deleted_at' })
 	deleted_at?: Date;
 
-	tempPassword?: string;
+	private tempPassword?: string;
 
 	///////////////////////////////////////////
 
