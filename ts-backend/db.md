@@ -20,6 +20,11 @@ postgres://dbuser1:123@localhost:5432/ecommerce-tests
 sudo docker exec -ti ecommerce-tests psql -d ecommerce-tests -U dbuser1 -W
 ```
 
+### TypeORM
+```
+npx typeorm migration:create -n migration-name
+```
+
 # Sonic
 
 ## Sonic Dev

@@ -8,11 +8,14 @@ import {
 	DeleteDateColumn,
 	AfterLoad,
 	BeforeInsert,
-	BeforeUpdate
+	BeforeUpdate,
+	OneToMany
 } from 'typeorm';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+import AddressModel from './AddressModel';
 
 @Entity('users')
 export default class UserModel extends BaseEntity {
@@ -54,6 +57,16 @@ export default class UserModel extends BaseEntity {
 
 	///////////////////////////////////////////
 
+	@OneToMany(() => AddressModel, address => address.user)
+	addresses?: AddressModel[];
+	
+	/*
+	@OneToMany(() => OrderModel, order => order.user)
+	orders?: OrderModel[];
+	*/
+
+	///////////////////////////////////////////
+
 	@AfterLoad()
 	private loadPassword() {
 
@@ -80,14 +93,4 @@ export default class UserModel extends BaseEntity {
 	generateJwt() {
 		return { token: jwt.sign({ userId: this.id, admin: this.admin }, process.env.APP_SECRET as string, { expiresIn: '12h' }) };
 	}
-
-	///////////////////////////////////////////
-
-	/*
-	@OneToMany(() => AddressModel, address => address.user)
-	addresses?: AddressModel[];
-
-	@OneToMany(() => OrderModel, order => order.user)
-	orders?: OrderModel[];
-	*/
 }

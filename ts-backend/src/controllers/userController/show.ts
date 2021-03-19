@@ -12,7 +12,8 @@ export default async function show(req: Request, res: Response) {
     try {
 
         const user = await UserModel.findOne(userId, {
-            select: ['id', 'name', 'email', 'cpf', 'admin']
+            select: ['id', 'name', 'email', 'cpf', 'admin'],
+            relations: ['addresses'],
         });
         
         /*let user = await UserModel.findByPk(id, { 
