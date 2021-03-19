@@ -8,11 +8,14 @@ export default async function adminJwtAuthentication(req: Request, res: Response
 
     jwtAuthentication(req, res, async () => {
 
-        const { admin } = req.tokenPayload;
+        const { 
+            //userId,
+            admin,
+        } = req.tokenPayload;
     
         try {
     
-            //const user = await UserModel.findOne(id);
+            //const user = await UserModel.findOne(userId);
             
             if(!admin) return res.status(400).json({ message: 'not an admin' });
             //if(! user.admin) return res.status(400).json({ message: 'you are not allowed to do that' });
