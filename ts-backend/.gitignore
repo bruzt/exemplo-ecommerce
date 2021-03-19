@@ -1,6 +1,9 @@
 node_modules
 build
+
 .env
 
 uploads/*
 !.gitkeep
+
+coverage
