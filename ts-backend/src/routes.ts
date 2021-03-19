@@ -26,5 +26,6 @@ router.post('/sessions', sessionValidator.store, sessionController.store);
 router.get('/addresses', addressValidator.list, jwtAuthentication, addressController.list);
 router.post('/addresses', addressValidator.store, jwtAuthentication, addressController.store);
 router.put('/addresses/:id', addressValidator.update, jwtAuthentication, addressController.update);
+router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, addressController.destroy);
 
 export default router;
