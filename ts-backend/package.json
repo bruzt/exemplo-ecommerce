@@ -10,6 +10,7 @@
     "postprod": "pm2 logs",
     "start": "npm run build && npm run prod",
     "dev:migration:run": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run",
+    "pretest": "cross-env NODE_ENV=test ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "test": "cross-env NODE_ENV=test jest"
   },
   "keywords": [],

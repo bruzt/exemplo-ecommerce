@@ -20,6 +20,18 @@ postgres://dbuser1:123@localhost:5432/ecommerce-tests
 sudo docker exec -ti ecommerce-tests psql -d ecommerce-tests -U dbuser1 -W
 ```
 
+## Test Postgres
+
+```
+sudo docker run -d \
+    --name ecommerce-test \
+    -e POSTGRES_USER=dbtest \
+    -e POSTGRES_PASSWORD=gh9U35vq \
+    -e POSTGRES_DB=ecommerce-test \
+    -p 5433:5432 \
+    postgres:13.2
+```
+
 ### TypeORM
 ```
 npx typeorm migration:create -n migration-name

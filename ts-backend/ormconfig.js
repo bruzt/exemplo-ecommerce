@@ -18,10 +18,11 @@ const {
     DB_USERNAME,
     DB_PASSWORD,
     DB_HOST,
+    DB_PORT,
     DB_DATABASE
 } = process.env;
 
-const dbUrl = `${DB_DIALECT}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_DATABASE}`;
+const dbUrl = `${DB_DIALECT}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
 
 let ormconfig;
 
