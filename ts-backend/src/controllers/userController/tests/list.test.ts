@@ -33,11 +33,12 @@ describe('userController List Test Suit', () => {
             email: "fake@admin.com",
             password: "123456"
         });
+
         user.admin = true;
 
         user.save();
 
-        const { token } = user.generateJwt();
+        const token = user.generateJwt();
 
         // save 3 users on db
         for(let i=0; i < 3; i++){
