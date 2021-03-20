@@ -68,5 +68,5 @@
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
   },
-  "exclude": ["./build", "ormconfig.js"]
+  "exclude": ["./build", "ormconfig.js", "jest.config.js", "coverage", "**/tests"]
 }
