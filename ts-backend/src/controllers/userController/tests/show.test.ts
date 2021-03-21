@@ -46,7 +46,7 @@ describe('userController Show Test Suit', () => {
         expect(user.id).toBe(response.body.id);
     });
 
-    it('should return code 400 for "token id must be equal to params id"', async () => {
+    it('should return error for "token id must be equal to params id"', async () => {
 
         const user = UserModel.create(fakeUser);
         const token = user.generateJwt();
@@ -55,11 +55,11 @@ describe('userController Show Test Suit', () => {
             .set('authorization', `Bearer ${token}`)
         ;
 
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(403);
         expect(response.body.message).toBe("token id must be equal to params id");
     });
 
-    it('should return code 400 for "user not found"', async () => {
+    it('should return error for "user not found"', async () => {
 
         const user = UserModel.create(fakeUser);
         await user.save();
@@ -74,11 +74,11 @@ describe('userController Show Test Suit', () => {
             .set('authorization', `Bearer ${token}`)
         ;
 
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(404);
         expect(response.body.message).toBe("user not found");
     });
 
-    it('should return code 400 for "id must be a number"', async () => {
+    it('should return error for "id must be a number"', async () => {
 
         const user = UserModel.create(fakeUser);
         const token = user.generateJwt();

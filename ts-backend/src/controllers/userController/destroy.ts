@@ -10,7 +10,7 @@ export default async function destroy(req: Request, res: Response){
 
         const user = await UserModel.findOne(userId);
 
-        if(! user) return res.status(400).json({ message: 'user not found'});
+        if(! user) return res.status(404).json({ message: 'user not found'});
 
         await user.softRemove();
 

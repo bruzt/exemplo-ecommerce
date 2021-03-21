@@ -7,7 +7,7 @@ export default async function show(req: Request, res: Response) {
     const { userId } = req.tokenPayload;
     const paramsId = Number(req.params.id);
 
-    if(userId !== paramsId) return res.status(400).json({ message: 'token id must be equal to params id' });
+    if(userId !== paramsId) return res.status(403).json({ message: 'token id must be equal to params id' });
 
     try {
 
@@ -16,7 +16,7 @@ export default async function show(req: Request, res: Response) {
             relations: ['addresses'],
         });
 
-        if(!user) return res.status(400).json({ message: 'user not found'});
+        if(user == null) return res.status(404).json({ message: 'user not found'});
 
         const serializedUser = { ...user, password: undefined, tempPassword: undefined };
     

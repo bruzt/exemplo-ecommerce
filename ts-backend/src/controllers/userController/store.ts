@@ -16,6 +16,8 @@ export default async function store(req: Request, res: Response){
     
     try {
 
+        if(validateCpf(cpf) == false) return res.status(406).json({ message: 'invalid cpf' });
+
         const user = await UserModel.findOne({
             where: [
                 { email },
@@ -23,10 +25,8 @@ export default async function store(req: Request, res: Response){
             ]
         });
 
-        if(user?.email === email) return res.status(400).json({ message: 'email already in use' });
-        if(user?.cpf === cpf) return res.status(400).json({ message: 'CPF already in use' });
-
-        if(validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
+        if(user?.email === email) return res.status(409).json({ message: 'email already in use' });
+        if(user?.cpf === cpf) return res.status(409).json({ message: 'CPF already in use' });
         
         const newUser = UserModel.create({ name, email, cpf, password });
 

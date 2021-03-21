@@ -8,14 +8,14 @@ export default async function update(req: Request, res: Response){
     const { userId } = req.tokenPayload;
     const { name, email, cpf, currentPassword, newPassword } = req.body;
 
-    if(cpf && validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
+    if(cpf && validateCpf(cpf) == false) return res.status(406).json({ message: 'invalid cpf' });
 
     try {
 
         let password;
         const user = await UserModel.findOne(userId);
 
-        if(!user) return res.status(400).json({ message: 'user not found' });
+        if(!user) return res.status(404).json({ message: 'user not found' });
 
         if(currentPassword && newPassword){
 
@@ -25,7 +25,7 @@ export default async function update(req: Request, res: Response){
 
             } else {
 
-                return res.status(400).json({ message: 'wrong current password' })
+                return res.status(406).json({ message: 'wrong current password' })
             }
         }
 
