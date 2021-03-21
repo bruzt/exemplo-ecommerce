@@ -36,7 +36,7 @@ export default async function update(req: Request, res: Response){
 
         await user.save();
     
-        return res.sendStatus(204);
+        return res.json(user);
 
     } catch (error) {
         console.error(error);
