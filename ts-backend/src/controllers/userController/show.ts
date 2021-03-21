@@ -15,23 +15,6 @@ export default async function show(req: Request, res: Response) {
             select: ['id', 'name', 'email', 'cpf', 'admin'],
             relations: ['addresses'],
         });
-        
-        /*let user = await UserModel.findByPk(id, { 
-            attributes: { 
-                exclude: [
-                    'password', 
-                    'reset_password_token', 
-                    'reset_password_expires',
-                    'createdAt',
-                    'updatedAt'
-                ]
-            },
-            include: [{
-                association: 'addresses',
-                attributes: { exclude: ['createdAt', 'updatedAt'] },
-                required: false
-            }]
-        });*/
 
         if(!user) return res.status(400).json({ message: 'user not found'});
 
