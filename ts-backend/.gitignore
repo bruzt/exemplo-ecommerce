@@ -7,4 +7,3 @@ uploads/*
 !.gitkeep
 
 coverage
-database.test.sqlite
