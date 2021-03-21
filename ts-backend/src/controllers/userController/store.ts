@@ -26,7 +26,7 @@ export default async function store(req: Request, res: Response){
         });
 
         if(user?.email === email) return res.status(409).json({ message: 'email already in use' });
-        if(user?.cpf === cpf) return res.status(409).json({ message: 'CPF already in use' });
+        if(user?.cpf === cpf) return res.status(409).json({ message: 'cpf already in use' });
         
         const newUser = UserModel.create({ name, email, cpf, password });
 

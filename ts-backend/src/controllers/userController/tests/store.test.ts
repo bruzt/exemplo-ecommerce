@@ -52,6 +52,19 @@ describe('userController Store Test Suit', () => {
         expect(response.body.message).toBe('email already in use');
     });
 
+    it('should not add a user with same cpf on db', async () => {
+
+        const user = UserModel.create(fakeUser);
+        await user.save();
+
+        const response = await supertest(app).post('/users')
+            .send({ ...fakeUser, email: 'other@email.com' })
+        ;
+
+        expect(response.status).toBe(409);
+        expect(response.body.message).toBe('cpf already in use');
+    });
+
     it('should not add a user with invalid cpf', async () => {
 
         const response = await supertest(app).post('/users')
