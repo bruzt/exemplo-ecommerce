@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AddressModel from '../../models/AddressModel';
+import UserModel from '../../models/UserModel';
 
 export default async function list(req: Request, res: Response) {
 
@@ -8,13 +8,13 @@ export default async function list(req: Request, res: Response) {
     
     try {
 
-        const addresses = await AddressModel.find({
-            where: {
-                userId
-            }
+        const user = await UserModel.findOne(userId, {
+            relations: ['addresses'],
         });
 
-        return res.json(addresses);
+        if(! user) return res.status(400).json({ message: 'user not found'});
+
+        return res.json(user.addresses);
         
     } catch (error) {
         console.log(error);

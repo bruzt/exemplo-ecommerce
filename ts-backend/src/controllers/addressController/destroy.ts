@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AddressModel from '../../models/AddressModel';
+import UserModel from '../../models/UserModel';
 
 export default async function destroy(req: Request, res: Response) {
 
@@ -9,15 +9,17 @@ export default async function destroy(req: Request, res: Response) {
 
     try {
 
-        const addresses = await AddressModel.find({
-            where: {
-                userId
-            }
+        const user = await UserModel.findOne(userId, {
+            relations: ['addresses']
         });
 
-        const [ address ] = addresses.filter( (address) => address.id === id);
+        if(user == null) return res.status(400).json({ message: 'user not found' });
 
-        if(! address) return res.status(400).json({ message: 'address not found' });
+        const filteredAddress = user.addresses?.filter( (address) => address.id === id);
+
+        if(filteredAddress == null || filteredAddress.length === 0) return res.status(400).json({ message: 'address not found' });
+
+        const address = filteredAddress[0];
 
         await address.remove();
 

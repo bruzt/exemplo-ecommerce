@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import AddressModel from '../../models/AddressModel';
+import UserModel from '../../models/UserModel';
 
 interface IAddressData {
     street?: string;
@@ -27,16 +27,18 @@ export default async function update(req: Request, res: Response) {
 
     try {
 
-        const addresses = await AddressModel.find({
-            where: { 
-                userId 
-            }
+        const user = await UserModel.findOne(userId, {
+            relations: ['addresses'],
         });
 
-        const [ address ] = addresses?.filter( (address) => address.id === id );
-        
-        if(! address) return res.status(400).json({ message: "address not found" });
+        if(user == null) return res.status(400).json({ message: 'user not found' });
 
+        const filteredAddress = user.addresses?.filter( (address) => address.id === id );
+        
+        if(filteredAddress == null || filteredAddress.length === 0) return res.status(400).json({ message: "address not found" });
+
+        const address = filteredAddress[0];
+        
         if(street) address.street = street;
         if(number) address.number = number;
         if(neighborhood) address.neighborhood = neighborhood;
