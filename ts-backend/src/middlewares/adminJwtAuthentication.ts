@@ -17,8 +17,8 @@ export default async function adminJwtAuthentication(req: Request, res: Response
     
             //const user = await UserModel.findOne(userId);
             
-            if(!admin) return res.status(400).json({ message: 'not an admin' });
-            //if(! user.admin) return res.status(400).json({ message: 'you are not allowed to do that' });
+            if(!admin) return res.status(403).json({ message: 'not an admin' });
+            //if(! user.admin) return res.status(403).json({ message: 'you are not allowed to do that' });
     
             return next();
             

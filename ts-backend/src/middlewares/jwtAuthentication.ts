@@ -19,6 +19,6 @@ export default function jwtAuthentication(req: Request, res: Response, next: Nex
 
 	} catch (error) {
 
-		return res.status(400).json({ message: 'invalid credentials' });
+		return res.status(401).json({ message: 'invalid credentials' });
 	}
 }

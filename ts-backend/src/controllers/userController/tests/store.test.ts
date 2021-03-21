@@ -6,7 +6,7 @@ import app from '../../../app';
 import UserModel from '../../../models/UserModel';
 
 const fakeUser = {
-    name: "fake admin",
+    name: "fake user",
     cpf: "61311682023",
     email: "fake@admin.com",
     password: "123456"
@@ -32,16 +32,11 @@ describe('userController Store Test Suit', () => {
     it('should add a user to db', async () => {
 
         const response = await supertest(app).post('/users')
-            .send({
-                name: 'teste',
-                email: 'teste@teste.com',
-                cpf: "71314297082",
-                password: 'bla123'
-            })
+            .send(fakeUser)
         ;
 
         expect(response.status).toBe(201);
-        expect(response.body.user.name).toBe('teste');
+        expect(response.body.user.name).toBe('fake user');
     });
 
     it('should not add a user with same email on db', async () => {
