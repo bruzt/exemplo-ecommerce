@@ -4,7 +4,6 @@ import connection from '../../../databases/typeorm/connection';
 import truncate from '../../../testUtils/truncateTypeorm';
 import app from '../../../app';
 import UserModel from '../../../models/UserModel';
-import AddressModel from '../../../models/AddressModel';
 
 const fakeUser = {
     name: "fake user",
@@ -22,7 +21,7 @@ const fakeAddress = {
     zipcode: '73214596024'
 }
 
-describe('addressController List Test Suit', () => {
+describe('addressController Store Test Suit', () => {
 
     beforeAll( () => {
 
@@ -39,36 +38,27 @@ describe('addressController List Test Suit', () => {
         return (await connection).close();
     });
 
-    it('should show all address of a user', async () => {
+    it('should add a address to an user', async () => {
 
         const user = UserModel.create(fakeUser);
         await user.save();
         const token = user.generateJwt();
-
-        for(let i=0; i<3; i++){
-
-            const address = AddressModel.create({
-                ...fakeAddress,
-                user
-            });
-
-            await address.save();
-        }
         
-
-        const response = await supertest(app).get(`/addresses`)
+        const response = await supertest(app).post(`/addresses`)
             .set('authorization', 'Bearer ' + token)
+            .send(fakeAddress)
         ;
-        
-        expect(response.status).toBe(200);
-        expect(response.body.length).toBe(3);
-        expect(response.body[0].userId).toBe(user.id);
+
+        expect(response.status).toBe(201);
+        expect(parseInt(response.body.userId)).toBe(user.id);
     });
 
     it('should return error for "authorization is required"', async () => {
-
-        const response = await supertest(app).get(`/addresses`);
         
+        const response = await supertest(app).post(`/addresses`)
+            .send(fakeAddress)
+        ;
+
         expect(response.status).toBe(400);
         expect(response.body.validation.headers.message).toBe("\"authorization\" is required");
     });
@@ -78,8 +68,9 @@ describe('addressController List Test Suit', () => {
         const user = UserModel.create(fakeUser);
         const token = user.generateJwt();
         
-        const response = await supertest(app).get(`/addresses`)
+        const response = await supertest(app).post(`/addresses`)
             .set('authorization', 'Bearer ' + token)
+            .send(fakeAddress)
         ;
 
         expect(response.status).toBe(404);

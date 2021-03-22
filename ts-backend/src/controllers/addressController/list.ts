@@ -12,7 +12,7 @@ export default async function list(req: Request, res: Response) {
             relations: ['addresses'],
         });
 
-        if(! user) return res.status(400).json({ message: 'user not found'});
+        if(! user) return res.status(404).json({ message: 'user not found'});
 
         return res.json(user.addresses);
         

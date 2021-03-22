@@ -21,7 +21,7 @@ export default async function(req: Request, res: Response) {
 
         const user = await UserModel.findOne(userId);
 
-        if(! user) return res.status(400).json({ message: 'user not found' });       
+        if(! user) return res.status(404).json({ message: 'user not found' });       
         
         const address = AddressModel.create({ user, ...bodyData });
         
@@ -29,7 +29,7 @@ export default async function(req: Request, res: Response) {
 
         const serializedAddress = { ...address, user: undefined };
 
-        return res.json(serializedAddress);
+        return res.status(201).json(serializedAddress);
 
     } catch (error) {
         console.error(error);
