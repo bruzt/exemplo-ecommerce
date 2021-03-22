@@ -69,8 +69,8 @@ describe('addressController List Test Suit', () => {
 
         const response = await supertest(app).get(`/addresses`);
         
-        expect(response.status).toBe(400);
-        expect(response.body.validation.headers.message).toBe("\"authorization\" is required");
+        expect(response.status).toBe(401);
+        expect(response.body.message[0]).toBe("\"authorization\" is required");
     });
 
     it('should return error for "user not found"', async () => {

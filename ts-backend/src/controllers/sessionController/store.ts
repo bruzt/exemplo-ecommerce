@@ -10,11 +10,11 @@ export default async function store(req: Request, res: Response){
         
         const user = await UserModel.findOne({ where: { email }});
 
-        if(! user) return res.status(406).send({ message: "email or password is incorrect" });
+        if(! user) return res.status(400).send({ message: "email or password is incorrect" });
 
         const comparePassword = await user.checkPassword(password);
 
-        if(! comparePassword) return res.status(406).json({ message: "email or password is incorrect" });
+        if(! comparePassword) return res.status(400).json({ message: "email or password is incorrect" });
 
         const serializedUser = { ...user, password: undefined, tempPassword: undefined };
 

@@ -66,15 +66,15 @@ describe('addressController Update Test Suit', () => {
         expect(response.body.userId).toBe(user.id);
     });
 
-    it('should return code 400 for "authorization is required" - update', async () => {
+    it('should return error for "authorization is required" - update', async () => {
 
         const response = await supertest(app).put(`/addresses/5`)
             .send({
                 street: 'rua test'
             });
 
-        expect(response.status).toBe(400);
-        expect(response.body.validation.headers.message).toBe("\"authorization\" is required");
+        expect(response.status).toBe(401);
+        expect(response.body.message[0]).toBe("\"authorization\" is required");
     });
 
     it('should return error for "user not found" - update', async () => {

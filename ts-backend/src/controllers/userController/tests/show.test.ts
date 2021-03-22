@@ -88,6 +88,6 @@ describe('userController Show Test Suit', () => {
         ;
 
         expect(response.status).toBe(400);
-        expect(response.body.validation.params.message).toBe("\"id\" must be a number");
+        expect(response.body.message[0]).toBe("\"id\" must be a number");
     });
 });

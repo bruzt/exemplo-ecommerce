@@ -16,7 +16,7 @@ export default async function store(req: Request, res: Response){
     
     try {
 
-        if(validateCpf(cpf) == false) return res.status(406).json({ message: 'invalid cpf' });
+        if(validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
 
         const user = await UserModel.findOne({
             where: [

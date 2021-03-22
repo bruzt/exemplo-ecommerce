@@ -76,7 +76,7 @@ describe('userController Update Test Suit', () => {
                 newPassword: '123458',
             });
         
-        expect(response.status).toBe(406);
+        expect(response.status).toBe(400);
     });
 
     it('should return erro for "invalid cpf"', async () => {
@@ -89,7 +89,7 @@ describe('userController Update Test Suit', () => {
             .set('authorization', 'Bearer ' + token)
             .send({ cpf: '96575214538' });
         
-        expect(response.status).toBe(406);
+        expect(response.status).toBe(400);
         expect(response.body.message).toBe('invalid cpf');
     });    
 

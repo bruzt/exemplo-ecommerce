@@ -8,7 +8,7 @@ export default async function update(req: Request, res: Response){
     const { userId } = req.tokenPayload;
     const { name, email, cpf, currentPassword, newPassword } = req.body;
 
-    if(cpf && validateCpf(cpf) == false) return res.status(406).json({ message: 'invalid cpf' });
+    if(cpf && validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
 
     try {
 
@@ -25,7 +25,7 @@ export default async function update(req: Request, res: Response){
 
             } else {
 
-                return res.status(406).json({ message: 'wrong current password' })
+                return res.status(400).json({ message: 'wrong current password' })
             }
         }
 

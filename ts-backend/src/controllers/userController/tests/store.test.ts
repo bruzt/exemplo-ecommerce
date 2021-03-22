@@ -71,7 +71,7 @@ describe('userController Store Test Suit', () => {
             .send({ ...fakeUser, cpf: '72365148652'})
         ;
 
-        expect(response.status).toBe(406);
+        expect(response.status).toBe(400);
         expect(response.body.message).toBe('invalid cpf');
     });
 });

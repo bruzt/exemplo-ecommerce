@@ -52,7 +52,7 @@ describe('sessionController Test Suit', () => {
         expect(user.id).toBe(userId);
     });
 
-    it('should return error for "one or more fields are missing"', async () => {
+    it('should return error for "one or more fields are missing in body"', async () => {
 
         const response = await supertest(app).post('/sessions')
             .send({
@@ -60,7 +60,7 @@ describe('sessionController Test Suit', () => {
             });
 
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty("error");
+        expect(response.body.source).toBe("body");
     });
 
     it('should not authenticated if user not exists', async () => {
@@ -71,7 +71,7 @@ describe('sessionController Test Suit', () => {
                 password: 'passtest'
             });
 
-        expect(response.status).toBe(406);
+        expect(response.status).toBe(400);
         expect(response.body.message).toBe('email or password is incorrect');
     });
 
@@ -91,7 +91,7 @@ describe('sessionController Test Suit', () => {
                 password: 'testpass'
             });
 
-        expect(response.status).toBe(406);
+        expect(response.status).toBe(400);
         expect(response.body.message).toBe('email or password is incorrect');
     });
 });
