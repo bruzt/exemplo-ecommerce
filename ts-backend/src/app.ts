@@ -12,8 +12,8 @@ dotenv.config({
 //////////////////////////////////////////////////////////////
 
 import express from 'express';
-import { errors } from 'celebrate';
 
+import celebrateCustomErrors from './middlewares/celebrateCustomErrors';
 import './databases/typeorm/connection';
 
 import routes from './routes';
@@ -24,6 +24,6 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use(errors());
+app.use(celebrateCustomErrors);
 
 export default app;
