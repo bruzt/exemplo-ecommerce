@@ -13,11 +13,11 @@ export default async function destroy(req: Request, res: Response) {
             relations: ['addresses']
         });
 
-        if(user == null) return res.status(400).json({ message: 'user not found' });
+        if(user == null) return res.status(404).json({ message: 'user not found' });
 
         const filteredAddress = user.addresses?.filter( (address) => address.id === id);
 
-        if(filteredAddress == null || filteredAddress.length === 0) return res.status(400).json({ message: 'address not found' });
+        if(filteredAddress == null || filteredAddress.length === 0) return res.status(404).json({ message: 'address not found' });
 
         const address = filteredAddress[0];
 
