@@ -57,5 +57,5 @@ export default class AddressModel extends BaseEntity {
     user!: UserModel;
 
     @OneToMany(() => OrderModel, order => order.address)
-    orders!: OrderModel[];
+    orders?: OrderModel[];
 }
