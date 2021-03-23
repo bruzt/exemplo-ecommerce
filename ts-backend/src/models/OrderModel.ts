@@ -8,13 +8,15 @@ import {
     DeleteDateColumn,
     ManyToOne,
     JoinColumn,
+    OneToMany,
 } from 'typeorm';
 
 import UserModel from './UserModel';
 import AddressModel from './AddressModel';
+import OrderProductModel from './OrderProductModel';
 
 @Entity('orders')
-export default class Order extends BaseEntity{
+export default class OrderModel extends BaseEntity{
 
     @PrimaryGeneratedColumn()
     id!: number;
@@ -64,4 +66,7 @@ export default class Order extends BaseEntity{
     @ManyToOne(() => AddressModel, address => address.orders)
     @JoinColumn({ name: 'address_id' })
     address!: AddressModel;
+
+    @OneToMany(() => OrderProductModel, ordersProducts => ordersProducts.order)
+    ordersProducts!: OrderProductModel[];
 }

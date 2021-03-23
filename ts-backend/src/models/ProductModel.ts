@@ -13,6 +13,7 @@ import {
 
 import CategoryModel from './CategoryModel';
 import ImageModel from './ImageModel';
+import OrderProductModel from './OrderProductModel';
 
 @Entity('products')
 export default class ProductModel extends BaseEntity {
@@ -82,4 +83,7 @@ export default class ProductModel extends BaseEntity {
 
     @OneToMany(() => ImageModel, image => image.product)
     images?: ImageModel[];
+
+    @OneToMany(() => OrderProductModel, ordersProducts => ordersProducts.order)
+    ordersProducts!: OrderProductModel[];
 }
