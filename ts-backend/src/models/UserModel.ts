@@ -16,6 +16,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import AddressModel from './AddressModel';
+import OrderModel from './OrderModel';
 
 @Entity('users')
 export default class UserModel extends BaseEntity {
@@ -60,10 +61,8 @@ export default class UserModel extends BaseEntity {
 	@OneToMany(() => AddressModel, address => address.user)
 	addresses?: AddressModel[];
 	
-	/*
 	@OneToMany(() => OrderModel, order => order.user)
 	orders?: OrderModel[];
-	*/
 
 	///////////////////////////////////////////
 
