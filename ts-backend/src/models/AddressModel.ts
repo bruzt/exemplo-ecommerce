@@ -3,6 +3,9 @@ import {
     BaseEntity,
     PrimaryGeneratedColumn,
     Column,
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn,
     ManyToOne,
     JoinColumn,
 } from 'typeorm';
@@ -15,8 +18,8 @@ export default class AddressModel extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
-    userId!: number;
+    @Column({ name: 'user_id' })
+    user_id!: number;
 
     @Column()
     street!: string;
@@ -36,15 +39,18 @@ export default class AddressModel extends BaseEntity {
     @Column()
     zipcode!: string;
 
-    @Column({ name: 'created_at' })
+    @CreateDateColumn({ name: 'created_at' })
     created_at!: Date;
 
-    @Column({ name: 'updated_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updated_at!: Date; 
+
+    @DeleteDateColumn({ name: 'deleted_at' })
+    deleted_at!: Date;
 
     ///////////////////////////////////
 
     @ManyToOne(() => UserModel, user => user.addresses)
-    @JoinColumn({ name: 'userId' })
+    @JoinColumn({ name: 'user_id' })
     user!: UserModel;
 }

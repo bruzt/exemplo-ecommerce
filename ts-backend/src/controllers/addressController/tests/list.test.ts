@@ -62,7 +62,7 @@ describe('addressController List Test Suit', () => {
         
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(3);
-        expect(response.body[0].userId).toBe(user.id);
+        expect(response.body[0].user_id).toBe(user.id);
     });
 
     it('should return error for "authorization is required"', async () => {

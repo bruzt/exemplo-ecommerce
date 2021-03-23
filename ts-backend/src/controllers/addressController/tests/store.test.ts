@@ -50,7 +50,7 @@ describe('addressController Store Test Suit', () => {
         ;
 
         expect(response.status).toBe(201);
-        expect(parseInt(response.body.userId)).toBe(user.id);
+        expect(parseInt(response.body.user_id)).toBe(user.id);
     });
 
     it('should return error for "authorization is required"', async () => {

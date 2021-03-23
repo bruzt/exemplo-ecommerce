@@ -14,7 +14,7 @@ export class createAddressesTable1616156704263 implements MigrationInterface {
                     isGenerated: true
                 },
                 {
-                    name: 'userId',
+                    name: 'user_id',
                     type: 'int'
                 },
                 {
@@ -51,15 +51,19 @@ export class createAddressesTable1616156704263 implements MigrationInterface {
                     type: 'timestamp',
                     default: 'now()',
                 },
+                {
+                    name: 'deleted_at',
+                    type: 'timestamp',
+                    isNullable: true,
+                },
             ]
         }));
 
         await queryRunner.createForeignKey('addresses', new TableForeignKey({
-            columnNames: ['userId'],
+            columnNames: ['user_id'],
             referencedTableName: 'users',
             referencedColumnNames: ['id'],
             onUpdate: 'CASCADE',
-            onDelete: 'CASCADE',
         }))
     }
 
