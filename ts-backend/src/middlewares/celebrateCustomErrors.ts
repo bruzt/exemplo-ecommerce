@@ -7,6 +7,7 @@ export default (err: CelebrateError | Error, req: Request, res: Response, next: 
 
 		const headersDetails = err.details.get('headers')?.details;
 		const paramsDetails = err.details.get('params')?.details;
+		const queryDetails = err.details.get('query')?.details;
 		const bodyDetails = err.details.get('body')?.details;
 
 		if(headersDetails){
@@ -31,6 +32,18 @@ export default (err: CelebrateError | Error, req: Request, res: Response, next: 
 			
 			return res.status(400).json({ 
 				source: 'params',
+				message: messages 
+			});
+		}
+
+		else if(queryDetails){
+
+			const messages = queryDetails.map( (detail) => {
+				return detail.message;
+			});
+			
+			return res.status(400).json({ 
+				source: 'query',
 				message: messages 
 			});
 		}

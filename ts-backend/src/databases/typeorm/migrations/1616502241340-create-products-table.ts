@@ -27,8 +27,9 @@ export class createProductsTable1616502241340 implements MigrationInterface {
                 },
                 {
                     name: 'html_body',
-                    type: 'varchar',
-                    default: "'<p>Em breve</p>'"
+                    type: 'text',
+                    default: "'<p>Em breve</p>'",
+                    isNullable: true,
                 },
                 {
                     name: 'price',

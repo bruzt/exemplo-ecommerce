@@ -7,11 +7,13 @@ import adminJwtAuthentication from './middlewares/adminJwtAuthentication';
 import userController from './controllers/userController';
 import sessionController from './controllers/sessionController';
 import addressController from './controllers/addressController';
+import categoryController from './controllers/categoryController';
 
 // validators
 import userValidator from './controllers/userController/validators';
 import sessionValidator from './controllers/sessionController/validators';
 import addressValidator from './controllers/addressController/validators';
+import categoryValidator from './controllers/categoryController/validators';
 
 const router = express.Router();
 
@@ -27,5 +29,10 @@ router.get('/addresses', addressValidator.list, jwtAuthentication, addressContro
 router.post('/addresses', addressValidator.store, jwtAuthentication, addressController.store);
 router.put('/addresses/:id', addressValidator.update, jwtAuthentication, addressController.update);
 router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, addressController.destroy);
+
+router.get('/categories', categoryController.list);
+router.post('/categories', categoryValidator.store, adminJwtAuthentication, categoryController.store);
+router.put('/categories/:id', categoryValidator.update, adminJwtAuthentication, categoryController.update);
+router.delete('/categories/:id', categoryValidator.destroy, adminJwtAuthentication, categoryController.destroy);
 
 export default router;

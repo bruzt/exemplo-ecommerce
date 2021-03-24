@@ -31,7 +31,7 @@ export default class ProductModel extends BaseEntity {
     description!: string;
 
     @Column({ name: 'html_body' })
-    html_body!: string;
+    html_body?: string;
 
     @Column()
     price!: number;
