@@ -30,7 +30,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getCategoryId, setCategoryId] = useState(String(product.category.id));
     const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
     
-    const [getWeight, setWeight] = useState(product.weight.replace(',', '.'));
+    const [getWeight, setWeight] = useState(String(product.weight).replace(',', '.'));
     const [getLength, setLength] = useState(product.length);
     const [getHeight, setHeight] = useState(product.height);
     const [getWidth, setWidth] = useState(product.width);
@@ -68,12 +68,12 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
         if (getTitle.trim().length == 0) return alert('Título não preenchido');
         if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
-        if (getPrice.trim().length == 0) return alert('Preço não preenchido');
+        if (String(getPrice).trim().length == 0) return alert('Preço não preenchido');
         if (getCategoryId == '0') return alert('Categoria não selecionada');
-        if (getWeight.trim().length == 0) return alert('Peso não preenchido');
-        if (getLength.trim().length == 0) return alert('Comprimento não preenchido');
-        if (getHeight.trim().length == 0) return alert('Altura não preenchido');
-        if (getWidth.trim().length == 0) return alert('Largura não preenchido');
+        if (String(getWeight).trim().length == 0) return alert('Peso não preenchido');
+        if (String(getLength).trim().length == 0) return alert('Comprimento não preenchido');
+        if (String(getHeight).trim().length == 0) return alert('Altura não preenchido');
+        if (String(getWidth).trim().length == 0) return alert('Largura não preenchido');
 
         const data = {
             title: getTitle,

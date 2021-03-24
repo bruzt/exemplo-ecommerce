@@ -18,6 +18,8 @@ export default function Cart() {
     
     const [getZipCodeButtonDisabled, setZipCodeButtonDisabled] = useState(false);
 
+    const [getUnableToBuy, setUnableToBuy] = useState<number[]>([]);
+
     const userContext = useUser();
     const cartContext = useCart();
     const orderContext = useOrder();
@@ -30,6 +32,17 @@ export default function Cart() {
 
     useEffect(() => {
         calcTotalPrice();
+
+        const newUnableToBuy: number[] = [];
+
+        for(const cartItem of cartContext.getCart){
+
+            const index = getUnableToBuy.indexOf(cartItem.id)
+            
+            if(index > -1) newUnableToBuy.push(cartItem.id);
+        }
+
+        setUnableToBuy(newUnableToBuy);
 
     }, [cartContext.getProducts, cartContext.getCart, cartContext.getFreightSelected]);
 
@@ -49,6 +62,8 @@ export default function Cart() {
 
                     const cart = [ ...cartContext.getCart ]
                     cart[i].qtd = response.data.quantity_stock;
+
+                    if(response.data.quantity_stock < 1) setUnableToBuy([ ...getUnableToBuy, cartContext.getCart[i].id ]);
 
                     localStorage.setItem('cart', JSON.stringify(cart));
                     
@@ -80,7 +95,7 @@ export default function Cart() {
 
             if(cartContext.getProducts[i]){
 
-                totalPrice += Number(cartContext.getProducts[i].finalPrice) * cartContext.getCart[i].qtd;
+                totalPrice += Number(cartContext.getProducts[i].finalPrice) * (cartContext.getCart[i].qtd < 1 ? 1 : cartContext.getCart[i].qtd);
             }
         }
 
@@ -131,7 +146,7 @@ export default function Cart() {
 
         for(let i = 0; i < cartContext.getProducts.length; i++) {
 
-            weight += Number((cartContext.getProducts[i].weight).replace(',', '.')) * cartContext.getCart[i].qtd;
+            weight += Number(String(cartContext.getProducts[i].weight).replace(',', '.')) * cartContext.getCart[i].qtd;
             height += Number(cartContext.getProducts[i].height) * cartContext.getCart[i].qtd;
 
             if(length < Number(cartContext.getProducts[i].length)) length = Number(cartContext.getProducts[i].length);
@@ -211,7 +226,7 @@ export default function Cart() {
                             </thead>
                             <tbody>
                                 {cartContext.getProducts.length > 0 && cartContext.getProducts.map((product, index) => (
-                                    <tr key={product.id}>
+                                    <tr key={product.id} className={product.quantity_stock < 1 ? 'out-of-stock' : ''}>
                                         <td className='td-image'>
                                             <img
                                                 //src='https://i.picsum.photos/id/892/800/400.jpg'
@@ -268,7 +283,7 @@ export default function Cart() {
                                             </span>
                                         </td>
                                         <td className='td-total'>
-                                            R$ {(Number(product.finalPrice) * cartContext.getCart[index].qtd).toFixed(2)}
+                                            R$ {(Number(product.finalPrice) * (cartContext.getCart[index].qtd < 1 ? 1 : cartContext.getCart[index].qtd)).toFixed(2)}
                                         </td>
                                     </tr>
                                 ))}
@@ -371,9 +386,15 @@ export default function Cart() {
                                         <button 
                                             type='button'
                                             onClick={() => orderContext.setOrderFlowNumber(2)}
-                                            disabled={(cartContext.getCart.length == 0) ? true : false }
+                                            disabled={
+                                                (cartContext.getCart.length == 0) 
+                                                    ? true 
+                                                    : (getUnableToBuy.length > 0) 
+                                                        ? true
+                                                        : false
+                                            }
                                         >
-                                            {(cartContext.getCart.length == 0) ? <FaBan /> : 'Fechar Pedido' }
+                                            Fechar Pedido
                                         </button>
                                     )
                                 ) : (
