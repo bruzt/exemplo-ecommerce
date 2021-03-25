@@ -41,6 +41,7 @@
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
     "pm2": "^4.5.5",
+    "sonic-channel": "^1.2.6",
     "typeorm": "^0.2.31"
   }
 }

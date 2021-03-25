@@ -38,7 +38,7 @@ if(process.env.NODE_ENV === 'production'){
         }
     }
 } else {
-
+    
     ormconfig = {
         type: DB_DIALECT,
         url: dbUrl,
@@ -46,7 +46,8 @@ if(process.env.NODE_ENV === 'production'){
         migrations: [path.join('src', 'databases', 'typeorm', 'migrations', '*.ts')],
         cli: {
             migrationsDir: path.join('src', 'databases', 'typeorm', 'migrations')
-        }
+        },
+        //logging: true
     }
 }
 
