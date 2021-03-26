@@ -38,25 +38,25 @@ export default class ProductModel extends BaseEntity {
     price!: string;
 
     @Column({ name: 'quantity_stock' })
-    quantity_stock!: number;
+    quantity_stock?: number;
 
     @Column({ name: 'quantity_sold' })
-    quantity_sold!: number;
+    quantity_sold?: number;
 
     @Column({ name: 'discount_percent' })
     discount_percent!: number;
 
     @Column({ name: 'discount_datetime_start' })
-    discount_datetime_start!: Date;
+    discount_datetime_start?: Date;
 
     @Column({ name: 'discount_datetime_end' })
-    discount_datetime_end!: Date;
+    discount_datetime_end?: Date;
 
     @Column()
     tangible!: boolean;
 
     @Column()
-    weight!: number;
+    weight!: string;
 
     @Column()
     length!:number;
@@ -113,8 +113,8 @@ export default class ProductModel extends BaseEntity {
         let isOnSale = false;
 
         if(
-            this.discount_datetime_start !== null 
-            && this.discount_datetime_end !== null
+            this.discount_datetime_start != null 
+            && this.discount_datetime_end != null
             && this.discount_percent > 0
         ){
             const dateNow = new Date();
