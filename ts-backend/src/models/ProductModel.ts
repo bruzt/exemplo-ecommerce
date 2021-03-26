@@ -9,6 +9,7 @@ import {
     ManyToOne,
     JoinColumn,
     OneToMany,
+    AfterLoad,
 } from 'typeorm';
 
 import CategoryModel from './CategoryModel';
@@ -34,7 +35,7 @@ export default class ProductModel extends BaseEntity {
     html_body?: string;
 
     @Column()
-    price!: number;
+    price!: string;
 
     @Column({ name: 'quantity_stock' })
     quantity_stock!: number;
@@ -75,6 +76,10 @@ export default class ProductModel extends BaseEntity {
     @DeleteDateColumn({ name: 'deleted_at' })
     deleted_at!: Date;
 
+    isOnSale!: boolean;
+    finalPrice!: string;
+    dateNow!: Date;
+
     //////////////////////////////////////////////
 
     @ManyToOne(() => CategoryModel, category => category.products)
@@ -86,4 +91,51 @@ export default class ProductModel extends BaseEntity {
 
     @OneToMany(() => OrderProductModel, ordersProducts => ordersProducts.order)
     ordersProducts!: OrderProductModel[];
+
+    ////////////////////////////////////////////////
+
+    @AfterLoad()
+    private calcSaleAndPrice() {
+
+        this.price = Number(this.price).toFixed(2);
+
+        this.isOnSale = this.calcIsOnSale();
+
+        this.finalPrice = this.calcFinalPrice();
+
+        this.dateNow = new Date();
+    }
+
+    ///////////////////////////////////////////////
+
+    calcIsOnSale(){
+
+        let isOnSale = false;
+
+        if(
+            this.discount_datetime_start !== null 
+            && this.discount_datetime_end !== null
+            && this.discount_percent > 0
+        ){
+            const dateNow = new Date();
+            const startDate = new Date(this.discount_datetime_start);
+            const endDate = new Date(this.discount_datetime_end);
+    
+            if(startDate < dateNow && endDate > dateNow){
+                isOnSale = true;
+            }
+        } 
+    
+        return isOnSale;
+    }
+
+    calcFinalPrice(){
+
+        const finalPrice = (this.discount_percent != 0)
+            ? (Number(this.price) - ((Number(this.price) * (this.discount_percent / 100)))).toFixed(2)
+            : Number(this.price).toFixed(2)
+        ;
+
+        return finalPrice;
+    }
 }

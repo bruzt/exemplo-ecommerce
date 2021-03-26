@@ -18,7 +18,7 @@ const fakeProduct = {
     title: 'fake product',
     description: 'bla bla bla',
     html_body: '<p>vai</p>',
-    price: 10.50,
+    price: "10.50",
     quantity_stock: 100,
     tangible: true,
     weight: 5,

@@ -16,7 +16,7 @@ const fakeProduct = {
     title: 'fake product',
     description: 'bla bla bla',
     html_body: '<p>vai</p>',
-    price: 10.50,
+    price: "10.50",
     quantity_stock: 100,
     tangible: true,
     weight: 5,
@@ -183,10 +183,10 @@ describe('productController Test Suit', () => {
         const category = CategoryModel.create(fakeCategory);
         await category.save();
 
-        const product1 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: 999 });
+        const product1 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: "999" });
         await product1.save();
 
-        const product2 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: 8 });
+        const product2 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: "8" });
         await product2.save();
 
         const response = await supertest(app).get(`/products?category=${category.id}&filter=lowest-price`);
@@ -201,10 +201,10 @@ describe('productController Test Suit', () => {
         const category = CategoryModel.create(fakeCategory);
         await category.save();
 
-        const product1 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: 999 });
+        const product1 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: "999" });
         await product1.save();
 
-        const product2 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: 8 });
+        const product2 = ProductModel.create({ ...fakeProduct, category_id: category.id, price: "8" });
         await product2.save();
 
         const response = await supertest(app).get(`/products?category=${category.id}&filter=biggest-price`);
