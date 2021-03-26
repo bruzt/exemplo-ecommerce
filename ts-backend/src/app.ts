@@ -12,6 +12,7 @@ dotenv.config({
 //////////////////////////////////////////////////////////////
 
 import express from 'express';
+import cors from 'cors';
 
 import celebrateCustomErrors from './middlewares/celebrateCustomErrors';
 import './databases/typeorm/connection';
@@ -20,6 +21,7 @@ import routes from './routes';
 
 const app = express();
 
+app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
 
 app.use(routes);
