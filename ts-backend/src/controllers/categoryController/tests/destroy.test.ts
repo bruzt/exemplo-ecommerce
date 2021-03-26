@@ -14,10 +14,6 @@ const fakeUser = {
     password: "123456"
 }
 
-const fakeCategory = {
-    name: 'fake category',
-}
-
 const fakeProduct = {
     title: 'fake product',
     description: 'bla bla bla',
