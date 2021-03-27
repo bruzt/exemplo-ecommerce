@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import ProductModel from '../../models/ProductModel';
-import flushObject from '../../databases/sonic/flushObject';
+import sonicFlushObject from '../../databases/sonic/flushObject';
 
 interface IParams {
     id: number;
@@ -19,7 +19,7 @@ export default async function destroy(req: Request, res: Response) {
 
         await product.softRemove();
 
-        await flushObject.flushProduct(id);
+        await sonicFlushObject.flushProduct(id);
 
         return res.sendStatus(204);
         

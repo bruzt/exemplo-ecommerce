@@ -45,6 +45,7 @@ router.delete('/categories/:id', categoryValidator.destroy, adminJwtAuthenticati
 router.get('/products', productValidator.list, productController.list);
 router.get('/products/:id', productValidator.show, productController.show);
 router.post('/products', productValidator.store, adminJwtAuthentication, productController.store);
+router.put('/products/:id', productValidator.update, adminJwtAuthentication, productController.update);
 router.delete('/products/:id', productValidator.destroy, adminJwtAuthentication, productController.destroy);
 
 export default router;
