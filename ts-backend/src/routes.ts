@@ -56,5 +56,6 @@ router.delete('/products/:id', productValidator.destroy, adminJwtAuthentication,
 
 // IMAGE
 router.post('/products/:id/images', imageValidator.store, adminJwtAuthentication, multer(imageUploadConfig).any(), multerErrorHandler, imageController.store);
+router.delete('/products/images/:id', imageValidator.destroy, adminJwtAuthentication, imageController.destroy);
 
 export default router;
