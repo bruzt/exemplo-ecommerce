@@ -1,6 +1,7 @@
 import supertest from 'supertest';
 
-import connection from '../../../databases/typeorm/connection';
+import typeormConnection from '../../../databases/typeorm/connection';
+import sonicConnection from '../../../databases/sonic/connection';
 import truncate from '../../../testUtils/truncateTypeorm';
 
 import app from '../../../app';
@@ -17,7 +18,7 @@ describe('userController Show Test Suit', () => {
 
     beforeAll( () => {
 
-        return connection;
+        return typeormConnection;
     });
 
     beforeEach( () => {
@@ -27,7 +28,10 @@ describe('userController Show Test Suit', () => {
 
     afterAll( async () => {
 
-        return (await connection).close();
+        await sonicConnection.search.close();
+        await sonicConnection.ingest.close();
+
+        return (await typeormConnection).close();
     });
 
     it('should show a specific user on db', async () => {

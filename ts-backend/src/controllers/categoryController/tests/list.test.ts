@@ -1,6 +1,7 @@
 import supertest from 'supertest';
 
-import connection from '../../../databases/typeorm/connection';
+import typeormConnection from '../../../databases/typeorm/connection';
+import sonicConnection from '../../../databases/sonic/connection';
 import truncate from '../../../testUtils/truncateTypeorm';
 import app from '../../../app';
 import categoryModel from '../../../models/CategoryModel';
@@ -9,7 +10,7 @@ describe('categoryController List Test Suit', () => {
 
     beforeAll( () => {
 
-        return connection;
+        return typeormConnection;
     });
 
     beforeEach( () => {
@@ -19,7 +20,10 @@ describe('categoryController List Test Suit', () => {
 
     afterAll( async () => {
 
-        return (await connection).close();
+        await sonicConnection.search.close();
+        await sonicConnection.ingest.close();
+
+        return (await typeormConnection).close();
     });
 
     it('should show all categories', async () => {
