@@ -38,7 +38,7 @@ const fakeProduct = {
     width: 15,
 }
 
-describe('imageController Test Suit', () => {
+describe('imageController Store Test Suit', () => {
 
     beforeAll( () => {
 
@@ -75,24 +75,40 @@ describe('imageController Test Suit', () => {
 
         const response = await supertest(app).post(`/products/${product.id}/images`)
             .set('authorization', 'Bearer ' + token)
-            .attach('file', filePath);
+            .attach('file', filePath)
+        ;
         
         await unlinkAsync(path.resolve('./uploads', response.body[0].filename));
 
         expect(response.status).toBe(201);
     });
-/*
-    it('should return code 400 for "product not found"', async () => {
 
-        const user = await factories.create('User');
+    it('should return error for "no image"', async () => {
+
+        const user = UserModel.create(fakeUser);
         user.admin = true;
-        const token = user.generateToken();
+        const token = user.generateJwt();
 
         const response = await supertest(app).post(`/products/40/images`)
             .set('authorization', 'Bearer ' + token)
-            .attach('file', filePath);
+        ;
 
         expect(response.status).toBe(400);
+        expect(response.body.message).toBe("no image");
+    });
+
+    it('should return error for "product not found"', async () => {
+
+        const user = UserModel.create(fakeUser);
+        user.admin = true;
+        const token = user.generateJwt();
+
+        const response = await supertest(app).post(`/products/40/images`)
+            .set('authorization', 'Bearer ' + token)
+            .attach('file', filePath)
+        ;
+
+        expect(response.status).toBe(404);
         expect(response.body.message).toBe("product not found");
-    });*/
+    });
 });
