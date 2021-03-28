@@ -5,7 +5,8 @@ interface ITokenPayload {
 
 declare namespace Express {
 	export interface Request {
-		tokenPayload: ITokenPayload;
+		tokenPayload?: ITokenPayload;
+		files?: Express.Multer.File[];
 	}
  }
  
