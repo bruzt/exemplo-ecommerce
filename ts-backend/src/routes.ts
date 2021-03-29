@@ -67,5 +67,6 @@ router.post('/freight', freightValidator.store, freightController.store);
 
 // RESET PASSWORD
 router.post('/reset-password', resetPasswordValidator.store, resetPasswordController.store);
+router.put('/reset-password', resetPasswordValidator.update, resetPasswordController.update);
 
 export default router;

@@ -39,11 +39,11 @@ export default class UserModel extends BaseEntity {
 	@Column()
 	admin!: boolean;
 
-	@Column()
-	reset_password_token?: string;
+	@Column({ name: 'reset_password_token', type: 'text' })
+	reset_password_token?: string | null;
 
-	@Column()
-	reset_password_expires?: Date;
+	@Column({ name: 'reset_password_expires', type: 'text' })
+	reset_password_expires?: Date | null;
 
 	@CreateDateColumn({ name: 'created_at' })
 	created_at!: Date;
