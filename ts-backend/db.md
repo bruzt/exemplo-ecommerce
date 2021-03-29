@@ -1,6 +1,6 @@
 # Sequelize/Postgres
 
-## Dev Postgres
+## Postgres Dev
 
 ```
 sudo docker run -d \
@@ -20,7 +20,7 @@ postgres://dbuser1:123@localhost:5432/ecommerce-tests
 sudo docker exec -ti ecommerce-tests psql -d ecommerce-tests -U dbuser1 -W
 ```
 
-## Test Postgres
+## Postgres Test
 
 ```
 sudo docker run -d --rm \

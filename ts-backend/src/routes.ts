@@ -14,6 +14,7 @@ import addressController from './controllers/addressController';
 import categoryController from './controllers/categoryController';
 import productController from './controllers/productController';
 import imageController from './controllers/imageController';
+import freightController from './controllers/freightController';
 
 // validators
 import userValidator from './controllers/userController/validators';
@@ -22,6 +23,7 @@ import addressValidator from './controllers/addressController/validators';
 import categoryValidator from './controllers/categoryController/validators';
 import productValidator from './controllers/productController/validators';
 import imageValidator from './controllers/imageController/validators';
+import freightValidator from './controllers/freightController/validators';
 
 const router = express.Router();
 
@@ -57,5 +59,8 @@ router.delete('/products/:id', productValidator.destroy, adminJwtAuthentication,
 // IMAGE
 router.post('/products/:id/images', imageValidator.store, adminJwtAuthentication, multer(imageUploadConfig).any(), multerErrorHandler, imageController.store);
 router.delete('/products/images/:id', imageValidator.destroy, adminJwtAuthentication, imageController.destroy);
+
+// FREIGHT
+router.post('/freight', freightValidator.store, freightController.store);
 
 export default router;
