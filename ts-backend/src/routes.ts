@@ -15,6 +15,7 @@ import categoryController from './controllers/categoryController';
 import productController from './controllers/productController';
 import imageController from './controllers/imageController';
 import freightController from './controllers/freightController';
+import resetPasswordController from './controllers/resetPasswordController';
 
 // validators
 import userValidator from './controllers/userController/validators';
@@ -24,6 +25,7 @@ import categoryValidator from './controllers/categoryController/validators';
 import productValidator from './controllers/productController/validators';
 import imageValidator from './controllers/imageController/validators';
 import freightValidator from './controllers/freightController/validators';
+import resetPasswordValidator from './controllers/resetPasswordController/validators';
 
 const router = express.Router();
 
@@ -62,5 +64,8 @@ router.delete('/products/images/:id', imageValidator.destroy, adminJwtAuthentica
 
 // FREIGHT
 router.post('/freight', freightValidator.store, freightController.store);
+
+// RESET PASSWORD
+router.post('/reset-password', resetPasswordValidator.store, resetPasswordController.store);
 
 export default router;
