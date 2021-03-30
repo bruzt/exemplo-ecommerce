@@ -43,10 +43,10 @@ export default class OrderModel extends BaseEntity{
     status!: string;
 
     @Column({ name: 'boleto_url' })
-    boleto_url!: string;
+    boleto_url?: string;
 
     @Column({ name: 'tracking_code' })
-    tracking_code!: string;
+    tracking_code?: string;
 
     @CreateDateColumn({ name: 'created_at' })
     created_at!: Date;
@@ -55,7 +55,7 @@ export default class OrderModel extends BaseEntity{
     updated_at!: Date; 
 
     @DeleteDateColumn({ name: 'deleted_at' })
-    deleted_at!: Date;
+    deleted_at?: Date;
 
     //////////////////////////////////////////////
 

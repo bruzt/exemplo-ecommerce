@@ -16,6 +16,7 @@ import productController from './controllers/productController';
 import imageController from './controllers/imageController';
 import freightController from './controllers/freightController';
 import resetPasswordController from './controllers/resetPasswordController';
+import orderController from './controllers/orderController';
 
 // validators
 import userValidator from './controllers/userController/validators';
@@ -26,6 +27,7 @@ import productValidator from './controllers/productController/validators';
 import imageValidator from './controllers/imageController/validators';
 import freightValidator from './controllers/freightController/validators';
 import resetPasswordValidator from './controllers/resetPasswordController/validators';
+import orderValidator from './controllers/orderController/validators';
 
 const router = express.Router();
 
@@ -68,5 +70,8 @@ router.post('/freight', freightValidator.store, freightController.store);
 // RESET PASSWORD
 router.post('/reset-password', resetPasswordValidator.store, resetPasswordController.store);
 router.put('/reset-password', resetPasswordValidator.update, resetPasswordController.update);
+
+// ORDER
+router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);
 
 export default router;

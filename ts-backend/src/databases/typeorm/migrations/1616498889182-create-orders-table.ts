@@ -45,10 +45,12 @@ export class createOrdersTable1616498889182 implements MigrationInterface {
                 {
                     name: 'boleto_url',
                     type: 'varchar',
+                    isNullable: true,
                 },
                 {
                     name: 'tracking_code',
                     type: 'varchar',
+                    isNullable: true,
                 },
                 {
                     name: 'created_at',
