@@ -32,7 +32,7 @@ const fakeOrder = {
     status: 'paid',
 }
 
-describe('orderController Test Suit', () => {
+describe('orderController List Test Suit', () => {
 
     beforeAll( () => {
 

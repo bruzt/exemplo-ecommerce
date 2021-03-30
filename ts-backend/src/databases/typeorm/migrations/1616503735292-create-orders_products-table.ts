@@ -31,7 +31,8 @@ export class createOrdersProductsTable1616503735292 implements MigrationInterfac
                 },
                 {
                     name: 'product_discount_percent',
-                    type: 'decimal',
+                    type: 'int',
+                    default: 0,
                 },
                 {
                     name: 'created_at',

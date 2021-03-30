@@ -73,5 +73,6 @@ router.put('/reset-password', resetPasswordValidator.update, resetPasswordContro
 
 // ORDER
 router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);
+router.post('/orders', orderValidator.store, jwtAuthentication, orderController.store);
 
 export default router;

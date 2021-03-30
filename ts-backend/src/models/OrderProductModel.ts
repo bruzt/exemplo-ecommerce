@@ -30,8 +30,8 @@ export default class OrderProductModel extends BaseEntity {
     @Column({ name: 'product_price' })
     product_price!: number;
 
-    @Column({ name: 'product_discount_percent' })
-    product_discount_percent!: number;
+    @Column({ name: 'product_discount_percent', type: 'text' })
+    product_discount_percent!: number | null;
 
     @CreateDateColumn({ name: 'created_at' })
     created_at!: Date;

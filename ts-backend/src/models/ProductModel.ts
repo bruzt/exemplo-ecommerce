@@ -38,10 +38,10 @@ export default class ProductModel extends BaseEntity {
     price!: string;
 
     @Column({ name: 'quantity_stock' })
-    quantity_stock?: number;
+    quantity_stock!: number;
 
     @Column({ name: 'quantity_sold' })
-    quantity_sold?: number;
+    quantity_sold!: number;
 
     @Column({ name: 'discount_percent' })
     discount_percent!: number;
