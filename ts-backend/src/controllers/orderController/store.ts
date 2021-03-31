@@ -6,6 +6,7 @@ import OrderModel from '../../models/OrderModel';
 import UserModel from '../../models/UserModel';
 import ProductModel from '../../models/ProductModel';
 import OrderProductModel from '../../models/OrderProductModel';
+import socketConnection from '../../websocket/socketConnection';
 
 interface ICustomer {
     external_id: string;
@@ -246,13 +247,12 @@ export default async function store(req: Request, res: Response) {
 
             await transactionalEntityManager.save(order);
 
-            /*
+            
             const newOrder = await OrderModel.findOne(order.id, {
                 relations: ['ordersProducts', 'ordersProducts.product']
             });
     
-            emitNewOrder(newOrder);
-            */
+            if(newOrder != null) socketConnection.emitNewOrder(newOrder);
     
             return res.status(201).json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: pagarMeResponse });
         });
