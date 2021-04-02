@@ -79,5 +79,6 @@ router.post('/orders', orderValidator.store, jwtAuthentication, orderController.
 
 // ORDER ADMIN
 router.get('/admin/orders', orderAdminValidator.list, adminJwtAuthentication, orderAdminController.list);
+router.put('/admin/orders/:id', orderAdminValidator.update, adminJwtAuthentication, orderAdminController.update);
 
 export default router;

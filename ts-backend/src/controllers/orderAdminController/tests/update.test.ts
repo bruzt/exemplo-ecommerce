@@ -32,7 +32,7 @@ const fakeOrder = {
     status: 'paid',
 }
 
-describe('orderAdminController List Test Suit', () => {
+describe('orderAdminController Update Test Suit', () => {
 
     beforeAll( () => {
 
@@ -52,37 +52,44 @@ describe('orderAdminController List Test Suit', () => {
         return (await typeormConnection).close();
     });
 
-    it('it should list all orders', async () => {
+    it('should update an order', async () => {
 
-        const user =  UserModel.create(fakeUser);
+        const user = UserModel.create(fakeUser);
         user.admin = true;
         await user.save();
         const token = user.generateJwt();
 
-        const address =  AddressModel.create({ ...fakeAddress, user_id: user.id });
+        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
         await address.save();
 
-        const order1 = OrderModel.create({ 
+        const order = OrderModel.create({ 
             ...fakeOrder,
             user_id: user.id, 
             address_id: address.id, 
         });
-        await order1.save();
+        await order.save();
 
-        const order2 = OrderModel.create({ 
-            ...fakeOrder,
-            user_id: user.id, 
-            address_id: address.id, 
-        });
-        await order2.save();
-
-        const response = await supertest(app).get(`/admin/orders?limit=15&offset=0`)
+        const response = await supertest(app).put(`/admin/orders/${order.id}`)
             .set('authorization', 'Bearer ' + token)
+            .send({ status: "sent" })
         ;
 
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('count');
-        expect(response.body).toHaveProperty('orders');
-        expect(response.body.orders).toHaveLength(2);
+        expect(response.body.status).toBe('sent');
+    });
+    
+    it('should return error for "order not found"', async () => {
+
+        const user = UserModel.create(fakeUser);
+        user.admin = true;
+        const token = user.generateJwt();
+
+        const response = await supertest(app).put(`/admin/orders/11`)
+            .set('authorization', 'Bearer ' + token)
+            .send({ status: "payment confirmed" })
+        ;
+
+        expect(response.status).toBe(404);
+        expect(response.body.message).toBe("order not found");
     });
 });
