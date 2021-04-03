@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+import supertest from 'supertest';
 
 import typeormConnection from '../../../databases/typeorm/connection';
 import sonicConnection from '../../../databases/sonic/connection';

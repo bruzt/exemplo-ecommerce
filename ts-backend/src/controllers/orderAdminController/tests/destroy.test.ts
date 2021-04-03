@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+import supertest from 'supertest';
 
 import typeormConnection from '../../../databases/typeorm/connection';
 import sonicConnection from '../../../databases/sonic/connection';
@@ -7,7 +7,6 @@ import app from '../../../app';
 import UserModel from '../../../models/UserModel';
 import AddressModel from '../../../models/AddressModel';
 import OrderModel from '../../../models/OrderModel';
-import CategoryModel from '../../../models/CategoryModel';
 
 const fakeUser = {
     name: "fake user",
