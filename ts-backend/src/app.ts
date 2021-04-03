@@ -16,9 +16,10 @@ import cors from 'cors';
 import path from 'path';
 import http from 'http';
 
-import celebrateCustomErrors from './middlewares/celebrateCustomErrors';
-import socket from './websocket/socketConnection';
 import './databases/typeorm/connection';
+import socket from './websocket/socketConnection';
+import celebrateCustomErrors from './middlewares/celebrateCustomErrors';
+import pagarMePeriodicCheck from './services/pagarMe/periodicCheck';
 
 import routes from './routes';
 
@@ -33,5 +34,7 @@ socket.socketConnection(server);
 app.use(routes);
 
 app.use(celebrateCustomErrors);
+
+pagarMePeriodicCheck();
 
 export default server;
