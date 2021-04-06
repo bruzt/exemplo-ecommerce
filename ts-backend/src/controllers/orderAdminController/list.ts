@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 
 import OrderModel from '../../models/OrderModel';
 
+interface IAny {
+    [key: string]: any;
+}
+
 export default async function list(req: Request, res: Response) {
 
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
@@ -15,10 +19,34 @@ export default async function list(req: Request, res: Response) {
             },
             take: limit,
             skip: offset,
-            relations: ['ordersProducts', 'ordersProducts.product'],
-        })
-    
-        return res.json({ count, orders });
+            relations: ['address', 'ordersProducts', 'ordersProducts.product', 'ordersProducts.product.images'],
+        });
+
+        const serializedOrders = orders.map( (order) => {
+
+            const products = order.ordersProducts?.map( (orderProduct) => {
+                
+                const productCopy: IAny = { ...orderProduct.product };
+
+                const orderProductCopy = { ...orderProduct };
+                delete orderProductCopy.product;
+
+                productCopy.orders_products = orderProductCopy;
+
+                return productCopy;
+            });
+
+            const orderCopy: IAny = { ...order };
+            delete orderCopy.ordersProducts;
+            orderCopy.products = products;
+
+            orderCopy.createdAt = orderCopy.created_at;
+            delete orderCopy.created_at;
+
+            return orderCopy;
+        });
+
+        return res.json({ count, orders: serializedOrders });
         
     } catch (error) {
         console.log(error);
