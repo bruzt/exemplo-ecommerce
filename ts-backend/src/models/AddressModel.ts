@@ -54,7 +54,7 @@ export default class AddressModel extends BaseEntity {
 
     @ManyToOne(() => UserModel, user => user.addresses)
     @JoinColumn({ name: 'user_id' })
-    user!: UserModel;
+    user?: UserModel;
 
     @OneToMany(() => OrderModel, order => order.address)
     orders?: OrderModel[];

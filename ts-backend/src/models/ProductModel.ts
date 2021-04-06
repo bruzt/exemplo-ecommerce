@@ -84,13 +84,13 @@ export default class ProductModel extends BaseEntity {
 
     @ManyToOne(() => CategoryModel, category => category.products)
     @JoinColumn({ name: 'category_id' })
-    category!: CategoryModel;
+    category?: CategoryModel;
 
     @OneToMany(() => ImageModel, image => image.product)
     images?: ImageModel[];
 
     @OneToMany(() => OrderProductModel, ordersProducts => ordersProducts.order)
-    ordersProducts!: OrderProductModel[];
+    ordersProducts?: OrderProductModel[];
 
     ////////////////////////////////////////////////
 

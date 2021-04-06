@@ -36,5 +36,5 @@ export default class ImageModel extends BaseEntity {
 
     @ManyToOne(() => ProductModel, product => product.images)
     @JoinColumn({ name: 'product_id' })
-    product!: ProductModel;
+    product?: ProductModel;
 }

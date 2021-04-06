@@ -43,9 +43,9 @@ export default class OrderProductModel extends BaseEntity {
 
     @ManyToOne(() => OrderModel, order => order.ordersProducts)
     @JoinColumn({ name: 'order_id' })
-    order!: OrderModel;
+    order?: OrderModel;
 
     @ManyToOne(() => ProductModel, product => product.ordersProducts)
     @JoinColumn({ name: 'product_id' })
-    product!: ProductModel;
+    product?: ProductModel;
 }
