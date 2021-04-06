@@ -4,14 +4,14 @@ import UserModel from '../../models/UserModel';
 
 export default async function show(req: Request, res: Response) {
 
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
     const paramsId = Number(req.params.id);
 
-    if(userId !== paramsId) return res.status(403).json({ message: 'token id must be equal to params id' });
+    if(id !== paramsId) return res.status(403).json({ message: 'token id must be equal to params id' });
 
     try {
 
-        const user = await UserModel.findOne(userId, {
+        const user = await UserModel.findOne(id, {
             select: ['id', 'name', 'email', 'cpf', 'admin'],
             relations: ['addresses'],
         });

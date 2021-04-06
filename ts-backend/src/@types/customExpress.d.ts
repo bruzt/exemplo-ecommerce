@@ -1,5 +1,5 @@
 interface ITokenPayload {
-    userId: number;
+    id: number;
     admin: boolean;
 }
 

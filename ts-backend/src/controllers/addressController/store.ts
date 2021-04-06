@@ -14,12 +14,12 @@ interface IAddressData {
 
 export default async function(req: Request, res: Response) {
 
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
     const bodyData = req.body as IAddressData;
         
     try {
 
-        const user = await UserModel.findOne(userId);
+        const user = await UserModel.findOne(id);
 
         if(! user) return res.status(404).json({ message: 'user not found' });       
         

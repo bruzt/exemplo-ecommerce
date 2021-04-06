@@ -4,11 +4,11 @@ import UserModel from '../../models/UserModel';
 
 export default async function list(req: Request, res: Response) {
 
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
     
     try {
 
-        const user = await UserModel.findOne(userId, {
+        const user = await UserModel.findOne(id, {
             relations: ['addresses'],
         });
 

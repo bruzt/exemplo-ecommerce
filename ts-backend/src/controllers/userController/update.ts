@@ -5,7 +5,7 @@ import validateCpf from '../../utils/validateCPF';
 
 export default async function update(req: Request, res: Response){
 
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
     const { name, email, cpf, currentPassword, newPassword } = req.body;
 
     if(cpf && validateCpf(cpf) == false) return res.status(400).json({ message: 'invalid cpf' });
@@ -13,7 +13,7 @@ export default async function update(req: Request, res: Response){
     try {
 
         let password;
-        const user = await UserModel.findOne(userId);
+        const user = await UserModel.findOne(id);
 
         if(!user) return res.status(404).json({ message: 'user not found' });
 

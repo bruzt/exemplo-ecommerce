@@ -4,7 +4,7 @@ import OrderModel from '../../models/OrderModel';
 
 export default async function list(req: Request, res: Response) {
 
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
     
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const offset = req.query.offset ? Number(req.query.offset) : undefined;
@@ -14,7 +14,7 @@ export default async function list(req: Request, res: Response) {
         const [ orders, count ] = await OrderModel.findAndCount(
             {
             where: {
-                user_id: Number(userId),
+                user_id: Number(id),
             },
             take: limit, 
             skip: offset,

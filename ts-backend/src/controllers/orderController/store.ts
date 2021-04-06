@@ -94,14 +94,14 @@ interface IBody {
 export default async function store(req: Request, res: Response) {
 
     const body = req.body as IBody;
-    const { userId } = req.tokenPayload;
+    const { id } = req.tokenPayload;
 
     try {
 
         await getConnection().transaction(async (transactionalEntityManager) => {
 
             // verify if user and his address exists
-            const user = await UserModel.findOne(userId, {
+            const user = await UserModel.findOne(id, {
                 relations: ['addresses']
             });
 
@@ -141,7 +141,7 @@ export default async function store(req: Request, res: Response) {
 
             // create order
             const order = OrderModel.create({
-                user_id: userId,
+                user_id: id,
                 freight_name: body.freight_name,
                 freight_price: Number(Number(body.freight_price).toFixed(2)),
                 total_price,

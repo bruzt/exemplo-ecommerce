@@ -19,7 +19,7 @@ export default async function store(req: Request, res: Response){
         const serializedUser = { ...user, password: undefined, tempPassword: undefined };
 
         return res.json({ 
-            serializedUser, 
+            user: serializedUser, 
             token: user.generateJwt() 
         });
 
