@@ -14,7 +14,7 @@ const fakeUser = {
     password: "123456"
 }
 
-describe('sessionController Test Suit', () => {
+describe('sessionController Store Test Suit', () => {
 
     beforeAll( () => {
 
@@ -48,12 +48,13 @@ describe('sessionController Test Suit', () => {
             .send({
                 email: 'test@test.com',
                 password: 'passtest'
-            });
+            })
+        ;
 
-        const { userId } = jwt.verify(response.body.token, process.env.APP_SECRET as string) as { userId: number; };
+        const { id } = jwt.verify(response.body.token, process.env.APP_SECRET as string) as { id: number; };
 
         expect(response.status).toBe(200);
-        expect(user.id).toBe(userId);
+        expect(user.id).toBe(id);
     });
 
     it('should return error for "one or more fields are missing in body"', async () => {
