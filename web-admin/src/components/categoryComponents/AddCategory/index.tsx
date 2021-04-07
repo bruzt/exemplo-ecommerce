@@ -65,9 +65,14 @@ export default function AddCategory() {
 		return getCategories.map(category => {
 
 			if (category.parent_id == null || category.parent_id == 0) {
+
+				const childs = getCategories.filter((othersCategory) => othersCategory.parent_id == category.id);
+				let hasChildren = false;
+				if (childs.length > 0) hasChildren = true;
+
 				return (
 					<details key={category.id}>
-						<summary>{category.name} ({category.id})</summary>
+						<summary className={hasChildren ? '' : 'last-child'}>{category.name} (id: {category.id})</summary>
 						{buildCategoryTree(category)}
 					</details>
 				);
@@ -88,7 +93,7 @@ export default function AddCategory() {
 
 			return (
 				<details key={child.id}>
-					<summary className={hasChildren ? '' : 'last-child'}>{child.name} ({child.id})</summary>
+					<summary className={hasChildren ? '' : 'last-child'}>{child.name} (id: {child.id})</summary>
 					{hasChildren && buildCategoryTree(child)}
 				</details>
 			);

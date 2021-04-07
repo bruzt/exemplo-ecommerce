@@ -30,7 +30,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getCategoryId, setCategoryId] = useState(String(product.category.id));
     const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
     
-    const [getWeight, setWeight] = useState(product.weight.replace(',', '.'));
+    const [getWeight, setWeight] = useState(String(product.weight).replace(',', '.'));
     const [getLength, setLength] = useState(product.length);
     const [getHeight, setHeight] = useState(product.height);
     const [getWidth, setWidth] = useState(product.width);
@@ -172,7 +172,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <select id="product-category" value={getCategoryId} onChange={(event) => setCategoryId(event.target.value)}>
                             <option value="0"></option>
                             {getCategories.map( (category, index) => (
-                                <option key={index} value={`${category.id}`}>{category.name}</option>
+                                <option key={index} value={`${category.id}`}>{category.id} - {category.name}</option>
                             ))}
                         </select>
                     </div>
