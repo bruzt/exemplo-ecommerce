@@ -70,10 +70,10 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
         if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
         if (getPrice.trim().length == 0) return alert('Preço não preenchido');
         if (getCategoryId == '0') return alert('Categoria não selecionada');
-        if (getWeight.trim().length == 0) return alert('Peso não preenchido');
-        if (getLength.trim().length == 0) return alert('Comprimento não preenchido');
-        if (getHeight.trim().length == 0) return alert('Altura não preenchido');
-        if (getWidth.trim().length == 0) return alert('Largura não preenchido');
+        if (String(getWeight).trim().length == 0) return alert('Peso não preenchido');
+        if (String(getLength).trim().length == 0) return alert('Comprimento não preenchido');
+        if (String(getHeight).trim().length == 0) return alert('Altura não preenchido');
+        if (String(getWidth).trim().length == 0) return alert('Largura não preenchido');
 
         const data = {
             title: getTitle,
