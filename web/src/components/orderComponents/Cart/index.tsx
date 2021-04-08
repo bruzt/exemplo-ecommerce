@@ -131,7 +131,7 @@ export default function Cart() {
 
         for(let i = 0; i < cartContext.getProducts.length; i++) {
 
-            weight += Number((cartContext.getProducts[i].weight).replace(',', '.')) * cartContext.getCart[i].qtd;
+            weight += Number(String(cartContext.getProducts[i].weight).replace(',', '.')) * cartContext.getCart[i].qtd;
             height += Number(cartContext.getProducts[i].height) * cartContext.getCart[i].qtd;
 
             if(length < Number(cartContext.getProducts[i].length)) length = Number(cartContext.getProducts[i].length);
