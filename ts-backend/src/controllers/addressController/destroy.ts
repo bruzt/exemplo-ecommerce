@@ -21,7 +21,7 @@ export default async function destroy(req: Request, res: Response) {
 
         const address = filteredAddress[0];
 
-        await address.remove();
+        await address.softRemove();
 
         return res.sendStatus(204);
      

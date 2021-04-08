@@ -17,7 +17,7 @@ import path from 'path';
 import http from 'http';
 
 import './databases/typeorm/connection';
-import socket from './websocket/socketConnection';
+import socketIo from './websocket/socketIo';
 import celebrateCustomErrors from './middlewares/celebrateCustomErrors';
 import pagarMePeriodicCheck from './services/pagarMe/periodicCheck';
 
@@ -30,7 +30,8 @@ app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
 
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
-socket.socketConnection(server);
+socketIo.socketConnection(server);
+//socketIo.socketConnection().attach(server);
 app.use(routes);
 
 app.use(celebrateCustomErrors);

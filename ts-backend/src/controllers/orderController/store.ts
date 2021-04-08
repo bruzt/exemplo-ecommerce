@@ -6,7 +6,7 @@ import OrderModel from '../../models/OrderModel';
 import UserModel from '../../models/UserModel';
 import ProductModel from '../../models/ProductModel';
 import OrderProductModel from '../../models/OrderProductModel';
-import socketConnection from '../../websocket/socketConnection';
+import socketIo from '../../websocket/socketIo';
 
 interface ICustomer {
     external_id: string;
@@ -95,6 +95,9 @@ export default async function store(req: Request, res: Response) {
 
     const body = req.body as IBody;
     const { id } = req.tokenPayload;
+
+    let createdOrder: OrderModel;
+    let pagarMeResponse;
 
     try {
 
@@ -193,8 +196,7 @@ export default async function store(req: Request, res: Response) {
 
                 await transactionalEntityManager.save(products[i]);
             }
-
-            let pagarMeResponse;
+            
             const reference_key = `${order.id}!${Number(order.created_at)}`;
 
             const client = await pagarMeClient();
@@ -247,15 +249,18 @@ export default async function store(req: Request, res: Response) {
 
             await transactionalEntityManager.save(order);
 
-            
-            const newOrder = await OrderModel.findOne(order.id, {
-                relations: ['ordersProducts', 'ordersProducts.product']
-            });
-    
-            if(newOrder != null) socketConnection.emitNewOrder(newOrder);
-    
-            return res.status(201).json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: pagarMeResponse });
+            createdOrder = order;
         });
+
+        const newOrder = await OrderModel.findOne(createdOrder.id, {
+            relations: ['ordersProducts', 'ordersProducts.product']
+        });
+
+        console.log(newOrder)
+        if(newOrder != null) socketIo.emitNewOrder(newOrder);
+
+        return res.status(201).json({ order: { id: createdOrder.id, boleto_url: createdOrder.boleto_url }, pagarme: pagarMeResponse });
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'internal error' });

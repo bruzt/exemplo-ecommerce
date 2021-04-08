@@ -1,16 +1,21 @@
-import socketIo from 'socket.io';
-import { Server } from 'http';
+//@ts-nocheck
+import socketIo, { Server } from 'socket.io';
+import { Server as HTTPServer } from 'http';
 import jwt from 'jsonwebtoken';
 
 import OrderModel from '../models/OrderModel';
 
 let sock: Server;
 
-function socketConnection(server: Server) {
-    //@ts-ignore
+function socketConnection(server: HTTPServer) {
+
     const io = socketIo(server, {
         transports: ['websocket']
     });
+
+    /*const io = new Server({
+        transports: ['websocket'],
+    });*/
 
     io.on('connection', (socket: socketIo.Socket) => {
 
