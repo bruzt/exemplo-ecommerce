@@ -27,17 +27,30 @@ export default async function update(req: Request, res: Response) {
 
     try {
 
+        /*
         const user = await UserModel.findOne(id, {
             relations: ['addresses'],
         });
-
+        
         if(user == null) return res.status(404).json({ message: 'user not found' });
-
+        
         const filteredAddress = user.addresses?.filter( (address) => address.id === paramsId );
         
         if(filteredAddress == null || filteredAddress.length === 0) return res.status(404).json({ message: "address not found" });
-
+        
         const address = filteredAddress[0];
+        */
+
+        const user = await UserModel.createQueryBuilder('users')
+            .where('users.id = :userId', { userId: id })
+            .leftJoinAndSelect('users.addresses', 'addresses', 'addresses.id = :addressId', { addressId: paramsId })
+            .getOne()
+        ;
+
+        if(user == null) return res.status(404).json({ message: 'user not found' });
+        if(user.addresses == null || user.addresses.length === 0) return res.status(404).json({ message: "address not found" });
+        
+        const address = user.addresses[0];
         
         if(street) address.street = street;
         if(number) address.number = number;
