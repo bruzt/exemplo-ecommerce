@@ -22,7 +22,8 @@ export default async function store(req: Request, res: Response){
             where: [
                 { email },
                 { cpf }                
-            ]
+            ],
+            withDeleted: true
         });
 
         if(user?.email === email) return res.status(409).json({ message: 'email already in use' });
