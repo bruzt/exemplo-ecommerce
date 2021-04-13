@@ -9,5 +9,6 @@ export default celebrate({
     [Segments.QUERY]: Joi.object().keys({
         limit: Joi.number(),
         offset: Joi.number(),
+        status: Joi.string(),
     })
 });

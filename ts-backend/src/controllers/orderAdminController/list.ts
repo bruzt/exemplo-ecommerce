@@ -6,14 +6,34 @@ interface IAny {
     [key: string]: any;
 }
 
+type TStatus = "processing" |
+    "waiting_payment" |
+    "paid" |
+    "dispatch" |
+    "sent" |
+    "received" |
+    "refused" |
+    "canceled" |
+    undefined
+;
+
 export default async function list(req: Request, res: Response) {
 
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const offset = req.query.offset ? Number(req.query.offset) : undefined;
+    const status = req.query.status as TStatus;
+
+    let where;
+    if(status){
+        where = {
+            status
+        }
+    }
 
     try {
 
         const [ orders, count ] = await OrderModel.findAndCount({
+            where,
             order: {
                 id: 'DESC'
             },
