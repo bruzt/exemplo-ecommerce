@@ -68,7 +68,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
 
         if (getTitle.trim().length == 0) return alert('Título não preenchido');
         if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
-        if (getPrice.trim().length == 0) return alert('Preço não preenchido');
+        if (String(getPrice).trim().length == 0) return alert('Preço não preenchido');
         if (getCategoryId == '0') return alert('Categoria não selecionada');
         if (String(getWeight).trim().length == 0) return alert('Peso não preenchido');
         if (String(getLength).trim().length == 0) return alert('Comprimento não preenchido');

@@ -57,9 +57,9 @@ module.exports = {
                 type: Sequelize.STRING,
             },
 
-            postback_key: {
+            /*postback_key: {
                 type: Sequelize.STRING,
-            },
+            },*/
 
             created_at: {
                 type: Sequelize.DATE,
