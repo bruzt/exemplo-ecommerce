@@ -31,6 +31,8 @@ interface IFreights {
     }
 }
 
+type TFrights = "pac" | "sedex";
+
 interface IUseCart {
     getCart: ICartItem[]; 
     setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>; 
@@ -44,7 +46,7 @@ interface IUseCart {
     setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
     getZipCode: string;
     setZipCode: React.Dispatch<React.SetStateAction<string>>;
-    getFreightSelected: "pac" | "sedex" | null;
+    getFreightSelected: TFrights | null;
     setFreightSelected: React.Dispatch<React.SetStateAction<string | null>>;
     getFreightPrice: IFreights | null;
     setFreightPrice: React.Dispatch<React.SetStateAction<IFreights | null>>;
@@ -56,7 +58,7 @@ interface IUseCart {
     resetFreight: () => void;
 }
 
-const Context = createContext({});
+const Context = createContext({} as IUseCart);
 
 export function CartContextProvider({ children }: IProps){
 
@@ -65,8 +67,8 @@ export function CartContextProvider({ children }: IProps){
     const [getSubtotalPrice, setSubtotalPrice] = useState(0);
     const [getTotalPrice, setTotalPrice] = useState(0);
     const [getZipCode, setZipCode] = useState('');
-    const [getFreightSelected, setFreightSelected] = useState<string | null>(null);
-    const [getFreightPrice, setFreightPrice] = useState<number | null>(null);
+    const [getFreightSelected, setFreightSelected] = useState<TFrights | null>(null);
+    const [getFreightPrice, setFreightPrice] = useState<IFreights | null>(null);
     const [getAddressId, setAddressId] = useState<number | null>(null);
     const [getFreightMeasures, setFreightMeasures] = useState<iFreightMeasures | null>(null);
 
@@ -129,7 +131,7 @@ export function CartContextProvider({ children }: IProps){
     function resetFreight(){
 
         setFreightSelected(null);
-        setFreightPrice(0);
+        setFreightPrice(null);
     }
 
     function cleanCart(){
@@ -173,7 +175,7 @@ export function CartContextProvider({ children }: IProps){
 
 export function useCart(){
 
-    const context = useContext(Context) as IUseCart;
+    const context = useContext(Context);
 
     return context;
 }

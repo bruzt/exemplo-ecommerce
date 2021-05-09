@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import api from '../../../services/api';
 import Link from 'next/link';
-import { FaSearchLocation, FaBan } from 'react-icons/fa';
+import { FaSearchLocation } from 'react-icons/fa';
 import Loading from 'react-loader-spinner';
 import Head from 'next/head';
 

@@ -19,7 +19,7 @@ interface IUseFilterBar {
     getCategories: ICategory[];
 }
 
-const Context = createContext({});
+const Context = createContext({} as IUseFilterBar);
 
 export function FilterBarContextProvider({ children }: IProps){
 
@@ -64,7 +64,7 @@ export function FilterBarContextProvider({ children }: IProps){
 
 export function useFilterBar(){
 
-    const context = useContext(Context) as IUseFilterBar;
+    const context = useContext(Context);
 
     return context;
 }
