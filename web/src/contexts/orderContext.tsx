@@ -29,7 +29,7 @@ interface IUseOrder {
     setBoletoUrl: React.Dispatch<string>;
 }
 
-const Context = createContext({});
+const Context = createContext({} as IUseOrder);
 
 export function OrderContextProvider({ children }: IProps) {
 
@@ -53,7 +53,7 @@ export function OrderContextProvider({ children }: IProps) {
 
 export function useOrder() {
 
-    const context = useContext(Context) as IUseOrder;
+    const context = useContext(Context);
 
     return context;
 }

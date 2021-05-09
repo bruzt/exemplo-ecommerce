@@ -14,7 +14,7 @@ interface ThemeContextProviderProps {
     children: React.ReactNode;
 }
 
-const Context = createContext({});
+const Context = createContext({} as IThemeHook);
 
 export function ThemeContextProvider({ children }: ThemeContextProviderProps){
     
@@ -43,7 +43,7 @@ export function ThemeContextProvider({ children }: ThemeContextProviderProps){
 
 export function useTheme() {
 
-    const context = useContext(Context) as IThemeHook;
+    const context = useContext(Context);
 
     return context;
 }

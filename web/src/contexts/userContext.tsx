@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
-const Context = createContext({});
-
 interface IProps {
     children: React.ReactNode;
 }
@@ -41,6 +39,8 @@ interface IUseUser {
     deleteAddress: (id: number) =>  Promise<boolean>;
     createUser: (name: string, email: string, cpf: string, password: string) =>  Promise<void>;
 }
+
+const Context = createContext({} as IUseUser);
 
 export function UserContextProvider({ children }: IProps){
 
@@ -205,7 +205,7 @@ export function UserContextProvider({ children }: IProps){
 
 export function useUser(){
 
-    const context = useContext(Context) as IUseUser;
+    const context = useContext(Context);
 
     return context;
 }
