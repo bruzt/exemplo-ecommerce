@@ -19,7 +19,7 @@ interface ThemeContextProviderProps {
     children: React.ReactNode;
 }
 
-const Context = createContext({});
+const Context = createContext({} as ILoginLogoutHook);
 
 let firstRender = true;
 
@@ -111,7 +111,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
 export function useLoginLogout() {
 
-    const context = useContext(Context) as ILoginLogoutHook;
+    const context = useContext(Context);
 
     return context;
 }
