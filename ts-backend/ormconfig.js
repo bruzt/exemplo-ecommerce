@@ -13,24 +13,13 @@ dotenv.config({
 
 const path = require('path');
 
-const {
-    DB_DIALECT,
-    DB_USERNAME,
-    DB_PASSWORD,
-    DB_HOST,
-    DB_PORT,
-    DB_DATABASE
-} = process.env;
-
-const dbUrl = `${DB_DIALECT}://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
-
 let ormconfig;
 
 if(process.env.NODE_ENV === 'production'){
 
     ormconfig = {
-        type: DB_DIALECT,
-        url: dbUrl,
+        type: process.env.DATABASE_DIALECT,
+        url: process.env.DATABASE_URL,
         entities: [path.join('build', 'src', 'models', '*.js')],
         migrations: [path.join('build', 'src', 'databases', 'typeorm', 'migrations', '*.js')],
         cli: {
@@ -40,8 +29,8 @@ if(process.env.NODE_ENV === 'production'){
 } else {
     
     ormconfig = {
-        type: DB_DIALECT,
-        url: dbUrl,
+        type: process.env.DATABASE_DIALECT,
+        url: process.env.DATABASE_URL,
         entities: [path.join('src', 'models', '*.ts')],
         migrations: [path.join('src', 'databases', 'typeorm', 'migrations', '*.ts')],
         cli: {
