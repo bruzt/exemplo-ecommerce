@@ -41,6 +41,7 @@ module.exports = {
 
             product_discount_percent: {
                 type: Sequelize.DECIMAL,
+                defaultValue: 0,
                 //allowNull: false
             },
 
