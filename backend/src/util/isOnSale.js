@@ -10,7 +10,10 @@ module.exports = function isOnSale(product) {
         const endDate = new Date(product.discount_datetime_end);
 
         if(startDate <= dateNow && endDate >= dateNow){
-            isOnSale = true;
+            if(product.discount_percent > 0) {
+
+                isOnSale = true;
+            }
         }
     } 
 
