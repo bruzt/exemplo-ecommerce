@@ -61,12 +61,16 @@ module.exports = {
                 type: Sequelize.STRING,
             },*/
 
-            created_at:{
+            created_at: {
                 type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.NOW,
             },
 
-            updated_at:{
+            updated_at: {
                 type: Sequelize.DATE,
+                allowNull: false,
+                defaultValue: Sequelize.NOW,
             },
 
             deleted_at: {
