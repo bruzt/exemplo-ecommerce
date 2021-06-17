@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
 import api from '../services/api';
@@ -45,11 +46,11 @@ interface IProps {
     product: IProduct
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
 
     const response = await api.get('/products?section=best-sellers&limit=100');
     
-    const paths = response.data.products.map( (data) => ({ 
+    const paths = response.data.products.map( (data: IProduct) => ({ 
         params: { 
             productId: String(data.id),
             //productName: data.title.split(' ').join('-')
@@ -61,7 +62,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         
         const response = await api.get<IProduct>(`/products/${params.productId}`);

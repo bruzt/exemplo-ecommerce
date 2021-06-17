@@ -1,4 +1,5 @@
 import React from 'react';
+import { GetStaticProps, GetServerSideProps } from 'next';
 
 import api from '../services/api';
 
@@ -6,8 +7,8 @@ import HomePage from '../components/HomePage';
 
 import { IProduct } from './[productId]';
 
-//export async function getStaticProps() {
-export async function getServerSideProps() {
+//export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 
     const onSale = await api.get('/products?section=on-sale&limit=8');
     const bestSellers = await api.get('/products?section=best-sellers&limit=8');
