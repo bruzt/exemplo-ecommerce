@@ -41,17 +41,16 @@ module.exports = {
 
             product_discount_percent: {
                 type: Sequelize.DECIMAL,
+                defaultValue: 0,
                 //allowNull: false
             },
 
             created_at: {
                 type: Sequelize.DATE,
-                allowNull: false
             },
 
             updated_at: {
                 type: Sequelize.DATE,
-                allowNull: false
             }
         });
 

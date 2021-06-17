@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
 import api from '../services/api';
@@ -45,14 +46,13 @@ interface IProps {
     product: IProduct
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
 
     const response = await api.get('/products?section=best-sellers&limit=100');
     
-    const paths = response.data.products.map( (data) => ({ 
+    const paths = response.data.products.map( (data: IProduct) => ({ 
         params: { 
             productId: String(data.id),
-            //productName: data.title.split(' ').join('-')
         }}));
         
     return {
@@ -61,7 +61,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         
         const response = await api.get<IProduct>(`/products/${params.productId}`);
@@ -79,25 +79,7 @@ export async function getStaticProps({ params }) {
 
 export default function productId({ product }: IProps) {
 
-    const [getProduct, setProduct] = useState<IProduct>();
-
     const router = useRouter();
-
-    useEffect(() => {
-        if(router.isFallback === false && product) fetchProduct();
-    }, []);
-
-    async function fetchProduct() {
-        try {
-            const response = await api.get(`/products/${product.id}`);
-
-            setProduct(response.data);
-
-        } catch (error) {
-            console.error(error);
-            alert('Erro, recarregue a página');
-        }
-    }
 
     if(router.isFallback){
 
@@ -109,6 +91,6 @@ export default function productId({ product }: IProps) {
 
     } else {
 
-        return <ProductPage product={getProduct || product} />;
+        return <ProductPage product={product} />;
     }
 }
