@@ -53,7 +53,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const paths = response.data.products.map( (data: IProduct) => ({ 
         params: { 
             productId: String(data.id),
-            //productName: data.title.split(' ').join('-')
         }}));
         
     return {
@@ -80,25 +79,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function productId({ product }: IProps) {
 
-    const [getProduct, setProduct] = useState<IProduct>();
-
     const router = useRouter();
-
-    useEffect(() => {
-        if(router.isFallback === false && product) fetchProduct();
-    }, []);
-
-    async function fetchProduct() {
-        try {
-            const response = await api.get(`/products/${product.id}`);
-
-            setProduct(response.data);
-
-        } catch (error) {
-            console.error(error);
-            alert('Erro, recarregue a página');
-        }
-    }
 
     if(router.isFallback){
 
@@ -110,6 +91,6 @@ export default function productId({ product }: IProps) {
 
     } else {
 
-        return <ProductPage product={getProduct || product} />;
+        return <ProductPage product={product} />;
     }
 }
