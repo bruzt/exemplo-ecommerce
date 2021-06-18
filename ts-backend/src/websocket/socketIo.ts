@@ -1,5 +1,4 @@
-//@ts-nocheck
-import socketIo, { Server } from 'socket.io';
+import { Server } from 'socket.io';
 import { Server as HTTPServer } from 'http';
 import jwt from 'jsonwebtoken';
 
@@ -9,16 +8,11 @@ let sock: Server;
 
 function socketConnection(server: HTTPServer) {
 
-    const io = socketIo(server, {
-        transports: ['websocket']
+    const io = new Server(server, {
+        transports: ['websocket'],
     });
 
-    /*const io = new Server({
-        transports: ['websocket'],
-    });*/
-
-    io.on('connection', (socket: socketIo.Socket) => {
-
+    io.on('connection', (socket) => {
         try {
             //@ts-ignore
             const auth = socket.request._query['authorization'];

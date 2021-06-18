@@ -50,7 +50,7 @@
     "pagarme": "^4.15.3",
     "pg": "^8.5.1",
     "pm2": "^5.1.0",
-    "socket.io": "^2.4.1",
+    "socket.io": "^4.1.2",
     "sonic-channel": "^1.2.6",
     "typeorm": "^0.2.32"
   }

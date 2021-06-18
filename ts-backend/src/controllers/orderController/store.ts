@@ -217,8 +217,6 @@ export default async function store(req: Request, res: Response) {
                     ...body.credit_card
                 });
 
-                order.status = pagarMeResponse.status;
-
                 ////////////////////////////////////
                 // PAGAMENTO BOLETO
                 ///////////////////////////////////
@@ -244,6 +242,8 @@ export default async function store(req: Request, res: Response) {
                 order.boleto_url = pagarMeResponse.boleto_url;
             }
             ///////////////////////////////////////////////////
+
+            order.status = pagarMeResponse.status;
 
             await transactionalEntityManager.save(order);
 
