@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 import api from '../../../services/api';
 
@@ -35,7 +35,7 @@ interface IOrder {
     }>;
 }
 
-let _socket: SocketIOClient.Socket;
+let _socket: Socket;
 
 export default function ListOrders() {
 
@@ -132,10 +132,11 @@ export default function ListOrders() {
                                 <div className={`status ${order.status}`}>
                                     {order.status == 'processing' && <span>Processando</span>}
                                     {order.status == 'waiting_payment' && <span>Aguardando pagamento</span>}
-                                    {order.status == 'paid' && <span>Pago</span>}
+                                    {order.status == 'paid' && <span>Pagamento aceito</span>}
                                     {order.status == 'dispatch' && <span>Expedição</span>}
                                     {order.status == 'sent' && <span>Enviado</span>}
                                     {order.status == 'received' && <span>Entregue</span>}
+                                    {order.status == 'refused' && <span>Pagamento Recusado</span>}
                                 </div>
                             </td>
                             <td className='actions '>

@@ -1,14 +1,14 @@
-const { Server } = require('http');
-const socketio = require('socket.io');
+const { Server: HttpServer } = require('http');
+const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
 
 /** @type {SocketIO.Server} sock */
 let sock;
 
-/** @param {Server} server */
+/** @param {HttpServer} server */
 function socketConnection(server) {
 
-    const io = socketio(server, {
+    const io = new Server(server, {
         transports: ['websocket']
     });
 

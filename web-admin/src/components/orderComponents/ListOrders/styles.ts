@@ -46,8 +46,9 @@ export const Container = styled.div`
         border-radius: 4px;
     }
 
-    td div.awaiting-payment {
-        background: ${props => props.theme.danger};
+    td div.waiting_payment {
+        background: ${props => props.theme.warning};
+        color: #111;
     }
 
     td div.paid {
@@ -64,6 +65,10 @@ export const Container = styled.div`
 
     td div.received {
         background: ${props => props.theme.successActive};
+    }
+
+    td div.refused {
+        background: ${props => props.theme.danger};
     }
 
     td button {
