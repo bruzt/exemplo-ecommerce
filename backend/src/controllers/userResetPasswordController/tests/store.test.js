@@ -22,7 +22,7 @@ describe('userResetPasswordController Test Suit', () => {
                 email: user.email
             });
 
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(204);
     });
 
     it('should return code 400 for "user not found"', async () => {
