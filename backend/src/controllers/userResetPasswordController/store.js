@@ -1,5 +1,8 @@
 const express = require('express');
 const crypto = require('crypto');
+const handlebars = require('handlebars');
+const path = require('path');
+const fs = require('fs');
 
 const UserModel = require('../../models/UserModel');
 const mailer = require('../../services/mailer');
@@ -28,19 +31,25 @@ module.exports = async (req, res) => {
         const token = user.id + '$' + rawToken;
         const reset_url = `${process.env.FRONTEND_URL}/forgotpass?token=${token}`;
 
-        await mailer.sendMail({
+        const mailPath = path.resolve(__dirname, '..', '..', 'views', 'mail', 'resetPassword.hbs');
+        const templateFileContent = fs.readFileSync(mailPath).toString('utf8');
+
+        const mailTemplate = handlebars.compile(templateFileContent);
+
+        const html = mailTemplate({
+            name: user.name,
+            reset_url,
+            website_url: process.env.FRONTEND_URL
+        });
+
+        mailer.sendMail({
             from: 'donotreply@companydomain.com',
             to: email,
             subject: 'Reset Password',
-            template: 'resetPassword',
-            context: { 
-                name: user.name,
-                reset_url,
-                website_url: process.env.FRONTEND_URL
-             }
+            html,
         });
 
-        return res.sendStatus(200);
+        return res.sendStatus(204);
         
     } catch (error) {
         console.error(error);
