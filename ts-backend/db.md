@@ -9,7 +9,7 @@ sudo docker run -d \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
     -p 5432:5432 \
-    postgres:13.2
+    postgres:13.3
 ```
 
 ```
@@ -29,7 +29,7 @@ sudo docker run -d --rm \
     -e POSTGRES_PASSWORD=gh9U35vq \
     -e POSTGRES_DB=ecommerce-test \
     -p 5433:5432 \
-    postgres:13.2
+    postgres:13.3
 ```
 
 ### TypeORM
