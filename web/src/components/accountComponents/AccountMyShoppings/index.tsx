@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import api from '../../../services/api';
 
 import { Container } from './styles';
-import noImg from '../../../assets/img-n-disp.png';
 
 import PaginationNav from '../../PaginationNav';
 
@@ -172,7 +171,7 @@ export default function AccountMyShoppings() {
                                                 <a className='order-card' onClick={() => console.log(product)}>
                                                     <div className="img-container">
                                                         <img
-                                                            src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
+                                                            src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
                                                             alt={'imagem-' + product.title.split(' ').join('-')}
                                                         />
                                                     </div>

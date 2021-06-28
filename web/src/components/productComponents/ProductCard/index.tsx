@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import noImg from '../../../assets/img-n-disp.png';
-
 import { useCart } from '../../../contexts/cartContext';
 
 import { IProduct } from '../../../pages/[productId]';
@@ -46,7 +44,7 @@ export default function ProductCard({ product }: IProps) {
                         <figure className='img-container'>
                             <img
                                 //src={product.images[0] && product.images[0].url}
-                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
+                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
                                 alt={'imagem-' + product.title.split(' ').join('-')}
                             />
                         </figure>

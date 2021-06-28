@@ -13,8 +13,6 @@ import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
 import { useTheme } from '../../../contexts/themeContext';
 import { IProduct } from '../../../pages/[productId]';
 
-import noImage from '../../../assets/img-n-disp.png';
-
 import { Container, CategoryDropdownMenu, SearchBarForm } from './styles';
 
 import MobileMenu from '../MobileMenu';
@@ -205,7 +203,7 @@ export default function CategoriesAndSeachBar() {
                                                         />
                                                     ) : (
                                                         <img 
-                                                            src={noImage} 
+                                                            src='/images/img-n-disp.png'
                                                             alt='sem imagem' 
                                                         />
                                                     )

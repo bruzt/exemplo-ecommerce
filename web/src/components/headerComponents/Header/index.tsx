@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import logo from '../../../assets/logo.jpg'
-
 import { useCart } from '../../../contexts/cartContext';
 import { useUser } from '../../../contexts/userContext';
 //import { useOrder } from '../../../contexts/orderContext';
@@ -39,7 +37,7 @@ export default function Header() {
                         <Link href='/'>
                             <a>
                                 <img
-                                    src={logo}
+                                    src='/images/logo.jpg'
                                     alt='logo'
                                     title='Home'
                                 />

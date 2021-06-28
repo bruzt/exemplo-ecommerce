@@ -6,7 +6,6 @@ import Loading from 'react-loader-spinner';
 import Head from 'next/head';
 
 import formatZipCode from '../../../utils/formatZipCode';
-import noImg from '../../../assets/img-n-disp.png';
 
 import { Container } from './styles';
 
@@ -232,7 +231,7 @@ export default function Cart() {
                                                 //src='https://i.picsum.photos/id/892/800/400.jpg'
                                                 /*src='https://picsum.photos/800/400'*/
                                                 /*src={product.images[0] && product.images[0].url} */
-                                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : noImg}`}
+                                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
                                                 alt={'imagem-' + product.title.split(' ').join('-')}
                                             />
                                         </td>
