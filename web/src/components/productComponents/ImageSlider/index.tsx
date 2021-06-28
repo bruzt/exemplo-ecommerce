@@ -2,8 +2,6 @@ import React from "react";
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-import noImg from '../../../assets/img-n-disp.png';
-
 import { Container } from './styles';
 
 import { IImage } from '../../../pages/[productId]';
@@ -37,7 +35,7 @@ export default function ImageSlider({ images }: IProps) {
                         //? images.map( (image, index) => <img src={image.url} key={index} />)
                         //: testImages.map((image, index) => <img src={image.url} key={index} />)
                         ? images.map( (image, index) => <img src={`${process.env.BACKEND_URL}/uploads/${image.filename}`} key={index} alt={image.filename} />)
-                        : [1].map( (i) => <img src={noImg} key={i} />) 
+                        : [1].map( (i) => <img src='/images/img-n-disp.png' key={i} />) 
                     }
                 </Carousel>
 

@@ -1,6 +1,5 @@
 /*eslint no-undef: "off"*/
 
-const withImages = require('next-images');
 const withPWA = require('next-pwa');
 
 const nextConfig = {
@@ -22,4 +21,4 @@ const nextConfig = {
     }
 };
 
-module.exports = withPWA(withImages(nextConfig));
+module.exports = withPWA(nextConfig);
