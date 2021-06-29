@@ -8,7 +8,7 @@ describe('freightController Test Suit', () => {
 
         const response = await supertest(app).post(`/freight`)
             .send({
-                destZipCode: "13490000",
+                destZipCode: "13491150",
                 weight: "0,300",
                 length: 10,
                 height: 10,
