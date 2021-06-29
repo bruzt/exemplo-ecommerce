@@ -2,7 +2,7 @@ const factories = require('../../testUtils/factories');
 const adminJwtAuthentication = require('../adminJwtAuthentication'); 
 const truncate = require('../../testUtils/truncate');
 
-describe('Middleware jwtAuthentication Test Suit', () => {
+describe('Middleware adminJwtAuthentication Test Suit', () => {
 
     beforeEach( () => {
        

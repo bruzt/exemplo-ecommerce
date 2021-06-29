@@ -1,10 +1,10 @@
 const express = require('express');
-const pagarMeClient = require('../../services/pagarMe/pagarMeClient');
 //const crypto = require('crypto');
 
 const sequelizeConnection = require('../../database/sequelize/connection');
-
-const { emitNewOrder } = require('../../websocket/socketConnection');
+const payWithCreditCard = require('../../services/pagarMe/payWithCreditCard');
+const payWithBoleto = require('../../services/pagarMe/payWithBoleto');
+const { socketEmitNewOrder } = require('../../websocket/socketConnection');
 
 const OrderModel = require('../../models/OrderModel');
 const UserModel = require('../../models/UserModel');
@@ -122,12 +122,8 @@ module.exports = async (req, res) => {
             });
         }
         
-        //order.postback_key = crypto.randomBytes(20).toString('hex');
-        //const postback_url = `${process.env.BACKEND_URL}/${order.id}-${order.postback_key}`;
-        
         let response;
         const reference_key = `${order.id}!${Number(order.createdAt)}`;
-        const client = await pagarMeClient();
 
         const productsAmount = String(total_price).replace('.', '');
         const shippingFee = String(Number(freight_price).toFixed(2)).replace('.', '');
@@ -137,16 +133,26 @@ module.exports = async (req, res) => {
         ///////////////////////////////////
         if(req.body.credit_card){
 
-            req.body.credit_card.payment_method = 'credit_card';
             req.body.credit_card.amount = String(Number(productsAmount) + Number(shippingFee));
             req.body.credit_card.shipping.fee = shippingFee;
 
-            //req.body.credit_card.postback_url = postback_url;
             req.body.credit_card.reference_key = reference_key;
 
-            response = await client.transactions.create({
-                ...req.body.credit_card
-            });
+            response = await payWithCreditCard(req.body.credit_card);
+
+            order.status = response.status;
+            
+        ////////////////////////////////////
+        // PAGAMENTO BOLETO
+        ///////////////////////////////////
+        } else if(req.body.boleto){
+
+            req.body.boleto.amount = String(Number(productsAmount) + Number(shippingFee));
+            req.body.boleto.shipping.fee = shippingFee;
+
+            req.body.boleto.reference_key = reference_key;
+             
+            response = await payWithBoleto(req.body.boleto);
 
             /*response = await new Promise( (resolve, reject) => {
                 setTimeout( async () => {
@@ -160,41 +166,6 @@ module.exports = async (req, res) => {
             });*/
 
             order.status = response.status;
-            
-        ////////////////////////////////////
-        // PAGAMENTO BOLETO
-        ///////////////////////////////////
-        } else if(req.body.boleto){
-
-            req.body.boleto.payment_method = 'boleto';
-            req.body.boleto.amount = String(Number(productsAmount) + Number(shippingFee));
-            req.body.boleto.shipping.fee = shippingFee;
-
-            req.body.boleto.capture = true; // retorna o link para o boleto
-            //req.body.boleto.postback_url = postback_url;
-            req.body.boleto.reference_key = reference_key;
-             
-            let date = new Date();
-            date.setDate(date.getDate() + 3);
-            req.body.boleto.boleto_expiration_date = `${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${(date.getDate() < 10) ? `0${date.getDate()}` : date.getDate() }`;
-            
-            req.body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
-
-            response = await client.transactions.create({
-                ...req.body.boleto
-            });
-
-            /*response = await new Promise( (resolve, reject) => {
-                setTimeout( async () => {
-                    try {
-                        const pmRes = await client.transactions.find({ reference_key });
-                        resolve(pmRes[0]);
-                    } catch (error) {
-                        reject(error);
-                    }
-                }, 1000);
-            });*/
-
             order.boleto_url = response.boleto_url;
         }
         ///////////////////////////////////////////////////
@@ -216,7 +187,7 @@ module.exports = async (req, res) => {
             }
         });
     
-        emitNewOrder(newOrder);
+        socketEmitNewOrder(newOrder);
         
         return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response });
         

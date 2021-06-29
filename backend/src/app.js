@@ -20,7 +20,6 @@ require('./database/sequelize/connection');
 
 const pagarMeperiodicCheck = require('./services/pagarMe/periodicCheck');
 const { socketConnection } = require('./websocket/socketConnection');
-//const trimBody = require('./middlewares/trimBody');
 const routes = require('./routes');
 
 const app = express();
@@ -31,8 +30,6 @@ app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
-
-//app.use(trimBody);
 
 socketConnection(server);
 app.use(routes);

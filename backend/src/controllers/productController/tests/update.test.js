@@ -41,7 +41,8 @@ describe('productController Test Suit', () => {
                 length: 30,
                 height: 15,
                 width: 10,
-            });
+            })
+        ;
 
         expect(response.status).toBe(200);
     });

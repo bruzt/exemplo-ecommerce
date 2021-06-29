@@ -37,12 +37,12 @@ function socketConnection(server) {
     sock = io;
 }
 
-function emitNewOrder(newOrder){
+function socketEmitNewOrder(newOrder){
 
     sock.emit('newOrder', newOrder);
 }
 
 module.exports = {
     socketConnection,
-    emitNewOrder
+    socketEmitNewOrder
 }
