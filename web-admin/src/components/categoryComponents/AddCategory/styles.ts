@@ -45,13 +45,13 @@ export const Container = styled.div`
         margin-top: 50px;
     }
 
-    .categoryTree details > details {
-        margin: 5px 0 0 10px;
+    .categoryTree details {
+        margin: 5px 0 5px 15px;
     }
 
     .categoryTree .last-child {
         list-style: none;
 
-        margin-left: 5px;
+        //margin-left: 10px;
     }
 `;

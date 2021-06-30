@@ -85,7 +85,7 @@ export default function ListCategories(){
                             <tr key={index}>
                                 <td>{category.id}</td>
                                 <td className='name'>{category.name}</td>
-                                <td>{parentCategory && parentCategory.name}</td>
+                                <td>{parentCategory && `${parentCategory.id} - ${parentCategory.name}`}</td>
                                 <td id='td-actions'>
                                     <div>
                                         <button type='button' onClick={() => handleUpdate(category)}>

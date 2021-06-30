@@ -183,7 +183,7 @@ export default function AddProduct() {
                         >
                             <option value={0}></option>
                             {getCategories.map((category, index) => (
-                                <option key={index} value={category.id}>{category.name}</option>
+                                <option key={index} value={category.id}>{category.id} - {category.name}</option>
                             ))}
                         </select>
                     </div>

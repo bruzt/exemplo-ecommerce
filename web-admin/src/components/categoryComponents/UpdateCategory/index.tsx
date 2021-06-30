@@ -45,7 +45,7 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
         event.preventDefault();
 
         const [parentCategory] = getCategories.filter( (category) => category.id == Number(getParentId));
-        if(updatingCategory.id == parentCategory.parent_id) return alert('Categorias não podem ser filhas umas das outras');
+        if(parentCategory && updatingCategory.id == parentCategory.parent_id) return alert('Categorias não podem ser filhas umas das outras');
 
         try {
 

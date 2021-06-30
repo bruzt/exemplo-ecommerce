@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { id } = req.tokenPayload;
     const paramsId = req.params.id;
 
-    if(id !== paramsId) return res.status(400).json({ message: 'token id must be equal to params id' });
+    if(id != paramsId) return res.status(400).json({ message: 'token id must be equal to params id' });
 
     try {
         
