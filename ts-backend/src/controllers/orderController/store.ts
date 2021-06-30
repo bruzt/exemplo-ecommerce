@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { getConnection } from "typeorm";
-import pagarMeClient from '../../services/pagarMe/client';
+
+import payWithCreditCard from '../../services/pagarMe/payWithCreditCard';
+import payWithBoleto from '../../services/pagarMe/payWithBoleto';
 
 import OrderModel from '../../models/OrderModel';
 import UserModel from '../../models/UserModel';
@@ -43,13 +45,12 @@ interface IItems {
     tangible: boolean;
 }
 
-interface ICreditCard {
+export interface ICreditCard {
     installments: number;
     card_number: string;
     card_cvv: string;
     card_expiration_date: string;
     card_holder_name: string;
-    payment_method?: 'credit_card';
     amount?: string;
     reference_key?: string;
     customer: ICustomer;
@@ -69,13 +70,9 @@ interface ICreditCard {
     items?: IItems[];
 }
 
-interface IBoleto {
-    payment_method?: 'boleto';
+export interface IBoleto {
     amount?: string;
-    capture?: boolean;
     reference_key?: string;
-    boleto_expiration_date?: string;
-    boleto_instructions?: string;
     customer: ICustomer;
     shipping: IShipping;
     items?: IItems[]
@@ -197,8 +194,6 @@ export default async function store(req: Request, res: Response) {
             let pagarMeResponse;
             const reference_key = `${order.id}!${Number(order.created_at)}`;
 
-            const client = await pagarMeClient();
-
             const productsAmount = String(total_price).replace('.', '');
             const shippingFee = String(Number(body.freight_price).toFixed(2)).replace('.', '');
 
@@ -207,43 +202,33 @@ export default async function store(req: Request, res: Response) {
             ///////////////////////////////////
             if (body.credit_card) {
 
-                body.credit_card.payment_method = 'credit_card';
                 body.credit_card.amount = String(Number(productsAmount) + Number(shippingFee));
                 body.credit_card.shipping.fee = shippingFee;
 
                 body.credit_card.reference_key = reference_key;
 
-                pagarMeResponse = await client.transactions.create({
-                    ...body.credit_card
-                });
+                const response = await payWithCreditCard(body.credit_card);
+                pagarMeResponse = response;
+
+                order.status = response.status;
 
                 ////////////////////////////////////
                 // PAGAMENTO BOLETO
                 ///////////////////////////////////
             } else if (body.boleto) {
 
-                body.boleto.payment_method = 'boleto';
                 body.boleto.amount = String(Number(productsAmount) + Number(shippingFee));
                 body.boleto.shipping.fee = shippingFee;
 
-                body.boleto.capture = true; // retorna o link para o boleto
                 body.boleto.reference_key = reference_key;
 
-                const date = new Date();
-                date.setDate(date.getDate() + 3);
-                body.boleto.boleto_expiration_date = `${date.getFullYear()}-${((date.getMonth() + 1) < 10) ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${(date.getDate() < 10) ? `0${date.getDate()}` : date.getDate()}`;
+                const response = await payWithBoleto(body.boleto);
+                pagarMeResponse = response;
 
-                body.boleto.boleto_instructions = 'O BOLETO VENCE EM 3 (TRÊS) DIAS.'
-
-                pagarMeResponse = await client.transactions.create({
-                    ...body.boleto
-                });
-
-                order.boleto_url = pagarMeResponse.boleto_url;
+                order.status = response.status;
+                order.boleto_url = response.boleto_url;
             }
             ///////////////////////////////////////////////////
-
-            order.status = pagarMeResponse.status;
 
             await transactionalEntityManager.save(order);
 
