@@ -69,19 +69,25 @@ export const Container = styled.div`
         margin: 28px 0 0 0;
     }
 
-    form input#card-holder-name {
+    form input {
         text-align: center;
     }
 
+    form input#card-holder-name {
+        width: 100%;
+        max-width: 400px;
+
+        margin: 0 auto;
+    }
+
     form input#card-number {
-        width: 190px;
-        text-align: center;
+        width: 100%;
+        max-width: 200px;
         align-self: center;
     }
 
     form input#cpf {
         width: 190px;
-        text-align: center;
     }
 
     #cpf.invalid-value {
@@ -90,22 +96,18 @@ export const Container = styled.div`
 
     form input#tel {
         width: 190px;
-        text-align: center;
     }
 
     form input#card-cvv {
-        width: 50px;
-        text-align: center;
+        width: 75px;
     }
 
     form input#card-expiration-month {
         width: 50px;
-        text-align: center;
     }
 
     form input#card-expiration-year {
         width: 50px;
-        text-align: center;
     }
 
     form button {
@@ -115,12 +117,13 @@ export const Container = styled.div`
     }
 
     form #street {
-        width: 100%;
+        width: 99%;
+
+        margin: 0 auto;
     }
 
     form #number {
         width: 150px;
-        
     }
 
     form #neighborhood {
@@ -128,7 +131,7 @@ export const Container = styled.div`
     }
 
     form #city {
-        width: 100%;
+        width: 300px;
     }
 
     form #state {
@@ -138,8 +141,7 @@ export const Container = styled.div`
     }
 
     form #zipcode {
-        width: 150px;
-        text-align: center;
+        width: 100%;
     }                
 
     .same-addr-button {

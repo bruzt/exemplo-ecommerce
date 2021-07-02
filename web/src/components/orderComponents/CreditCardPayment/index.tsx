@@ -241,6 +241,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                             <input
                                 id='card-holder-name'
                                 type="text"
+                                placeholder='Nome'
                                 value={getCardHolderName}
                                 onChange={(event) => setCardHolderName(event.target.value)}
                             />
@@ -252,6 +253,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <input
                                     id='card-number'
                                     type="text"
+                                    placeholder='0000 0000 0000 0000'
                                     maxLength={19}
                                     value={getCardNumber}
                                     onChange={(event) => handleCardNumber(event.target.value)}
@@ -266,6 +268,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <input
                                     id='card-cvv'
                                     type="text"
+                                    placeholder='000'
                                     maxLength={3}
                                     value={getCardCvv}
                                     onChange={(event) => handleCardCvv(event.target.value)}
@@ -324,6 +327,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <input
                                     type="text"
                                     id='tel'
+                                    placeholder='(00) 0-0000-0000'
                                     maxLength={16}
                                     value={getPhone}
                                     onChange={(event) => setPhone(formatPhone(event.target.value))}
@@ -334,6 +338,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <input
                                     id='cpf'
                                     type="text"
+                                    placeholder='123-456-789-00'
                                     className={`${(getValidCpf) ? '' : 'invalid-value'}`}
                                     maxLength={14}
                                     value={getCpf}
