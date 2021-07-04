@@ -292,17 +292,22 @@ export default function AddProduct() {
                     Cadastrar
                 </Button>
 
-            </form>
+                {(getHtmlText.length > 0) && (
+                    <div className="preview">
+                        <h2>Preview</h2>
 
-            {(getHtmlText.length > 0) && (
-                <div className="preview">
-                    <h2>Preview</h2>
-                    <div
-                        className='html-text'
-                        dangerouslySetInnerHTML={{ __html: getHtmlText }}
-                    />
-                </div>
-            )}
+                        <hr />
+
+                        <div
+                            className='html-text'
+                            dangerouslySetInnerHTML={{ __html: getHtmlText }}
+                        />
+
+                        <hr />
+                    </div>
+                )}
+
+            </form>
 
         </Container>
     );

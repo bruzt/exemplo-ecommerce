@@ -14,20 +14,17 @@ interface IProps extends HTMLAttributes<HTMLElement> {
     setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
+let timeoutId: NodeJS.Timeout;
+
 function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
 
-    function setContentTimeOut(){
+    function setContentTimeOut(content: string){
 
-        let timeoutId: NodeJS.Timeout;
+        clearTimeout(timeoutId);
 
-        return function(content: string){
-
-            clearTimeout(timeoutId);
-
-            timeoutId = setTimeout( () => {
-                onEditorChange(content)
-            }, 1000);
-        }
+        timeoutId = setTimeout( () => {
+            onEditorChange(content)
+        }, 1000);
     }
 
     function onEditorChange(content: string) {
@@ -55,7 +52,7 @@ function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
                 `}
                 placeholder='Escreva aqui'
                 setContents={getContent}
-                onChange={(content) => setContentTimeOut()(content)}
+                onChange={(content) => setContentTimeOut(content)}
                 setOptions={{
                     imageWidth: '100%',
                     imageFileInput: false,

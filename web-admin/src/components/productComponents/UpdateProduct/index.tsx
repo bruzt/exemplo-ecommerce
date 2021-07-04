@@ -265,25 +265,29 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                     </div>
                 </div>
 
-                <div className="input-group">
+                <section className="text-editor">
                     <label>Corpo do anúncio</label>
                     <RichTextEditor
                         getContent={getHtmlBody}
                         setContent={setHtmlBody}
                     />
-                </div>
+                </section>
 
                 <Button type='submit'>
                     Atualizar
                 </Button>
+                
+                <div className="preview">
+                    <h2>Preview</h2>
+
+                    <hr />
+
+                    <div className="preview-content" dangerouslySetInnerHTML={{ __html: getHtmlBody }} />
+
+                    <hr />
+                </div>
+
             </form>
-
-            <div className="preview">
-                <h2>Preview</h2>
-
-                <div className="preview-content" dangerouslySetInnerHTML={{ __html: getHtmlBody }} />
-
-            </div>
 
         </Container>
     );

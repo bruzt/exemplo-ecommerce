@@ -68,12 +68,21 @@ export const Container = styled.div`
     div.preview {
         width: 100%;
         max-width: 700px;
+
+        margin: 0 auto;
     }
 
     div.preview h2:first-child {
-        margin-top: 50px;
         text-decoration: underline;
         text-align: center;
+
+        margin: 20px 0 0 0;
+    }
+
+    div.preview hr {
+        width: 100%;
+
+        margin: 20px 0;
     }
 
     div.html-text {
@@ -81,7 +90,6 @@ export const Container = styled.div`
         max-width: 700px;
         height: 100%;
         overflow-x: hidden;
-        margin-top: 50px;
 
         /*border: 1px dashed ${(props) => props.theme.primary};*/
         

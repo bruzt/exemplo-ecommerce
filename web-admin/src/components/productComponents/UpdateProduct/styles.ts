@@ -44,12 +44,12 @@ export const Container = styled.div`
         width: 100%;
     }
 
-    div.input-group label {
+    div.input-group > label {
         font-size: 20px;
     }
 
-    div.input-group input,
-    div.input-group select {
+    div.input-group > input,
+    div.input-group > select {
         width: 100%;
         height: 30px;
 
@@ -64,7 +64,7 @@ export const Container = styled.div`
         width: 75px;
     }
 
-    div.input-group textarea {
+    div.input-group > textarea {
         border: 0;
         border-radius: 4px;
         height: 60px;
@@ -73,7 +73,7 @@ export const Container = styled.div`
         resize: none;
     }
 
-    & > form header button {
+    & > form > header button {
         border: 0;
         border-radius: 4px;
         padding: 0 5px;
@@ -103,12 +103,27 @@ export const Container = styled.div`
         margin-left: 5px;
     }
 
+    section.text-editor {
+        width: 100%;
+    }
+
+
     div.preview {
         width: 100%;
-        max-width: 800px;
+        max-width: 700px;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    div.preview hr {
+        width: 100%;
+
+        margin: 20px 0;
     }
 
     div.preview h2 {
         text-decoration: underline;
+        margin: 0 auto;
     }
 `;
