@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     
-    min-height: 800px;
+    min-height: 50rem;
 
     div.product-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        padding: 20px 0;
-        grid-gap: 5px;
+        padding: 1.25rem 0;
+        grid-gap: 0.3125rem;
         justify-items: center;
     }
 
@@ -16,19 +16,19 @@ export const Container = styled.div`
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        margin: 20px 0 0 0;
-        font-size: 20px;
+        margin: 1.25rem 0 0 0;
+        font-size: 1.25rem;
     }
 
     .filter-row  #filter {
         font-size: inherit;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 4px;
+        border-radius: 0.25rem;
         cursor: pointer;
     }
 
     h2 {
-        margin-top: 50px;
+        margin-top: 3.125rem;
         text-align: center;
     }
 

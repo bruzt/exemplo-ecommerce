@@ -2,19 +2,19 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     
-    min-height: 800px;
+    min-height: 50rem;
 
     div.product-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        padding: 20px 0;
-        grid-gap: 5px;
+        padding: 1.25rem 0;
+        grid-gap: 0.3125rem;
 
         justify-items: center;
     }
 
     h3 {
-        margin: 20px 0 0 0;
+        margin: 1.25rem 0 0 0;
     }
 
     @media (max-width: 1110px) {
