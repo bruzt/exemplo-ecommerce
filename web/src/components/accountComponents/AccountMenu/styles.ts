@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-    min-height: 800px;
-    margin-top: 60px;
+    min-height: 50rem;
+    margin-top: 3.75rem;
 
     div.menu-content-grid {
         display: grid;
-        grid-template-columns: 200px 1fr;
-        margin-top: 20px;
+        grid-template-columns: 12.5rem 1fr;
+        margin-top: 1.25rem;
     }
 
     a.menu-item {
         width: 100%;
-        height: 50px;
+        height: 3.125rem;
         background: ${props => props.theme.primary};
         cursor: pointer;
         
@@ -38,7 +38,7 @@ export const Container = styled.section`
     }
 
     div.content {
-        padding: 0 10px;
+        padding: 0 0.625rem;
     }
 
     @media (max-width: 768px) {
@@ -47,7 +47,7 @@ export const Container = styled.section`
         }
 
         nav.menu {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
         }
 
         div.content {

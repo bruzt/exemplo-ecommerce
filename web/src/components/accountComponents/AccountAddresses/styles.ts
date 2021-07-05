@@ -11,22 +11,22 @@ export const Container = styled.section`
     }
 
     h1 {
-        margin-bottom: 20px;
-        font-size: 30px;
+        margin-bottom: 1.25rem;
+        font-size: 1.875rem;
     }
 
     div.address-grid {
         width: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 10px;
+        grid-gap: 0.625rem;
     }
 
     div.address-card {
         background: ${props => props.theme.primary};
-        padding: 10px;
-        border-radius: 5px;
-        height: 200px;
+        padding: 0.625rem;
+        border-radius: 0.3125rem;
+        height: 12.5rem;
     }
 
     div.card-header {
@@ -36,8 +36,8 @@ export const Container = styled.section`
 
     div.card-header button {
         border: 0;
-        border-radius: 5px;
-        padding: 5px 10px;
+        border-radius: 0.3125rem;
+        padding: 0.3125rem 0.625rem;
         background: ${props => props.theme.danger};
         cursor: pointer;
         color: inherit;
@@ -52,12 +52,12 @@ export const Container = styled.section`
     }
 
     div.card-body {
-        margin-top: 5px;
+        margin-top: 0.3125rem;
     }
 
     div.card-body p {
-        line-height: 30px;
-        font-size: 18px;
+        line-height: 1.875rem;
+        font-size: 1.125rem;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -67,12 +67,12 @@ export const Container = styled.section`
     }
 
     form {
-        margin-top: 30px;
+        margin-top: 1.875rem;
         background: ${props => props.theme.primary};
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem;
         width: 100%;
-        max-width: 500px;
+        max-width: 31.25rem;
     }
 
     form h2 {
@@ -80,7 +80,7 @@ export const Container = styled.section`
     }
 
     div.input-group {
-        margin-top: 10px;
+        margin-top: 0.625rem;
         display: flex;
         flex-direction: column;
     }
@@ -92,15 +92,15 @@ export const Container = styled.section`
     }
 
     form label {
-        margin-left: 5px;
+        margin-left: 0.3125rem;
     }
 
     form input, form select {
         border: 0;
-        border-radius: 5px;
-        height: 40px;
-        font-size: 20px;
-        padding: 5px;
+        border-radius: 0.3125rem;
+        height: 2.5rem;
+        font-size: 1.25rem;
+        padding: 0.3125rem;
     }
 
     input#street {
@@ -109,7 +109,7 @@ export const Container = styled.section`
 
     input#number {
         width: 100px;
-        margin-right: 10px;
+        margin-right: 0.625rem;
     }
 
     input#neighborhood {
@@ -117,7 +117,7 @@ export const Container = styled.section`
     }
 
     select#city {
-        width: 200px;
+        width: 12.5rem;
     }
 
     select#uf {
@@ -129,15 +129,15 @@ export const Container = styled.section`
     }
 
     .line-group select {
-        margin-right: 10px;
+        margin-right: 0.625rem;
     }
 
     form button[type='submit'] {
-        margin-top: 20px;
+        margin-top: 1.25rem;
         border: 0;
-        border-radius: 5px;
-        padding: 10px 20px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem 1.25rem;
+        font-size: 1.25rem;
         background: ${props => props.theme.success};
         color: inherit;
         cursor: pointer;

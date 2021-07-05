@@ -7,7 +7,7 @@ export const Container = styled.section`
     align-items: center;
 
     h2 {
-        margin-bottom: 50px;
+        margin-bottom: 3.125rem;
     }
 
     div.scroll-x {
@@ -17,13 +17,13 @@ export const Container = styled.section`
     div.card button[type='button'] {
         width: 100%;
         border: 0;
-        padding: 10px;
+        padding: 0.625rem;
         color: ${props => props.theme.color};
         background: ${props => props.theme.primary};
-        border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
+        border-top-right-radius: 0.3125rem;
+        border-top-left-radius: 0.3125rem;
+        border-bottom-right-radius: 0.3125rem;
+        border-bottom-left-radius: 0.3125rem;
         cursor: pointer;
         
         &.tab-open {
@@ -43,32 +43,32 @@ export const Container = styled.section`
 
     div.card {
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 1.25rem;
     }
 
     div.card-header {
         width: 100%;
-        font-size: 20px;
+        font-size: 1.25rem;
 
         display: grid;
-        grid-template-columns: 100px 1fr 1fr 1fr;
+        grid-template-columns: 6.25rem 1fr 1fr 1fr;
         align-items: center;
     }
 
     .order-card {
         background: ${props => props.theme.primary};
         border-top: 1px solid ${props => props.theme.secondary};
-        padding: 5px;
+        padding: 0.3125rem;
         cursor: pointer;
 
         display: grid;
-        grid-template-columns: 100px 1fr 50px 150px;
-        grid-gap: 10px;
+        grid-template-columns: 6.25rem 1fr 3.125rem 9.375rem;
+        grid-gap: 0.625rem;
     }
 
     .order-card:last-child {
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 0.3125rem;
+        border-bottom-left-radius: 0.3125rem;
     }
 
     .order-card:hover {
@@ -85,7 +85,7 @@ export const Container = styled.section`
         }
         
         & > span:nth-child(1){
-            width: 710px;
+            width: 70.625rem;
 
             text-align: center;
         }
@@ -105,13 +105,13 @@ export const Container = styled.section`
 
     div.img-container img {
         width: auto;
-        max-width: 100px;
+        max-width: 6.25rem;
         height: auto;
-        max-height: 50px;
+        max-height: 3.125rem;
     }
 
     .order-card span {
-        padding-top: 15px;
+        padding-top: 0.9375rem;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -135,44 +135,44 @@ export const Container = styled.section`
     .order-card span.product-discount {
         width: fit-content !important;
         background: ${props => props.theme.success};
-        padding: 5px 10px;
+        padding: 0.3125rem 0.625rem;
     }
 
     span.processing {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.warningActive};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: #111;
     }
 
     a.boleto-link {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.warning};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: #111;
         cursor: alias;
     }
 
     span.paid {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.success};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: ${props => props.theme.primary};
     }
 
     span.dispatch {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.success};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: ${props => props.theme.primary};
     }
 
     span.tracking-code {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.successActive};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: ${props => props.theme.primary};
-        font-size: 18px;
+        font-size: 1.125rem;
         cursor: copy;
     }
 
@@ -181,9 +181,9 @@ export const Container = styled.section`
     }
     
     span.refused {
-        padding: 5px;
+        padding: 0.3125rem;
         background: ${props => props.theme.danger};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: ${props => props.theme.primary};
     }
 
@@ -216,7 +216,7 @@ export const Container = styled.section`
         }
 
         div.card {
-            width: 1000px;
+            width: 62.5rem;
         }
     }
 `;
