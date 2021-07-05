@@ -7,11 +7,11 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    margin: 50px 0 50px 0;
+    margin: 3.125rem 0 3.125rem 0;
 
     .circle {
-        width: 50px;
-        height: 50px;
+        width: 3.125rem;
+        height: 3.125rem;
         flex-shrink: 0;
 
         display: flex;
@@ -21,7 +21,7 @@ export const Container = styled.div`
         position: relative;
         z-index: 5;
 
-        border-radius: 25px;
+        border-radius: 1.5625rem;
 
         background: ${props => props.theme.secondary};
 
@@ -35,7 +35,7 @@ export const Container = styled.div`
 
     .bar {
         width: 100%;
-        height: 5px;
+        height: 0.3125rem;
 
         background: ${props => props.theme.secondary};
     }

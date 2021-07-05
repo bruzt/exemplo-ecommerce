@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     
-    min-height: calc(100vh - 400px);
+    min-height: calc(100vh - 25rem);
 
     h1 {
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 1.5625rem;
     }
 
     h1.empty {
-        margin-top: 50px;
+        margin-top: 3.125rem;
     }
 
     table {
@@ -32,7 +32,7 @@ export const Container = styled.section`
 
     thead tr {
         background: ${props => props.theme.primary};
-        height: 50px;
+        height: 3.125rem;
     }
 
     tbody tr {
@@ -48,8 +48,8 @@ export const Container = styled.section`
     }
 
     .td-image img {
-        width: 100px;
-        height: 50px;
+        width: 6.25rem;
+        height: 3.125rem;
         vertical-align: middle;
         object-fit: cover;
     }
@@ -69,9 +69,9 @@ export const Container = styled.section`
 
     .td-name .order-discount {
         background: ${props => props.theme.success};
-        max-height: 27px;
-        padding: 5px 10px;
-        margin: 0 0 0 10px;
+        max-height: 1.6875rem;
+        padding: 0.3125rem 0.625rem;
+        margin: 0 0 0 0.625rem;
     }
 
     .td-price {
@@ -80,7 +80,7 @@ export const Container = styled.section`
 
     .td-qtd .cart-qtd {
         font-weight: bold;
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 
     .td-qtd span {
@@ -90,7 +90,7 @@ export const Container = styled.section`
     }
 
     .td-qtd span + span {
-        margin: 5px 0 0 0;
+        margin: 0.3125rem 0 0 0;
     }
 
     .td-qtd button {
@@ -98,13 +98,13 @@ export const Container = styled.section`
         justify-content: center;
         align-items: center;
 
-        width: 20px; 
-        height: 20px;
+        width: 1.25rem; 
+        height: 1.25rem;
 
-        margin: 0 10px;
+        margin: 0 0.625rem;
 
         border: 1px solid #111;
-        border-radius: 2px;
+        border-radius: 0.125rem;
         
         font-weight: bold;
         cursor: pointer;
@@ -123,7 +123,7 @@ export const Container = styled.section`
     }
 
     .td-qtd input {
-        width: 40px;
+        width: 2.5rem;
     }
 
     .td-total {
@@ -137,29 +137,29 @@ export const Container = styled.section`
     }
 
     .total-price {
-        width: 300px;
-        font-size: 25px;
+        width: 18.75rem;
+        font-size: 1.5625rem;
         font-weight: bold;
-        margin-top: 20px;
+        margin-top: 1.25rem;
         background: ${props => props.theme.primary};
-        padding: 20px;
+        padding: 1.25rem;
 
         display: flex;
         flex-direction: column;
     }
 
     .total-price span.total {
-        font-size: 30px;
+        font-size: 1.875rem;
     }
 
     .total-price button {
         width: 100%;
-        height: 50px;
-        margin: 10px 0 0 0;
+        height: 3.125rem;
+        margin: 0.625rem 0 0 0;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.success};
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
         cursor: pointer;
         color: inherit;
@@ -195,7 +195,7 @@ export const Container = styled.section`
     }
 
     .calc-freight {
-        margin: 20px 50px 0 0;
+        margin: 1.25rem 3.125rem 0 0;
     }
 
     .calc-freight .cep-input {
@@ -205,23 +205,23 @@ export const Container = styled.section`
     }
 
     .calc-freight input {
-        width: 150px;
-        height: 30px;
-        font-size: 25px;  
-        padding: 0 0 0 2px;  
+        width: 9.375rem;
+        height: 1.875rem;
+        font-size: 1.5625rem;  
+        padding: 0 0 0 0.125rem;  
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
+        border-top-left-radius: 0.3125rem;
+        border-bottom-left-radius: 0.3125rem;
         text-align: center;
         background: #eee;
     }
 
     .calc-freight button {
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-top-right-radius: 0.3125rem;
+        border-bottom-right-radius: 0.3125rem;
         cursor: pointer;
         color: #111;
         background: #eee;
@@ -244,12 +244,12 @@ export const Container = styled.section`
     }
 
     .choose-freight {
-        margin: 10px 0 0 0;
+        margin: 0.625rem 0 0 0;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         background: ${props => props.theme.primary};
-        padding: 5px;   
+        padding: 0.3125rem;   
     }
 
     .choose-freight span {
@@ -259,8 +259,8 @@ export const Container = styled.section`
     }
 
     .choose-freight span input {
-        margin-right: 10px;
-        width: 15px;
+        margin-right: 0.625rem;
+        width: 0.9375rem;
         cursor: pointer;
     }
 
@@ -270,7 +270,7 @@ export const Container = styled.section`
         }
 
         .td-name {
-            padding-left: 10px;
+            padding-left: 0.625rem;
         }
     }
 
@@ -281,7 +281,7 @@ export const Container = styled.section`
         }
 
         .calc-freight {
-            margin: 20px 0 0 0;
+            margin: 1.25rem 0 0 0;
         }
     }
 `;

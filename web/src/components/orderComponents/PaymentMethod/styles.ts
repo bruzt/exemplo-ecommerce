@@ -2,17 +2,17 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    min-height: 800px;
+    min-height: 50rem;
     
     h1 {
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 1.5625rem;
     }
 
     .back-button {
         border: 0;
         background: transparent;
-        font-size: 30px;
+        font-size: 1.875rem;
         cursor: pointer;
         color: ${props => props.theme.color};
     }
@@ -24,11 +24,11 @@ export const Container = styled.section`
     }
 
     .cc-boleto-buttons button {
-        font-size: 30px;
-        padding: 20px 30px;
-        margin: 10px;
+        font-size: 1.875rem;
+        padding: 1.25rem 1.875rem;
+        margin: 0.625rem;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         color: ${props => props.theme.primary};
         cursor: pointer;
 
@@ -38,7 +38,6 @@ export const Container = styled.section`
             color: ${props => props.theme.color};
         }
     }
-
 
     @media (max-width: 600px) {
         .cc-boleto-buttons {

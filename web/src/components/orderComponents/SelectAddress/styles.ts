@@ -2,30 +2,30 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    min-height: 800px;
+    min-height: 50rem;
 
     .back-button {
         border: 0;
         background: transparent;
-        font-size: 30px;
+        font-size: 1.875rem;
         cursor: pointer;
         color: ${props => props.theme.color};
     }
 
     h1 {
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 1.5625rem;
     }
 
     .addr-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 10px;
+        grid-gap: 0.625rem;
 
-        min-height: 220px;
+        min-height: 13.75rem;
         border: 1px solid ${props => props.theme.primary};
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem;
     }
 
     .addr-grid a {
@@ -33,37 +33,37 @@ export const Container = styled.section`
     }
 
     .addr-card {
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.primary};
-        height: 220px;
+        height: 13.75rem;
     }
 
     .selected {
-        border: 3px solid ${props => props.theme.success};
+        border: 0.1875rem solid ${props => props.theme.success};
 
     }
 
     .selected.disabled {
-        border: 3px solid ${props => props.theme.danger};
+        border: 0.1875rem solid ${props => props.theme.danger};
     }
 
     .addr-card .addr-data a div {
-        padding: 15px;
-        line-height: 25px;
+        padding: 0.9375rem;
+        line-height: 1.5625rem;
         height: 100%;
     }
 
     .addr-card .addr-data .addr-remove {
         display: flex;
         justify-content: flex-end;
-        margin: 10px 10px 0 0;
+        margin: 0.625rem 0.625rem 0 0;
     }
 
     .addr-data .addr-remove button {
         font-weight: bold;
-        padding: 4px 8px;
+        padding: 0.25rem 0.5rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.danger};
         cursor: pointer;
 
@@ -78,8 +78,8 @@ export const Container = styled.section`
 
 
     .addr-data p {
-        font-size: 20px;
-        line-height: 30px;
+        font-size: 1.25rem;
+        line-height: 1.875rem;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -94,12 +94,12 @@ export const Container = styled.section`
     }
 
     .add-select-buttons button {
-        margin: 20px 0 0 0;
-        width: 200px;
-        height: 50px;
+        margin: 1.25rem 0 0 0;
+        width: 12.5rem;
+        height: 3.125rem;
         border: 0;
-        border-radius: 5px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        font-size: 1.25rem;
         cursor: pointer;                 
         color: ${props => props.theme.color};;   
     }
@@ -141,10 +141,10 @@ export const Container = styled.section`
     .add-addr-form {
         display: flex;
         flex-direction: column;
-        margin: 20px 0 0 0;
-        border-radius: 5px;
-        padding: 20px;
-        width: 480px;
+        margin: 1.25rem 0 0 0;
+        border-radius: 0.3125rem;
+        padding: 1.25rem;
+        width: 30rem;
         max-width: 50%;
         background: ${props => props.theme.primary};
     }
@@ -156,7 +156,7 @@ export const Container = styled.section`
     }
 
     .flex-row input {
-        margin: 0 5px;
+        margin: 0 0.3125rem;
     }
 
     .flex-column {
@@ -166,19 +166,19 @@ export const Container = styled.section`
     }
 
     .add-addr-form div {
-        margin: 0 0 10px 0;
+        margin: 0 0 0.625rem 0;
     }
 
     .add-addr-form label {
-        margin: 0 0 0 5px;
+        margin: 0 0 0 0.3125rem;
     }
 
     .add-addr-form input, select {
-        height: 30px;
-        padding: 3px;
-        font-size: 20px;
+        height: 1.875rem;
+        padding: 0.1875rem;
+        font-size: 1.25rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
     }
 
     .add-addr-form #street {
@@ -187,7 +187,7 @@ export const Container = styled.section`
 
     .add-addr-form #number {
         width: 100%;
-        max-width: 150px;
+        max-width: 9.375rem;
     }
 
     .add-addr-form #district {
@@ -195,13 +195,13 @@ export const Container = styled.section`
     }
 
     .add-addr-form #city {
-        width: 240px;
-        margin-right: 5px;
+        width: 15rem;
+        margin-right: 0.3125rem;
     }
 
     .add-addr-form #state {
         width: 100%;
-        min-width: 65px;   
+        min-width: 4.0625rem;   
         background: #eee;
     }
 
@@ -212,13 +212,13 @@ export const Container = styled.section`
 
     .addr-submit {
         width: 100%; 
-        height: 40px;
-        margin-top: 10px;
+        height: 2.5rem;
+        margin-top: 0.625rem;
         align-self: center;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.success};
-        font-size: 20px;
+        font-size: 1.25rem;
         cursor: pointer;
         color: inherit;
 

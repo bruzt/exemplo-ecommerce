@@ -4,24 +4,24 @@ export const Container = styled.div`
 
     h2 {
         text-align: center;
-        margin: 25px;
+        margin: 1.5625rem;
     }
 
     .cc-form {
         background: ${props => props.theme.primary};
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem;
     }
 
     form {
-        padding: 20px 0 0 0;
+        padding: 1.25rem 0 0 0;
     }
 
     form .grid-columns {
         display: grid;
         grid-template-columns: 1fr 1fr;
         text-align: center;
-        grid-gap: 5px;
+        grid-gap: 0.3125rem;
     }
 
     .flex-column {
@@ -37,11 +37,11 @@ export const Container = styled.div`
     }
 
     .flex-row div {
-        margin: 0 5px;
+        margin: 0 0.3125rem;
     }
 
     .flex-row p {
-        font-size: 30px;
+        font-size: 1.875rem;
         align-self: center;
     }
 
@@ -50,15 +50,15 @@ export const Container = styled.div`
     }
 
     form div {
-        margin: 10px 0 0 0;
+        margin: 0.625rem 0 0 0;
     }
 
     form input, select {
-        height: 40px;
+        height: 2.5rem;
         border: 0;
-        border-radius: 5px;
-        padding: 3px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        padding: 0.1875rem;
+        font-size: 1.25rem;
     }
 
     .justify-center {
@@ -66,7 +66,7 @@ export const Container = styled.div`
     }
 
     form .holder-name-label {
-        margin: 28px 0 0 0;
+        margin: 1.75rem 0 0 0;
     }
 
     form input {
@@ -75,45 +75,45 @@ export const Container = styled.div`
 
     form input#card-holder-name {
         width: 100%;
-        max-width: 400px;
+        max-width: 25rem;
 
         margin: 0 auto;
     }
 
     form input#card-number {
         width: 100%;
-        max-width: 200px;
+        max-width: 12.5rem;
         align-self: center;
     }
 
     form input#cpf {
-        width: 190px;
+        width: 11.875rem;
     }
 
     #cpf.invalid-value {
-        border: 2px solid ${props => props.theme.danger};
+        border: 0.125rem solid ${props => props.theme.danger};
     }
 
     form input#tel {
-        width: 190px;
+        width: 11.875rem;
     }
 
     form input#card-cvv {
-        width: 75px;
+        width: 4.6875rem;
     }
 
     form input#card-expiration-month {
-        width: 50px;
+        width: 3.125rem;
     }
 
     form input#card-expiration-year {
-        width: 50px;
+        width: 3.125rem;
     }
 
     form button {
-        width: 100px;
-        height: 50px;
-        margin: 20px 0 0 0;
+        width: 6.25rem;
+        height: 3.125rem;
+        margin: 1.25rem 0 0 0;
     }
 
     form #street {
@@ -123,7 +123,7 @@ export const Container = styled.div`
     }
 
     form #number {
-        width: 150px;
+        width: 9.375rem;
     }
 
     form #neighborhood {
@@ -131,16 +131,17 @@ export const Container = styled.div`
     }
 
     form #city {
-        width: 300px;
+        width: 18.75rem;
     }
 
     form #state {
         width: 100%;
-        min-width: 65px;   
+        min-width: 4.0625rem;   
         background: #eee;
     }
 
     form #zipcode {
+        min-width: 6.5rem;
         width: 100%;
     }                
 
@@ -151,7 +152,7 @@ export const Container = styled.div`
     .same-addr-button button {
         justify-self: flex-end;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.secondary};
         color: ${props => props.theme.color};
         cursor: pointer;
@@ -169,17 +170,17 @@ export const Container = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 
     .button-total .freight-total {
         background: ${props => props.theme.primary};
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem;
     }
 
     .button-total .freight-total p + p + p {
-        font-size: 30px;
+        font-size: 1.875rem;
         font-weight: bold;
     }
 
@@ -189,11 +190,11 @@ export const Container = styled.div`
 
     .button-total button {
         border: 0;
-        border-radius: 5px;
-        width: 200px;
-        height: 75px;
+        border-radius: 0.3125rem;
+        width: 12.5rem;
+        height: 4.6875rem;
         background: ${props => props.theme.success};
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
         color: ${props => props.theme.color};
         cursor: pointer;
@@ -222,19 +223,24 @@ export const Container = styled.div`
         
         .button-total {
             flex-direction: column;
+            align-items: center;
+        }
+
+        .freight-total {
+            margin-bottom: 1rem;
         }
 
         form input#card-number {
-            width: 190px;
+            width: 11.875rem;
             
         }   
 
         form input#cpf {
-            width: 190px;
+            width: 11.875rem;
         }
 
         form input#tel {
-            width: 190px;
+            width: 11.875rem;
         }
     }
 
@@ -245,7 +251,7 @@ export const Container = styled.div`
         }
 
         .cc-form {
-            padding: 0 0 10px 0;
+            padding: 0 0 0.625rem 0;
         }
     }
 `;

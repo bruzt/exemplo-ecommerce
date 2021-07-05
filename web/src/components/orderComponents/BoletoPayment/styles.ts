@@ -5,24 +5,24 @@ export const Container = styled.div`
 
     h2 {
         text-align: center;
-        margin: 25px;
+        margin: 1.5625rem;
     }
 
     form.boleto-form {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 20px;
+        font-size: 1.25rem;
     }
 
     form.boleto-form .freight-total {
         background: ${props => props.theme.primary};
-        border-radius: 5px;
-        padding: 10px;
+        border-radius: 0.3125rem;
+        padding: 0.625rem;
     }
 
     form.boleto-form .freight-total p + p + p {
-        font-size: 30px;
+        font-size: 1.875rem;
         font-weight: bold;
     }
 
@@ -39,11 +39,11 @@ export const Container = styled.div`
 
     form.boleto-form .inputs .input-group input {
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 5px;
-        margin: 0 5px;
-        height: 40px;
-        padding: 5px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        margin: 0 0.3125rem;
+        height: 2.5rem;
+        padding: 0.3125rem;
+        font-size: 1.25rem;
         text-align: center;
     }
 
@@ -53,11 +53,11 @@ export const Container = styled.div`
 
     form.boleto-form button {
         border: 0;
-        border-radius: 5px;
-        width: 200px;
-        height: 75px;
+        border-radius: 0.3125rem;
+        width: 12.5rem;
+        height: 4.6875rem;
         background: ${props => props.theme.success};
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
         color: inherit;
         cursor: pointer;
@@ -85,7 +85,7 @@ export const Container = styled.div`
         }
 
         form.boleto-form div {
-            margin-bottom: 15px;
+            margin-bottom: 0.9375rem;
         }
 
         form.boleto-form .inputs {
@@ -93,7 +93,7 @@ export const Container = styled.div`
         }
 
         form.boleto-form .inputs div {
-            margin-bottom: 15px;
+            margin-bottom: 0.9375rem;
         }
     }
 `;
@@ -101,8 +101,8 @@ export const Container = styled.div`
 export const LoadingSpinner = styled(Loading).attrs({
     type: "TailSpin",
     color: '#0D2235',
-    height: 30,
-    width: 30,
+    height: '1.875rem',
+    width: '1.875rem',
 })`
 
 `
