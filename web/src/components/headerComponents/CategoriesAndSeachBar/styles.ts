@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.nav`
 
     width: 100%;
-    height: 50px;
+    height: 3.125rem;
     background: ${props => props.theme.secondary};
 
     div.limit-center {
         width: 100%;
         height: 100%;
-        max-width: 1100px;
+        max-width: 68.75rem;
         margin: 0 auto;
 
         display: flex;
@@ -26,7 +26,7 @@ export const Container = styled.nav`
     }
 
     div.limit-center > div.switch-container {
-        height: 28px;
+        height: 1.75rem;
     }
 
     div.mobile-menu {
@@ -41,11 +41,11 @@ export const Container = styled.nav`
     }
 
     div.mobile-menu button {
-        width: 50px;
-        height: 40px;
-        margin-right: 5px;
+        width: 3.125rem;
+        height: 2.5rem;
+        margin-right: 0.3125rem;
         border: 0;
-        border-radius: 4px;
+        border-radius: 0.25rem;
         background: ${props => props.theme.primary};
         color: ${props => props.theme.color};
         cursor: pointer;
@@ -56,7 +56,7 @@ export const Container = styled.nav`
     }
 
     div.react-switch-bg svg {
-        margin: 4px 3px;
+        margin: 0.25rem 0.1875rem;
     }
 
     @media (max-width: 650px) {
@@ -69,7 +69,7 @@ export const Container = styled.nav`
         }
 
         div.limit-center {
-            padding-left: 10px;
+            padding-left: 0.625rem;
         }
     }
 `;
@@ -78,7 +78,7 @@ export const SearchBarForm = styled.form`
     
     position: relative;
     width: 100%;
-    max-width: 400px;
+    max-width: 25rem;
 
     & > div {
         display: flex;
@@ -87,28 +87,28 @@ export const SearchBarForm = styled.form`
 
     input {
         width: 100%;
-        height: 40px;
-        padding: 5px;
+        height: 2.5rem;
+        padding: 0.3125rem;
         border: none;
-        font-size: 20px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
+        font-size: 1.25rem;
+        border-top-left-radius: 0.3125rem;
+        border-bottom-left-radius: 0.3125rem;
         text-align: center;
     }
 
     button {
-        width: 40px;
-        height: 40px;
+        width: 2.5rem;
+        height: 2.5rem;
 
         border: none;
         cursor: pointer;
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-top-right-radius: 0.3125rem;
+        border-bottom-right-radius: 0.3125rem;
     }  
 
     ul.dropdown-search {
         position: absolute;
-        top: 45px;
+        top: 2.8125rem;
         z-index: 10;
 
         width: 100%;
@@ -118,7 +118,7 @@ export const SearchBarForm = styled.form`
 
     ul.dropdown-search li {
         color: #111;
-        margin-bottom: 5px;
+        margin-bottom: 0.3125rem;
     }
 
     ul.dropdown-search li a {
@@ -129,24 +129,24 @@ export const SearchBarForm = styled.form`
     }
 
     ul.dropdown-search li div.img-container {
-        width: 100px;
-        height: 45px;
+        width: 6.25rem;
+        height: 2.8125rem;
     }
 
     ul.dropdown-search li img {
         width: auto;
-        max-width: 45px;
-        height: 45px;
+        max-width: 2.8125rem;
+        height: 2.8125rem;
 
         object-fit: cover;
     }
 
     ul.dropdown-search li span.title {
         width: 100%;
-        height: 45px;
-        padding: 10px 5px;
-        font-size: 20px;
-        line-height: 30px;
+        height: 2.8125rem;
+        padding: 0.625rem 0.3125rem;
+        font-size: 1.25rem;
+        line-height: 1.875rem;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -156,8 +156,8 @@ export const SearchBarForm = styled.form`
     }
 
     ul.dropdown-search li span.price {
-        width: 200px;
-        font-size: 20px;
+        width: 12.5rem;
+        font-size: 1.25rem;
         font-weight: bold;
 
         display: flex;
@@ -166,7 +166,7 @@ export const SearchBarForm = styled.form`
     }
 
     li span.price > span {
-        font-size: 15px;
+        font-size: 0.9375rem;
     }
 `;
 
@@ -178,23 +178,23 @@ export const CategoryDropdownMenu = styled.div`
     }
                 
     ul li { 
-        width: 200px; 
-        height: 40px; 
+        width: 12.5rem; 
+        height: 2.5rem; 
         background: ${props => props.theme.primary};
         float: left; 
-        line-height: 40px; 
-        font-size: 20px;
+        line-height: 2.5rem; 
+        font-size: 1.25rem;
         text-align: center; 
         user-select: none; 
         position: relative;
     }
 
     ul li.category-menu {
-        border-radius: 5px;
+        border-radius: 0.3125rem;
     }
 
     ul li.category-menu.active {
-        border-radius: 5px 5px 0 0;
+        border-radius: 0.3125rem 0.3125rem 0 0;
         border-bottom: 1px solid ${props => props.theme.secondary};
     }
 
@@ -223,7 +223,7 @@ export const CategoryDropdownMenu = styled.div`
 
     li.has-children > ul {
         position: absolute; 
-        left: 200px; 
+        left: 12.5rem; 
         top: 0; 
     }
 

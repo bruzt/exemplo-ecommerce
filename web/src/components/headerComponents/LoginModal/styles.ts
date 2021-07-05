@@ -14,11 +14,11 @@ export const Container = styled.div`
     .modal-content {
         background-color: ${props => props.theme.primary};
         margin: 10% auto; /* 15% from the top and centered */
-        padding: 20px;
+        padding: 1.25rem;
         width: 100%;
-        max-width: 400px;
-        min-height: 350px;
-        border-radius: 5px;
+        max-width: 25rem;
+        min-height: 21.875rem;
+        border-radius: 0.3125rem;
     }
 
     .modal-content .modal-head {
@@ -27,10 +27,10 @@ export const Container = styled.div`
     }
 
     .modal-content .close-modal {
-        width: 30px;
-        height: 30px;
+        width: 1.875rem;
+        height: 1.875rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         font-weight: bold;
         background: ${props => props.theme.danger};
         color: ${props => props.theme.color};
@@ -44,7 +44,7 @@ export const Container = styled.div`
     .modal-content form {
         width: 100%;
         height: 100%;
-        padding: 60px 0 0 0;
+        padding: 3.75rem 0 0 0;
 
         display: flex;
         flex-direction: column;
@@ -58,42 +58,42 @@ export const Container = styled.div`
     .modal-content form .input-group  {
         display: flex;
         flex-direction: column;
-        width: 300px;
+        width: 18.75rem;
     }
 
     .modal-content form .input-group label {
-        margin: 0 0 0 5px;
+        margin: 0 0 0 0.3125rem;
     }
 
     .modal-content form .input-group label span {
-        font-size: 14px;
+        font-size: 0.875rem;
     }
 
     .modal-content form .input-group + .input-group {
-        margin: 20px 0 0 0;
+        margin: 1.25rem 0 0 0;
     }
 
     .modal-content form input {
         width: 100%;
-        height: 40px;
-        font-size: 20px;
-        padding: 5px;
+        height: 2.5rem;
+        font-size: 1.25rem;
+        padding: 0.3125rem;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 5px;
+        border-radius: 0.3125rem;
 
         &.invalid {
-            border: 2px solid ${props => props.theme.danger};
+            border: 0.125rem solid ${props => props.theme.danger};
         }
     }
 
     .modal-content form .login-button {
-        margin: 30px 0 0 0;
-        width: 300px;
-        height: 50px;
+        margin: 1.875rem 0 0 0;
+        width: 18.75rem;
+        height: 3.125rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         background: ${props => props.theme.success};
-        font-size: 20px;
+        font-size: 1.25rem;
         cursor: pointer;
         color: ${props => props.theme.color};
 
@@ -124,12 +124,12 @@ export const Container = styled.div`
         justify-content: center;
         align-items: center;
 
-        margin: 10px 0;
+        margin: 0.625rem 0;
     }
 
     .create-forgot a {
         cursor: pointer;
-        margin: 10px 0 0 0;
+        margin: 0.625rem 0 0 0;
     }
 
     @keyframes nono-animation {

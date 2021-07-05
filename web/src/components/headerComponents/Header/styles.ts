@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.div`
 
     header {
-        height: 100px;
+        height: 6.25rem;
         background: ${props => props.theme.primary};
     }
 
     div.limit-center {
         width: 100%;
-        max-width: 1100px;
+        max-width: 68.75rem;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
@@ -17,7 +17,7 @@ export const Container = styled.div`
 
     header a {
         width: fit-content;
-        height: 90px;
+        height: 5.625rem;
         
         align-self: center;
         cursor: pointer;
@@ -25,14 +25,14 @@ export const Container = styled.div`
 
     header img {
         max-width: 100%;
-        height: 90px;
+        height: 5.625rem;
     }
 
     div.login-cart {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        max-width: 250px;
+        max-width: 15.625rem;
     }
 
     div.login {
@@ -45,7 +45,7 @@ export const Container = styled.div`
     }
 
     .dropdown span.name {
-        width: 150px;
+        width: 9.375rem;
         
         white-space: nowrap;
         overflow: hidden;
@@ -56,9 +56,9 @@ export const Container = styled.div`
         position: absolute;
         background-color: #eee;
         color: #111;
-        min-width: 160px;   
+        min-width: 10rem;   
         z-index: 10;
-        top: 22px;
+        top: 1.375rem;
     }
 
     .dropdown:hover .dropdown-content {
@@ -66,7 +66,7 @@ export const Container = styled.div`
     }
 
     .dropdown-content p {
-        padding: 5px;
+        padding: 0.3125rem;
         display: flex;
         align-items: center;
         font-weight: normal;
@@ -77,12 +77,12 @@ export const Container = styled.div`
     }
 
     button.login-button, .dropdown {
-        width: 100px;
-        height: 20px;
-        margin: 70px 0 0 0;
+        width: 6.25rem;
+        height: 1.25rem;
+        margin: 4.375rem 0 0 0;
         border: 0;
         background: transparent;
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
         cursor: pointer;
         color: ${props => props.theme.color};
@@ -100,16 +100,16 @@ export const Container = styled.div`
     }
 
     div.icon {
-        margin: 35px 10px 0 0;
+        margin: 2.1875rem 0.625rem 0 0;
         text-align: center;
     }
 
     div.cart-number {
         position: absolute;
-        margin: 0 0 0 40px;
+        margin: 0 0 0 2.5rem;
         background: ${props => props.theme.danger};
-        padding: 1px 5px;
-        border-radius: 20px;
+        padding: 1px 0.3125rem;
+        border-radius: 1.25rem;
         z-index: 20;
     }
 
@@ -131,7 +131,7 @@ export const Container = styled.div`
     @media (max-width: 425px) {
 
         div.login-cart {
-            max-width: 175px;
+            max-width: 10.9375rem;
         }
         /*div.limit-center {
             justify-content: flex-start;

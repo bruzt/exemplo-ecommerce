@@ -14,7 +14,7 @@ export const Container = styled.div`
 
 
     div.menu-header {
-        height: 50px;
+        height: 3.125rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -31,12 +31,12 @@ export const Container = styled.div`
     }
 
     div.user-login div.user-menu {
-        width: 250px;
+        width: 15.625rem;
     }
 
     div.menu-header button {
         width: fit-content;
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
 
         border: 0;
@@ -50,15 +50,15 @@ export const Container = styled.div`
     }
 
     div.menu-header button.login {
-        margin-left: 10px;
+        margin-left: 0.625rem;
     }
 
     div.menu-header button.login span {
-        margin-left: 5px;
+        margin-left: 0.3125rem;
     }
 
     div.menu-header button#exit-mobile-menu {
-        width: 50px;
+        width: 3.125rem;
     }
 
     div.menu-body {
@@ -69,17 +69,17 @@ export const Container = styled.div`
     }
 
     div.menu-body > * {
-        margin-top: 50px;
+        margin-top: 3.125rem;
     }
 
     div.category-menu {
         width: 100%;
-        max-width: 400px;
+        max-width: 25rem;
     }
 
     details {
-        margin-left: 20px;
-        padding: 4px;
+        margin-left: 1.25rem;
+        padding: 0.25rem;
         cursor: pointer;
         color: #eee;
     }
