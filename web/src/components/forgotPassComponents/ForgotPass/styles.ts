@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
     width: 100%;
-    min-height: 500px;
+    min-height: 31.25rem;
 
     display: flex;
     flex-direction: column;
@@ -11,30 +11,30 @@ export const Container = styled.section`
 
     form {
         width: 100%;
-        max-width: 300px;
+        max-width: 18.75rem;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
     }
 
     form label {
-        margin: 10px 0 0 5px;
+        margin: 0.625rem 0 0 0.3125rem;
     }
 
     form input {
-        height: 40px;
+        height: 2.5rem;
         border: 0;
-        border-radius: 5px;
-        padding: 5px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        padding: 0.3125rem;
+        font-size: 1.25rem;
     }
 
     form button {
-        margin: 20px 0 0 0;
-        height: 50px;
-        font-size: 20px;
+        margin: 1.25rem 0 0 0;
+        height: 3.125rem;
+        font-size: 1.25rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         cursor: pointer;
         background: #3E8C34;
         color: inherit; 

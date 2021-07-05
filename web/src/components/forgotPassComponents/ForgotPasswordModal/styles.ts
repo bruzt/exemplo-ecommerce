@@ -10,8 +10,8 @@ export const Container = styled.div`
 
     .forgot-password {
         width: 100%;
-        max-width: 300px;
-        height: 300px;
+        max-width: 18.75rem;
+        height: 18.75rem;
 
         display: flex;
         flex-direction: column;
@@ -25,12 +25,12 @@ export const Container = styled.div`
 
     .forgot-password input#forgot-pass-input {
         width: 100%;
-        height: 40px;
+        height: 2.5rem;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 5px;
-        margin: 10px 0 0 0;
-        padding: 5px;
-        font-size: 20px;
+        border-radius: 0.3125rem;
+        margin: 0.625rem 0 0 0;
+        padding: 0.3125rem;
+        font-size: 1.25rem;
         text-align: center;
     }
 
@@ -40,11 +40,11 @@ export const Container = styled.div`
         margin: 30px 0 0 0;
         padding: 10px;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         cursor: pointer;
         background: ${props => props.theme.success};
         color: ${props => props.theme.color};
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
 
         &:hover {
@@ -65,7 +65,7 @@ export const Container = styled.div`
     }
 
     .forgot-password a {
-        margin: 20px 0 0 0;
+        margin: 1.25rem 0 0 0;
         cursor: pointer;
     }
 `;
