@@ -57,7 +57,15 @@ No diretório backend, execute as migrations para criar as tabelas no banco de d
 
 ### Painel de controle
 
-Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com ``` npm install ``` e o inicie com o comando ``` npm start ```, depois acesse no navegador o endereço ``` http://localhost:3002 ```. Para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://www.electronjs.org/apps/postbird) (para Postgres), você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, alterar o campo "admin" de ``` false ``` para ``` true ```.
+Para adicionar um produto você pode iniciar o painel de controle do loja, entre no diretório web-admin e instale os pacotes com ``` npm install ``` e o inicie com o comando ``` npm start ```, depois acesse no navegador o endereço ``` http://localhost:3002 ```. Para acessar o painel você precisará criar um usuário administrador, acesse o banco com uma GUI client como o [Postbird](https://github.com/Paxa/postbird) (para Postgres), acesse o banco de dados usando as credenciais:
+```
+Host: localhost
+Port: 5432
+Username: dbuser
+Password: F83ai8qD
+Database: ecommerce-dev
+```
+Clique em "connect", você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, ir na tabela de ``` users ```, clicar em "Content" e alterar o campo "admin" de ``` false ``` para ``` true ```.
 
 <!-- 
 VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
