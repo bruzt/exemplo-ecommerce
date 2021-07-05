@@ -6,7 +6,7 @@ export const Container = styled.div`
 
     .countdown {
         width: 100%;
-        height: 50px;
+        height: 3.125rem;
         
         display: flex;
         justify-content: center;
@@ -14,6 +14,6 @@ export const Container = styled.div`
     }
 
     .countdown span {
-        margin-left: 10px;
+        margin-left: 0.625rem;
     }
 `;

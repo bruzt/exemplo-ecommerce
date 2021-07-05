@@ -5,10 +5,10 @@ export const Container = styled.div`
     position: relative;
 
     width: 100%;
-    height: 450px;
+    height: 28.125rem;
 
-    border: 3px solid ${props => props.theme.primary};
-    border-radius: 5px;
+    border: 0.1875rem solid ${props => props.theme.primary};
+    border-radius: 0.3125rem;
     overflow: hidden;
     background: ${props => props.theme.primary};
 
@@ -19,7 +19,7 @@ export const Container = styled.div`
     transition: background-color 500ms;
 
     &:hover {
-        /*box-shadow: 3px 3px #16324C;*/
+        /*box-shadow: 0.1875rem 0.1875rem #16324C;*/
         background: transparent;
     }
 
@@ -38,8 +38,8 @@ export const Container = styled.div`
         z-index: 5;
 
         background: #41773A;
-        padding: 10px 15px;
-        font-size: 20px;
+        padding: 0.625rem 0.9375rem;
+        font-size: 1.25rem;
     }
 
     span.lacking {
@@ -49,32 +49,32 @@ export const Container = styled.div`
         z-index: 5;
 
         background: #a32e39;
-        padding: 10px 15px;
-        font-size: 20px;
+        padding: 0.625rem 0.9375rem;
+        font-size: 1.25rem;
     }
 
     figure.img-container {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
+        border-top-left-radius: 0.25rem;
+        border-top-right-radius: 0.25rem;
 
-        height: 200px;
+        height: 12.5rem;
 
         overflow: hidden;
     }
 
     figure.img-container img {
         width: 100%;
-        /*max-width: 475px;*/
-        height: 200px;
+        /*max-width: 29.6875rem;*/
+        height: 12.5rem;
         object-fit: cover;
     }
 
     div.title-container {
-        margin-top: 10px;
+        margin-top: 0.625rem;
     }
 
     div.title-container span.title {
-        font-size: 20px;
+        font-size: 1.25rem;
         text-align: center;
        
         overflow: hidden;
@@ -85,7 +85,7 @@ export const Container = styled.div`
     }
 
     div.price-and-discount {
-        /*margin-top: 10px;*/
+        /*margin-top: 0.625rem;*/
         /*height: 1fr;*/
 
         display: flex;
@@ -96,9 +96,9 @@ export const Container = styled.div`
     }
 
     div.price-and-discount span.price {
-        font-size: 30px;
+        font-size: 1.875rem;
         font-weight: bold;
-        padding: 5px 10px;
+        padding: 0.3125rem 0.625rem;
 
         overflow: hidden;
         text-overflow: ellipsis;
@@ -113,15 +113,15 @@ export const Container = styled.div`
 
     button {
         cursor: pointer;
-        height: 60px;
+        height: 3.75rem;
         border: 0;
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
 
         background: ${props => props.theme.success};
         color: ${props => props.theme.color};
 
-        font-size: 20px;
+        font-size: 1.25rem;
 
         transition: background-color .5s;
 

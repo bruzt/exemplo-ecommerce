@@ -4,9 +4,9 @@ export const Container = styled.div`
 
     .img-container {
         width: 100%;
-        max-width: 700px;
+        max-width: 43.75rem;
         height: 100%;
-        max-height: 400px;
+        max-height: 25rem;
         z-index: 0;
     }
 
@@ -16,14 +16,14 @@ export const Container = styled.div`
 
     .img-container img {
         width: auto;
-        max-width: 700px;
+        max-width: 43.75rem;
         height: auto;
-        max-height: 330px;
+        max-height: 20.625rem;
     }
 
     .thumb-container {
-        width: 70px;
-        height: 40px;
+        width: 4.375rem;
+        height: 2.5rem;
 
         background: #0D2235;
     }
@@ -31,9 +31,9 @@ export const Container = styled.div`
     .thumb-container img {
         
         width: auto;
-        max-width: 70px;
+        max-width: 4.375rem;
         height: auto;
-        max-height: 40px;
+        max-height: 2.5rem;
 
         display: block;
         margin: 0 auto;

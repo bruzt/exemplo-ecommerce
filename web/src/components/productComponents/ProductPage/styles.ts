@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-    min-height: 800px;
+    min-height: 50rem;
     
     display: grid;
-    grid-template-columns: 1fr 400px;
-    grid-template-rows: 60px minmax(40px, auto) 425px auto 1fr;
+    grid-template-columns: 1fr 25rem;
+    grid-template-rows: 3.75rem minmax(2.5rem, auto) 26.5625rem auto 1fr;
     grid-template-areas: 
         "breadcrumb breadcrumb"
         "title title"
@@ -16,12 +16,12 @@ export const Container = styled.section`
 
     div.breadcrumb {
         grid-area: breadcrumb;
-        padding: 10px;
+        padding: 0.625rem;
         background: ${props => props.theme.primary};
-        border-bottom-right-radius: 5px;
-        border-bottom-left-radius: 5px;
-        margin-bottom: 20px;
-        font-size: 18px;
+        border-bottom-right-radius: 0.3125rem;
+        border-bottom-left-radius: 0.3125rem;
+        margin-bottom: 1.25rem;
+        font-size: 1.125rem;
     }
 
     div.breadcrumb a {
@@ -31,13 +31,13 @@ export const Container = styled.section`
     h1 {
         grid-area: title;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 1.25rem;
     }
 
     div.img-slider-container,
     div.description,
     div.html-body {
-        padding: 10px;
+        padding: 0.625rem;
         background: ${props => props.theme.secondary};
     }
 
@@ -45,11 +45,11 @@ export const Container = styled.section`
         grid-area: slider-container;
 
         width: 100%;
-        max-width: 700px;
+        max-width: 43.75rem;
     }
 
     .img-container {
-        height: 400px;
+        height: 25rem;
         
         display: flex;
         justify-content: center;
@@ -65,19 +65,19 @@ export const Container = styled.section`
 
     .buy-card {
         position: sticky;
-        top: 5px;
+        top: 0.3125rem;
 
         width: 100%;
         height: fit-content;
 
-        margin-left: 10px;
+        margin-left: 0.625rem;
     }
 
     .buy-card .buy-card-infos {
         height: 100%;
 
         background: ${props => props.theme.primary};
-        padding: 10px;
+        padding: 0.625rem;
 
         display: flex;
         flex-direction: column;
@@ -85,17 +85,17 @@ export const Container = styled.section`
         align-items: center;
 
         & > * {
-            margin-top: 20px;
+            margin-top: 1.25rem;
         }
     }
 
     .countdown span {
-        margin-left: 10px;
-        font-size: 25px;
+        margin-left: 0.625rem;
+        font-size: 1.5625rem;
     }
 
     .buy-card .price {
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
     }
 
@@ -104,36 +104,36 @@ export const Container = styled.section`
     }
 
     .buy-card .total {
-        font-size: 30px;
+        font-size: 1.875rem;
         font-weight: bold;
     }
 
     .buy-card .discount {
         background: ${props => props.theme.success};
-        padding: 10px 20px;
+        padding: 0.625rem 1.25rem;
     }
 
     .buy-card .lacking {
         background: ${props => props.theme.danger};
-        padding: 10px 20px;
+        padding: 0.625rem 1.25rem;
     }
 
     .buy-card input#qtd {
-        width: 45px;
-        height: 30px;
-        font-size: 20px;
+        width: 2.8125rem;
+        height: 1.875rem;
+        font-size: 1.25rem;
         border: 0;
-        border-radius: 5px;
-        padding: 3px;
+        border-radius: 0.3125rem;
+        padding: 0.1875rem;
     }
 
     .buy-card button {
         width: 100%;
-        height: 50px;
+        height: 3.125rem;
         border: 0;
-        border-radius: 5px;
+        border-radius: 0.3125rem;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 1.25rem;
         font-weight: bold;
         color: inherit;
         background: ${props => props.theme.success};
@@ -154,25 +154,25 @@ export const Container = styled.section`
     }
 
     .buy-card button p {
-        margin-top: 5px;
+        margin-top: 0.3125rem;
     }
 
     .description {
         grid-area: description;
-        padding: 10px 0;
-        line-height: 25px;
+        padding: 0.625rem 0;
+        line-height: 1.5625rem;
     }
 
     div.html-body {
         grid-area: html-body;
 
         width: 100%;
-        max-width: 700px;
+        max-width: 43.75rem;
         height: 100%;
 
         overflow-x: hidden;
 
-        padding-top: 20px;
+        padding-top: 1.25rem;
     }
 
     @media (max-width: 1120px) {
@@ -188,15 +188,19 @@ export const Container = styled.section`
         div.description, 
         div.html-body  {
             width: 100%;
-            max-width: 700px;
+            max-width: 43.75rem;
             text-align: center;
         }
 
         div.buy-card-container {
-            margin: 10px 0;
+            margin: 0.625rem 0;
 
             display: flex;
             justify-content: center;
+        }
+
+        div.buy-card {
+            margin: 0;
         }
     }
 `;
