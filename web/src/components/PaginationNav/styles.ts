@@ -5,7 +5,7 @@ export const Container = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px;    
+    margin: 0.625rem;    
 
     ul {
         display: flex;
@@ -13,11 +13,11 @@ export const Container = styled.nav`
     }
 
     ul li button {
-        margin: 5px;
-        padding: 10px 20px;
+        margin: 0.3125rem;
+        padding: 0.625rem 20px;
         border: 0;
         border-radius: 2px;
-        font-size: 25px;
+        font-size: 1.5625rem;
         color: ${props => props.theme.primary};
         cursor: pointer;
     }
