@@ -45,9 +45,6 @@ export default function ImageSlider({ images }: IProps) {
 		</div>
     ));*/
 
-        if(process.browser) console.log(window.innerWidth)  
-
-
     return (
         <Container>
 
