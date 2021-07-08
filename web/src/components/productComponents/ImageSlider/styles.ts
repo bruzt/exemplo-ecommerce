@@ -112,7 +112,7 @@ export const ImgModal = styled.div`
 
     figure button.close {
         top: 5%;
-        right: 0;
+        right: 5%;
     }
 
     figure button.left {
