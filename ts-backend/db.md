@@ -58,3 +58,14 @@ sudo docker run -d --rm \
     --name sonic-test \
     bruzt/sonic-env:v1.3.0
 ```
+
+# Redis
+
+## Redis Dev
+
+```
+sudo docker run -d \
+    -p 6379:6379 \
+    --name redis-dev \
+    redis:6.2.4
+```

@@ -1,11 +1,8 @@
 import { Request, Response } from 'express';
 import crypto from 'crypto';
-import handlebars from 'handlebars';
-import path from 'path';
-import fs from 'fs';
 
 import UserModel from '../../models/UserModel';
-import mailer from '../../services/mailer';
+import queue from '../../queue';
 
 export default async function store(req: Request, res: Response) {
 
@@ -27,26 +24,7 @@ export default async function store(req: Request, res: Response) {
 
         await user.save();
 
-        const token = user.id + '$' + rawToken;
-        const reset_url = `${process.env.FRONTEND_URL}/forgotpass?token=${token}`;
-
-        const mailPath = path.resolve(__dirname, '..', '..', 'views', 'mails', 'resetPassword.hbs');
-        const templateFileContent = fs.readFileSync(mailPath).toString('utf8');
-
-        const mailTemplate = handlebars.compile(templateFileContent);
-
-        const html = mailTemplate({
-            name: user.name,
-            reset_url,
-            website_url: process.env.FRONTEND_URL
-        });
-
-        mailer.sendMail({
-            from: 'donotreply@companydomain.com',
-            to: email,
-            subject: 'Reset Password',
-            html,
-        });
+        await queue.add('ResetPasswordEmail', { user });
 
         return res.sendStatus(204);
         
