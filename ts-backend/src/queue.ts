@@ -23,9 +23,9 @@ const redisConfig = {
 const queues = Object.values(jobs).map(job => ({
     bull: new Queue(job.key, {
         redis: redisConfig,
-        limiter: {
-            max: 1000,
-            duration: 5000, // 5 seconds
+        limiter: { // executa no maximo 8 jobs por minuto
+            max: 8,
+            duration: 60000,
         }
     }),
     name: job.key,

@@ -51,6 +51,7 @@ const job: IJob = {
             type: 'fixed',
             delay: 60000
         },
+        timeout: 10000,
     },
 };
 
