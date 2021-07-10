@@ -69,3 +69,12 @@ sudo docker run -d \
     --name redis-dev \
     redis:6.2.4
 ```
+
+## Redis Test
+
+```
+sudo docker run -d --rm \
+    -p 6380:6379 \
+    --name redis-test \
+    redis:6.2.4
+```

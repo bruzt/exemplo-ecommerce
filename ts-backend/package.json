@@ -7,13 +7,14 @@
     "dev": "npm run dev:queue & npm run dev:server",
     "dev:server": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "dev:queue": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/queue.ts",
+    "test:queue": "cross-env NODE_ENV=test ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/queue.ts",
     "build": "rimraf ./build && tsc",
     "prod": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend -i -1 build/src/server.js",
     "postprod": "pm2 logs",
     "start": "npm run build && npm run prod",
     "dev:migration:run": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "pretest": "cross-env NODE_ENV=test ts-node-dev ./node_modules/typeorm/cli.js migration:run",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "npm run test:queue & cross-env NODE_ENV=test jest"
   },
   "keywords": [],
   "author": "",
