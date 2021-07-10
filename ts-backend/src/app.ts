@@ -29,9 +29,8 @@ const server = http.createServer(app);
 app.use(cors({ origin: process.env.CORS_ORIGIN_URL }));
 app.use(express.json());
 
-app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 socketIo.socketConnection(server);
-//socketIo.socketConnection().attach(server);
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 app.use(routes);
 
 app.use(celebrateCustomErrors);

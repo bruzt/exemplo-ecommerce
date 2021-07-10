@@ -11,44 +11,21 @@ dotenv.config({
 
 //////////////////////////////////////////////////////////////
 
-import Queue from 'bull';
+import Bull from 'bull';
 
-import jobs from './jobs';
+import sendEmailJob from './jobs/sendEmailJob';
 
 const redisConfig = {
     host: process.env.REDIS_HOST as string,
     port: Number(process.env.REDIS_PORT),
 };
 
-const queues = Object.values(jobs).map(job => ({
-    bull: new Queue(job.key, {
-        redis: redisConfig,
-        limiter: { // executa no maximo 8 jobs por minuto
-            max: 8,
-            duration: 60000,
-        }
-    }),
-    name: job.key,
-    handle: job.handle,
-    options: job.options,
-}));
+export const sendEmailQueue = new Bull('SendEmailQueue', {
+    redis: redisConfig,
+    limiter: { // executa no maximo 8 jobs por minuto
+        max: 8,
+        duration: 60000,
+    }
+});
 
-for (const queue of queues) {
-
-    queue.bull.process(queue.handle);
-
-    queue.bull.on('failed', (job, err) => {
-
-        console.log('Job failed', queue.name, job.data);
-        console.error(err);
-    });
-}
-
-export default {
-    add(name: string, data: { [key: string]: any }) {
-
-        const queue = queues.find(queue => queue.name === name);
-
-        return queue?.bull.add(data, queue.options);
-    },
-};
+sendEmailQueue.process(sendEmailJob);

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run dev:server & npm run dev:queue",
+    "dev": "npm run dev:queue & npm run dev:server",
     "dev:server": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts",
     "dev:queue": "cross-env NODE_ENV=development ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/queue.ts",
     "build": "rimraf ./build && tsc",
