@@ -62,4 +62,12 @@ sudo docker run -d --rm \
     bruzt/sonic-env:v1.3.0
 ```
 
+E o [Redis](https://github.com/redis/redis):
+```
+sudo docker run -d --rm \
+    -p 6380:6379 \
+    --name redis-test \
+    redis:6.2.4
+```
+
 Execute o comando ``` npm test ``` para iniciar os testes, depois de terminado você pode entrar no diretório "coverage/lcov-report" que será gerado na raiz do projeto e abrir o arquivo "index.html" no seu navegador para ver a cobertura de código.

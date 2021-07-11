@@ -10,6 +10,7 @@
 - Conecção Web Socket com [Socket.io](https://github.com/socketio/socket.io) para acompanhamento das ordens de compra em tempo real no painel de controle;
 - Integração com a API dos Correios para calculo de frete;
 - Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos;
+- Background Jobs com [Bull](https://github.com/OptimalBits/bull) e [Redis](https://github.com/redis/redis) para gerenciar a fila de envio de emails;
 - Integração com a API de pagamentos [Pagar.me](https://pagar.me/), para pagamentos com cartão de crédito e boleto.
 
 ## Frontend
@@ -51,6 +52,15 @@ sudo docker run -d \
     -p 1491:1491 \
     --name sonic-dev \
     bruzt/sonic-env:v1.3.0
+```
+
+E o [Redis](https://github.com/redis/redis):
+
+```
+sudo docker run -d \
+    -p 6379:6379 \
+    --name redis-dev \
+    redis:6.2.4
 ```
 
 No diretório backend, execute as migrations para criar as tabelas no banco de dados com o comando ``` npx sequelize db:migrate ``` e inicie a API com o comando ``` npm run dev ```, depois, no diretório web, execute o comando ``` npm start ``` para iniciar a aplicação, acesse no navegador o endereço ``` http://localhost:3000 ``` e você deve ver a página inicial sem nenhum produto.

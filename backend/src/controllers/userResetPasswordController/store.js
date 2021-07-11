@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const UserModel = require('../../models/UserModel');
-const mailer = require('../../services/mailer');
+const { sendEmailQueue } = require('../../backgroundJobs/queues');
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
             website_url: process.env.FRONTEND_URL
         });
 
-        mailer.sendMail({
+        sendEmailQueue.add({
             from: 'donotreply@companydomain.com',
             to: email,
             subject: 'Reset Password',
