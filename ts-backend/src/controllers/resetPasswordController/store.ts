@@ -5,7 +5,7 @@ import fs from 'fs';
 import handlebars from 'handlebars';
 
 import UserModel from '../../models/UserModel';
-import { sendEmailQueue } from '../../queue';
+import { sendEmailQueue } from '../../backgroundJobs/queues';
 
 export default async function store(req: Request, res: Response) {
 

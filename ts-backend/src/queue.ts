@@ -1,31 +1,12 @@
-import dotenv from 'dotenv';
 
-let env: string;
-if(process.env.NODE_ENV === 'production') env = '.env';
-else if(process.env.NODE_ENV === 'test') env = '.env.test';
-else env = '.env.dev';
+import queues from './backgroundJobs/queues';
 
-dotenv.config({
-    path: env
-});
+for(const queue of queues){
 
-//////////////////////////////////////////////////////////////
+    queue.queue.on('failed', (job, error) => {
+        console.log(`Job ${job.queue.name} failed`);
+        console.log(error);
+    });
 
-import Bull from 'bull';
-
-import sendEmailJob, { ISendEmailJob } from './jobs/sendEmailJob';
-
-const redisConfig = {
-    host: process.env.REDIS_HOST as string,
-    port: Number(process.env.REDIS_PORT),
-};
-
-export const sendEmailQueue = new Bull<ISendEmailJob>('SendEmailQueue', {
-    redis: redisConfig,
-    limiter: { // envia no maximo 8 emails por minuto
-        max: 8,
-        duration: 60000,
-    }
-});
-
-sendEmailQueue.process(sendEmailJob);
+    queue.process();
+}

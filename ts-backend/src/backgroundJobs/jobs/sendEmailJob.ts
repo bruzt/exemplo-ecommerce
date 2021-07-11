@@ -1,6 +1,6 @@
 import { Job } from 'bull';
 
-import mailer from "../services/mailer";
+import mailer from "../../services/mailer";
 
 export interface ISendEmailJob {
     from: string; 
@@ -10,7 +10,7 @@ export interface ISendEmailJob {
 }
 
 export default async function sendEmailJob({ data }: Job<ISendEmailJob>) {
-    
+
     await mailer.sendMail({
         from: data.from,
         to: data.to,
