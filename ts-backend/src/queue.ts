@@ -13,16 +13,16 @@ dotenv.config({
 
 import Bull from 'bull';
 
-import sendEmailJob from './jobs/sendEmailJob';
+import sendEmailJob, { ISendEmailJob } from './jobs/sendEmailJob';
 
 const redisConfig = {
     host: process.env.REDIS_HOST as string,
     port: Number(process.env.REDIS_PORT),
 };
 
-export const sendEmailQueue = new Bull('SendEmailQueue', {
+export const sendEmailQueue = new Bull<ISendEmailJob>('SendEmailQueue', {
     redis: redisConfig,
-    limiter: { // executa no maximo 8 jobs por minuto
+    limiter: { // envia no maximo 8 emails por minuto
         max: 8,
         duration: 60000,
     }
