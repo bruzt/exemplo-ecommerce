@@ -1,2 +1,2 @@
 
-### Backend alternativo usando typescript e o ORM TypeORM
+### Backend alternativo usando typescript e TypeORM
