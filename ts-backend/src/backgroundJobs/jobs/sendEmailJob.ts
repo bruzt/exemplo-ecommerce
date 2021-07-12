@@ -1,12 +1,12 @@
 import { Job } from 'bull';
 
-import mailer from "../../services/mailer";
+import mailer from "../../services/mailer/mailer";
 
 export interface ISendEmailJob {
     from: string; 
     to: string; 
     subject: string; 
-    html: string;
+    template: string;
 }
 
 export default async function sendEmailJob({ data }: Job<ISendEmailJob>) {
@@ -15,6 +15,6 @@ export default async function sendEmailJob({ data }: Job<ISendEmailJob>) {
         from: data.from,
         to: data.to,
         subject: data.subject,
-        html: data.html,
+        html: data.template,
     });
 }
