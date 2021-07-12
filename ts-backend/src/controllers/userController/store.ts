@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 
 import UserModel from '../../models/UserModel';
 import validateCpf from '../../utils/validateCPF';
+import userRegisterTemplate from '../../services/mailer/templates/userRegisterTemplate';
+import { sendEmailQueue } from '../../backgroundJobs/queues';
 
 interface IBody extends ReadableStream<Uint8Array> {
     name: string;
@@ -32,6 +34,15 @@ export default async function store(req: Request, res: Response){
         const newUser = UserModel.create({ name, email, cpf, password });
 
         await newUser.save();
+
+        const template = userRegisterTemplate(newUser.name);
+        
+        await sendEmailQueue.add({
+            from: 'donotreply@companydomain.com',
+            to: newUser.email,
+            subject: 'E-Commerce - Confirmação de criação de conta',
+            template,
+        });
 
         const serializedUser = { ...newUser, password: undefined, tempPassword: undefined };
 

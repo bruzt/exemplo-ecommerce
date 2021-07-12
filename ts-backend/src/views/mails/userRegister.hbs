@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-Commerce - Confirmação de cadastro</title>
+
+    <style>
+        * {
+			margin: 0;
+			padding: 0;
+			outline: 0;
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			background: #1C4061;
+			color: #eee;
+		}
+
+        main {
+
+        }
+
+		header {
+			background: #0D2235;
+			height: 100px;
+
+			display: flex;
+			justify-content: center;
+		}
+        
+        main {
+			min-height: 500px;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			margin-top: 100px;
+		}
+
+		main p {
+			font-size: 20px;
+			margin-top: 10px;
+		}
+        
+		header img {
+			width: auto;
+			max-width: 200px;
+			height: auto;
+			max-height: 100px;
+		}
+
+        footer {
+			height: 200px;
+			background: #0D2235;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+    </style>
+</head>
+<body>
+    <header>
+		<a href="{{ website_url }}" target="_blank" rel="noopener noreferrer">
+			<img src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg" alt="logo" />
+		</a>
+	</header>
+
+    <main>
+        <h1>Cadastro confirmado</h1>
+        <p>Obrigado por se cadastrar {{name}}</p>
+    </main>
+
+    <footer>
+		<p>Contruido por Bruno Zutim</p>
+	</footer>
+</body>
+</html>
