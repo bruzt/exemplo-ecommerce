@@ -9,6 +9,8 @@ import UserModel from '../../models/UserModel';
 import ProductModel from '../../models/ProductModel';
 import OrderProductModel from '../../models/OrderProductModel';
 import socketIo from '../../websocket/socketIo';
+import { sendEmailQueue } from '../../backgroundJobs/queues';
+import buyOrderTemplate from '../../services/mailer/templates/buyOrderTemplate';
 
 interface ICustomer {
     external_id: string;
@@ -231,6 +233,17 @@ export default async function store(req: Request, res: Response) {
             ///////////////////////////////////////////////////
 
             await transactionalEntityManager.save(order);
+
+            const template = buyOrderTemplate(products, body.quantity_buyed, body.freight_price, total_price);
+            
+            await sendEmailQueue.add({
+                from: 'donotreply@companyname.com',
+                to: user.email,
+                subject: 'E-Commerce - Confirmação de compra',
+                template,
+            }, {
+                priority: 2
+            });
 
             socketIo.emitNewOrder(order);
     
