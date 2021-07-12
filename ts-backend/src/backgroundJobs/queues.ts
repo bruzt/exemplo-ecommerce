@@ -25,6 +25,16 @@ export const sendEmailQueue = new Bull<ISendEmailJob>('SendEmailQueue', {
     limiter: { // envia no maximo 8 emails por minuto
         max: 8,
         duration: 60000,
+    },
+    defaultJobOptions: {
+        removeOnComplete: true,
+        // tenta reenviar 3 vezes com um minuto de diferença
+        attempts: 3,
+        backoff: { 
+            type: 'fixed',
+            delay: 60000
+        },
+        timeout: 10000,
     }
 });
 

@@ -30,16 +30,10 @@ export default async function store(req: Request, res: Response) {
         await sendEmailQueue.add({
             from: 'donotreply@companydomain.com',
             to: user.email,
-            subject: 'E-Commerce Reset Password',
+            subject: 'E-Commerce - Reset Password',
             template,
         }, { 
-            // tenta reenviar 3 vezes com um minuto de diferença
-            attempts: 3,
-            backoff: { 
-                type: 'fixed',
-                delay: 60000
-            },
-            timeout: 10000,
+            priority: 1,
         });
 
         return res.sendStatus(204);
