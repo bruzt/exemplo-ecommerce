@@ -1,5 +1,5 @@
 
-const mailer = require("../../services/mailer");
+const mailer = require("../../services/mailer/mailer");
 
 module.exports = async function sendEmailJob({ data }) {
 
@@ -7,6 +7,6 @@ module.exports = async function sendEmailJob({ data }) {
         from: data.from,
         to: data.to,
         subject: data.subject,
-        html: data.html,
+        html: data.template,
     });
 }

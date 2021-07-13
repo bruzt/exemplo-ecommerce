@@ -9,6 +9,8 @@ const { socketEmitNewOrder } = require('../../websocket/socketConnection');
 const OrderModel = require('../../models/OrderModel');
 const UserModel = require('../../models/UserModel');
 const ProductModel = require('../../models/ProductModel');
+const buyOrderTemplate = require('../../services/mailer/templates/buyOrderTemplate');
+const { sendEmailQueue } = require('../../backgroundJobs/queues');
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
@@ -110,7 +112,7 @@ module.exports = async (req, res) => {
                 through: {
                     quantity_buyed: quantity_buyed[i],
                     product_price: products[i].price,
-                    product_discount_percent: products[i].isOnSale ? products[i].discount_percent : null,
+                    product_discount_percent: products[i].isOnSale ? products[i].discount_percent : 0,
                 },
                 transaction
             });
@@ -173,21 +175,34 @@ module.exports = async (req, res) => {
         await order.save({ transaction });
         await transaction.commit();
 
-        const newOrder = await order.reload({
-            include: {
-                association: 'products',
-                attributes: ['id', 'title'],
-                through: { 
-                    attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
-                },
-                /*include: {
-                    association: 'images',
-                    attributes: ['id', 'filename'],
-                }*/
-            }
-        });
-    
-        socketEmitNewOrder(newOrder);
+        try {
+            const newOrder = await order.reload({
+                include: {
+                    association: 'products',
+                    attributes: ['id', 'title'],
+                    through: { 
+                        attributes: ['quantity_buyed', 'product_price', 'product_discount_percent'] 
+                    },
+                    /*include: {
+                        association: 'images',
+                        attributes: ['id', 'filename'],
+                    }*/
+                }
+            });
+            
+            socketEmitNewOrder(newOrder);
+
+            const template = buyOrderTemplate(products, quantity_buyed, freight_price, total_price);
+                
+            await sendEmailQueue.add({
+                from: 'donotreply@companyname.com',
+                to: user.email,
+                subject: 'E-Commerce - Confirmação de compra',
+                template,
+            });
+        } catch (error) {
+            console.log(error);
+        }
         
         return res.json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: response });
         
