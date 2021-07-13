@@ -234,16 +234,20 @@ export default async function store(req: Request, res: Response) {
 
             await transactionalEntityManager.save(order);
 
-            const template = buyOrderTemplate(products, body.quantity_buyed, body.freight_price, total_price);
-            
-            await sendEmailQueue.add({
-                from: 'donotreply@companyname.com',
-                to: user.email,
-                subject: 'E-Commerce - Confirmação de compra',
-                template,
-            });
+            try {
+                socketIo.emitNewOrder(order);
 
-            socketIo.emitNewOrder(order);
+                const template = buyOrderTemplate(products, body.quantity_buyed, body.freight_price, total_price);
+                
+                await sendEmailQueue.add({
+                    from: 'donotreply@companyname.com',
+                    to: user.email,
+                    subject: 'E-Commerce - Confirmação de compra',
+                    template,
+                });
+            } catch (error) {
+                console.log(error);
+            }
     
             return res.status(201).json({ order: { id: order.id, boleto_url: order.boleto_url }, pagarme: pagarMeResponse });
         });
