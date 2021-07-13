@@ -42,8 +42,6 @@ export default async function store(req: Request, res: Response){
             to: newUser.email,
             subject: 'E-Commerce - Confirmação de criação de conta',
             template,
-        }, {
-            priority: 2,
         });
 
         const serializedUser = { ...newUser, password: undefined, tempPassword: undefined };

@@ -27,8 +27,9 @@ export const sendEmailQueue = new Bull<ISendEmailJob>('SendEmailQueue', {
         duration: 60000,
     },
     defaultJobOptions: {
+        priority: 2,
         removeOnComplete: true,
-        // tenta reenviar 3 vezes com um minuto de diferença
+        // tenta reenviar 3 vezes com um minuto de diferença e falha se demorar mais de 10 segundos
         attempts: 3,
         backoff: { 
             type: 'fixed',

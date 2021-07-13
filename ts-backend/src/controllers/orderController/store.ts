@@ -241,8 +241,6 @@ export default async function store(req: Request, res: Response) {
                 to: user.email,
                 subject: 'E-Commerce - Confirmação de compra',
                 template,
-            }, {
-                priority: 2
             });
 
             socketIo.emitNewOrder(order);
