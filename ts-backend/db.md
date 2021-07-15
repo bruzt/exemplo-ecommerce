@@ -24,7 +24,7 @@ sudo docker exec -ti ecommerce-tests psql -d ecommerce-tests -U dbuser1 -W
 
 ```
 sudo docker run -d --rm \
-    --name ecommerce-test \
+    --name postgres-test \
     -e POSTGRES_USER=dbtest \
     -e POSTGRES_PASSWORD=gh9U35vq \
     -e POSTGRES_DB=ecommerce-test \
