@@ -36,12 +36,12 @@ Se você deseja testar esse app basta instalar os pacotes com ``` npm install ``
 
 ```
 sudo docker run -d \
-    --name ecommerce-dev \
+    --name postgres-dev \
     -e POSTGRES_USER=dbuser \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
     -p 5432:5432 \
-    postgres:13.1
+    postgres:13.3
 ```
 
 E [Sonic](https://github.com/valeriansaliou/sonic):
