@@ -6,8 +6,7 @@ import truncate from '../../../testUtils/truncateTypeorm';
 
 import app from '../../../app';
 import UserModel from '../../../models/UserModel';
-
-const fakeCpfs = ["71314297082", "30581023056", "97938138061"];
+import { fakeCpfs } from '../../../testUtils/fakeData';
 
 describe('userController List Test Suit', () => {
 

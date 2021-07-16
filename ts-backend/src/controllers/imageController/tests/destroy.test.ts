@@ -11,33 +11,10 @@ import UserModel from '../../../models/UserModel';
 import CategoryModel from '../../../models/CategoryModel';
 import ProductModel from '../../../models/ProductModel';
 import ImageModel from '../../../models/ImageModel';
+import { fakeUser, fakeProduct, fakeCategory } from '../../../testUtils/fakeData';
 
 const copyFileAsync = promisify(fs.copyFile);
 const filePath = path.resolve(__dirname, '../../../testUtils/files/test-img.png');
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeCategory = {
-    name: 'fake category',
-}
-
-const fakeProduct = {
-    title: 'fake product',
-    description: 'bla bla bla',
-    html_body: '<p>vai</p>',
-    price: "10.50",
-    quantity_stock: 100,
-    tangible: true,
-    weight: "5",
-    length: 15,
-    height: 15,
-    width: 15,
-}
 
 describe('imageController Test Suit', () => {
 

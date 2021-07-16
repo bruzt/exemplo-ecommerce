@@ -7,30 +7,7 @@ import app from '../../../app';
 import UserModel from '../../../models/UserModel';
 import AddressModel from '../../../models/AddressModel';
 import OrderModel from '../../../models/OrderModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeAddress = {
-    street: 'rua lala',
-    number: '11',
-    neighborhood: 'bairro haha',
-    city: 'kakanopolis',
-    state: 'fp',
-    zipcode: '73214596024'
-}
-
-const fakeOrder = {
-    freight_name: 'pac',
-    freight_price: 10.50,
-    total_price: 30.00,
-    payment_method: 'credit_card',
-    status: 'paid',
-}
+import { fakeUser, fakeAddress, fakeOrder } from '../../../testUtils/fakeData';
 
 describe('orderController List Test Suit', () => {
 

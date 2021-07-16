@@ -5,13 +5,7 @@ import sonicConnection from '../../../databases/sonic/connection';
 import truncate from '../../../testUtils/truncateTypeorm';
 import app from '../../../app';
 import UserModel from '../../../models/UserModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
+import { fakeUser } from '../../../testUtils/fakeData';
 
 describe('userController Destroy Test Suit', () => {
 

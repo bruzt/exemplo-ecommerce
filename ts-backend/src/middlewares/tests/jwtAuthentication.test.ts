@@ -4,13 +4,7 @@ import typeormConnection from '../../databases/typeorm/connection';
 import truncate from '../../testUtils/truncateTypeorm';
 import UserModel from '../../models/UserModel';
 import jwtAuthentication from '../jwtAuthentication'; 
-
-const fakeUser = {
-    name: "fake admin",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
+import { fakeUser } from '../../testUtils/fakeData';
 
 interface IReq {
     headers: {

@@ -10,43 +10,7 @@ import OrderModel from '../../../models/OrderModel';
 import CategoryModel from '../../../models/CategoryModel';
 import ProductModel from '../../../models/ProductModel';
 import OrderProductModel from '../../../models/OrderProductModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeAddress = {
-    street: 'rua lala',
-    number: '11',
-    neighborhood: 'bairro haha',
-    city: 'kakanopolis',
-    state: 'fp',
-    zipcode: '73214596024'
-}
-
-const fakeOrder = {
-    freight_name: 'pac',
-    freight_price: 10.50,
-    total_price: 30.00,
-    payment_method: 'credit_card',
-    status: 'paid',
-}
-
-const fakeProduct = {
-    title: 'fake product',
-    description: 'bla bla bla',
-    html_body: '<p>vai</p>',
-    price: "10.50",
-    quantity_stock: 100,
-    tangible: true,
-    weight: "5",
-    length: 15,
-    height: 15,
-    width: 15,
-}
+import { fakeUser, fakeAddress, fakeOrder, fakeProduct } from '../../../testUtils/fakeData';
 
 describe('orderAdminController List Test Suit', () => {
 

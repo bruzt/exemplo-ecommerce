@@ -7,30 +7,7 @@ import app from '../../../app';
 import UserModel from '../../../models/UserModel';
 import CategoryModel from '../../../models/CategoryModel';
 import ProductModel from '../../../models/ProductModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeCategory = {
-    name: 'fake category',
-}
-
-const fakeProduct = {
-    title: 'fake product',
-    description: 'bla bla bla',
-    html_body: '<p>vai</p>',
-    price: "10.50",
-    quantity_stock: 100,
-    tangible: true,
-    weight: "5",
-    length: 15,
-    height: 15,
-    width: 15,
-}
+import { fakeUser, fakeProduct, fakeCategory } from '../../../testUtils/fakeData';
 
 describe('productController Test Suit', () => {
 

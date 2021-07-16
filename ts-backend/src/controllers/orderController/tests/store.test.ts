@@ -8,114 +8,14 @@ import UserModel from '../../../models/UserModel';
 import AddressModel from '../../../models/AddressModel';
 import CategoryModel from '../../../models/CategoryModel';
 import ProductModel from '../../../models/ProductModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeAddress = {
-    street: 'rua lala',
-    number: '11',
-    neighborhood: 'bairro haha',
-    city: 'kakanopolis',
-    state: 'fp',
-    zipcode: '73214596024'
-}
-
-const fakeCategory = {
-    name: 'fake category',
-}
-
-const fakeProduct = {
-    title: 'fake product',
-    description: 'bla bla bla',
-    html_body: '<p>vai</p>',
-    price: "10.50",
-    quantity_stock: 100,
-    tangible: true,
-    weight: "5",
-    length: 15,
-    height: 15,
-    width: 15,
-}
-
-const credit_card = {
-    "installments": 2,
-    "card_number": "4111111111111111",
-    "card_cvv": "546",
-    "card_expiration_date": "1025",
-    "card_holder_name": "Jajau Lalau",
-    "customer": {
-        "external_id": "1",
-        "name": "Jajau Lalau",
-        "email": "teste1@teste.com",
-        "type": "individual",
-        "country": "br",
-        "phone_numbers": ["+5519999999999"],
-        "documents": [
-            {
-            "type": "cpf",
-            "number": "99999999999"
-            }
-        ]
-    },
-    "billing": {
-        "name": "Jajau Lalau",
-        "address": {
-            "street": "rau lalau",
-            "street_number": "55a",
-            "neighborhood": "bairro haha",
-            "city": "cordeirópolis",
-            "state": "sp",
-            "zipcode": "13490000",
-            "country": "br",
-        }
-    },
-    "shipping": {
-        "name": "Jajau Lalau",
-        "address": {
-            "street": "rau lalau",
-            "street_number": "55a",
-            "neighborhood": "bairro haha",
-            "city": "cordeirópolis",
-            "state": "sp",
-            "zipcode": "13490000",
-            "country": "br",
-        }
-    },
-};
-
-const boleto = {
-    "customer": {
-        "external_id": "1",
-        "name": "Jajau Lalau",
-        "email": "teste1@teste.com",
-        "type": "individual",
-        "country": "br",
-        "phone_numbers": ["+5519999999999"],
-        "documents": [
-            {
-            "type": "cpf",
-            "number": "99999999999"
-            }
-        ]
-    },
-    "shipping": {
-        "name": "Jajau Lalau",
-        "address": {
-            "street": "rau lalau",
-            "street_number": "55a",
-            "neighborhood": "bairro haha",
-            "city": "cordeirópolis",
-            "state": "sp",
-            "zipcode": "13490000",
-            "country": "br",
-        }
-    },
-};
+import { 
+    fakeUser, 
+    fakeAddress, 
+    fakeCategory, 
+    fakeProduct, 
+    fakeCreditCard,
+    fakeBoleto, 
+} from '../../../testUtils/fakeData';
 
 describe('orderController Store Test Suit', () => {
 
@@ -160,7 +60,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
-                credit_card
+                credit_card: fakeCreditCard,
             })
         ;
 
@@ -192,7 +92,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
-                boleto
+                boleto: fakeBoleto,
             })
         ;
 
@@ -226,7 +126,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: address.id,
-                credit_card
+                credit_card: fakeCreditCard,
             })
         ;
 
@@ -254,7 +154,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [product.id],
                 address_id: 11,
-                credit_card
+                credit_card: fakeCreditCard,
             })
         ;
 
@@ -279,7 +179,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [],
                 address_id: address.id,
-                credit_card
+                credit_card: fakeCreditCard,
             })
         ;
 
@@ -304,7 +204,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [2],
                 products_id: [15],
                 address_id: address.id,
-                credit_card
+                credit_card: fakeCreditCard,
             })
         ;
 
@@ -335,7 +235,7 @@ describe('orderController Store Test Suit', () => {
                 quantity_buyed: [5],
                 products_id: [product.id],
                 address_id: address.id,
-                credit_card
+                credit_card: fakeCreditCard,
             });
 
         expect(response.status).toBe(400);

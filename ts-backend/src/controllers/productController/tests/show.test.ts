@@ -6,24 +6,7 @@ import truncate from '../../../testUtils/truncateTypeorm';
 import app from '../../../app';
 import CategoryModel from '../../../models/CategoryModel';
 import ProductModel from '../../../models/ProductModel';
-
-const fakeCategory = {
-    name: 'fake category',
-    parent_id: 0
-}
-
-const fakeProduct = {
-    title: 'fake product',
-    description: 'bla bla bla',
-    html_body: '<p>vai</p>',
-    price: "10.50",
-    quantity_stock: 100,
-    tangible: true,
-    weight: "5",
-    length: 15,
-    height: 15,
-    width: 15,
-}
+import { fakeProduct, fakeCategory } from '../../../testUtils/fakeData';
 
 describe('productController Show Test Suit', () => {
 

@@ -6,17 +6,7 @@ import truncate from '../../../testUtils/truncateTypeorm';
 import app from '../../../app';
 import UserModel from '../../../models/UserModel';
 import CategoryModel from '../../../models/CategoryModel';
-
-const fakeUser = {
-    name: "fake user",
-    cpf: "61311682023",
-    email: "fake@admin.com",
-    password: "123456"
-}
-
-const fakeCategory = {
-    name: 'fake category',
-}
+import { fakeUser, fakeCategory } from '../../../testUtils/fakeData';
 
 describe('categoryController Store Test Suit', () => {
 
