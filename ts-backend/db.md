@@ -4,7 +4,7 @@
 
 ```
 sudo docker run -d \
-    --name ecommerce-dev \
+    --name postgres-dev \
     -e POSTGRES_USER=dbuser \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
