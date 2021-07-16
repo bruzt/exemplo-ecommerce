@@ -4,7 +4,7 @@ const handlebars = require('handlebars');
 
 module.exports = function userRegisterTemplate(name) {
 
-    const mailPath = path.resolve(__dirname, '..', '..', '..', 'views', 'mails', 'userRegister.hbs');
+    const mailPath = path.resolve(__dirname, '..', '..', '..', 'views', 'mail', 'userRegister.hbs');
     const templateFileContent = fs.readFileSync(mailPath).toString('utf8');
 
     const mailTemplate = handlebars.compile(templateFileContent);
