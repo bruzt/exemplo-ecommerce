@@ -9,7 +9,7 @@ module.exports = function userRegisterTemplate(products, quantityBuyed, freight,
         quantityBuyed: quantityBuyed[index],
     }));
 
-    const mailPath = path.resolve(__dirname, '..', '..', '..', 'views', 'mails', 'buyOrder.hbs');
+    const mailPath = path.resolve(__dirname, '..', '..', '..', 'views', 'mail', 'buyOrder.hbs');
     const templateFileContent = fs.readFileSync(mailPath).toString('utf8');
 
     const mailTemplate = handlebars.compile(templateFileContent);
