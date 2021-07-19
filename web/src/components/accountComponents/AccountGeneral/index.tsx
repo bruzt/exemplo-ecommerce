@@ -21,21 +21,22 @@ export default function AccountGeneral() {
     const [getDisabledSubmitButton, setDisabledSubmitButton] = useState(true);
 
     useEffect(() => {
-
         if (
-            (getName != userContext.getUser.name &&
-                getName.length > 2) ||
-            (getEmail != userContext.getUser.email &&
-                getEmail.length > 7) ||
-            (getCpf != userContext.getUser.cpf) ||
-            getCurrentPassword.length > 5 &&
-            getNewPassword.length > 5 &&
+            (getName.trim() != userContext.getUser.name &&
+                getName.trim().length > 2) ||
+            (getEmail.trim() != userContext.getUser.email &&
+                getEmail.trim().length > 7) ||
+            (getCpf.trim() != userContext.getUser.cpf && 
+                getCpf.trim().length == 11) ||
+            getCurrentPassword.trim().length > 5 &&
+            getNewPassword.trim().length > 5 &&
             getNewPassword == getConfirmNewPassword
         ) {
             setDisabledSubmitButton(false);
 
-        } else setDisabledSubmitButton(true);
-
+        } else {
+            setDisabledSubmitButton(true);
+        }
     }, [
         getName,
         getEmail,
@@ -47,7 +48,7 @@ export default function AccountGeneral() {
 
     function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>){
 
-        const cpf = String(event.target.value).replace('.', '').replace('.', '').replace('-.', '');
+        const cpf = String(event.target.value).replace(/\.|-/g, '');
 
         setCpf(cpf);
     }
@@ -59,11 +60,11 @@ export default function AccountGeneral() {
         setDisabledSubmitButton(true);
 
         const data = {
-            name: (getName == userContext.getUser.name) ? undefined : getName.trim(),
-            email: (getEmail == userContext.getUser.email) ? undefined : getEmail,
-            cpf: (getCpf == userContext.getUser.cpf) ? undefined : getCpf.replace('.', '').replace('.', '').replace('-', ''),
-            currentPassword: (getCurrentPassword.length == 0) ? undefined : getCurrentPassword,
-            newPassword: (getNewPassword.length == 0) ? undefined : getNewPassword
+            name: (getName.trim() == userContext.getUser.name) ? undefined : getName.trim(),
+            email: (getEmail.trim() == userContext.getUser.email) ? undefined : getEmail.trim(),
+            cpf: (getCpf.trim() == userContext.getUser.cpf) ? undefined : getCpf.trim().replace(/\.|-/g, ''),
+            currentPassword: (getCurrentPassword.trim().length == 0) ? undefined : getCurrentPassword.trim(),
+            newPassword: (getNewPassword.trim().length == 0) ? undefined : getNewPassword.trim()
         }
 
         try {
@@ -93,7 +94,7 @@ export default function AccountGeneral() {
             <Container>
 
                 {(Object.keys(userContext.getUser).length) > 0 && (
-                    <form
+                    <form 
                         onSubmit={handleSubmit}
                     >
                         <h1>Dados da conta</h1>
@@ -103,6 +104,7 @@ export default function AccountGeneral() {
                             <input
                                 type="text"
                                 id='name'
+                                data-testid='name'
                                 value={getName}
                                 onChange={(event) => setName(event.target.value)}
                             />
@@ -112,6 +114,7 @@ export default function AccountGeneral() {
                             <label htmlFor="email">e-mail</label>
                             <input
                                 type="email"
+                                data-testid='email'
                                 id='email'
                                 value={getEmail}
                                 onChange={(event) => setEmail(event.target.value.trim())}
@@ -123,6 +126,7 @@ export default function AccountGeneral() {
                             <input
                                 type="text"
                                 id='cpf'
+                                data-testid='cpf'
                                 maxLength={14}
                                 value={formatCpf(getCpf).cpf}
                                 onChange={handleSetCpf}
@@ -138,6 +142,7 @@ export default function AccountGeneral() {
                                     <input
                                         type="password"
                                         id='current-password'
+                                        data-testid='current-password'
                                         value={getCurrentPassword}
                                         onChange={(event) => setCurrentPassword(event.target.value.trim())}
                                     />
@@ -150,6 +155,7 @@ export default function AccountGeneral() {
                                     <input
                                         type="password"
                                         id='new-password'
+                                        data-testid='new-password'
                                         value={getNewPassword}
                                         onChange={(event) => setNewPassword(event.target.value.trim())}
                                     />
@@ -160,6 +166,7 @@ export default function AccountGeneral() {
                                     <input
                                         type="password"
                                         id='confirm-new-password'
+                                        data-testid='confirm-new-password'
                                         value={getConfirmNewPassword}
                                         onChange={(event) => setConfirmNewPassword(event.target.value.trim())}
                                     />
@@ -170,9 +177,10 @@ export default function AccountGeneral() {
                         <button
                             type="submit"
                             disabled={getDisabledSubmitButton}
+                            data-testid='save-button'
                         >
                             Salvar
-                    </button>
+                        </button>
 
                     </form>
                 )}
