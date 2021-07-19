@@ -22,22 +22,17 @@ export default function AccountAddresses() {
     const [getDisabledAddAddrButton, setDisabledAddAddrButton] = useState(true);
 
     useEffect(() => {
-
         fetchUfs();
-
     }, []);
 
     useEffect(() => {
-
         if (getUf != '0') {
             fetchCities();
             setCity('0');
         }
-
     }, [getUf]);
 
     useEffect(() => {
-
         if (
             getStreet.length > 2 &&
             getNumber.length > 0 &&
@@ -46,11 +41,11 @@ export default function AccountAddresses() {
             getUf != '0' &&
             getZipCode.length == 9
         ) {
-
             setDisabledAddAddrButton(false);
 
-        } else setDisabledAddAddrButton(true);
-
+        } else {
+            setDisabledAddAddrButton(true);
+        }
     }, [
         getStreet,
         getNumber,
@@ -60,8 +55,20 @@ export default function AccountAddresses() {
         getZipCode
     ]);
 
-    async function fetchUfs() {
+    function handleZipcode(zipcode: string){
 
+        zipcode = zipcode.replace(/[^0-9]/g, "");
+
+        if (zipcode.length == 8) {
+
+            zipcode = `${zipcode.slice(0,5)}-${zipcode.slice(5,8)}`
+        }
+
+        setZipCode(zipcode);
+    }
+    
+
+    async function fetchUfs() {
         try {
 
             const response = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
@@ -76,7 +83,6 @@ export default function AccountAddresses() {
     }
 
     async function fetchCities() {
-
         try {
 
             const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${getUf}/municipios`);
@@ -104,7 +110,7 @@ export default function AccountAddresses() {
             state: getUf,
             zipcode: getZipCode
         });
-
+        
         if (add) {
             setStreet('');
             setNumber('');
@@ -125,7 +131,11 @@ export default function AccountAddresses() {
                 <div className="address-grid">
 
                     {userContext.getUser.addresses.map((address) => (
-                        <div className="address-card" key={address.id}>
+                        <div 
+                            className="address-card" 
+                            key={address.id}
+                            data-testid="address-card"
+                        >
                             <div className="card-header">
                                 <button
                                     type='button'
@@ -155,6 +165,7 @@ export default function AccountAddresses() {
                         <input
                             type="text"
                             id="street"
+                            data-testid="street"
                             value={getStreet}
                             onChange={(event) => setStreet(event.target.value)}
                         />
@@ -166,6 +177,7 @@ export default function AccountAddresses() {
                             <input
                                 type="text"
                                 id="number"
+                                data-testid="number"
                                 value={getNumber}
                                 onChange={(event) => setNumber(event.target.value)}
                             />
@@ -176,6 +188,7 @@ export default function AccountAddresses() {
                             <input
                                 type="text"
                                 id="neighborhood"
+                                data-testid="neighborhood"
                                 value={getNeighborhood}
                                 onChange={(event) => setNeighborhood(event.target.value)}
                             />
@@ -187,6 +200,7 @@ export default function AccountAddresses() {
                             <label htmlFor="city">Cidade</label>
                             <select
                                 id="city"
+                                data-testid="city"
                                 value={getCity}
                                 onChange={(event) => setCity(event.target.value)}
                             >
@@ -210,6 +224,7 @@ export default function AccountAddresses() {
                             <label htmlFor="uf">Estado</label>
                             <select
                                 id="uf"
+                                data-testid="uf"
                                 value={getUf}
                                 onChange={(event) => setUf(event.target.value)}
                             >
@@ -230,8 +245,10 @@ export default function AccountAddresses() {
                             <input
                                 type="text"
                                 id="zipcode"
+                                data-testid="zipcode"
+                                maxLength={9}
                                 value={getZipCode}
-                                onChange={(event) => setZipCode(event.target.value)}
+                                onChange={(event) => handleZipcode(event.target.value)}
                             />
                         </div>
                     </div>
@@ -241,6 +258,7 @@ export default function AccountAddresses() {
                             type="submit"
                             disabled={getDisabledAddAddrButton}
                             onClick={(event) => handleAddAddress(event)}
+                            data-testid="submit-address-button"
                         >
                             Cadastrar
                         </button>
