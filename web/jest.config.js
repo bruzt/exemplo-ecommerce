@@ -4,8 +4,11 @@ module.exports = {
     testTimeout: 10000,
     clearMocks: true,
     collectCoverage: true,
-    collectCoverageFrom: ['src/**/*.test.tsx'],
+    watchAll: false,
+    testRegex: "\\.test\\.(ts|tsx)",
+    collectCoverageFrom: ["src/**/*", "!src/@types/**/*", "!src/styles/**/*", "!**/*.d.ts"],
     coverageReporters: ['lcov', 'text'],
+    coverageDirectory: "./coverage",
     verbose: true,
     moduleNameMapper: {
         "\\.(css|less)$": "identity-obj-proxy"
