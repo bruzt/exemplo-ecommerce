@@ -140,6 +140,7 @@ export default function AccountAddresses() {
                                 <button
                                     type='button'
                                     onClick={() => userContext.deleteAddress(address.id)}
+                                    data-testid='remove-address-button'
                                 >
                                     X
                                 </button>
