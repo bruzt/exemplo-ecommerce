@@ -6,7 +6,7 @@ import api from '../services/api';
 
 interface IProps {
     children: React.ReactNode;
-    testUser?: IUser;
+    _testUser?: IUser;
 }
 
 interface IUser {
@@ -43,11 +43,11 @@ interface IUseUser {
 
 const Context = createContext({} as IUseUser);
 
-export function UserContextProvider({ children, testUser }: IProps){
+export function UserContextProvider({ children, _testUser }: IProps){
 
     const [getLogin, setLogin] = useState(false);
     const [getShowModal, setShowModal] = useState(false);
-    const [getUser, setUser] = useState<IUser>(testUser);
+    const [getUser, setUser] = useState<IUser>(_testUser);
     const [getToken, setToken] = useState('');
 
     const router = useRouter();
