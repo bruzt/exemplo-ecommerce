@@ -45,11 +45,12 @@ export default function CategoriesAndSeachBar() {
     }, [filterBarContext.getSearchBarText]);
 
     useEffect( () => {
-        let body;
-        if(process.browser) body = document.getElementById('root');
-
-        if(getMobileMenuActive) body.style.overflow = 'hidden';
-        else body.style.overflow = 'initial';
+        if(process.browser) {
+            const body = document.getElementById('root');
+    
+            if(getMobileMenuActive) body.style.overflow = 'hidden';
+            else body.style.overflow = 'initial';
+        }
     }, [getMobileMenuActive]);
 
     function debounceFetchSearchProducts(){

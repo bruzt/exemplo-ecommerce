@@ -124,7 +124,7 @@ export default function AccountAddresses() {
 
     return (
         <>
-            <Container>
+            <Container data-testid='addresses-component'>
 
                 <h1>Gerenciar Endereços</h1>
 

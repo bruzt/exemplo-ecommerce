@@ -97,7 +97,7 @@ export default function AccountMyShoppings() {
 
     return (
         <>
-            <Container>
+            <Container data-testid='my-shopping-component'>
 
                 <h2>Minhas compras</h2>
 

@@ -33,6 +33,7 @@ export default function AccountMenu() {
                                     pathname: '/account',
                                     query: { menu: 'account-data' }
                                 })}
+                                data-testid='account-data-menu'
                             >
                                 Dados da conta
                             </a>
@@ -42,6 +43,7 @@ export default function AccountMenu() {
                                     pathname: '/account',
                                     query: { menu: 'addresses' }
                                 })}
+                                data-testid='addresses-menu'
                             >
                                 Gerenciar Endereços
                             </a>
@@ -51,6 +53,7 @@ export default function AccountMenu() {
                                     pathname: '/account',
                                     query: { menu: 'my-shopping' }
                                 })}
+                                data-testid='my-shopping-menu'
                             >
                                 Minhas compras
                             </a>

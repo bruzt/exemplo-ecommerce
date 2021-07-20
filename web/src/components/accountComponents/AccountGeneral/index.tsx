@@ -91,7 +91,7 @@ export default function AccountGeneral() {
 
     return (
         <>
-            <Container>
+            <Container data-testid='account-data-component'>
 
                 {(Object.keys(userContext.getUser).length) > 0 && (
                     <form 
