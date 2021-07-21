@@ -10,8 +10,8 @@ export const Container = styled.section`
         margin-bottom: 3.125rem;
     }
 
-    div.scroll-x {
-        width: 100%;
+    div.order-card-container {
+        width: 55rem;
     }
 
     div.card button[type='button'] {
@@ -55,7 +55,7 @@ export const Container = styled.section`
         align-items: center;
     }
 
-    .order-card {
+    .order-card-details {
         background: ${props => props.theme.primary};
         border-top: 1px solid ${props => props.theme.secondary};
         padding: 0.3125rem;
@@ -66,32 +66,36 @@ export const Container = styled.section`
         grid-gap: 0.625rem;
     }
 
-    .order-card:last-child {
+    .order-card-details:last-child {
         border-bottom-right-radius: 0.3125rem;
         border-bottom-left-radius: 0.3125rem;
     }
 
-    .order-card:hover {
+    .order-card-details:hover {
         background: ${props => props.theme.secondary};
     }
 
-    .order-card.freight-card {
+    .freight-card {
+        width: 100%;
+
         display: flex;
+        justify-content: space-between;
         align-items: center;
+
+        background: ${props => props.theme.primary};
+
         cursor: default;
 
-        &:hover {
-            background: ${props => props.theme.primary};
-        }
+        padding: 0.5rem 5.8rem;
         
-        & > span:nth-child(1){
+        /*& > span:nth-child(1){
             width: 70.625rem;
 
             text-align: center;
-        }
+        }*/
     }
 
-    .order-card.freight-card span {
+    .order-card-details.freight-card span {
         padding: 0;
     }
 
@@ -110,7 +114,7 @@ export const Container = styled.section`
         max-height: 3.125rem;
     }
 
-    .order-card span {
+    .order-card-details span {
         padding-top: 0.9375rem;
 
         overflow: hidden;
@@ -122,17 +126,17 @@ export const Container = styled.section`
         white-space: nowrap;
     }
 
-    .order-card span.product-title {
+    .order-card-details span.product-title {
         display: flex;
         justify-content: center;
         padding: 0;
     }
 
-    .order-card span.product-title span:nth-child(1) {
+    .order-card-details span.product-title span:nth-child(1) {
         width: 100%;
     }
 
-    .order-card span.product-discount {
+    .order-card-details span.product-discount {
         width: fit-content !important;
         background: ${props => props.theme.success};
         padding: 0.3125rem 0.625rem;

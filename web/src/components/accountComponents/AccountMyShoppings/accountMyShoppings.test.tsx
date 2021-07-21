@@ -1,0 +1,84 @@
+import React from 'react';
+import * as router from 'next/router';
+import { render, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import MockAdapter from 'axios-mock-adapter';
+
+import AccountMyShoppings from './';
+import api from '../../../services/api';
+import { fakeOrder } from '../../../testUtils/fakeData';
+
+jest.mock('next/router', () => require('next-router-mock'));
+
+jest.mock("next/link", () => {
+    return ({children}) => {
+        return children;
+    }
+});
+
+/*jest.mock("next/link", () => ({
+    push: function(path: string | { [key: string]: string; }) {
+        return '/';
+    }
+}));*/
+
+describe('Account My Shoppings Tests', () => {
+
+    beforeAll(() => {
+        const apiMock = new MockAdapter(api);
+        apiMock.onGet('/orders?limit=5&offset=0').reply(200, fakeOrder);
+    });
+
+    it('should render an order card', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+
+        const orderCard = queryByTestId('order-card-container');
+
+        expect(orderCard).toBeInTheDocument();
+    });
+
+    it('should open order details on click', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+
+        const orderCardButton = queryByTestId('order-card-button');
+
+        fireEvent.click(orderCardButton);
+
+        const orderDetails = queryByTestId('order-content');
+
+        expect(orderDetails).toBeInTheDocument();
+    });
+
+    it('should close order details on click second click', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+
+        const orderCardButton = queryByTestId('order-card-button');
+
+        fireEvent.click(orderCardButton);
+        fireEvent.click(orderCardButton);
+
+        const orderDetails = queryByTestId('order-content');
+
+        expect(orderDetails).not.toBeInTheDocument();
+    });
+
+    /*it('should navigate to product page when clicking in product tab', async () => {
+
+        const spyLink = jest.spyOn(router, 'useRouter');
+
+        const { queryByTestId, getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+
+        const orderCardButton = getByTestId('order-card-button');
+
+        fireEvent.click(orderCardButton);
+
+        const orderCardDetails = queryByTestId('order-card-details');
+
+        await waitFor(() => fireEvent.click(orderCardDetails));
+
+        expect(spyLink).toBeCalledTimes(1);
+    });*/
+});

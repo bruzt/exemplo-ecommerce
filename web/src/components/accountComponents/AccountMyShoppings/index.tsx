@@ -103,13 +103,14 @@ export default function AccountMyShoppings() {
 
                 {getOrders.map((order) => (
 
-                    <div key={order.id} className="scroll-x">
+                    <div key={order.id} className="order-card-container" data-testid='order-card-container'>
 
                         <div className="card">
                             <button
                                 type="button"
                                 className={`${(getOpenOrderTab.includes(order.id) ? 'tab-open' : '')}`}
                                 onClick={() => handleOpenTab(order.id)}
+                                data-testid='order-card-button'
                             >
                                 <div className="card-header">
                                     <span>nº {('000000' + order.id).slice(-6)}</span>
@@ -150,10 +151,11 @@ export default function AccountMyShoppings() {
                             </button>
                             
                             {(getOpenOrderTab.includes(order.id)) && (
-                                <div className='order-content'>
-                                    <div className="order-card freight-card">
+                                <div className='order-content' data-testid='order-content'>
+                                    <div className="freight-card">
+                                        <span></span>
                                         <span>Frete: {order.freight_name.toUpperCase()}</span>
-                                        <span>R$ {order.freight_price}</span>
+                                        <span>R$ {Number(order.freight_price).toFixed(2)}</span>
                                     </div>
         
                                     {order.products.map((product) => {
@@ -168,7 +170,10 @@ export default function AccountMyShoppings() {
                                                 key={product.id}
                                                 href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}
                                             >
-                                                <a className='order-card' onClick={() => console.log(product)}>
+                                                <a
+                                                    className='order-card-details' 
+                                                    data-testid='order-card-details'
+                                                >
                                                     <div className="img-container">
                                                         <img
                                                             src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
