@@ -1,5 +1,4 @@
 import React from 'react';
-import * as router from 'next/router';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
@@ -66,8 +65,6 @@ describe('Account My Shoppings Tests', () => {
     });
 
     /*it('should navigate to product page when clicking in product tab', async () => {
-
-        const spyLink = jest.spyOn(router, 'useRouter');
 
         const { queryByTestId, getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
 
