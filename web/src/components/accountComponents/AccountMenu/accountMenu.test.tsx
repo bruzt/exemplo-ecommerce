@@ -14,7 +14,7 @@ import api from '../../../services/api';
  
 jest.mock('next/router', () => require('next-router-mock'));
 
-describe('Account General Tests', () => {
+describe('Account Menu Tests', () => {
 
     beforeAll( () => {
         const axiosMock = new MockAdapter(axios);
