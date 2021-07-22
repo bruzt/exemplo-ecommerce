@@ -11,7 +11,7 @@ import { FilterBarContextProvider } from '../../../contexts/filterBarContext';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
-describe('Account My Shoppings Tests', () => {
+describe('Forgot Pass Page Tests', () => {
 
     beforeAll(() => {
         const apiMock = new MockAdapter(api);
