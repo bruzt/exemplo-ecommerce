@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -8,9 +8,13 @@ import PageLayout from '../../PageLayout';
 
 import { Container } from './styles';
 
-export default function ForgotPass() {
+interface IProps {
+    _testToken?: string;
+}
 
-    const [getToken, setToken] = useState('');
+export default function ForgotPass({ _testToken }: IProps) {
+
+    const [getToken, setToken] = useState(_testToken || '');
     const [getPassword, setPassword] = useState('');
     const [getConfirmPassword, setConfirmPassword] = useState('');
 
@@ -25,7 +29,6 @@ export default function ForgotPass() {
     }, [router.query.token]);
 
     useEffect(() => {
-
         if (
             getToken.length > 10 &&
             getPassword.length > 5 &&
@@ -37,14 +40,14 @@ export default function ForgotPass() {
 
     }, [getToken, getPassword, getConfirmPassword]);
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: FormEvent) {
 
         event.preventDefault();
 
         setDisabledButton(true);
 
         try {
-
+            
             await api.put('/reset-password', {
                 token: getToken,
                 password: getPassword
@@ -72,11 +75,12 @@ export default function ForgotPass() {
 
                     <h1>Trocar senha</h1>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <label htmlFor="password">Senha</label>
                         <input
                             type="password"
                             id="password"
+                            data-testid="password"
                             value={getPassword}
                             onChange={(event) => setPassword(event.target.value)}
                         />
@@ -85,14 +89,15 @@ export default function ForgotPass() {
                         <input
                             type="password"
                             id="confirm-password"
+                            data-testid="confirm-password"
                             value={getConfirmPassword}
                             onChange={(event) => setConfirmPassword(event.target.value)}
                         />
 
                         <button
                             type="submit"
+                            data-testid="submit-button"
                             disabled={getDisabledButton}
-                            onClick={(event) => handleSubmit(event)}
                         >
                             Trocar senha
                         </button>
