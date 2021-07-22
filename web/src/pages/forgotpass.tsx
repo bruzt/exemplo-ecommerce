@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ForgotPass from '../components/forgotPassComponents/ForgotPass';
+import ForgotPassPage from '../components/forgotPassComponents/ForgotPassPage';
 
 export default function forgotpass() {
 
-    return <ForgotPass />
+    return <ForgotPassPage />
 }
