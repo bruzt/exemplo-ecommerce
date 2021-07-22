@@ -23,6 +23,10 @@ export const Container = styled.div`
         text-align: center;
     }
 
+    label {
+        font-weight: bold;
+    }
+
     .forgot-password input#forgot-pass-input {
         width: 100%;
         height: 2.5rem;

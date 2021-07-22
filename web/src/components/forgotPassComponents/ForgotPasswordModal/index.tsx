@@ -61,12 +61,15 @@ export default function ForgotPasswordModal({ setForgotPassword }: IProps) {
 							<input
 								type="email"
 								id='forgot-pass-input'
+								data-testid='forgot-pass-input'
+								placeholder='e-mail'
 								value={getEmail}
 								onChange={(event) => setEmail(event.target.value)}
 							/>
 
 							<button
 								type='submit'
+								data-testid='submit-button'
 								disabled={getDisabledSendButton}
 							>
 								{(getSendingEmail) ? (
@@ -81,6 +84,7 @@ export default function ForgotPasswordModal({ setForgotPassword }: IProps) {
 
 							<a
 								onClick={() => setForgotPassword(false)}
+								data-testid='back-anchor'
 							>
 								Voltar para Login
                             </a>
