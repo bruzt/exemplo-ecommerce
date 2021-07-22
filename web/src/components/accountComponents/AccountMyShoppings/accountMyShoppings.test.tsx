@@ -8,18 +8,7 @@ import api from '../../../services/api';
 import { fakeOrder } from '../../../testUtils/fakeData';
 
 jest.mock('next/router', () => require('next-router-mock'));
-
-jest.mock("next/link", () => {
-    return ({children}) => {
-        return children;
-    }
-});
-
-/*jest.mock("next/link", () => ({
-    push: function(path: string | { [key: string]: string; }) {
-        return '/';
-    }
-}));*/
+jest.mock('next/link', () => ({ children }) => children);
 
 describe('Account My Shoppings Tests', () => {
 
@@ -64,18 +53,16 @@ describe('Account My Shoppings Tests', () => {
         expect(orderDetails).not.toBeInTheDocument();
     });
 
-    /*it('should navigate to product page when clicking in product tab', async () => {
+    it('should navigate to product page when clicking in product tab', async () => {
 
-        const { queryByTestId, getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+        const { getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
 
         const orderCardButton = getByTestId('order-card-button');
 
         fireEvent.click(orderCardButton);
 
-        const orderCardDetails = queryByTestId('order-card-details');
+        const orderCardDetails = getByTestId('order-card-details');
 
         await waitFor(() => fireEvent.click(orderCardDetails));
-
-        expect(spyLink).toBeCalledTimes(1);
-    });*/
+    });
 });
