@@ -18,7 +18,7 @@ import { Container, CategoryDropdownMenu, SearchBarForm } from './styles';
 import MobileMenu from '../MobileMenu';
 
 let timeoutId: NodeJS.Timeout;
-let firstRender = true;
+//let firstRender = true;
 
 export default function CategoriesAndSeachBar() {
     
@@ -32,7 +32,7 @@ export default function CategoriesAndSeachBar() {
     const filterBarContext = useFilterBar();
     const themeContext = useTheme();
 
-    useEffect( () => {
+    /*useEffect( () => {
         return () => { firstRender = true; }
     }, []);
 
@@ -42,7 +42,7 @@ export default function CategoriesAndSeachBar() {
         }
         else firstRender = false;
 
-    }, [filterBarContext.getSearchBarText]);
+    }, [filterBarContext.getSearchBarText]);*/
 
     useEffect( () => {
         if(process.browser) {
@@ -53,7 +53,9 @@ export default function CategoriesAndSeachBar() {
         }
     }, [getMobileMenuActive]);
 
-    function debounceFetchSearchProducts(){
+    function debounceFetchSearchProducts(productTitle: string){
+
+        filterBarContext.setSearchBarText(productTitle);
 
         clearTimeout(timeoutId);
 
@@ -74,7 +76,7 @@ export default function CategoriesAndSeachBar() {
                 console.error(error);
                 alert('Erro ao buscar produtos');
             }
-        }, 1000);
+        }, 500);
     }
 
     function handleSearch(event: FormEvent) {
@@ -106,7 +108,7 @@ export default function CategoriesAndSeachBar() {
 
         event.stopPropagation();
 
-        setActiveCategoryMenu(!getActiveCategoryMenu);
+        setActiveCategoryMenu(false);
 
         delete router.query.title;
 
@@ -138,9 +140,10 @@ export default function CategoriesAndSeachBar() {
                         <li
                             className={`category-menu ${(getActiveCategoryMenu) ? 'active' : ''}`}
                             onClick={() => setActiveCategoryMenu(!getActiveCategoryMenu)}
+                            data-testid='category-menu'
                         >
                             <p>Categorias <FaCaretDown /></p>
-                            <ul>
+                            <ul data-testid='first-level-categories'>
                                 {firstLevels.map( (firstLevel) => buildCategoryTree(firstLevel))}   
                             </ul>
                         </li>
@@ -163,6 +166,7 @@ export default function CategoriesAndSeachBar() {
                 key={category.id}
                 className={`${(hasChildren) ? 'has-children' : ''}`} 
                 onClick={(event) => handleCategorySearch(event, category)}
+                data-testid='category-children'
             >
                 <p>{category.name} {(hasChildren) && <FaCaretRight />}</p>
                 {(hasChildren) && (
@@ -180,11 +184,12 @@ export default function CategoriesAndSeachBar() {
                 <div>
                     <input
                         type="text"
+                        data-testid="search-bar"
                         placeholder='Pesquise o seu produto'
                         value={filterBarContext.getSearchBarText}
-                        onChange={(event) => filterBarContext.setSearchBarText(event.target.value)}
+                        onChange={(event) => debounceFetchSearchProducts(event.target.value)}
                     />
-                    <button type='submit'>
+                    <button type='submit' data-testid="search-bar-button">
                         <FaSearch />
                     </button>
                 </div>
@@ -243,6 +248,7 @@ export default function CategoriesAndSeachBar() {
                 >
                     <Switch
                         id='react-switch'
+                        data-testid='theme-switch'
                         
                         onChange={handleChangeTheme} 
                         checked={themeContext.getTheme.title === 'light'}

@@ -118,7 +118,10 @@ export const SearchBarForm = styled.form`
 
     ul.dropdown-search li {
         color: #111;
-        margin-bottom: 0.3125rem;
+    }
+    
+    ul.dropdown-search li + li {
+        margin-top: 0.125rem;
     }
 
     ul.dropdown-search li a {

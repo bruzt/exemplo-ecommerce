@@ -18,6 +18,61 @@ export const fakeAddress = {
     zipcode: '88888888',
 };
 
+export const fakeCategories = [
+    {
+        "id": 1,
+        "name": "Hardware",
+        "parent_id": 0,
+        "created_at": "2021-07-16T15:03:18.173Z",
+        "updated_at": "2021-07-16T15:03:18.173Z"
+    },
+    {
+        "id": 2,
+        "name": "Processador",
+        "parent_id": 1,
+        "created_at": "2021-07-16T15:03:18.173Z",
+        "updated_at": "2021-07-16T15:03:18.173Z"
+    }
+]
+
+export const fakeProducts = {
+    "count": 1,
+    "products": [
+        {
+            "id": 1,
+            "category_id": 1,
+            "title": "placa mãe mini-itx 3",
+            "description": "hehe",
+            "html_body": "fffff",
+            "price": "149.99",
+            "quantity_stock": 98,
+            "quantity_sold": 2,
+            "discount_percent": 0,
+            "discount_datetime_start": null,
+            "discount_datetime_end": null,
+            "tangible": true,
+            "weight": 1,
+            "length": 10,
+            "height": 15,
+            "width": 15,
+            "created_at": "2021-07-16T15:03:21.192Z",
+            "updated_at": "2021-07-21T14:28:04.467Z",
+            "deleted_at": null,
+            "category": {
+                "id": 1,
+                "name": "Hardware",
+                "parent_id": 0,
+                "created_at": "2021-07-16T15:03:18.173Z",
+                "updated_at": "2021-07-16T15:03:18.173Z"
+            },
+            "images": [],
+            "isOnSale": false,
+            "finalPrice": "149.99",
+            "dateNow": "2021-07-23T13:13:37.132Z"
+        }
+    ]
+}
+
 export const fakeOrder = {
     "count": 1,
     "orders": [
