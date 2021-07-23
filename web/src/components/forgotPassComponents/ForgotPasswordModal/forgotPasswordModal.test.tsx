@@ -10,7 +10,6 @@ describe('Forgot Password Modal Tests', () => {
 
     beforeAll(() => {
         const apiMock = new MockAdapter(api);
-        //apiMock.onGet('/categories').reply(200, []);
         apiMock.onPost('/reset-password').reply(204);
     });
 
