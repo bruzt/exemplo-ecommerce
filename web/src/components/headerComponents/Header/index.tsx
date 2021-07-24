@@ -22,6 +22,14 @@ export default function Header() {
     const router = useRouter();
     const themeContext = useTheme();
 
+    function handleGoToAccount(){
+
+        router.push({
+            pathname: '/account',
+            query: { menu: 'account-data' }
+        })
+    }
+
     return (
         <>
             <Head>
@@ -50,6 +58,7 @@ export default function Header() {
                                 {(userContext.getLogin == false) ? (
                                     <button
                                         className='login-button'
+                                        data-testid='login-button'
                                         type='button'
                                         title='Fazer Login'
                                         onClick={() => userContext.handleSwitchModal()}
@@ -59,20 +68,13 @@ export default function Header() {
                                 ) 
                                 : ((userContext.getUser) 
                                     ? (
-                                        <div className="dropdown">
+                                        <div className="dropdown" data-testid='dropdown-user'>
                                             <span className='name'>Olá, {userContext.getUser.name.split(' ')[0]}</span>
                                             <div className="dropdown-content">
-                                                <p
-                                                    onClick={() => router.push({
-                                                        pathname: '/account',
-                                                        query: { menu: 'account-data' }
-                                                    })}
-                                                >
+                                                <p onClick={handleGoToAccount} data-testid='go-to-account'>
                                                     <FaUserCircle />&nbsp;Minha Conta
                                                 </p>
-                                                <p
-                                                    onClick={() => userContext.logOut()}
-                                                >
+                                                <p onClick={() => userContext.logOut()} data-testid='logout'>
                                                     <FaSignOutAlt />&nbsp;Sair
                                                 </p>
                                             </div>

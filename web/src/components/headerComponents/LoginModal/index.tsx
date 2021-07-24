@@ -83,7 +83,7 @@ export default function LoginModal() {
 	}
 
     return (
-        <Container>
+        <Container data-testid='login-modal'>
 			<div className='modal-content'>
 
 				<div className="modal-head">
