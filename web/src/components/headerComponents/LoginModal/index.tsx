@@ -46,7 +46,7 @@ export default function LoginModal() {
             }
         } else {
             if(
-                getEmail.length > 8 &&
+                getEmail.length > 7 &&
                 getPassword.length > 5
             ){
                 setDisabledButton(false);
@@ -112,6 +112,7 @@ export default function LoginModal() {
 										<input 
 											type='text' 
 											id="login-name"
+											data-testid="login-name"
 											value={getName}
 											onChange={(event) => setName(event.target.value)}
 										/>
@@ -123,6 +124,7 @@ export default function LoginModal() {
 									<input 
 										type='email' 
 										id="login-email"
+										data-testid="login-email"
 										value={getEmail}
 										onChange={(event) => setEmail(event.target.value.trim())}
 									/>
@@ -134,6 +136,7 @@ export default function LoginModal() {
 										<input 
 											type='text' 
 											id="login-cpf"
+											data-testid="login-cpf"
 											maxLength={14}
 											className={`${formatCpf(getCpf).valid == false ? 'invalid' : ''}`}
 											value={getCpf}
@@ -149,6 +152,7 @@ export default function LoginModal() {
 									<input 
 										type='password' 
 										id="login-password"
+										data-testid="login-password"
 										value={getPassword}
 										onChange={(event) => setPassword(event.target.value.trim())}
 									/>
@@ -160,6 +164,7 @@ export default function LoginModal() {
 										<input 
 											type='password' 
 											id="login-confirm-password"
+											data-testid="login-confirm-password"
 											value={getConfirmPassword}
 											onChange={(event) => setConfirmPassword(event.target.value.trim())}
 										/>
@@ -169,6 +174,7 @@ export default function LoginModal() {
 								<button 
 									type="submit" 
 									className='login-button'
+									data-testid='login-button'
 									disabled={getDisabledButton}
 								>
 									{(getCreateNewAccount) ? 'Cadastrar' : 'Entrar'}
@@ -181,11 +187,13 @@ export default function LoginModal() {
 									<>
 										<a 
 											onClick={() => setCreateNewAccount(true)}
+											data-testid='create-new-account'
 										>
 											Criar nova conta
 										</a> 
 										<a
 											onClick={() => setForgotPassword(true)}
+											data-testid='forgot-password'
 										>
 											Esqueci a senha
 										</a>
@@ -196,6 +204,7 @@ export default function LoginModal() {
 									<>
 										<a 
 											onClick={() => setCreateNewAccount(false)}
+											data-testid='back-to-login'
 										>
 											Voltar para Login
 										</a> 

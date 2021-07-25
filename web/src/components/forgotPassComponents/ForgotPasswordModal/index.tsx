@@ -48,7 +48,7 @@ export default function ForgotPasswordModal({ setForgotPassword }: IProps) {
 	}
 
 	return (
-		<Container>
+		<Container data-testid='forgot-password-component'>
 			{(getEmailSended)
 				? <p className='forgot-password'>Enviado, verifique seu e-mail para trocar a senha.</p>
 				: (

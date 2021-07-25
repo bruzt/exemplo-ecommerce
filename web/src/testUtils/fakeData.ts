@@ -177,3 +177,7 @@ export const fakeAxiosCitys = [{
         }
     }
 }];
+
+export const fakeUserJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJhZG1pbiI6ZmFsc2V9.HsbkIOCWC_cQ5ejXXtDzXpddk7eVcPixzI5cbhhABzM';
+
+export const fakeCpfs = ["71314297082", "30581023056", "97938138061"];

@@ -98,7 +98,7 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
 
     async function createUser(name: string, email: string, cpf: string, password: string){
 
-        cpf = cpf.replace('.', '').replace('.', '').replace('-', '')
+        cpf = cpf.replace(/\.|-/g, '');
 
         try {
 
