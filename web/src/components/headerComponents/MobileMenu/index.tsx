@@ -73,7 +73,7 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
                 );
             } else {
                 return (
-                    <details>
+                    <details key={child.id}>
                         <summary className='last-child'>
                             <Link href={`${process.env.SITE_DOMAIN}/search?categoryId=${child.id}&category=${child.name}`}>
                                 <a onClick={() => setMobileMenuActive(false)}>
@@ -96,12 +96,14 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
                             <div className='user-menu'>
                                 <button 
                                     type='button' 
+                                    data-testid='user-account-button' 
                                     onClick={handleUserAccount}
                                 >
                                     Conta do usuário
                                 </button>
                                 <button 
                                     type='button' 
+                                    data-testid='user-logout-button' 
                                     onClick={handleUserLogout}
                                 >
                                     Sair
@@ -110,6 +112,7 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
                         ) : (
                             <button 
                                 className='login' 
+                                data-testid='login-modal-button' 
                                 type='button'
                                 onClick={handleLoginModal}
                             >
@@ -122,6 +125,7 @@ export default function MobileMenu({ setMobileMenuActive, searchBar }: IProps) {
 
                 <button 
                     id='exit-mobile-menu'
+                    data-testid='exit-mobile-menu'
                     type='button'
                     onClick={() => setMobileMenuActive(false)}
                 >

@@ -20,18 +20,18 @@ export const fakeAddress = {
 
 export const fakeCategories = [
     {
-        "id": 1,
-        "name": "Hardware",
-        "parent_id": 0,
-        "created_at": "2021-07-16T15:03:18.173Z",
-        "updated_at": "2021-07-16T15:03:18.173Z"
+        id: 1,
+        name: "Hardware",
+        parent_id: 0,
+        created_at: "2021-07-16T15:03:18.173Z",
+        updated_at: "2021-07-16T15:03:18.173Z"
     },
     {
-        "id": 2,
-        "name": "Processador",
-        "parent_id": 1,
-        "created_at": "2021-07-16T15:03:18.173Z",
-        "updated_at": "2021-07-16T15:03:18.173Z"
+        id: 2,
+        name: "Processador",
+        parent_id: 1,
+        created_at: "2021-07-16T15:03:18.173Z",
+        updated_at: "2021-07-16T15:03:18.173Z"
     }
 ]
 
