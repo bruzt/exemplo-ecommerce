@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 
 import api from '../services/api';
 
@@ -13,7 +13,7 @@ interface IProps {
     news: IProduct[];
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 
     let onSale;
     let bestSellers;
@@ -42,7 +42,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
             onSale: onSale.data.products,
             bestSellers: bestSellers.data.products,
             news: news.data.products
-        }
+        }, 
+        revalidate: 12 * 60 * 60, // 12 horas
     }
 }
 

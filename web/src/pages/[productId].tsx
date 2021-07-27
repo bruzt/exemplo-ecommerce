@@ -1,12 +1,12 @@
 import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
+//import { useRouter } from 'next/router';
 
 import api from '../services/api';
 
-import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
+//import FallbackLoadingSpinner from '../components/FallbackLoadingSpinner';
 import ProductPage from '../components/productComponents/ProductPage';
-import Page404 from '../components/Page404';
+//import Page404 from '../components/Page404';
 
 export interface IImage {
     id: number;
@@ -67,19 +67,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         const response = await api.get<IProduct>(`/products/${params.productId}`);
     
         return {
-            props: { product: response.data }
+            props: { product: response.data },
+            revalidate: 24 * 60 * 60, // 24 horas
         };
 
     } catch (error) {
         return {
-            props: { product: false }
+            //props: { product: false },
+            notFound: true,
         };
     }
 }
 
 export default function productId({ product }: IProps) {
 
-    const router = useRouter();
+    /*const router = useRouter();
 
     if(router.isFallback){
 
@@ -89,8 +91,8 @@ export default function productId({ product }: IProps) {
 
         return <Page404 />;
 
-    } else {
+    } else {*/
 
         return <ProductPage product={product} />;
-    }
+    //}
 }
