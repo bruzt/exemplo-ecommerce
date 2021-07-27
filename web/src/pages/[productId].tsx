@@ -29,11 +29,11 @@ export interface IProduct {
     isOnSale: boolean;
     dateNow: string;
     tangible: boolean;
-    weight: string;
-    length: string;
-    height: string;
-    width: string;
-    createdAt: string;
+    weight: number;
+    length: number;
+    height: number;
+    width: number;
+    created_at: string;
     images: IImage[];
     category: {
         id: number;

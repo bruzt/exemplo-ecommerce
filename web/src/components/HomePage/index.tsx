@@ -69,7 +69,7 @@ export default function HomePage({ onSale, bestSellers, news }: IProps) {
                                     <h3>PROMOÇÕES</h3>  
                                 </a>
                             </Link>
-                            <div className="product-grid">
+                            <div className="product-grid" data-testid='on-sale-section'>
 
                                 {onSale.map( (product) => <ProductCard product={product} key={product.id} />)}
 
@@ -84,7 +84,7 @@ export default function HomePage({ onSale, bestSellers, news }: IProps) {
                                     <h3>MAIS VENDIDOS</h3>
                                 </a>
                             </Link>
-                            <div className="product-grid">
+                            <div className="product-grid" data-testid='best-sellers-section'>
 
                                 {bestSellers.map( (product) => <ProductCard product={product} key={product.id} />)}
 
@@ -99,7 +99,7 @@ export default function HomePage({ onSale, bestSellers, news }: IProps) {
                                     <h3>NOVIDADES</h3>
                                 </a>
                             </Link>
-                            <div className="product-grid">
+                            <div className="product-grid" data-testid='news-section'>
 
                                 {news.map( (product) => <ProductCard product={product} key={product.id} />)}
 
