@@ -92,8 +92,7 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
 
     function handleSwitchModal(){
 
-        if(getShowModal) setShowModal(false);
-        else setShowModal(true);
+        setShowModal(!getShowModal);
     }
 
     async function createUser(name: string, email: string, cpf: string, password: string){
