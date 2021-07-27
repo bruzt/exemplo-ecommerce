@@ -60,6 +60,7 @@ export const Container = styled.div`
         height: 12.5rem;
 
         overflow: hidden;
+        flex-shrink: 0;
     }
 
     figure.img-container img {
@@ -67,6 +68,14 @@ export const Container = styled.div`
         /*max-width: 29.6875rem;*/
         height: 12.5rem;
         object-fit: cover;
+    }
+
+    .title-price {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
     }
 
     div.title-container {
@@ -85,13 +94,9 @@ export const Container = styled.div`
     }
 
     div.price-and-discount {
-        /*margin-top: 0.625rem;*/
-        /*height: 1fr;*/
-
         display: flex;
-        flex: 1;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: space-around;
         align-items: center;
     }
 

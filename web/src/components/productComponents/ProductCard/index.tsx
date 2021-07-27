@@ -56,15 +56,17 @@ export default function ProductCard({ product }: IProps) {
                                 timeoutId={timeoutId}
                             />
                         )}
-            
-                        <div className='title-container'>
-                            <span className='title'>{product.title}</span>
-                        </div>
 
-                        <div className='price-and-discount'>
-                            {(getIsOnSale) ? <span className='original-price'>R$ {Number(product.price).toFixed(2)}</span> : <span></span>}
-                            
-                            <span className='price'>R$ {product.finalPrice}</span>
+                        <div className="title-price">
+                            <div className='title-container'>
+                                <span className='title'>{product.title}</span>
+                            </div>
+
+                            <div className='price-and-discount'>
+                                {(getIsOnSale) ? <span className='original-price'>R$ {Number(product.price).toFixed(2)}</span> : <span></span>}
+                                
+                                <span className='price'>R$ {product.finalPrice}</span>
+                            </div>
                         </div>
                     </div>
                 </a>
