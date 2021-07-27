@@ -15,9 +15,27 @@ interface IProps {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 
-    const onSale = await api.get('/products?section=on-sale&limit=8');
-    const bestSellers = await api.get('/products?section=best-sellers&limit=8');
-    const news = await api.get('/products?section=news&limit=8');
+    let onSale;
+    let bestSellers;
+    let news;
+
+    try {
+        onSale = await api.get('/products?section=on-sale&limit=8');
+    } catch (error) {
+        onSale = { data: { products: [] }};
+    }
+
+    try {
+        bestSellers = await api.get('/products?section=best-sellers&limit=8');
+    } catch (error) {
+        bestSellers = { data: { products: [] }};
+    }
+
+    try {
+        news = await api.get('/products?section=news&limit=8');
+    } catch (error) {
+        news = { data: { products: [] }};
+    }
 
     return {
         props: { 
