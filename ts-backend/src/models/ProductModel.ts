@@ -56,7 +56,7 @@ export default class ProductModel extends BaseEntity {
     tangible!: boolean;
 
     @Column()
-    weight!: string;
+    weight!: number;
 
     @Column()
     length!:number;

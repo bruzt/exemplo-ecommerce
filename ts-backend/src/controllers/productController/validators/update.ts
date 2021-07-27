@@ -18,7 +18,7 @@ export default celebrate({
         discount_datetime_start: Joi.date(),
         discount_datetime_end: Joi.date(),
         tangible: Joi.boolean(),
-        weight: Joi.string(),
+        weight: Joi.number(),
         length: Joi.number(),
         height: Joi.number(),
         width: Joi.number(),

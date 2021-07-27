@@ -21,7 +21,7 @@ interface IBody {
     discount_datetime_start?: Date;
     discount_datetime_end?: Date;
     tangible?: boolean;
-    weight?: string;
+    weight?: number;
     length?: number;
     height?: number;
     width?: number;

@@ -28,7 +28,7 @@ export const fakeProduct = {
     price: "10.50",
     quantity_stock: 100,
     tangible: true,
-    weight: "5",
+    weight: 5,
     length: 15,
     height: 15,
     width: 15,
