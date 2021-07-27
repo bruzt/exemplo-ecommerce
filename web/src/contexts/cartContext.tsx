@@ -22,12 +22,12 @@ interface IFreights {
     pac: {
         "Valor": string;
         "PrazoEntrega": string;
-        "MsgErro": string;
+        "message": string;
     };
     sedex: {
         "Valor": string;
         "PrazoEntrega": string;
-        "MsgErro": string;
+        "message": string;
     }
 }
 

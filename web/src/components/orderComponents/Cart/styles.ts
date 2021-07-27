@@ -252,6 +252,10 @@ export const Container = styled.section`
         padding: 0.3125rem;   
     }
 
+    .choose-freight span + span {
+        margin-top: 0.5rem;
+    }
+
     .choose-freight span {
         display: flex;
         justify-content: center;

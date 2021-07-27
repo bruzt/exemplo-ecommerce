@@ -170,28 +170,24 @@ export default function Cart() {
                 height,
                 width
             });
-
-            if(Object.keys(response.data.pac.MsgErro).length > 0) {
-
+            
+            if(response.data.pac.MsgErro) {
+                
                 console.error(response.data.pac.MsgErro);
                 alert(response.data.pac.MsgErro);
                 setZipCodeButtonDisabled(false);
-
-            } else if(Object.keys(response.data.sedex.MsgErro).length > 0){
-
+                
+            } else if(response.data.sedex.MsgErro){
+                
                 console.error(response.data.sedex.MsgErro);
                 alert(response.data.sedex.MsgErro);
                 setZipCodeButtonDisabled(false);
-
+                
             } else {
-
-                delete response.data.pac.MsgErro;
-                delete response.data.sedex.MsgErro;
                 
                 cartContext.setFreightPrice(response.data);
                 setZipCodeButtonDisabled(false);
             }
-            
         } catch (error) {
             console.error(error);
             //alert('Erro, tente novamente');
@@ -326,9 +322,9 @@ export default function Cart() {
                                 
                                 {cartContext.getFreightPrice ? (
                                     <div className='choose-freight'>
-                                        {cartContext.getFreightPrice.pac.MsgErro ? (
+                                        {cartContext.getFreightPrice.pac.message ? (
                                             <span>
-                                                <p>Correios PAC - {cartContext.getFreightPrice.pac.MsgErro}</p>
+                                                <p>Correios PAC - {cartContext.getFreightPrice.pac.message}</p>
                                             </span>
                                         ) : (
                                             <span>
@@ -342,9 +338,9 @@ export default function Cart() {
                                             </span>
                                         )}
                                         
-                                        {cartContext.getFreightPrice.sedex.MsgErro ? (
+                                        {cartContext.getFreightPrice.sedex.message ? (
                                             <span>
-                                                <p>Correios SEDEX - {cartContext.getFreightPrice.sedex.MsgErro}</p>
+                                                <p>Correios SEDEX - {cartContext.getFreightPrice.sedex.message}</p>
                                             </span>
                                         ):(
                                             <span>
