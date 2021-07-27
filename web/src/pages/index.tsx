@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
             bestSellers: bestSellers.data.products,
             news: news.data.products
         }, 
-        revalidate: 12 * 60 * 60, // 12 horas
+        revalidate: 1 * 60 * 60, // 1 hora
     }
 }
 
