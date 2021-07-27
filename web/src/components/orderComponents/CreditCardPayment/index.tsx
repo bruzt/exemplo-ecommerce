@@ -18,6 +18,8 @@ interface IProps {
 }
 
 export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }: IProps) {
+
+    // https://api.pagar.me/1/transactions/calculate_installments_amount
     
     const [getCardHolderName, setCardHolderName] = useState('');
     const [getCardNumber, setCardNumber] = useState('');
