@@ -76,10 +76,10 @@ export default function AddProduct() {
             quantity_stock: Number(getQtdStock),
             category_id: Number(getCategory),
             tangible: Boolean(Number(getTangible)),
-            weight: String(getWeight).replace('.', ','),
-            length: Number(getLength),
-            height: Number(getHeight),
-            width: Number(getWidth),
+            weight: Number(getWeight.replace(',', '.')),
+            length: Number(getLength.replace(',', '.')),
+            height: Number(getHeight.replace(',', '.')),
+            width: Number(getWidth.replace(',', '.')),
             discount_percent: Number(getDiscount),
             discount_datetime_start: getDiscountDatetimeStart ? getDiscountDatetimeStart : undefined,
             discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
@@ -220,6 +220,7 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
+                            step="0.01"
                             id="product-length"
                             value={getLength}
                             onChange={(event) => setLength(event.target.value)}
@@ -231,6 +232,7 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
+                            step="0.01"
                             id="product-height"
                             value={getHeight} onChange={(event) => setHeight(event.target.value)}
                         />
@@ -241,6 +243,7 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
+                            step="0.01"
                             id="product-width"
                             value={getWidth}
                             onChange={(event) => setWidth(event.target.value)}

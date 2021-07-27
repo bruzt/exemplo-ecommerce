@@ -30,7 +30,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getCategoryId, setCategoryId] = useState(String(product.category.id));
     const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
     
-    const [getWeight, setWeight] = useState(String(product.weight).replace(',', '.'));
+    const [getWeight, setWeight] = useState(product.weight);
     const [getLength, setLength] = useState(product.length);
     const [getHeight, setHeight] = useState(product.height);
     const [getWidth, setWidth] = useState(product.width);
@@ -74,7 +74,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
         if (String(getLength).trim().length == 0) return alert('Comprimento não preenchido');
         if (String(getHeight).trim().length == 0) return alert('Altura não preenchido');
         if (String(getWidth).trim().length == 0) return alert('Largura não preenchido');
-
+        
         const data = {
             title: getTitle,
             description: getDescription,
@@ -85,10 +85,10 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
             discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
             category_id: Number(getCategoryId),
             tangible: Boolean(Number(getTangible)),
-            weight: getWeight.replace('.', ','),
-            length: Number(getLength),
-            height: Number(getHeight),
-            width: Number(getWidth),
+            weight: getWeight,
+            length: getLength,
+            height: getHeight,
+            width: getWidth,
             html_body: getHtmlBody.trim().length > 0 ? getHtmlBody : undefined
         };
 
@@ -204,6 +204,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <input 
                             type="number" 
                             min='0'
+                            step="0.01"
                             id='product-length' 
                             value={getLength} 
                             onChange={(event) => setLength(event.target.value)} 
@@ -215,6 +216,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <input 
                             type="number" 
                             min='0'
+                            step="0.01"
                             id='product-height' 
                             value={getHeight} 
                             onChange={(event) => setHeight(event.target.value)} 
@@ -226,6 +228,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                         <input 
                             type="number" 
                             min='0'
+                            step="0.01"
                             id='product-width' 
                             value={getWidth} 
                             onChange={(event) => setWidth(event.target.value)} 
