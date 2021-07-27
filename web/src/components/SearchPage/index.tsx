@@ -30,7 +30,7 @@ export default function SearchPage() {
 
         try {
 
-            let response: AxiosResponse<any>;
+            let response: AxiosResponse;
 
             let filter = '';
             if(router.query.filter == "lowest-price") filter = '&filter=lowest-price';
