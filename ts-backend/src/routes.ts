@@ -76,7 +76,7 @@ router.post('/reset-password', resetPasswordValidator.store, resetPasswordContro
 router.put('/reset-password', resetPasswordValidator.update, resetPasswordController.update);
 
 // INSTALLMENTS
-router.get('/installments', installmentsValidator.show, installmentsController.show);
+router.post('/installments', installmentsValidator.show, installmentsController.show);
 
 // ORDER
 router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);

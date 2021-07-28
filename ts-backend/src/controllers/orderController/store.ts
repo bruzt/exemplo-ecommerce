@@ -11,6 +11,7 @@ import OrderProductModel from '../../models/OrderProductModel';
 import socketIo from '../../websocket/socketIo';
 import { sendEmailQueue } from '../../backgroundJobs/queues';
 import buyOrderTemplate from '../../services/mailer/templates/buyOrderTemplate';
+import calcInstallments from '../../utils/calcInstallments';
 
 interface ICustomer {
     external_id: string;
@@ -204,7 +205,15 @@ export default async function store(req: Request, res: Response) {
             ///////////////////////////////////
             if (body.credit_card) {
 
-                body.credit_card.amount = String(Number(productsAmount) + Number(shippingFee));
+                let amount = String(Number(productsAmount) + Number(shippingFee));
+                
+                // apply interest rate to total price 
+                if(body.credit_card.installments > Number(process.env.FREE_INSTALLMENTS)){
+                    const installmentsOptions = calcInstallments(parseFloat(String(amount) + 'e-2')); // parseFloat(string + 'e-2') adds . of cents
+                    amount = (Number(installmentsOptions.installments[body.credit_card.installments-1]) * Number(body.credit_card.installments)).toFixed(2).replace('.', '');
+                }
+
+                body.credit_card.amount = amount;
                 body.credit_card.shipping.fee = shippingFee;
 
                 body.credit_card.reference_key = reference_key;

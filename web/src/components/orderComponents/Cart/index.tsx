@@ -171,13 +171,13 @@ export default function Cart() {
                 width
             });
             
-            if(response.data.pac.MsgErro) {
+            if(response.data.pac.MsgErro && Object.keys(response.data.pac.MsgErro).length > 0) {
                 
                 console.error(response.data.pac.MsgErro);
                 alert(response.data.pac.MsgErro);
                 setZipCodeButtonDisabled(false);
                 
-            } else if(response.data.sedex.MsgErro){
+            } else if(response.data.sedex.MsgErro && Object.keys(response.data.sedex.MsgErro).length > 0){
                 
                 console.error(response.data.sedex.MsgErro);
                 alert(response.data.sedex.MsgErro);

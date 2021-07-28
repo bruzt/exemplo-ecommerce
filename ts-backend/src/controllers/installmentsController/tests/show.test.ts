@@ -6,7 +6,7 @@ describe('installmentsController Test Suit', () => {
 
     it('should calc installments', async () => {
 
-        const response = await supertest(app).get('/installments').send({
+        const response = await supertest(app).post('/installments').send({
             amount: 149.90,
         });
 

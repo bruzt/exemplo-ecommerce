@@ -17,15 +17,22 @@ interface IProps {
     setDisabledBoletoButton: React.Dispatch<boolean>;
 }
 
+interface IInstallmentsOptions {
+    freeInstallments: number;
+    maxInstallments: number;
+    interestRate: number;
+    installments: number[];
+}
+
 export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }: IProps) {
 
-    // https://api.pagar.me/1/transactions/calculate_installments_amount
-    
     const [getCardHolderName, setCardHolderName] = useState('');
     const [getCardNumber, setCardNumber] = useState('');
     const [getCardCvv, setCardCvv] = useState('');
     const [getCardExpirationMonth, setCardExpirationMonth] = useState('');
     const [getCardExpirationYear, setCardExpirationYear] = useState('');
+
+    const [getInstallmentsOptions, setInstallmentsOptions] = useState<IInstallmentsOptions>();
     const [getInstallments, setInstallments] = useState(1);
 
     const [getPhone, setPhone] = useState('');
@@ -46,7 +53,10 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
     const orderContext = useOrder();
 
     useEffect(() => {
+        fetchInstallments();
+    }, []);
 
+    useEffect(() => {
         if (
             getCardHolderName.length < 3 ||
             getCardNumber.length < 19 ||
@@ -82,7 +92,6 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 setDisabledPayButton(false);
             }
         }
-
     }, [
         getCardHolderName,
         getCardNumber,
@@ -98,6 +107,21 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
         getState,
         getZipCode
     ]);
+
+    async function fetchInstallments() {
+        try {
+
+            const response = await api.post('/installments', {
+                amount: Number(cartContext.getTotalPrice).toFixed(2),
+            });
+
+            setInstallmentsOptions(response.data);
+
+        } catch (error) {
+            console.log(error);
+            alert('Erro ao buscar opções de parcela');
+        }
+    }
 
     function handleCardNumber(value: string | number) {
 
@@ -156,7 +180,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
         const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
         const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
-        const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
+        const cpf = getCpf.replace(/\.|-/g, '');
         const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
 
         const products_id = cartContext.getCart.map((product) => product.id);
@@ -219,7 +243,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
             orderContext.setOrderId(response.data.order.id);
             orderContext.setOrderFlowNumber(4);
-            
+
             cartContext.cleanCart();
 
         } catch (error) {
@@ -450,7 +474,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 onClick={handleSameAddressButton}
                             >
                                 Mesmo da entrega
-                                </button>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -467,28 +491,36 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                         id='installments'
                         onChange={(event) => setInstallments(Number(event.target.value))}
                     >
-                        <option value={1}>1x de R$ {Number(cartContext.getTotalPrice).toFixed(2)}</option>
-                        <option value={2}>2x de R$ {Number(cartContext.getTotalPrice / 2).toFixed(2)} (sem juros)</option>
-                        <option value={3}>3x de R$ {Number(cartContext.getTotalPrice / 3).toFixed(2)} (sem juros)</option>
-                        <option value={4}>4x de R$ {Number(cartContext.getTotalPrice / 4).toFixed(2)} (sem juros)</option>
-                        <option value={5}>5x de R$ {Number(cartContext.getTotalPrice / 5).toFixed(2)} (sem juros)</option>
-                        <option value={6}>6x de R$ {Number(cartContext.getTotalPrice / 6).toFixed(2)} (sem juros)</option>
+                        {getInstallmentsOptions?.installments.map( (installment, index) => (
+                           <option 
+                                key={index} 
+                                value={index+1}
+                            >
+                               {index+1}x de R${Number(installment).toFixed(2)} 
+                               {index+1 > 1 && (
+                                   (index+1 <= getInstallmentsOptions.freeInstallments) 
+                                   ? ' (sem juros)' 
+                                   : ` (${getInstallmentsOptions.interestRate}% R$${(installment*(index+1)).toFixed(2)})`
+                                )}
+                           </option>
+                        ))}
+                        
                     </select>
 
                     <button
                         type='submit'
                         disabled={getDisabledPayButton}
                     >
-                        {(getDisabledBoletoButton) 
+                        {(getDisabledBoletoButton)
                             ? <Loading
                                 type="TailSpin"
                                 color='#0D2235'
                                 height={30}
                                 width={30}
-                              />
+                            />
                             : 'PAGAR'
                         }
-                        </button>
+                    </button>
                 </div>
 
             </form>
