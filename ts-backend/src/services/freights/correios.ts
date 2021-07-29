@@ -1,11 +1,27 @@
-import { Request } from 'express';
-import axios from 'axios';
+// @ts-ignore
+//import axios from 'axios';
+//const correiosApi = require('node-correios');
+import frete from 'frete';
 
-export default async function correios(req: Request) {
+interface IArgs {
+    destZipCode: string;
+    weight: string;
+    length: number;
+    height: number;
+    width: number;
+}
 
-    if(req.body.length < 15) req.body.length = 15;
+export default async function correios({
+    destZipCode,
+    height,
+    length,
+    weight,
+    width
+}: IArgs) {
 
-    let response, pac, sedex;
+    if (length < 15) length = 15;
+
+    /*let response, pac, sedex;
     
     try {
         const source = axios.CancelToken.source();
@@ -19,9 +35,9 @@ export default async function correios(req: Request) {
         });
         
         pac = {
-            Valor: response.data.response[0].Valor,
-            PrazoEntrega: response.data.response[0].PrazoEntrega,
-            MsgErro: response.data.response[0].MsgErro
+            valor: response.data.response[0].Valor,
+            prazoEntrega: response.data.response[0].PrazoEntrega,
+            msgErro: response.data.response[0].MsgErro
         }
 
     } catch (error) {
@@ -42,45 +58,117 @@ export default async function correios(req: Request) {
         });
         
         sedex = {
-            Valor: response.data.response[0].Valor,
-            PrazoEntrega: response.data.response[0].PrazoEntrega,
-            MsgErro: response.data.response[0].MsgErro
+            valor: response.data.response[0].Valor,
+            prazoEntrega: response.data.response[0].PrazoEntrega,
+            msgErro: response.data.response[0].MsgErro
         }
 
     } catch (error) {
         
         sedex = { message: 'Não foi possivel obter frete' }
+    }*/
+
+    /*let pac, sedex, response;
+
+    try {
+        [ response ] = await correiosApi.calcPrecoPrazo({
+            "nCdServico": "04510",                  // Código PAC
+            "sCepOrigem": "13490000",               // CEP ORIGEM (string sem hífen)
+            "sCepDestino": destZipCode,             // CEP DESTINO (string sem hífen)
+            "nVlPeso": weight,                      // Peso em kilogramas (string: "0,500")
+            "nCdFormato": 1,                        // 1 – Formato caixa/pacote // 2 – Formato rolo/prisma // 3 – Envelope
+            "nVlComprimento": length,               // Comprimento em centimetros (float)
+            "nVlAltura": height,                    // Altura em centimetros (float)
+            "nVlLargura": width,                    // Largura em centimetros (float)
+            "nVlDiametro": 0,                       // Diametro em centimetros (float)
+            "sCdMaoPropria": "N",                   // Serviço adicional "mão própria" (string: "S" para sim, "N" para não)
+            "nVlValorDeclarado": 0,                 // Serviço adicional "valor declarado" (float: 0 para não)
+            "sCdAvisoRecebimento": "N"              // Serviço adicional "aviso de recebimento" (string: "S" para sim, "N" para não)
+        });
+
+        pac = {
+            valor: response.Valor,
+            prazoEntrega: response.PrazoEntrega,
+            msgErro: response.MsgErro
+        }
+    } catch (error) {
+        pac = {
+            message: 'Não foi possível obter o frete'
+        }
     }
 
-    /*
-    const [ pac ] = await correios.calcPrecoPrazo({
-        "nCdServico": "04510",                  // Código PAC
-        "sCepOrigem": "13490000",               // CEP ORIGEM (string sem hífen)
-        "sCepDestino": req.body.destZipCode,    // CEP DESTINO (string sem hífen)
-        "nVlPeso": req.body.weight,             // Peso em kilogramas (string: "0,500")
-        "nCdFormato": 1,                        // 1 – Formato caixa/pacote // 2 – Formato rolo/prisma // 3 – Envelope
-        "nVlComprimento": req.body.length,      // Comprimento em centimetros (float)
-        "nVlAltura": req.body.height,           // Altura em centimetros (float)
-        "nVlLargura": req.body.width,           // Largura em centimetros (float)
-        "nVlDiametro": 0,                       // Diametro em centimetros (float)
-        "sCdMaoPropria": "N",                   // Serviço adicional "mão própria" (string: "S" para sim, "N" para não)
-        "nVlValorDeclarado": 0,                 // Serviço adicional "valor declarado" (float: 0 para não)
-        "sCdAvisoRecebimento": "N"              // Serviço adicional "aviso de recebimento" (string: "S" para sim, "N" para não)
-    });
-    const [ sedex ] = await correios.calcPrecoPrazo({
-        "nCdServico": "04014",                  // Código SEDEX
-        "sCepOrigem": "13490000",
-        "sCepDestino": req.body.destZipCode,
-        "nVlPeso": req.body.weight,
-        "nCdFormato": 1,
-        "nVlComprimento": req.body.length,
-        "nVlAltura": req.body.height,
-        "nVlLargura": req.body.width,
-        "nVlDiametro": req.body.diameter,
-        "sCdMaoPropria": "N",
-        "nVlValorDeclarado": 0,
-        "sCdAvisoRecebimento": "N"
-    });*/
+    try {
+        [ response ] = await correiosApi.calcPrecoPrazo({
+            "nCdServico": "04014",                  // Código SEDEX
+            "sCepOrigem": "13490000",
+            "sCepDestino": destZipCode,
+            "nVlPeso": weight,
+            "nCdFormato": 1,
+            "nVlComprimento": length,
+            "nVlAltura": height,
+            "nVlLargura": width,
+            "nVlDiametro": 0,
+            "sCdMaoPropria": "N",
+            "nVlValorDeclarado": 0,
+            "sCdAvisoRecebimento": "N"
+        });
+
+        sedex = {
+            valor: response.Valor,
+            prazoEntrega: response.PrazoEntrega,
+            msgErro: response.MsgErro
+        }
+    } catch (error) {
+        sedex = {
+            message: 'Não foi possível obter o frete'
+        }
+    }*/
+
+    let pac, sedex;
+
+    try {
+        [ pac ] = await frete()
+            .servico(frete.servicos.pac)
+            .cepOrigem('13467460')
+            .cepDestino(destZipCode)
+            .formato(frete.formatos.caixaPacote)
+            .peso(Number(weight.replace(',', '.')))
+            .comprimento(length)
+            .altura(height)
+            .largura(width)
+            .diametro(0)
+            .maoPropria('N')
+            .valorDeclarado(0)
+            .avisoRecebimento('N')
+            .precoPrazo()
+        ;
+    } catch (error) {
+        pac = {
+            message: 'Não foi possível obter o frete'
+        }
+    }
+
+    try {
+        [ sedex ] = await frete()
+            .servico(frete.servicos.sedex)
+            .cepOrigem('13467460')
+            .cepDestino(destZipCode)
+            .formato(frete.formatos.caixaPacote)
+            .peso(Number(weight.replace(',', '.')))
+            .comprimento(length)
+            .altura(height)
+            .largura(width)
+            .diametro(0)
+            .maoPropria('N')
+            .valorDeclarado(0)
+            .avisoRecebimento('N')
+            .precoPrazo()
+        ;
+    } catch (error) {
+        pac = {
+            message: 'Não foi possível obter o frete'
+        }
+    }
 
     return { pac, sedex };
 }
