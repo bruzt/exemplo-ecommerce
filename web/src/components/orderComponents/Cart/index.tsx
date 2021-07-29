@@ -100,8 +100,8 @@ export default function Cart() {
 
         cartContext.setSubtotalPrice(Number(totalPrice.toFixed(2)));
 
-        if(cartContext.getFreightSelected == 'pac') totalPrice += Number((cartContext.getFreightPrice.pac.Valor).replace(',', '.'))
-        else if(cartContext.getFreightSelected == 'sedex') totalPrice += Number((cartContext.getFreightPrice.sedex.Valor).replace(',', '.'))
+        if(cartContext.getFreightSelected == 'pac') totalPrice += Number((cartContext.getFreightPrice.pac.valor).replace(',', '.'))
+        else if(cartContext.getFreightSelected == 'sedex') totalPrice += Number((cartContext.getFreightPrice.sedex.valor).replace(',', '.'))
         
         cartContext.setTotalPrice(Number(totalPrice.toFixed(2)));
     }
@@ -171,23 +171,22 @@ export default function Cart() {
                 width
             });
             
-            if(response.data.pac.MsgErro && Object.keys(response.data.pac.MsgErro).length > 0) {
+            if(response.data.pac.msgErro && Object.keys(response.data.pac.MsgErro).length > 0) {
                 
                 console.error(response.data.pac.MsgErro);
                 alert(response.data.pac.MsgErro);
                 setZipCodeButtonDisabled(false);
                 
-            } else if(response.data.sedex.MsgErro && Object.keys(response.data.sedex.MsgErro).length > 0){
+            } else if(response.data.sedex.msgErro && Object.keys(response.data.sedex.MsgErro).length > 0){
                 
                 console.error(response.data.sedex.MsgErro);
                 alert(response.data.sedex.MsgErro);
                 setZipCodeButtonDisabled(false);
+            } 
                 
-            } else {
-                
-                cartContext.setFreightPrice(response.data);
-                setZipCodeButtonDisabled(false);
-            }
+            cartContext.setFreightPrice(response.data);
+            setZipCodeButtonDisabled(false);
+            
         } catch (error) {
             console.error(error);
             //alert('Erro, tente novamente');
@@ -334,7 +333,7 @@ export default function Cart() {
                                                     checked={cartContext.getFreightSelected == 'pac' ? true : false} 
                                                     onChange={() => handleFreightCheck('pac')} 
                                                 /> 
-                                                <label htmlFor='pac'>Correios PAC - R$ {cartContext.getFreightPrice.pac.Valor} - {cartContext.getFreightPrice.pac.PrazoEntrega} Dias</label>
+                                                <label htmlFor='pac'>Correios PAC - R$ {cartContext.getFreightPrice.pac.valor} - {cartContext.getFreightPrice.pac.prazoEntrega} Dias</label>
                                             </span>
                                         )}
                                         
@@ -350,7 +349,7 @@ export default function Cart() {
                                                     checked={cartContext.getFreightSelected == 'sedex' ? true : false} 
                                                     onChange={() => handleFreightCheck('sedex')} 
                                                 /> 
-                                                <label htmlFor='sedex'>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.Valor} - {cartContext.getFreightPrice.sedex.PrazoEntrega} Dias</label>  
+                                                <label htmlFor='sedex'>Correios SEDEX - R$ {cartContext.getFreightPrice.sedex.valor} - {cartContext.getFreightPrice.sedex.prazoEntrega} Dias</label>  
                                             </span>
                                         )}
                                     </div>
@@ -363,7 +362,7 @@ export default function Cart() {
                                 <span>
                                     Frete: R$ {(cartContext.getFreightSelected) 
                                         ? (
-                                            Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)
+                                            Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')).toFixed(2)
                                         ) : ( '0.00' )
                                     }
                                 </span>

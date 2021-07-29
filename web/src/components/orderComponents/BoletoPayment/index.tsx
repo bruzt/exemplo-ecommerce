@@ -69,7 +69,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                 quantity_buyed,
                 address_id: address.id,
                 freight_name: cartContext.getFreightSelected,
-                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')),
+                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')),
                 boleto: {
                     customer: {
                         external_id: String(userContext.getUser.id),
@@ -125,7 +125,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
 
                 <div className='freight-total'>
                     <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                    <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)}</p>
+                    <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')).toFixed(2)}</p>
                     <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
                 </div>
             
@@ -134,6 +134,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                         <label htmlFor="cpf">CPF</label>
                         <input 
                             id='cpf' 
+                            data-testid='cpf' 
                             type="text" 
                             className={`${(getValidCpf) ? '' : 'invalid-cpf'}`}
                             maxLength={14}
@@ -146,6 +147,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
                         <label htmlFor="phone">DDD + Telefone</label>
                         <input 
                             id='phone' 
+                            data-testid='phone' 
                             type="text" 
                             maxLength={16}
                             value={getPhone}
@@ -156,6 +158,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
 
                 <button
                     type='submit'
+                    data-testid='boleto-submit-button'
                     disabled={getDisabledCreateBoletoButton}
                 >
                     {(getDisabledCreditCardButton)

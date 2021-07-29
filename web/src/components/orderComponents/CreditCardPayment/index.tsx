@@ -193,7 +193,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                 quantity_buyed,
                 address_id: address.id,
                 freight_name: cartContext.getFreightSelected,
-                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')),
+                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')),
                 credit_card: {
                     installments: Number(getInstallments),
                     card_number: String(getCardNumber).replace(/ /g, ''),
@@ -483,7 +483,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                     <div className='freight-total'>
                         <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                        <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].Valor).replace(',', '.')).toFixed(2)}</p>
+                        <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')).toFixed(2)}</p>
                         <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
                     </div>
 

@@ -4,6 +4,9 @@ import { IProduct } from '../pages/[productId]';
 
 interface IProps {
     children: React.ReactNode;
+    _testFreightPrice?: IFreights;
+    _testFreightSelected?: TFreights;
+    _testAddressId?: number;
 }
 
 interface ICartItem {
@@ -20,18 +23,18 @@ interface iFreightMeasures {
 
 interface IFreights {
     pac: {
-        "Valor": string;
-        "PrazoEntrega": string;
-        "message": string;
+        valor: string;
+        prazoEntrega: string;
+        message?: string;
     };
     sedex: {
-        "Valor": string;
-        "PrazoEntrega": string;
-        "message": string;
+        valor: string;
+        prazoEntrega: string;
+        message?: string;
     }
 }
 
-type TFrights = "pac" | "sedex";
+type TFreights = "pac" | "sedex";
 
 interface IUseCart {
     getCart: ICartItem[]; 
@@ -46,7 +49,7 @@ interface IUseCart {
     setTotalPrice: React.Dispatch<React.SetStateAction<number>>;
     getZipCode: string;
     setZipCode: React.Dispatch<React.SetStateAction<string>>;
-    getFreightSelected: TFrights | null;
+    getFreightSelected: TFreights | null;
     setFreightSelected: React.Dispatch<React.SetStateAction<string | null>>;
     getFreightPrice: IFreights | null;
     setFreightPrice: React.Dispatch<React.SetStateAction<IFreights | null>>;
@@ -60,16 +63,16 @@ interface IUseCart {
 
 const Context = createContext({} as IUseCart);
 
-export function CartContextProvider({ children }: IProps){
+export function CartContextProvider({ children, _testFreightPrice, _testFreightSelected, _testAddressId }: IProps){
 
     const [getCart, setCart] = useState<ICartItem[]>([]);
     const [getProducts, setProducts] = useState<IProduct[]>([]);
     const [getSubtotalPrice, setSubtotalPrice] = useState(0);
     const [getTotalPrice, setTotalPrice] = useState(0);
     const [getZipCode, setZipCode] = useState('');
-    const [getFreightSelected, setFreightSelected] = useState<TFrights | null>(null);
-    const [getFreightPrice, setFreightPrice] = useState<IFreights | null>(null);
-    const [getAddressId, setAddressId] = useState<number | null>(null);
+    const [getFreightSelected, setFreightSelected] = useState<TFreights | null>(_testFreightSelected);
+    const [getFreightPrice, setFreightPrice] = useState<IFreights | null>(_testFreightPrice);
+    const [getAddressId, setAddressId] = useState<number | null>(_testAddressId);
     const [getFreightMeasures, setFreightMeasures] = useState<iFreightMeasures | null>(null);
 
     useEffect( () => {

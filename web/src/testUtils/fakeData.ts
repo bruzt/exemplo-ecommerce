@@ -144,6 +144,16 @@ export const fakeOrder = {
     ]
 };
 
+export const fakeBoletoOrder = {
+    "order": {
+        "id": 2,
+        "boleto_url": "https://pagar.me"
+    },
+    "pagarme": {
+        "status": "waiting_payment",
+    }
+}
+
 export const fakeAxiosUfs = [{
     "id": 35,
     "sigla": "SP",
@@ -181,3 +191,16 @@ export const fakeAxiosCitys = [{
 export const fakeUserJwt = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJhZG1pbiI6ZmFsc2V9.HsbkIOCWC_cQ5ejXXtDzXpddk7eVcPixzI5cbhhABzM';
 
 export const fakeCpfs = ["71314297082", "30581023056", "97938138061"];
+
+export const fakeFreightPrice = {
+    pac: {
+        valor: "24,30",
+        prazoEntrega: "7",
+        //msgErro: "",
+    },
+    sedex: {
+        valor: "25,80",
+        prazoEntrega: "2",
+        //msgErro: "",
+    }
+}
