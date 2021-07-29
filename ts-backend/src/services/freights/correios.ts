@@ -165,7 +165,7 @@ export default async function correios({
             .precoPrazo()
         ;
     } catch (error) {
-        pac = {
+        sedex = {
             message: 'Não foi possível obter o frete'
         }
     }
