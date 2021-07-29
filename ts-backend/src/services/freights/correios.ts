@@ -1,6 +1,6 @@
 // @ts-ignore
 //import axios from 'axios';
-//const correiosApi = require('node-correios');
+//import correiosApi from 'node-correios';
 import frete from 'frete';
 
 interface IArgs {
