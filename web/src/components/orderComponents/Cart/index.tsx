@@ -32,42 +32,28 @@ export default function Cart() {
     useEffect(() => {
         calcTotalPrice();
 
-        const newUnableToBuy: number[] = [];
-
-        for(const cartItem of cartContext.getCart){
-
-            const index = getUnableToBuy.indexOf(cartItem.id)
-            
-            if(index > -1) newUnableToBuy.push(cartItem.id);
-        }
-
-        setUnableToBuy(newUnableToBuy);
-
     }, [cartContext.getProducts, cartContext.getCart, cartContext.getFreightSelected]);
 
     async function fetchProducts() {
 
-        const products = []
-
+        const products = [];
         for (let i = 0; i < cartContext.getCart.length; i++) {
-
             try {
-
                 const response = await api.get(`/products/${cartContext.getCart[i].id}`);
-
+                
                 products.push(response.data);
 
+                const cart = [ ...cartContext.getCart ];
                 if(cartContext.getCart[i].qtd > response.data.quantity_stock){
 
-                    const cart = [ ...cartContext.getCart ]
                     cart[i].qtd = response.data.quantity_stock;
-
-                    if(response.data.quantity_stock < 1) setUnableToBuy([ ...getUnableToBuy, cartContext.getCart[i].id ]);
-
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    
-                    cartContext.setCart(cart);
                 }
+
+                if(response.data.quantity_stock < 1) setUnableToBuy([ ...getUnableToBuy, cartContext.getCart[i].id ]);
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                cartContext.setCart(cart);
 
             } catch (error) {
                 console.error(error);
@@ -107,6 +93,8 @@ export default function Cart() {
     }
 
     function verifyQtd({ id, qtd }: { id: number, qtd: number }) {
+        
+        if(getUnableToBuy.indexOf(id) > -1) return;
 
         cartContext.resetFreight();
 
@@ -171,16 +159,16 @@ export default function Cart() {
                 width
             });
             
-            if(response.data.pac.msgErro && Object.keys(response.data.pac.MsgErro).length > 0) {
+            if(response.data.pac.msgErro && Object.keys(response.data.pac.msgErro).length > 0) {
                 
-                console.error(response.data.pac.MsgErro);
-                alert(response.data.pac.MsgErro);
+                console.error(response.data.pac.msgErro);
+                alert(response.data.pac.msgErro);
                 setZipCodeButtonDisabled(false);
                 
-            } else if(response.data.sedex.msgErro && Object.keys(response.data.sedex.MsgErro).length > 0){
+            } else if(response.data.sedex.msgErro && Object.keys(response.data.sedex.msgErro).length > 0){
                 
-                console.error(response.data.sedex.MsgErro);
-                alert(response.data.sedex.MsgErro);
+                console.error(response.data.sedex.msgErro);
+                alert(response.data.sedex.msgErro);
                 setZipCodeButtonDisabled(false);
             } 
                 
@@ -193,6 +181,22 @@ export default function Cart() {
         }
     }
 
+    function handleRemoveFromCart(productId: number){
+
+        const newUnableToBuy = getUnableToBuy.filter( (id) => id != productId);
+
+        setUnableToBuy(newUnableToBuy);
+
+        cartContext.removeFromCart(productId);
+    }
+
+    function handleCloseOrder(){
+
+        if(getUnableToBuy.length > 0 || cartContext.getCart.length < 1) return;
+
+        orderContext.setOrderFlowNumber(2);
+    }
+
     return (
         <>
             <Head>
@@ -203,12 +207,12 @@ export default function Cart() {
             <Container>
                 {(cartContext.getProducts.length == 0) 
                 ? (
-                    <h1 className='empty'>Carrinho vazio</h1>
+                    <h1 className='empty' data-testid='empty-h1'>Carrinho vazio</h1>
                 ) 
                 : (
                     <>
                         <h1>Carrinho</h1>
-                        <table>
+                        <table data-testid='cart-table'>
                             <thead>
                                 <tr>
                                     <th className='th-image'>Imagem</th>
@@ -219,68 +223,88 @@ export default function Cart() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {cartContext.getProducts.length > 0 && cartContext.getProducts.map((product, index) => (
-                                    <tr key={product.id} className={product.quantity_stock < 1 ? 'out-of-stock' : ''}>
-                                        <td className='td-image'>
-                                            <img
-                                                //src='https://i.picsum.photos/id/892/800/400.jpg'
-                                                /*src='https://picsum.photos/800/400'*/
-                                                /*src={product.images[0] && product.images[0].url} */
-                                                src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
-                                                alt={'imagem-' + product.title.split(' ').join('-')}
-                                            />
-                                        </td>
-                                        <td className='td-name'>
-                                            <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
-                                                <a>
-                                                    <span className='over-hidden'>{product.title}</span>
-                                                    {(product.isOnSale)
-                                                        ? <span className='order-discount'>-{product.discount_percent}%</span>
-                                                        : null
-                                                    }
-                                                </a>
-                                            </Link>
-                                        </td>
-                                        <td className='td-price'>
-                                            R$ {product.finalPrice}
-                                        </td>
-                                        <td className='td-qtd'>
-                                            <span>
-                                                <button
-                                                    type="button"
-                                                    id='remove'
-                                                    onClick={() => cartContext.removeFromCart(product.id)}
-                                                    title='Remover do carrinho'
-                                                >
-                                                    X
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    id='less'
-                                                    onClick={() => verifyQtd({ id: product.id, qtd: -1 })}
-                                                    title='Remover 1'
-                                                >
-                                                    -
-                                                </button>
-                                                <p className='cart-qtd'>{cartContext.getCart[index].qtd}</p>
-                                                <button
-                                                    type="button"
-                                                    id='plus'
-                                                    onClick={() => verifyQtd({ id: product.id, qtd: 1 })}
-                                                    title='Adicionar 1'
-                                                >
-                                                    +
-                                                </button>
-                                            </span>
-                                            <span>
-                                                Disponível: {product.quantity_stock}
-                                            </span>
-                                        </td>
-                                        <td className='td-total'>
-                                            R$ {(Number(product.finalPrice) * (cartContext.getCart[index].qtd < 1 ? 1 : cartContext.getCart[index].qtd)).toFixed(2)}
-                                        </td>
-                                    </tr>
-                                ))}
+                                {cartContext.getProducts.map((product) => {
+
+                                    let index: number;
+                                    for(let i=0; i < cartContext.getCart.length; i++){
+                                        if(cartContext.getCart[i].id == product.id){
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+
+                                    return (
+                                        <tr 
+                                            key={product.id} 
+                                            className={product.quantity_stock < 1 ? 'out-of-stock' : ''} 
+                                            data-testid='product-row'
+                                        >
+                                            <td className='td-image'>
+                                                <img
+                                                    //src='https://i.picsum.photos/id/892/800/400.jpg'
+                                                    /*src='https://picsum.photos/800/400'*/
+                                                    /*src={product.images[0] && product.images[0].url} */
+                                                    src={`${(product.images.length > 0) ? `${process.env.BACKEND_URL}/uploads/${product.images[0].filename}` : '/images/img-n-disp.png'}`}
+                                                    alt={'imagem-' + product.title.split(' ').join('-')}
+                                                />
+                                            </td>
+                                            <td className='td-name'>
+                                                <Link href='/[productId]' as={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>
+                                                    <a>
+                                                        <span className='over-hidden'>{product.title}</span>
+                                                        {(product.isOnSale)
+                                                            ? <span className='order-discount'>-{product.discount_percent}%</span>
+                                                            : null
+                                                        }
+                                                    </a>
+                                                </Link>
+                                            </td>
+                                            <td className='td-price'>
+                                                R$ {product.finalPrice}
+                                            </td>
+                                            <td className='td-qtd'>
+                                                <span>
+                                                    <button
+                                                        type="button"
+                                                        id='remove'
+                                                        data-testid='remove-button'
+                                                        onClick={() => handleRemoveFromCart(product.id)}
+                                                        title='Remover do carrinho'
+                                                    >
+                                                        X
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        id='less'
+                                                        data-testid='less-button'
+                                                        disabled={getUnableToBuy.indexOf(product.id) > -1}
+                                                        onClick={() => verifyQtd({ id: product.id, qtd: -1 })}
+                                                        title='Remover 1'
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <p className='cart-qtd' data-testid='cart-qtd'>{cartContext.getCart[index].qtd}</p>
+                                                    <button
+                                                        type="button"
+                                                        id='plus'
+                                                        data-testid='plus-button'
+                                                        disabled={getUnableToBuy.indexOf(product.id) > -1}
+                                                        onClick={() => verifyQtd({ id: product.id, qtd: 1 })}
+                                                        title='Adicionar 1'
+                                                    >
+                                                        +
+                                                    </button>
+                                                </span>
+                                                <span>
+                                                    Disponível: {product.quantity_stock}
+                                                </span>
+                                            </td>
+                                            <td className='td-total'>
+                                                R$ {(Number(product.finalPrice) * cartContext.getCart[index].qtd).toFixed(2)}
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     
@@ -292,6 +316,7 @@ export default function Cart() {
                                     &nbsp;
                                     <input 
                                         id='cep'
+                                        data-testid='submit-zipcode-input' 
                                         type='text' 
                                         placeholder='CEP' 
                                         maxLength={9}
@@ -300,6 +325,7 @@ export default function Cart() {
                                     />
                                     <button 
                                         type='submit' 
+                                        data-testid='submit-zipcode-button' 
                                         onClick={(event) => getFreightPrice(event)}
                                         disabled={(
                                                 cartContext.getProducts.length == 0 || 
@@ -330,6 +356,7 @@ export default function Cart() {
                                                 <input 
                                                     type="radio" 
                                                     id='pac'
+                                                    data-testid='freight-radio'
                                                     checked={cartContext.getFreightSelected == 'pac' ? true : false} 
                                                     onChange={() => handleFreightCheck('pac')} 
                                                 /> 
@@ -372,6 +399,7 @@ export default function Cart() {
                                     (cartContext.getFreightSelected == null) ? (
                                         <button 
                                             type='button'
+                                            data-testid='select-freight-button'
                                             disabled={true}
                                         >
                                             Selecione o frete
@@ -379,7 +407,8 @@ export default function Cart() {
                                     ) : (
                                         <button 
                                             type='button'
-                                            onClick={() => orderContext.setOrderFlowNumber(2)}
+                                            data-testid='close-order-button'
+                                            onClick={handleCloseOrder}
                                             disabled={
                                                 (cartContext.getCart.length == 0) 
                                                     ? true 
@@ -395,6 +424,7 @@ export default function Cart() {
                                     <button 
                                         type='button' 
                                         className='login'
+                                        data-testid='login-button'
                                         onClick={() => userContext.handleSwitchModal()}
                                     >
                                         Fazer Login

@@ -45,7 +45,7 @@ export const fakeProducts = {
             "description": "hehe",
             "html_body": "fffff",
             "price": "149.99",
-            "quantity_stock": 98,
+            "quantity_stock": 2,
             "quantity_sold": 2,
             "discount_percent": 0,
             "discount_datetime_start": null,
@@ -203,4 +203,9 @@ export const fakeFreightPrice = {
         prazoEntrega: "2",
         //msgErro: "",
     }
+}
+
+export const fakeCartItem = {
+    id: 1,
+    qtd: 1,
 }

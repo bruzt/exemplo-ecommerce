@@ -7,6 +7,7 @@ interface IProps {
     _testFreightPrice?: IFreights;
     _testFreightSelected?: TFreights;
     _testAddressId?: number;
+    _testCartItems?: ICartItem[];
 }
 
 interface ICartItem {
@@ -37,9 +38,9 @@ interface IFreights {
 type TFreights = "pac" | "sedex";
 
 interface IUseCart {
-    getCart: ICartItem[]; 
-    setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>; 
-    addToCart: (newProduct: ICartItem) => void; 
+    getCart: ICartItem[];
+    setCart: React.Dispatch<React.SetStateAction<ICartItem[]>>;
+    addToCart: (newProduct: ICartItem) => void;
     removeFromCart: (id: number) => void;
     getProducts: IProduct[];
     setProducts: React.Dispatch<React.SetStateAction<IProduct[]>>;
@@ -63,9 +64,15 @@ interface IUseCart {
 
 const Context = createContext({} as IUseCart);
 
-export function CartContextProvider({ children, _testFreightPrice, _testFreightSelected, _testAddressId }: IProps){
+export function CartContextProvider({ 
+    children, 
+    _testFreightPrice, 
+    _testFreightSelected, 
+    _testAddressId,
+    _testCartItems,
+}: IProps) {
 
-    const [getCart, setCart] = useState<ICartItem[]>([]);
+    const [getCart, setCart] = useState<ICartItem[]>(_testCartItems || []);
     const [getProducts, setProducts] = useState<IProduct[]>([]);
     const [getSubtotalPrice, setSubtotalPrice] = useState(0);
     const [getTotalPrice, setTotalPrice] = useState(0);
@@ -75,69 +82,56 @@ export function CartContextProvider({ children, _testFreightPrice, _testFreightS
     const [getAddressId, setAddressId] = useState<number | null>(_testAddressId);
     const [getFreightMeasures, setFreightMeasures] = useState<iFreightMeasures | null>(null);
 
-    useEffect( () => {
-        
+    useEffect(() => {
+
         const storedCart = JSON.parse(sessionStorage.getItem('cart'));
 
-        if(storedCart) setCart(storedCart);
+        if (storedCart) setCart(storedCart);
 
     }, [])
 
-    function addToCart(newProduct: ICartItem){
+    function addToCart(newProduct: ICartItem) {
 
         const cart = [];
-        let findIt = false;
 
-        if(getCart.length > 0){
-            
-            getCart.forEach( (product) => {
-    
-                if(newProduct.id == product.id){
-                        
+        if (getCart.length > 0) {
+            for (const product of getCart) {
+                if (newProduct.id == product.id) {
                     newProduct.qtd = Number(newProduct.qtd) + Number(product.qtd);
-    
-                    findIt = true;
-                    cart.push(newProduct);
-    
                 } else {
-    
                     cart.push(product);
-                } 
-            });
-
-            if(!findIt) cart.push(newProduct);
-
-        } else {
-
-            cart.push(newProduct);
+                }
+            }
         }
-           
+
+        cart.push(newProduct);
+
         sessionStorage.setItem('cart', JSON.stringify(cart));
         setCart(cart);
     }
 
-    function removeFromCart(id: number){
+    function removeFromCart(id: number) {
 
-        if(confirm("Tem certeza que deseja remover esse item?")){
+        if (confirm("Tem certeza que deseja remover esse item?")) {
 
             resetFreight();
-    
-            const cart = getCart.filter( (product) => product.id != id);
-            const products = getProducts.filter( (product) => product.id != id);
-            
+
+            const cart = getCart.filter((product) => product.id != id);
+            const products = getProducts.filter((product) => product.id != id);
+
             sessionStorage.setItem('cart', JSON.stringify(cart));
             setCart(cart);
             setProducts(products);
         }
     }
 
-    function resetFreight(){
+    function resetFreight() {
 
         setFreightSelected(null);
         setFreightPrice(null);
     }
 
-    function cleanCart(){
+    function cleanCart() {
 
         setCart([]);
         setProducts([]);
@@ -147,10 +141,10 @@ export function CartContextProvider({ children, _testFreightPrice, _testFreightS
     }
 
     return (
-        <Context.Provider value={{ 
-            getCart, 
-            setCart, 
-            addToCart, 
+        <Context.Provider value={{
+            getCart,
+            setCart,
+            addToCart,
             removeFromCart,
             getProducts,
             setProducts,
@@ -176,7 +170,7 @@ export function CartContextProvider({ children, _testFreightPrice, _testFreightS
     );
 }
 
-export function useCart(){
+export function useCart() {
 
     const context = useContext(Context);
 
