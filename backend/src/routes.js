@@ -20,6 +20,7 @@ const productValidator = require('./controllers/productController/validators');
 const sessionValidator = require('./controllers/sessionController/validators');
 const userValidator = require('./controllers/userController/validators');
 const userResetPasswordValidator = require('./controllers/userResetPasswordController/validators');
+const installmentsValidator = require('./controllers/installmentsController/validators');
 
 // Controllers
 const addressController = require('./controllers/addressController');
@@ -32,6 +33,7 @@ const productController = require('./controllers/productController');
 const sessionController = require('./controllers/sessionController');
 const userController = require('./controllers/userController');
 const userResetPasswordController = require('./controllers/userResetPasswordController');
+const installmentsController = require('./controllers/installmentsController');
 
 const router = express.Router();
 
@@ -47,6 +49,9 @@ router.get('/addresses', addressValidator.list, jwtAuthentication, addressContro
 router.post('/addresses', addressValidator.store, jwtAuthentication, addressController.store);
 router.put('/addresses/:id', addressValidator.update, jwtAuthentication, addressController.update);
 router.delete('/addresses/:id', addressValidator.destroy, jwtAuthentication, addressController.destroy);
+
+// BUSCA PARCELAS DO CARTÃO DE CREDITO
+router.post('/installments', installmentsValidator.show, installmentsController.show);
 
 // BUSCA E ADICIONA PEDIDOS DE UM USUÁRIO
 router.get('/orders', orderValidator.list, jwtAuthentication, orderController.list);

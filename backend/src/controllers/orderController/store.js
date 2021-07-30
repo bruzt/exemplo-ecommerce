@@ -11,6 +11,7 @@ const UserModel = require('../../models/UserModel');
 const ProductModel = require('../../models/ProductModel');
 const buyOrderTemplate = require('../../services/mailer/templates/buyOrderTemplate');
 const { sendEmailQueue } = require('../../backgroundJobs/queues');
+const calcInstallments = require('../../util/calcInstallments');
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
@@ -135,7 +136,15 @@ module.exports = async (req, res) => {
         ///////////////////////////////////
         if(req.body.credit_card){
 
-            req.body.credit_card.amount = String(Number(productsAmount) + Number(shippingFee));
+            let amount = String(Number(productsAmount) + Number(shippingFee));
+                
+            // apply interest rate to total price 
+            if(req.body.credit_card.installments > Number(process.env.FREE_INSTALLMENTS)){
+                const installmentsOptions = calcInstallments(parseFloat(String(amount) + 'e-2')); // parseFloat(string + 'e-2') adds . of cents
+                amount = (Number(installmentsOptions.installments[req.body.credit_card.installments-1]) * Number(req.body.credit_card.installments)).toFixed(2).replace('.', '');
+            }
+
+            req.body.credit_card.amount = amount;
             req.body.credit_card.shipping.fee = shippingFee;
 
             req.body.credit_card.reference_key = reference_key;
