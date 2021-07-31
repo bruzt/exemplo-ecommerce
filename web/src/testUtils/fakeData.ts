@@ -13,9 +13,9 @@ export const fakeAddress = {
     street: 'rua foo',
     number: '14b',
     neighborhood: 'bairro bar',
-    city: 'baz',
-    state: 'foobar',
-    zipcode: '88888888',
+    city: 'Limeira',
+    state: 'SP',
+    zipcode: '12240-650',
 };
 
 export const fakeCategories = [
@@ -152,6 +152,36 @@ export const fakeBoletoOrder = {
     "pagarme": {
         "status": "waiting_payment",
     }
+}
+
+export const fakeCreditCardOrder = {
+    "order": {
+        "id": 3,
+        "boleto_url": null
+    },
+    "pagarme": {
+        "status": "paid",
+    }
+}
+
+export const fakeInstallments = {
+    freeInstallments: 6,
+    maxInstallments: 12,
+    interestRate: 10,
+    installments: [
+        1372.49,
+        686.25,
+        457.5,
+        343.12,
+        274.5,
+        228.75,
+        215.68,
+        188.72,
+        167.75,
+        150.97,
+        137.25,
+        125.81
+    ]
 }
 
 export const fakeAxiosUfs = [{

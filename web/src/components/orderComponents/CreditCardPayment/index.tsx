@@ -175,6 +175,8 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
         event.preventDefault();
 
+        if(getDisabledPayButton) return;
+
         setDisabledPayButton(true);
         setDisabledBoletoButton(true);
 
@@ -266,6 +268,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                             <label htmlFor="card-holder-name" className='holder-name-label'>Nome impresso no cartão</label>
                             <input
                                 id='card-holder-name'
+                                data-testid='card-holder-name'
                                 type="text"
                                 placeholder='Nome'
                                 value={getCardHolderName}
@@ -278,6 +281,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="card-number">Numero do cartão</label>
                                 <input
                                     id='card-number'
+                                    data-testid='card-number'
                                     type="text"
                                     placeholder='0000 0000 0000 0000'
                                     maxLength={19}
@@ -293,6 +297,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="card-cvv">CVV</label>
                                 <input
                                     id='card-cvv'
+                                    data-testid='card-cvv'
                                     type="text"
                                     placeholder='000'
                                     maxLength={3}
@@ -306,6 +311,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <div className='flex-row-2'>
                                     <select
                                         id="card-expiration-month"
+                                        data-testid="card-expiration-month"
                                         value={getCardExpirationMonth}
                                         placeholder='Mês'
                                         onChange={(event) => setCardExpirationMonth(event.target.value)}
@@ -327,21 +333,23 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                     <p>/</p>
                                     <select
                                         id="card-expiration-year"
+                                        data-testid="card-expiration-year"
                                         value={getCardExpirationYear}
                                         placeholder='Ano'
                                         onChange={(event) => setCardExpirationYear(event.target.value)}
                                     >
                                         <option value=""></option>
-                                        <option value="20">20</option>
-                                        <option value="21">21</option>
-                                        <option value="22">22</option>
-                                        <option value="23">23</option>
-                                        <option value="24">24</option>
-                                        <option value="25">25</option>
-                                        <option value="26">26</option>
-                                        <option value="27">27</option>
-                                        <option value="28">28</option>
-                                        <option value="29">29</option>
+                                        <option value={String(new Date().getFullYear()).substr(-2)}>{String(new Date().getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 2)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 2)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 3)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 3)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 4)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 4)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 5)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 5)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 6)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 6)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 7)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 7)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 8)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 8)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 9)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 9)).getFullYear()).substr(-2)}</option>
+                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()).substr(-2)}</option>
                                     </select>
                                 </div>
                             </div>
@@ -353,6 +361,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <input
                                     type="text"
                                     id='tel'
+                                    data-testid='phone'
                                     placeholder='(00) 0-0000-0000'
                                     maxLength={16}
                                     value={getPhone}
@@ -363,6 +372,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="cpf">CPF</label>
                                 <input
                                     id='cpf'
+                                    data-testid='cpf'
                                     type="text"
                                     placeholder='123-456-789-00'
                                     className={`${(getValidCpf) ? '' : 'invalid-value'}`}
@@ -381,6 +391,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                             <label htmlFor="street">Logradouro</label>
                             <input
                                 id='street'
+                                data-testid='street'
                                 type="text"
                                 value={getStreet}
                                 onChange={(event) => setStreet(event.target.value)}
@@ -392,6 +403,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="number"> Nº</label>
                                 <input
                                     id='number'
+                                    data-testid='number-input'
                                     type="text"
                                     value={getNumber}
                                     onChange={(event) => setNumber(event.target.value)}
@@ -401,6 +413,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="neighborhood">Bairro</label>
                                 <input
                                     id='neighborhood'
+                                    data-testid='neighborhood'
                                     type="text"
                                     value={getNeighborhood}
                                     onChange={(event) => setNeighborhood(event.target.value)}
@@ -413,6 +426,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="city">Cidade</label>
                                 <input
                                     id='city'
+                                    data-testid='city'
                                     type="text"
                                     value={getCity}
                                     onChange={(event) => setCity(event.target.value)}
@@ -423,6 +437,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="state"> Estado</label>
                                 <select
                                     id="state"
+                                    data-testid="state"
                                     value={getState}
                                     onChange={(event) => setState(event.target.value)}
                                 >
@@ -461,6 +476,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                                 <label htmlFor="zipcode">CEP </label>
                                 <input
                                     id='zipcode'
+                                    data-testid='zipcode'
                                     type="text"
                                     maxLength={9}
                                     value={getZipCode}
@@ -471,6 +487,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
                         <div className='flex-row same-addr-button'>
                             <button
                                 type='button'
+                                data-testid='same-address-button'
                                 onClick={handleSameAddressButton}
                             >
                                 Mesmo da entrega
@@ -509,6 +526,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
                     <button
                         type='submit'
+                        data-testid='pay-submit-button'
                         disabled={getDisabledPayButton}
                     >
                         {(getDisabledBoletoButton)
