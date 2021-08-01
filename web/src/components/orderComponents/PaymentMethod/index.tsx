@@ -19,6 +19,8 @@ export default function PaymentMethod() {
     const orderContext = useOrder();
 
     useEffect( () => {
+        if(process.browser) window.scrollTo({ top: 0 });
+        
         orderContext.setOrderId(null);
         orderContext.setBoletoUrl('');
     }, []);
