@@ -4,6 +4,7 @@ type OrderFlowNumber = 1 | 2 | 3 | 4;
 
 interface IProps {
     children: React.ReactNode;
+    _testOrderFlowNumber?: OrderFlowNumber;
 }
 
 interface IUseOrder {
@@ -31,9 +32,9 @@ interface IUseOrder {
 
 const Context = createContext({} as IUseOrder);
 
-export function OrderContextProvider({ children }: IProps) {
+export function OrderContextProvider({ children, _testOrderFlowNumber }: IProps) {
 
-    const [getOrderFlowNumber, setOrderFlowNumber] = useState<OrderFlowNumber>(1);
+    const [getOrderFlowNumber, setOrderFlowNumber] = useState<OrderFlowNumber>(_testOrderFlowNumber || 1);
     const [getOrderId, setOrderId] = useState<number | null>(null);
     const [getBoletoUrl, setBoletoUrl] = useState('');
 
