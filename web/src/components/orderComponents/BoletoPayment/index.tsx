@@ -115,7 +115,7 @@ export default function BoletoPayment({ getDisabledCreditCardButton, setDisabled
     }
 
     return (
-        <Container>
+        <Container data-testid='boleto-component'>
             <h2>Boleto</h2>
 
             <form 

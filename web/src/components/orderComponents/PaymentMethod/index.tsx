@@ -37,6 +37,7 @@ export default function PaymentMethod() {
                 <button
                     type='button'
                     className='back-button'
+                    data-testid='payment-method-back-button'
                     title='Voltar'
                     onClick={() => orderContext.setOrderFlowNumber(2)}
                 >
@@ -50,6 +51,7 @@ export default function PaymentMethod() {
                         type='button'
                         className={`cc-button ${(getPaymentMethod == 'cc') ? 'active' : ''}`}
                         disabled={getDisabledCreditCardButton}
+                        data-testid='select-credit-card-button'
                         onClick={() => setPaymentMethod('cc')}
                     >
                         Cartão de crédito
@@ -59,6 +61,7 @@ export default function PaymentMethod() {
                         type='button'
                         className={`boleto-button ${(getPaymentMethod == 'boleto') ? 'active' : ''}`}
                         disabled={getDisabledBoletoButton}
+                        data-testid='select-boleto-button'
                         onClick={() => setPaymentMethod('boleto')}
                     >
                         Boleto

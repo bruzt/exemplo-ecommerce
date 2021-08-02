@@ -257,7 +257,7 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
     }
 
     return (
-        <Container>
+        <Container data-testid='credit-card-component'>
             <h2>Cartão de Crédito</h2>
 
             <form onSubmit={handlePaySubmit}>
