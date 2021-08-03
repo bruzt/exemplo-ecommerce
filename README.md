@@ -75,7 +75,7 @@ Username: dbuser
 Password: F83ai8qD
 Database: ecommerce-dev
 ```
-Clique em "connect", você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, ir na tabela de ``` users ```, clicar em "Content" e alterar o campo "admin" de ``` false ``` para ``` true ```.
+Clique em "connect", você pode cadastrar o usuário na interface da loja como um usuário comum e depois, no Postbird, ir na tabela de ``` users ```, clicar na aba "Content" e alterar o campo "admin" de ``` false ``` para ``` true ```, depois disso faça o login no admin-web e você poderá adicionar/alterar/remover categorias e produtos da loja.
 
 <!-- 
 VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
