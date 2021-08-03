@@ -32,7 +32,7 @@
 
 ## Para testar
 
-Se você deseja testar esse app basta instalar os pacotes com ``` npm install ``` nos diretórios backend e web, iniciar um banco de dados postgres com [Docker](https://www.docker.com/):
+Se você deseja testar esse app você precisa ter o [node.js 14 LTS](https://nodejs.org/) instalado no seu PC e então instalar os pacotes com o comando ``` npm install ``` nos diretórios backend e web, iniciar um banco de dados postgres com [Docker](https://www.docker.com/):
 
 ```
 sudo docker run -d \
