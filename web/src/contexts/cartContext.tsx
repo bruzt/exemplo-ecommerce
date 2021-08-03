@@ -8,6 +8,7 @@ interface IProps {
     _testFreightSelected?: TFreights;
     _testAddressId?: number;
     _testCartItems?: ICartItem[];
+    _testZipCode?: string;
 }
 
 interface ICartItem {
@@ -70,13 +71,14 @@ export function CartContextProvider({
     _testFreightSelected, 
     _testAddressId,
     _testCartItems,
+    _testZipCode,
 }: IProps) {
 
     const [getCart, setCart] = useState<ICartItem[]>(_testCartItems || []);
     const [getProducts, setProducts] = useState<IProduct[]>([]);
     const [getSubtotalPrice, setSubtotalPrice] = useState(0);
     const [getTotalPrice, setTotalPrice] = useState(0);
-    const [getZipCode, setZipCode] = useState('');
+    const [getZipCode, setZipCode] = useState(_testZipCode || '');
     const [getFreightSelected, setFreightSelected] = useState<TFreights | null>(_testFreightSelected);
     const [getFreightPrice, setFreightPrice] = useState<IFreights | null>(_testFreightPrice);
     const [getAddressId, setAddressId] = useState<number | null>(_testAddressId);

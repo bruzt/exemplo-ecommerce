@@ -40,17 +40,14 @@ export default function SelectAddress() {
     }, []);
 
     useEffect(() => {
-
         if (getUf != '0') {
 
             fetchCities();
             setCity('0');
         }
-
     }, [getUf]);
 
     useEffect(() => {
-
         if (getStreet.length < 3 ||
             getNumber.length < 1 ||
             getNeighborhood.length < 3 ||
@@ -62,7 +59,6 @@ export default function SelectAddress() {
             setDisableAddAddrButton(true)
 
         } else setDisableAddAddrButton(false)
-
     },
         [
             getStreet,
@@ -75,7 +71,6 @@ export default function SelectAddress() {
     );
 
     async function fetchUfs() {
-
         try {
 
             const response = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
@@ -90,7 +85,6 @@ export default function SelectAddress() {
     }
 
     async function fetchCities() {
-
         try {
 
             const response = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${getUf}/municipios`);
@@ -196,15 +190,17 @@ export default function SelectAddress() {
                             <div
                                 key={address.id}
                                 className={`
-											addr-card 
-											${(cartContext.getAddressId == address.id) ? 'selected' : ''} 
-											${(getDisabledGoToPaymentButton) ? 'disabled' : ''}
-										`}
+                                    addr-card 
+                                    ${(cartContext.getAddressId == address.id) ? 'selected' : ''} 
+                                    ${(getDisabledGoToPaymentButton) ? 'disabled' : ''}
+                                `}
+                                data-testid='address-card'
                             >
                                 <div className='addr-data'>
                                     <div className='addr-remove'>
                                         <button
                                             type="button"
+                                            data-testid="remove-addr-button"
                                             onClick={() => handleDeleteAddress(address.id)}
                                         >
                                             X
@@ -213,6 +209,7 @@ export default function SelectAddress() {
 
                                     <a
                                         onClick={() => handleDisabledGoToPaymentButton(address.id)}
+                                        data-testid='address-card-anchor'
                                     >
                                         <div>
                                             <p>Logradouro: {address.street}</p>
@@ -232,6 +229,7 @@ export default function SelectAddress() {
                 <div className='add-select-buttons'>
                     <button
                         className='add-button'
+                        data-testid='add-addr-button'
                         type='button'
                         onClick={switchShowAddAddr}
                     >
@@ -239,6 +237,7 @@ export default function SelectAddress() {
                     </button>
                     <button
                         className='select-button'
+                        data-testid='select-addr-button'
                         disabled={getDisabledGoToPaymentButton}
                         onClick={handleGoToPayment}
                     >
@@ -251,21 +250,39 @@ export default function SelectAddress() {
                 </div>
 
                 {getShowAddAddr && (
-                    <form className='add-addr-form' onSubmit={handleAddAddress}>
+                    <form className='add-addr-form' onSubmit={handleAddAddress} data-testid='add-addr-form'>
 
                         <div className='flex-column'>
                             <label htmlFor="street">Logradouro: </label>
-                            <input id='street' type="text" value={getStreet} onChange={(event) => setStreet(event.target.value)} />
+                            <input 
+                                id='street' 
+                                data-testid='street-input' 
+                                type="text" 
+                                value={getStreet} 
+                                onChange={(event) => setStreet(event.target.value)} 
+                            />
                         </div>
 
                         <div className='flex-row'>
                             <div className='flex-column'>
                                 <label htmlFor="number"> Nº: </label>
-                                <input id='number' type="text" value={getNumber} onChange={(event) => setNumber(event.target.value)} />
+                                <input 
+                                    id='number' 
+                                    data-testid='number-input' 
+                                    type="text" 
+                                    value={getNumber} 
+                                    onChange={(event) => setNumber(event.target.value)} 
+                                />
                             </div>
                             <div className='flex-column'>
                                 <label htmlFor="district">Bairro: </label>
-                                <input id='district' type="text" value={getNeighborhood} onChange={(event) => setNeighborhood(event.target.value)} />
+                                <input 
+                                    id='district' 
+                                    data-testid='district-input' 
+                                    type="text" 
+                                    value={getNeighborhood} 
+                                    onChange={(event) => setNeighborhood(event.target.value)} 
+                                />
                             </div>
                         </div>
 
@@ -274,6 +291,7 @@ export default function SelectAddress() {
                                 <label htmlFor="city">Cidade: </label>
                                 <select
                                     id="city"
+                                    data-testid="city-input"
                                     value={getCity}
                                     onChange={(event) => setCity(event.target.value)}
                                 >
@@ -297,6 +315,7 @@ export default function SelectAddress() {
                                 <label htmlFor="state"> Estado: </label>
                                 <select
                                     id="state"
+                                    data-testid="state-input"
                                     value={getUf}
                                     onChange={(event) => setUf(event.target.value)}
                                 >
@@ -317,6 +336,7 @@ export default function SelectAddress() {
                                 <label htmlFor="zipcode">CEP: </label>
                                 <input
                                     id='zipcode'
+                                    data-testid='zipcode-input'
                                     type="text"
                                     maxLength={9}
                                     value={getZipCode}
@@ -327,6 +347,7 @@ export default function SelectAddress() {
 
                         <button
                             className='addr-submit'
+                            data-testid='add-addr-submit-button'
                             type='submit'
                             disabled={getDisableAddAddrButton}
                         >
