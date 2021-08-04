@@ -25,6 +25,7 @@ export default function ThanksForBuy() {
                         href={orderContext.getBoletoUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
+                        data-testid='boleto-url'
                     >
                         ABRIR BOLETO
                     </a>
