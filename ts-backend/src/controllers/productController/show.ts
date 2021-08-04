@@ -58,6 +58,7 @@ export default async function show(req: Request, res: Response) {
                 id: In(sortedIds),
                 quantity_stock: MoreThan(0),
             },
+            relations: ['category', 'images'],
             take: 4,
         });
 
@@ -68,6 +69,7 @@ export default async function show(req: Request, res: Response) {
                     id: sortedId,
                     quantity_stock: MoreThan(0),
                 },
+                relations: ['category', 'images'],
             });
             if (productBuyedWith) productsBuyedWith.push(productBuyedWith);
             if (productsBuyedWith.length == 4) break;

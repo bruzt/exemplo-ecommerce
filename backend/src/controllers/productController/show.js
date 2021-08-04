@@ -74,16 +74,36 @@ module.exports = async (req, res) => {
                     [Op.gt]: 0
                 },
             },
+            include: [{
+                association: 'images',
+                attributes: ['id', 'url', 'filename'],
+                required: false
+            },
+            {
+                association: 'category',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }],
             limit: 4,
         });
 
-        /*const productsBuyedWith: ProductModel[] = [];
+        /*const productsBuyedWith = [];
         for (const sortedId of sortedIds) {
             const productBuyedWith = await ProductModel.findOne({
                 where: {
                     id: sortedId,
-                    quantity_stock: MoreThan(0),
+                    quantity_stock: {
+                        [Op.gt]: 0
+                    },
                 },
+                include: [{
+                    association: 'images',
+                    attributes: ['id', 'url', 'filename'],
+                    required: false
+                },
+                {
+                    association: 'category',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }],
             });
             if (productBuyedWith) productsBuyedWith.push(productBuyedWith);
             if (productsBuyedWith.length == 4) break;
