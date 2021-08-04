@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ILike, Any, LessThan, MoreThan, MoreThanOrEqual } from 'typeorm';
+import { ILike, In, LessThan, MoreThan, MoreThanOrEqual } from 'typeorm';
 
 import findCategoriesChildrenIds from '../../utils/findCategoriesChildrenIds';
 
@@ -8,7 +8,7 @@ import CategoryModel from '../../models/CategoryModel';
 import sonicSearch from '../../databases/sonic/search';
 
 declare global {
-    interface Array<T>  {
+    interface Array<T> {
         move: (from: number, to: number) => void;
     }
 }
@@ -67,7 +67,7 @@ export default async function list(req: Request, res: Response) {
 
                 [ products, count ] = await ProductModel.findAndCount({
                     where: {
-                        id: Any(ids)
+                        id: In(ids)
                     },
                     relations: ['category', 'images'],
                     order,
@@ -103,7 +103,7 @@ export default async function list(req: Request, res: Response) {
                 order,
                 relations: ['category', 'images'],
                 where: {
-                    category_id: Any(categoriesIds)
+                    category_id: In(categoriesIds)
                 }
             });
 
