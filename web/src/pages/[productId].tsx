@@ -42,8 +42,14 @@ export interface IProduct {
     };
 }
 
+interface IAxiosResponse {
+    product: IProduct;
+    productsBuyedWith: IProduct[]
+}
+
 interface IProps {
-    product: IProduct
+    product: IProduct;
+    productsBuyedWith: IProduct[];
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -64,10 +70,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         
-        const response = await api.get<IProduct>(`/products/${params.productId}`);
+        const response = await api.get<IAxiosResponse>(`/products/${params.productId}`);
     
         return {
-            props: { product: response.data },
+            props: { 
+                product: response.data.product,
+                productsBuyedWith: response.data.productsBuyedWith
+            },
             revalidate: 24 * 60 * 60, // 24 horas
         };
 
@@ -79,7 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 }
 
-export default function productId({ product }: IProps) {
+export default function productId({ product, productsBuyedWith }: IProps) {
 
     /*const router = useRouter();
 
@@ -93,6 +102,6 @@ export default function productId({ product }: IProps) {
 
     } else {*/
 
-        return <ProductPage product={product} />;
+        return <ProductPage product={product} productsBuyedWith={productsBuyedWith} />;
     //}
 }

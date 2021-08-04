@@ -204,3 +204,34 @@ export const Container = styled.section`
         }
     }
 `;
+
+export const BuyedWithContainer = styled.div`
+
+    h3 {
+        margin: 1rem 0;
+    }
+
+    .buyed-with-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 0.3125rem;
+    }
+
+    @media (max-width: 1120px) {
+        .buyed-with-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .buyed-with-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .buyed-with-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+`;

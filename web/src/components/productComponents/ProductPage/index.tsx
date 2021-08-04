@@ -6,23 +6,26 @@ import api from '../../../services/api';
 import { useCart } from '../../../contexts/cartContext';
 import { ICategory, useFilterBar } from '../../../contexts/filterBarContext';
 
-import { Container } from './styles';
+import { Container, BuyedWithContainer } from './styles';
 
 import PageLayout from '../../PageLayout';
 import ImageSlider from '../ImageSlider';
 import OnSaleCountDown from '../OnSaleCountdown';
+import ProductCard from '../ProductCard';
 
 import { IProduct } from '../../../pages/[productId]';
 
 interface IProps {
     product: IProduct;
+    productsBuyedWith: IProduct[];
 }
 
 let timeoutId: NodeJS.Timeout;
 
-export default function Product({ product }: IProps) {
+export default function Product({ product, productsBuyedWith }: IProps) {
 
     const [getProduct, setProduct] = useState<IProduct>(product);
+    const [getProductsBuyedWith, setProductsBuyedWith] = useState<IProduct[]>(productsBuyedWith);
 
     const [getQuantity, setQuantity] = useState(1);
     const [getBuyButtonDisabled, setBuyButtonDisabled] = useState(false);
@@ -52,7 +55,8 @@ export default function Product({ product }: IProps) {
         try {
             const response = await api.get(`/products/${product.id}`);
 
-            setProduct(response.data);
+            setProduct(response.data.product);
+            setProductsBuyedWith(response.data.productsBuyedWith);
 
         } catch (error) {
             console.error(error);
@@ -236,6 +240,20 @@ export default function Product({ product }: IProps) {
 
                 </Container>
 
+                {getProductsBuyedWith.length > 0 && (
+                    <BuyedWithContainer>
+                        <h3>Frequentemente comprados juntos</h3>
+
+                        <div className="buyed-with-grid">
+                            {getProductsBuyedWith.map((productBuyedWith) => (
+                                <ProductCard 
+                                    key={productBuyedWith.id} 
+                                    product={productBuyedWith} 
+                                />
+                            ))}
+                        </div>
+                    </BuyedWithContainer>
+                )}
             </PageLayout>
         </>
     );
