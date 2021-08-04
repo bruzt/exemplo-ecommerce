@@ -51,8 +51,9 @@ factory.define('Order', models.OrderModel, {
 });
 
 factory.define('OrdersProducts', models.OrdersProductsModel, {
-    total_price: faker.commerce.price(),
-    status: faker.commerce.color(), 
+    quantity_buyed: faker.random.number({ min: 1, max: 5 }),
+    product_price: faker.commerce.price(),
+    product_discount_percent: faker.random.number({ min: 0, max: 15 }),
 });
 
 module.exports = factory;
