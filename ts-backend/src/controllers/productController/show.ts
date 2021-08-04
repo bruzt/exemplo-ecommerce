@@ -1,17 +1,17 @@
 import { Request, Response } from 'express';
-import { Any, MoreThan } from 'typeorm';
+import { In, MoreThan } from 'typeorm';
 
 import ProductModel from '../../models/ProductModel';
 import OrderProductModel from '../../models/OrderProductModel';
 
-function SortElemByFrequency(arr: string[]) {
-    const frequency: { [key: string]: number } = arr.reduce((obj, curr) => {
-        //@ts-ignore
+function SortIdsByFrequency(arr: number[]) {
+    const frequency = arr.reduce<{ [key: string]: number }>((obj, curr) => {
         obj[curr] = (obj[curr] || 0) + 1;
         return obj;
     }, {});
-    //@ts-ignore
-    return [...new Set(Object.entries(frequency).sort((a, b) => b[1] - a[1]).flatMap(item => Array(item[1]).fill(item[0])))];
+    const sorted = Object.entries(frequency).sort((a, b) => b[1] - a[1]);
+    const uniqueIds = sorted.map((id) => id[0])
+    return uniqueIds.map(Number);
 }
 
 export default async function show(req: Request, res: Response) {
@@ -39,7 +39,7 @@ export default async function show(req: Request, res: Response) {
         // get ordersProducts who buyed this product but with other products
         const ordersProductsByOrderId = await OrderProductModel.find({
             where: {
-                order_id: Any(orderIds),
+                order_id: In(orderIds),
             },
         });
 
@@ -49,14 +49,19 @@ export default async function show(req: Request, res: Response) {
         // remove this product id
         const buyedWithProductsIds = productsIds.filter((productsId) => productsId != product.id);
 
-        // cast ids to string
-        const buyedWithProductsIdsAsString = buyedWithProductsIds.map((buyedWithProductsId) => String(buyedWithProductsId));
-
         // sort by frequency
-        const sortedIds = SortElemByFrequency(buyedWithProductsIdsAsString);
+        const sortedIds = SortIdsByFrequency(buyedWithProductsIds);
 
         // get products thas was most buyed with this product
-        const productsBuyedWith: ProductModel[] = [];
+        const productsBuyedWith = await ProductModel.find({
+            where: {
+                id: In(sortedIds),
+                quantity_stock: MoreThan(0),
+            },
+            take: 4,
+        });
+
+        /*const productsBuyedWith: ProductModel[] = [];
         for (const sortedId of sortedIds) {
             const productBuyedWith = await ProductModel.findOne({
                 where: {
@@ -66,7 +71,7 @@ export default async function show(req: Request, res: Response) {
             });
             if (productBuyedWith) productsBuyedWith.push(productBuyedWith);
             if (productsBuyedWith.length == 4) break;
-        }
+        }*/
 
         return res.json({ product, productsBuyedWith });
 
