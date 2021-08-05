@@ -44,8 +44,9 @@ export default function PaginationNav({ totalPages, currentPage, limitPageNav, h
 				<li key={i} className={`page-item`}>
 					<button
 						type='button'
-						className={`page-link ${(currentPage === i + 1) ? 'active' : ''}`}
-						disabled={(currentPage === i + 1)}
+						data-testid='pagination-button'
+						className={`page-link ${(currentPage == i + 1) ? 'active' : ''}`}
+						disabled={(currentPage == i + 1)}
 						value={i + 1}
 						onClick={() => handlePagination(Number(i + 1))}
 					>
@@ -89,6 +90,7 @@ export default function PaginationNav({ totalPages, currentPage, limitPageNav, h
 				<li className='page-item disabled'>
 					<button
 						type='button'
+						data-testid='last-page-button'
 						className="page-link"
 						disabled={(currentPage === totalPages)}
 						onClick={() => handlePagination(totalPages)}
