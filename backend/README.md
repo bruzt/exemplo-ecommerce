@@ -14,6 +14,9 @@
 - PUT /addresses/:id 
 - DELETE /addresses/:id 
 
+### BUSCA PARCELAS DO CARTÃO DE CREDITO
+- POST /installments
+
 ### BUSCA OU ADICIONA PEDIDOS DE UM USUÁRIO
 - GET /orders 
 - POST /orders 
@@ -70,4 +73,4 @@ sudo docker run -d --rm \
     redis:6.2.4
 ```
 
-Execute o comando ``` npm test ``` para iniciar os testes, depois de terminado você pode entrar no diretório "coverage/lcov-report" que será gerado na raiz do projeto e abrir o arquivo "index.html" no seu navegador para ver a cobertura de código.
+Execute o comando ``` npm test ``` para iniciar os testes, depois de terminado você pode entrar no diretório "coverage/lcov-report/" que será gerado na raiz do projeto e abrir o arquivo "index.html" no seu navegador para ver a cobertura de código.
