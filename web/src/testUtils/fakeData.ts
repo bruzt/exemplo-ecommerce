@@ -73,6 +73,12 @@ export const fakeProducts = {
     ]
 }
 
+export const fakeImage = {
+    id: 1,
+    url: 'http://test.test/uploads/img.jpg',
+    filename: 'fake-img.jpg'
+};
+
 export const fakeOrder = {
     "count": 1,
     "orders": [

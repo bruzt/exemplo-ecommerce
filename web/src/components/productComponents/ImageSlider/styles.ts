@@ -124,6 +124,10 @@ export const ImgModal = styled.div`
         top: 50%;
         right: 5%;
     }
+
+    @media (max-width: 720px) {
+        display: none;
+    }
 `;
 
 export const FaTimesStyled = styled(FaTimes)`

@@ -48,23 +48,29 @@ export default function ImageSlider({ images }: IProps) {
     return (
         <Container>
 
-            {(process.browser && (window.innerWidth > 720) && (modalActiveIndex !== null)) && (
-                <ImgModal>
+            {(modalActiveIndex !== null) && (
+                <ImgModal data-testid='img-modal-container'>
                     <figure>
 
                         <button
                             type='button'
+                            data-testid='close-img-modal-button'
                             onClick={() => setModalActiveIndex(null)}
                             className='close'
                         >
                             <FaTimesStyled />
                         </button>
 
-                        <img src={`${process.env.BACKEND_URL}/uploads/${images[modalActiveIndex].filename}`} alt='imagem' />
+                        <img 
+                            src={`${process.env.BACKEND_URL}/uploads/${images[modalActiveIndex].filename}`} 
+                            alt='imagem' 
+                            data-testid='modal-img'
+                        />
 
                         <button
                             type='button'
                             className='left'
+                            data-testid='left-modal-button'
                             onClick={handleRegressModalActiveImage}
                         >
                             <AiOutlineLeft size='2rem' color='#111' />
@@ -73,6 +79,7 @@ export default function ImageSlider({ images }: IProps) {
                         <button
                             type='button'
                             className='right'
+                            data-testid='right-modal-button'
                             onClick={handleAdvanceModalActiveImage}
                         >
                             <AiOutlineRight size='2rem' color='#111' />
@@ -101,14 +108,15 @@ export default function ImageSlider({ images }: IProps) {
                                 type='button'
                                 key={image.id}
                                 onClick={() => setModalActiveIndex(index)}
-                            >
+                                >
                                 <img 
                                     src={`${process.env.BACKEND_URL}/uploads/${image.filename}`} 
                                     alt={image.filename} 
+                                    data-testid='slider-img'
                                 />
                            </button>
                         ))
-                        : [1].map( (i) => <img src='/images/img-n-disp.png' key={i} />) 
+                        : [1].map( (i) => <img src='/images/img-n-disp.png' key={i} data-testid='no-slider-img' />) 
                     }
                 </Carousel>
 
