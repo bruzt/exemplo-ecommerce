@@ -6,7 +6,7 @@ export const Container = styled.div`
 
 export const Menu = styled.div`
     height: 1fr;
-    min-height: 100vh;
+    min-height: calc(100vh - 150px);
     border-right: 2px solid ${props => props.theme.primary};
     background: ${props => props.theme.secondary};
 

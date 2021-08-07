@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     position: absolute;
-
-    z-index: 10;
     width: 100%;
-    height: fit-content;
-    margin-top: -10px;
+    height: 100%;
+    min-height: calc(100vh - 150px);
+    overflow-y: scroll;
+
+    z-index: 100;
 
     display: flex;
     flex-direction: column;
@@ -105,6 +106,10 @@ export const Container = styled.div`
 
     section.text-editor {
         width: 100%;
+    }
+
+    button[type=submit] {
+        margin-top: 16px;
     }
 
 
