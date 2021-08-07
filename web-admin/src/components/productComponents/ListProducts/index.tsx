@@ -43,6 +43,11 @@ interface IFetchProducts {
     products: IProduct[];
 }
 
+interface IFetchProduct {
+    product: IProduct;
+    productsBuyedWith: IProduct[]
+}
+
 export default function ListProducts(){
 
     const [getProducts, setProducts] = useState<IProduct[]>([]);
@@ -76,13 +81,13 @@ export default function ListProducts(){
             // Se for um numero procura pelo id
             if (Number(getSeachBar.trim())){
 
-                const res: AxiosResponse<IProduct> = await api.get(`/products/${getSeachBar.trim()}`);
+                const res: AxiosResponse<IFetchProduct> = await api.get(`/products/${getSeachBar.trim()}`);
 
                 response = {
                     ...res,
                     data: {
                         count: 1,
-                        products: [res.data]
+                        products: [res.data.product]
                     }
                 };
 
