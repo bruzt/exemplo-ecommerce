@@ -74,7 +74,7 @@ export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IPr
 
 			<div className="countdown">
 				<FaClock size={25} />
-				<span>{getDays} Dia{getDays > 1 ? 's' : ''} {getHours < 10 ? '0' + getHours : getHours}:{getMinutes < 10 ? '0' + getMinutes : getMinutes}:{getSeconds < 10 ? '0' + getSeconds : getSeconds}</span>
+				<span data-testid='clock'>{getDays} Dia{getDays > 1 ? 's' : ''} {getHours < 10 ? '0' + getHours : getHours}:{getMinutes < 10 ? '0' + getMinutes : getMinutes}:{getSeconds < 10 ? '0' + getSeconds : getSeconds}</span>
 			</div>
 
 			<hr />
