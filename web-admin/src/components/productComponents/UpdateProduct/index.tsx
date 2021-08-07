@@ -36,8 +36,8 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getWidth, setWidth] = useState(product.width);
 
     const [getDiscount, setDiscount] = useState(String(product.discount_percent));
-    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(serializeDateBr(product.discount_datetime_start));
-    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(serializeDateBr(product.discount_datetime_end));
+    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(product.discount_datetime_start ? serializeDateBr(product.discount_datetime_start): null);
+    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(product.discount_datetime_end ? serializeDateBr(product.discount_datetime_end) : null);
 
     const [getHtmlBody, setHtmlBody] = useState(product.html_body);
     
