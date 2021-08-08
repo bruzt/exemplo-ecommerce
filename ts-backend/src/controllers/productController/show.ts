@@ -55,7 +55,7 @@ export default async function show(req: Request, res: Response) {
         // get products thas was most buyed with this product
         const productsBuyedWith = await ProductModel.find({
             where: {
-                id: In(sortedIds),
+                id: In(sortedIds.splice(0,8)),
                 quantity_stock: MoreThan(0),
             },
             relations: ['category', 'images'],

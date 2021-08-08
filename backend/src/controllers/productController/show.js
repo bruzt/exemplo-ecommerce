@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
         const productsBuyedWith = await ProductModel.findAll({
             where: {
                 id: {
-                    [Op.in]: sortedIds
+                    [Op.in]: sortedIds.splice(0,8),
                 },
                 quantity_stock: {
                     [Op.gt]: 0
