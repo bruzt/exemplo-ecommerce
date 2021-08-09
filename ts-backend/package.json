@@ -11,7 +11,7 @@
     "build": "rimraf ./build && tsc && npm run copy-views",
     "preprod": "cross-env NODE_ENV=production typeorm migration:run",
     "prod": "npm run prod:queue && npm run prod:server",
-    "prod:server": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend -i -1 build/src/server.js",
+    "prod:server": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend -i 2 build/src/server.js",
     "prod:queue": "cross-env NODE_ENV=production pm2 start --name ecommerce-queue build/src/queue.js",
     "postprod": "pm2 logs",
     "start": "npm run build && npm run prod",
