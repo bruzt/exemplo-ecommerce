@@ -157,28 +157,28 @@ export default function Product({ product, productsBuyedWith }: IProps) {
                 <Container>
 
                     <div className="breadcrumb">
-                        <>
-                            {(getProduct.category.parent_id != null && getProduct.category.parent_id != 0) && (
-                                <>
-                                    {findCategoryFather(getProduct.category.parent_id).reverse().map((category, index) => (
-                                        <React.Fragment key={index}>
-                                            {(index != 0) && <span> {'>'} </span>}
-                                            <a
-                                                onClick={() => handleCategorySearch(category)}
-                                            >
-                                                {category.name}
-                                            </a>
-                                        </React.Fragment>
-                                    ))}
-                                    <span> {'>'} </span>
-                                </>
-                            )}
-                            <a
-                                onClick={() => handleCategorySearch(getProduct.category)}
-                            >
-                                {getProduct.category.name}
-                            </a>
-                        </>
+                        {(getProduct.category.parent_id != null && getProduct.category.parent_id != 0) && (
+                            <>
+                                {findCategoryFather(getProduct.category.parent_id).reverse().map((category, index) => (
+                                    <React.Fragment key={category.id}>
+                                        {(index > 0) && <span data-testid='category-spacer'>{' > '}</span>}
+                                        <a
+                                            onClick={() => handleCategorySearch(category)}
+                                            data-testid='category-name'
+                                        >
+                                            {category.name}
+                                        </a>
+                                    </React.Fragment>
+                                ))}
+                                <span data-testid='category-spacer'>{' > '}</span>
+                            </>
+                        )}
+                        <a
+                            onClick={() => handleCategorySearch(getProduct.category)}
+                            data-testid='category-name'
+                        >
+                            {getProduct.category.name}
+                        </a>
                     </div>
 
                     <h1>{getProduct.title}</h1>
@@ -203,18 +203,45 @@ export default function Product({ product, productsBuyedWith }: IProps) {
 
                             <div className="buy-card-infos">
                                 <h2>Preço</h2>
-                                {(getIsOnSale) ? <p className='original-price'>R$ {Number(getProduct.price).toFixed(2)}</p> : false}
+                                {(getIsOnSale) && (
+                                    <p 
+                                        className='original-price' 
+                                        data-testid='original-price'
+                                    >
+                                        R$ {Number(getProduct.price).toFixed(2)}
+                                    </p> 
+                                )}
                                 {(getProduct.quantity_stock > 0)
-                                    ? (getIsOnSale)
-                                        ? <p className='discount'>-{getProduct.discount_percent}%</p>
-                                        : null
-                                    : <p className='lacking'>Em falta</p>
+                                    ? (getIsOnSale) && (
+                                        <p 
+                                            className='discount'
+                                            data-testid='discount-percent'
+                                        >
+                                            -{getProduct.discount_percent}%
+                                        </p>
+                                    )
+                                    : (
+                                        <p 
+                                            className='lacking'
+                                            data-testid='lacking'
+                                        >
+                                            Em falta
+                                        </p>
+                                    )
                                 }
-                                <p className='price'>R$ {getIsOnSale ? getProduct.finalPrice : getProduct.price} a unidade</p>
-                                <p>Qtd: <input type="number" id="qtd" value={getQuantity} onChange={(event) => handleQuantity(Number(event.target.value))} /></p>
-                                <p>Disponível: {getProduct.quantity_stock}</p>
+                                <p className='price'>R$ {getProduct.finalPrice} a unidade</p>
+
+                                <p>Qtd: <input type="number" id="qtd" data-testid='qtd-input' value={getQuantity} onChange={(event) => handleQuantity(Number(event.target.value))} /></p>
+                                
+                                <p data-testid='quantity-stock'>Disponível: {getProduct.quantity_stock}</p>
+                                
                                 <p className='total'>Total: R$ {(Number(getIsOnSale ? getProduct.finalPrice : getProduct.price) * getQuantity).toFixed(2)}</p>
-                                <button type='button' onClick={addToCartButton} disabled={getBuyButtonDisabled}>
+                                
+                                <button 
+                                    type='button' 
+                                    onClick={addToCartButton} disabled={getBuyButtonDisabled}
+                                    data-testid='add-to-cart-page-button'
+                                >
                                     Adicionar ao carrinho
                                 </button>
                             </div>
@@ -241,7 +268,7 @@ export default function Product({ product, productsBuyedWith }: IProps) {
                 </Container>
 
                 {getProductsBuyedWith.length > 0 && (
-                    <BuyedWithContainer>
+                    <BuyedWithContainer data-testid='buyed-with-container'>
                         <h3>Frequentemente comprados juntos</h3>
 
                         <div className="buyed-with-grid">

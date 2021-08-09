@@ -70,7 +70,7 @@ export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IPr
 	}
 
 	return (
-		<Container>
+		<Container data-testid='countdown-container'>
 
 			<div className="countdown">
 				<FaClock size={25} />

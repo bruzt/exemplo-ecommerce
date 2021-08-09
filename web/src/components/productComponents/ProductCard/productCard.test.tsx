@@ -33,8 +33,8 @@ describe('Product Card Tests', () => {
     it('should render discount span when isOnSale is true', async () => {
 
         const now = new Date().toISOString();
-        const discountStart = new Date(new Date().setSeconds(new Date().getSeconds() - 1)).toISOString();
-        const discountEnd = new Date(new Date().setSeconds(new Date().getSeconds() + 1)).toISOString();
+        const discountStart = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
+        const discountEnd = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString();
 
         const { queryByTestId } = render(
             <CartContextProvider>

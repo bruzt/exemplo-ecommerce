@@ -30,8 +30,15 @@ export const fakeCategories = [
         id: 2,
         name: "Processador",
         parent_id: 1,
-        created_at: "2021-07-16T15:03:18.173Z",
-        updated_at: "2021-07-16T15:03:18.173Z"
+        created_at: "2021-07-16T15:03:19.173Z",
+        updated_at: "2021-07-16T15:03:19.173Z"
+    },
+    {
+        id: 3,
+        name: "AMD",
+        parent_id: 2,
+        created_at: "2021-07-16T15:03:19.173Z",
+        updated_at: "2021-07-16T15:03:19.173Z"
     }
 ]
 

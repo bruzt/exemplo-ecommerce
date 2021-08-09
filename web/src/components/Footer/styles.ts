@@ -5,7 +5,7 @@ export const Container = styled.footer`
     bottom: 0;
     background: ${props => props.theme.primary};
     color: ${props => props.theme.color};
-    margin: 0.3125rem 0 0 0;
+    margin: 1rem 0 0 0;
 
     display: flex;
     justify-content: center;
