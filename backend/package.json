@@ -12,7 +12,7 @@
     "preprod": "npm run prod:migrate",
     "prod": "npm run prod:queue && npm run prod:server",
     "postprod": "pm2 logs",
-    "prod:server": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend -i -1 src/server.js",
+    "prod:server": "cross-env NODE_ENV=production pm2 start --name ecommerce-backend -i 2 src/server.js",
     "prod:queue": "cross-env NODE_ENV=production pm2 start --name ecommerce-queue src/queue.js",
     "pretest": "npm run test:migrate",
     "test": "npm run test:queue & cross-env NODE_ENV=test jest",
