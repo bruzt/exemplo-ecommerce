@@ -41,7 +41,7 @@ export default function ProductCard({ product }: IProps) {
     }
 
     return (
-        <Container>
+        <Container data-testid='product-card'>
 
             {/*<Link href={`/${product.id}?product=${String(product.title).split(' ').join('-')}`}>*/}
             <a 

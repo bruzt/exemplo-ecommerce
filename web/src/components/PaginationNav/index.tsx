@@ -60,7 +60,7 @@ export default function PaginationNav({ totalPages, currentPage, limitPageNav, h
     }
 
     return (
-		<Container>
+		<Container data-testid='pagination-container'>
 			<ul className="pagination">
 
 				{/*

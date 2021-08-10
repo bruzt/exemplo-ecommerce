@@ -104,6 +104,7 @@ export default function SearchPage() {
                         <p>Filtrar por:&nbsp;</p>
                         <select 
                             id="filter"
+                            data-testid="filter-select"
                             value={router.query.filter}
                             onChange={(event) => handleChangeFilter(event.target.value)}
                         >
@@ -114,7 +115,7 @@ export default function SearchPage() {
                     </div>
 
                     {getProducts.length === 0 && (
-                        <h2>Nada encontrado</h2>
+                        <h2 data-testid='nothing-found'>Nada encontrado</h2>
                     )}
                    
                     <div className="product-grid">
