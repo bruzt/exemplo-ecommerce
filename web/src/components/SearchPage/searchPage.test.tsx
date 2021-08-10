@@ -12,7 +12,6 @@ import api from '../../services/api';
 import { fakeCategories, fakeProducts } from '../../testUtils/fakeData';
 
 jest.mock('next/router', () => require('next-router-mock'));
-//const useRouter = jest.spyOn(require('next/router'), 'useRouter');
 
 describe('Search Page Tests', () => {
 
