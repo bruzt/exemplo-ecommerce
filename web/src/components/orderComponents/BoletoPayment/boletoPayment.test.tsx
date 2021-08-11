@@ -43,7 +43,7 @@ describe('Boleto Payment Tests', () => {
         const boletoSubmitButton = getByTestId('boleto-submit-button');
         
         fireEvent.change(cpfInput, { target: { value: fakeCpfs[0] }});
-        fireEvent.change(phoneInput, { target: { value: 19999999999 }});
+        fireEvent.change(phoneInput, { target: { value: 1999999999 }});
 
         await waitFor(() => fireEvent.click(boletoSubmitButton));
 
