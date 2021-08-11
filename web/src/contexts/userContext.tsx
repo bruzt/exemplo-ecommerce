@@ -39,7 +39,7 @@ interface IUseUser {
     setUser: React.Dispatch<React.SetStateAction<IUser>>;
     addAddress: (address: Omit<IAddress, "id">) => Promise<boolean>;
     deleteAddress: (id: number) =>  Promise<boolean>;
-    createUser: (name: string, email: string, cpf: string, password: string) =>  Promise<void>;
+    createUser: (name: string, email: string, cpf: string, password: string) =>  Promise<boolean>;
 }
 
 const Context = createContext({} as IUseUser);
@@ -109,10 +109,14 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
             });
 
             setToken(response.data.token);
+
+            return true;
             
         } catch (error) {
             console.log(error);
             alert('Erro ao cadastrar usuário');
+
+            return false;
         }
     }
 
@@ -129,7 +133,9 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
             return true;
             
         } catch (error) {
-            console.error(error);
+            console.log(error);
+            alert('Erro ao logar');
+            
             return false;
         }
     }

@@ -21,6 +21,7 @@ export const Container = styled.div`
 
     p.forgot-password {
         text-align: center;
+        margin: 0 auto;
     }
 
     label {

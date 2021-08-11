@@ -76,8 +76,8 @@ export default function ForgotPasswordModal({ setForgotPassword }: IProps) {
 									<Loading
 										type="TailSpin"
 										color='#0D2235'
-										height={20}
-										width={20}
+										height={30}
+										width={30}
 									/>
 								) : 'Enviar'}
 							</button>

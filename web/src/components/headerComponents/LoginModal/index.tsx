@@ -1,24 +1,24 @@
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
+import Loader from 'react-loader-spinner';
 
 import formatCpf from '../../../utils/formatCpf';
-
 import { useUser } from '../../../contexts/userContext';
-
 import ForgotPasswordModal from '../../forgotPassComponents/ForgotPasswordModal';
 
 import { Container } from './styles';
 
 export default function LoginModal() {
-	
+
 	const [getName, setName] = useState('');
-    const [getEmail, setEmail] = useState('');
-    const [getCpf, setCpf] = useState('');
-    const [getPassword, setPassword] = useState('');
-    const [getConfirmPassword, setConfirmPassword] = useState('');
+	const [getEmail, setEmail] = useState('');
+	const [getCpf, setCpf] = useState('');
+	const [getPassword, setPassword] = useState('');
+	const [getConfirmPassword, setConfirmPassword] = useState('');
 
-    const [getDisabledButton, setDisabledButton] = useState(true);
+	const [getDisabledButton, setDisabledButton] = useState(true);
+	const [getIsfetching, setIsfetching] = useState(false);
 
-    const [getCreateNewAccount, setCreateNewAccount] = useState(false);
+	const [getCreateNewAccount, setCreateNewAccount] = useState(false);
 	const [getForgotPassword, setForgotPassword] = useState(false);
 
 	const [getNonoAnimation, setNonoAnimation] = useState(false);
@@ -26,70 +26,77 @@ export default function LoginModal() {
 	const userContext = useUser();
 	const formRef = useRef(null);
 
-	useEffect( () => {
+	useEffect(() => {
 		formRef.current.addEventListener('animationend', () => setNonoAnimation(false));
 	}, []);
 
-    useEffect( () => {
+	useEffect(() => {
 
-        if(getCreateNewAccount){
-            if(
-                getName.length > 3 &&
+		if (getCreateNewAccount) {
+			if (
+				getName.length > 3 &&
 				getEmail.length > 7 &&
 				formatCpf(getCpf).valid &&
-                getPassword.length > 5 &&
-                getConfirmPassword == getPassword 
-            ){
-                setDisabledButton(false);
-            } else {
-                setDisabledButton(true);
-            }
-        } else {
-            if(
-                getEmail.length > 7 &&
-                getPassword.length > 5
-            ){
-                setDisabledButton(false);
-            } else {
-                setDisabledButton(true);
-            }
-        }
+				getPassword.length > 5 &&
+				getConfirmPassword == getPassword
+			) {
+				setDisabledButton(false);
+			} else {
+				setDisabledButton(true);
+			}
+		} else {
+			if (
+				getEmail.length > 7 &&
+				getPassword.length > 5
+			) {
+				setDisabledButton(false);
+			} else {
+				setDisabledButton(true);
+			}
+		}
 
-    }, [getName, getEmail, getCpf, getPassword, getConfirmPassword]);
+	}, [getName, getEmail, getCpf, getPassword, getConfirmPassword]);
 
-    async function onSubmit(event: FormEvent){
+	async function onSubmit(event: FormEvent) {
 
-        event.preventDefault();
+		event.preventDefault();
 
-        if(getCreateNewAccount){
+		if (getDisabledButton || getIsfetching) return;
 
-            userContext.createUser(getName, getEmail, getCpf, getPassword);
+		if (getCreateNewAccount) {
 
-        } else {
+			setIsfetching(true);
+			const result = await userContext.createUser(getName, getEmail, getCpf, getPassword);
 
-            const result = await userContext.logIn(getEmail, getPassword);
-			
-			if(!result) alert('Erro ao logar');
-			
-			setNonoAnimation(true);
-        }
+			if (result == false) setIsfetching(false);
+
+		} else {
+
+			setIsfetching(true);
+			const result = await userContext.logIn(getEmail, getPassword);
+
+			if (!result) {
+				setIsfetching(false);
+				setNonoAnimation(true);
+			}
+		}
 	}
-	
-	function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>){
+
+	function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>) {
 
 		const formatedCpf = formatCpf(event.target.value).cpf;
 
 		setCpf(formatedCpf);
 	}
 
-    return (
-        <Container data-testid='login-modal'>
+	return (
+		<Container data-testid='login-modal'>
 			<div className='modal-content'>
 
 				<div className="modal-head">
 					<h1>{(getCreateNewAccount) ? 'Cadastrar' : (getForgotPassword) ? 'Recuperar' : 'Login'}</h1>
-					<button 
-						type='button' 
+					<button
+						type='button'
 						className='close-modal'
 						onClick={() => userContext.handleSwitchModal()}
 					>
@@ -98,19 +105,19 @@ export default function LoginModal() {
 				</div>
 
 				{(getForgotPassword)
-					? <ForgotPasswordModal setForgotPassword={setForgotPassword} />    
+					? <ForgotPasswordModal setForgotPassword={setForgotPassword} />
 					: (
 						<>
-							<form 
-								ref={formRef} 
+							<form
+								ref={formRef}
 								className={`${getNonoAnimation ? 'nono-animation' : ''}`}
 								onSubmit={onSubmit}
 							>
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-name">Nome completo</label>
-										<input 
-											type='text' 
+										<input
+											type='text'
 											id="login-name"
 											data-testid="login-name"
 											value={getName}
@@ -121,20 +128,20 @@ export default function LoginModal() {
 
 								<div className="input-group">
 									<label htmlFor="login-email">e-mail</label>
-									<input 
-										type='email' 
+									<input
+										type='email'
 										id="login-email"
 										data-testid="login-email"
 										value={getEmail}
 										onChange={(event) => setEmail(event.target.value.trim())}
 									/>
 								</div>
-								
+
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-cpf">CPF</label>
-										<input 
-											type='text' 
+										<input
+											type='text'
 											id="login-cpf"
 											data-testid="login-cpf"
 											maxLength={14}
@@ -149,8 +156,8 @@ export default function LoginModal() {
 									<label htmlFor="login-password">
 										Senha {(getCreateNewAccount) && <span>(no mínimo 6 dígitos)</span>}
 									</label>
-									<input 
-										type='password' 
+									<input
+										type='password'
 										id="login-password"
 										data-testid="login-password"
 										value={getPassword}
@@ -161,8 +168,8 @@ export default function LoginModal() {
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-confirm-password">Confirmar senha</label>
-										<input 
-											type='password' 
+										<input
+											type='password'
 											id="login-confirm-password"
 											data-testid="login-confirm-password"
 											value={getConfirmPassword}
@@ -171,13 +178,25 @@ export default function LoginModal() {
 									</div>
 								)}
 
-								<button 
-									type="submit" 
+								<button
+									type="submit"
 									className='login-button'
 									data-testid='login-button'
-									disabled={getDisabledButton}
+									disabled={getDisabledButton || getIsfetching}
 								>
-									{(getCreateNewAccount) ? 'Cadastrar' : 'Entrar'}
+									{(getIsfetching)
+										? (
+											<Loader
+												type="TailSpin"
+												color="#0D2235"
+												height={30}
+												width={30}
+											/>
+										)
+										: (getCreateNewAccount)
+											? 'Cadastrar'
+											: 'Entrar'
+									}
 								</button>
 
 							</form>
@@ -185,12 +204,12 @@ export default function LoginModal() {
 							<div className='create-forgot'>
 								{(getCreateNewAccount == false) && (
 									<>
-										<a 
+										<a
 											onClick={() => setCreateNewAccount(true)}
 											data-testid='create-new-account'
 										>
 											Criar nova conta
-										</a> 
+										</a>
 										<a
 											onClick={() => setForgotPassword(true)}
 											data-testid='forgot-password'
@@ -202,12 +221,12 @@ export default function LoginModal() {
 
 								{(getCreateNewAccount) && (
 									<>
-										<a 
+										<a
 											onClick={() => setCreateNewAccount(false)}
 											data-testid='back-to-login'
 										>
 											Voltar para Login
-										</a> 
+										</a>
 									</>
 								)}
 							</div>
