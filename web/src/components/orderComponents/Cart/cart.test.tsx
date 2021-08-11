@@ -7,8 +7,13 @@ import Cart from './';
 import { CartContextProvider } from '../../../contexts/cartContext';
 import { UserContextProvider } from '../../../contexts/userContext';
 import { OrderContextProvider } from '../../../contexts/orderContext';
-import { fakeCartItem, fakeProducts, fakeFreightPrice, fakeUser } from '../../../testUtils/fakeData';
+import { fakeCartItem, fakeProduct, fakeFreightPrice, fakeUser } from '../../../testUtils/fakeData';
 import api from '../../../services/api';
+
+const fetchedProduct = {
+    product: fakeProduct,
+    productsBuyedWith: []
+}
 
 jest.mock('next/router', () => require('next-router-mock'));
 
@@ -34,7 +39,7 @@ describe('Cart Tests', () => {
     it('should show cart table when has items', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { queryByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[fakeCartItem]}>
@@ -56,7 +61,7 @@ describe('Cart Tests', () => {
     it('should set product qtd equal to available', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[{ ...fakeCartItem, qtd: 3 }]}>
@@ -76,7 +81,7 @@ describe('Cart Tests', () => {
     it('should add out-of-stock class', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, { ...fakeProducts.products[0], quantity_stock: 0 });
+        apiMock.onGet('/products/1').reply(200, { product: { ...fakeProduct, quantity_stock: 0 }, productsBuyedWith: [] });
 
         const { getByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[{ ...fakeCartItem, qtd: 3 }]}>
@@ -96,7 +101,7 @@ describe('Cart Tests', () => {
     it('should add product qtd when click on plus', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[{ ...fakeCartItem, qtd: 1 }]}>
@@ -122,7 +127,7 @@ describe('Cart Tests', () => {
     it('should subtract product qtd when click on minus', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[{ ...fakeCartItem, qtd: 2 }]}>
@@ -148,7 +153,7 @@ describe('Cart Tests', () => {
     it('should remove product when click on remove button', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const alertSpy = jest.spyOn(window, 'confirm');
         alertSpy.mockImplementation(jest.fn(() => true));
@@ -174,7 +179,7 @@ describe('Cart Tests', () => {
     it('should get freight', async () => {
 
         const apiProductsMock = new MockAdapter(api);
-        apiProductsMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiProductsMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const apiFreightSpy = jest.spyOn(api, 'post');
 
@@ -203,7 +208,7 @@ describe('Cart Tests', () => {
     it('should close order if freight selected', async () => {
 
         const apiProductsMock = new MockAdapter(api);
-        apiProductsMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiProductsMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[fakeCartItem]}>
@@ -236,7 +241,7 @@ describe('Cart Tests', () => {
     it('should not close order if freight was not selected', async () => {
 
         const apiProductsMock = new MockAdapter(api);
-        apiProductsMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiProductsMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId, queryByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[fakeCartItem]}>
@@ -267,7 +272,7 @@ describe('Cart Tests', () => {
     it('should not close order if has no user logged in', async () => {
 
         const apiProductsMock = new MockAdapter(api);
-        apiProductsMock.onGet('/products/1').reply(200, fakeProducts.products[0]);
+        apiProductsMock.onGet('/products/1').reply(200, fetchedProduct);
 
         const { getByTestId, queryByTestId } = await waitFor(() => render(
             <CartContextProvider _testCartItems={[fakeCartItem]}>
