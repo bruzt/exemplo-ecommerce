@@ -10,10 +10,12 @@ import { Container } from './styles';
 import PageLayout from '../PageLayout';
 import ProductCard from '../productComponents/ProductCard';
 import PaginationNav from '../PaginationNav';
+import LoadingModal from '../LoadingModal';
 
 export default function SearchPage() {
 
     const [getProducts, setProducts] = useState([]);
+    const [getIsFetching, setIsFetching] = useState(false);
 
     const [getTotalPages, setTotalPages] = useState(1);
 
@@ -37,6 +39,8 @@ export default function SearchPage() {
             else if(router.query.filter == "biggest-price") filter = '&filter=biggest-price';
 
             const page = `&offset=${(currentPage - 1) * _itemsPerPage}&limit=${_itemsPerPage}`
+
+            setIsFetching(true);
             
             if(router.query.title){
                 
@@ -51,6 +55,8 @@ export default function SearchPage() {
                 response = await api.get(`/products?section=${router.query.section}${filter}${page}`);
             }
 
+            setIsFetching(false);
+
             if(response) {
 
                 const totalPages = (response.data.products.length < _itemsPerPage && currentPage == 1)
@@ -63,7 +69,8 @@ export default function SearchPage() {
             
         } catch (error) {
             console.log(error);
-            alert('Erro, tente de novo');
+            alert('Erro, tente novamente');
+            setIsFetching(false);
         }
     }
 
@@ -114,7 +121,11 @@ export default function SearchPage() {
                         </select>
                     </div>
 
-                    {getProducts.length === 0 && (
+                    {getIsFetching && (
+                        <LoadingModal spinnerSize='10rem' />
+                    )}
+
+                    {(getProducts.length == 0 && getIsFetching == false) && (
                         <h2 data-testid='nothing-found'>Nada encontrado</h2>
                     )}
                    

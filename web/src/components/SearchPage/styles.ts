@@ -4,6 +4,8 @@ export const Container = styled.div`
     
     min-height: 50rem;
 
+    padding-top: 1.25rem;
+
     div.product-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -16,7 +18,6 @@ export const Container = styled.div`
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        margin: 1.25rem 0 0 0;
         font-size: 1.25rem;
     }
 
