@@ -7,6 +7,7 @@ import api from '../../../services/api';
 import { Container } from './styles';
 
 import PaginationNav from '../../PaginationNav';
+import LoadingModal from '../../LoadingModal';
 
 import { IProduct } from '../../../pages/[productId]';
 import { IAddress } from '../../../contexts/userContext';
@@ -38,6 +39,8 @@ export default function AccountMyShoppings() {
     const [getOpenOrderTab, setOpenOrderTab] = useState<number[]>([]);
 
     const [getOrders, setOrders] = useState<IOrder[]>([]);
+    const [getIsFetching, setIsFetching] = useState(false);
+
     const [getTotalPages, setTotalPages] = useState<number>(1);
 
     const router = useRouter();
@@ -56,14 +59,17 @@ export default function AccountMyShoppings() {
         
         try {
 
+            setIsFetching(true);
             const response = await api.get(`/orders${page}`);
 
             setTotalPages(Math.ceil(response.data.count/_itemsPerPage));
             setOrders(response.data.orders);
+            setIsFetching(false);
             
         } catch (error) {
             console.error(error);
             alert('Erro ao buscar ordens de compra');
+            setIsFetching(false);
         }
     }
 
@@ -98,6 +104,8 @@ export default function AccountMyShoppings() {
     return (
         <>
             <Container data-testid='my-shopping-component'>
+
+                {getIsFetching && <LoadingModal spinnerSize='10rem' />}
 
                 <h2>Minhas compras</h2>
 
