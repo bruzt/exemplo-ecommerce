@@ -11,6 +11,7 @@ import { Container } from './styles';
 import { useUser } from '../../../contexts/userContext';
 import { useCart } from '../../../contexts/cartContext';
 import { useOrder } from '../../../contexts/orderContext';
+import LoadingModal from '../../LoadingModal';
 
 interface IProps {
     getDisabledBoletoButton: boolean;
@@ -34,6 +35,8 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
     const [getInstallmentsOptions, setInstallmentsOptions] = useState<IInstallmentsOptions>();
     const [getInstallments, setInstallments] = useState(1);
+
+    const [getIsFetching, setIsFetching] = useState(false);
 
     const [getPhone, setPhone] = useState('');
     const [getCpf, setCpf] = useState('');
@@ -110,16 +113,20 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
     async function fetchInstallments() {
         try {
+            setIsFetching(true);
 
             const response = await api.post('/installments', {
                 amount: Number(cartContext.getTotalPrice).toFixed(2),
             });
 
             setInstallmentsOptions(response.data);
+            setIsFetching(false);
 
         } catch (error) {
             console.log(error);
             alert('Erro ao buscar opções de parcela');
+            
+            orderContext.setOrderFlowNumber(2)
         }
     }
 
@@ -258,6 +265,9 @@ export default function CreditCardPayment({ getDisabledBoletoButton, setDisabled
 
     return (
         <Container data-testid='credit-card-component'>
+
+            {getIsFetching && <LoadingModal spinnerSize='10rem' />}
+
             <h2>Cartão de Crédito</h2>
 
             <form onSubmit={handlePaySubmit}>

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    min-height: 50rem;
+    min-height: calc(100vh - 32.25rem);
     
     h1 {
         text-align: center;
