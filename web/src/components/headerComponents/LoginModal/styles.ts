@@ -99,6 +99,10 @@ export const Container = styled.div`
         justify-content: center;
         align-items: center;
 
+        &.is-fetching {
+            font-size: 0;
+        }
+
         &:hover {
             background: ${props => props.theme.successActive};
         }

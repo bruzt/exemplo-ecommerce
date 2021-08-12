@@ -180,7 +180,7 @@ export default function LoginModal() {
 
 								<button
 									type="submit"
-									className='login-button'
+									className={`login-button ${(getIsfetching) && 'is-fetching'}`}
 									data-testid='login-button'
 									disabled={getDisabledButton || getIsfetching}
 								>

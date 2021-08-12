@@ -89,6 +89,10 @@ export const Container = styled.div`
 
         display: flex;
         align-items: center;
+
+        &:disabled {
+            justify-content: center;
+        }
     }
     
     li.user-name {

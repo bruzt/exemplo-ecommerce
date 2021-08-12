@@ -40,6 +40,7 @@ interface IUseUser {
     addAddress: (address: Omit<IAddress, "id">) => Promise<boolean>;
     deleteAddress: (id: number) =>  Promise<boolean>;
     createUser: (name: string, email: string, cpf: string, password: string) =>  Promise<boolean>;
+    getIsFetchingUser: boolean;
 }
 
 const Context = createContext({} as IUseUser);
@@ -49,6 +50,7 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
     const [getLogin, setLogin] = useState(_testLogin || false);
     const [getShowModal, setShowModal] = useState(false);
     const [getUser, setUser] = useState<IUser>(_testUser);
+    const [getIsFetchingUser, setIsFetchingUser] = useState(false);
     const [getToken, setToken] = useState('');
 
     const router = useRouter();
@@ -74,12 +76,14 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
             
             const tokenPayload = jwt.decode(getToken) as { id: number };
     
+            setIsFetchingUser(true);
             const response = await api.get('/users/' + tokenPayload.id);
-    
+            
             setUser(response.data);
-
+            
             setLogin(true);
             setShowModal(false);
+            setIsFetchingUser(false);
 
         } catch (error) {
             console.log(error);
@@ -87,6 +91,7 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
             api.defaults.headers.authorization = undefined;
             localStorage.removeItem('token');
             setLogin(false);
+            setIsFetchingUser(false);
         }
     }
 
@@ -202,7 +207,8 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
                 setUser,
                 addAddress,
                 deleteAddress,
-                createUser
+                createUser,
+                getIsFetchingUser,
             }}
         >
             {children}
