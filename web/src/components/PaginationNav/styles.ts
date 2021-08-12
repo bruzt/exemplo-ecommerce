@@ -24,6 +24,7 @@ export const Container = styled.nav`
 
     ul li button:hover {
         background: ${props => props.theme.secondary};
+        color: ${props => props.theme.color};
     }
 
     ul li button:active {

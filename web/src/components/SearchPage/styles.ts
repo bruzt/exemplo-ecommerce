@@ -21,6 +21,10 @@ export const Container = styled.div`
         font-size: 1.25rem;
     }
 
+    .filter-row p {
+        color: ${props => props.theme.color2};
+    }
+
     .filter-row  #filter {
         font-size: inherit;
         border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
