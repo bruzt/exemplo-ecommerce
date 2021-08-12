@@ -13,6 +13,7 @@ export const Container = styled.section`
     h1 {
         margin-bottom: 1.25rem;
         font-size: 1.875rem;
+        color: ${props => props.theme.color2};
     }
 
     div.address-grid {

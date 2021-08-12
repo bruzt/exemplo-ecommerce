@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    min-height: calc(100vh - 25rem);
+    min-height: calc(100vh - 32.25rem);
 
     h1 {
         text-align: center;
         margin-bottom: 1.5625rem;
+        color: ${props => props.theme.color2};
     }
 
     h1.empty {
@@ -44,7 +45,7 @@ export const Container = styled.section`
     }
 
     tbody tr + tr td {
-        border-top: 1px solid ${props => props.theme.background};
+        border-top: 1px solid ${props => props.theme.primary};
     }
 
     .td-image img {
@@ -136,6 +137,10 @@ export const Container = styled.section`
         justify-content: flex-end;
     }
 
+    .freight-total form {
+        color: ${props => props.theme.color2};
+    }
+
     .total-price {
         width: 18.75rem;
         font-size: 1.5625rem;
@@ -209,9 +214,15 @@ export const Container = styled.section`
         height: 1.875rem;
         font-size: 1.5625rem;  
         padding: 0 0 0 0.125rem;  
-        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+
+        border-top: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-right: 0;
+        border-bottom: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-left: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+
         border-top-left-radius: 0.3125rem;
         border-bottom-left-radius: 0.3125rem;
+
         text-align: center;
         background: #eee;
     }
@@ -219,9 +230,17 @@ export const Container = styled.section`
     .calc-freight button {
         width: 1.875rem;
         height: 1.875rem;
-        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+
+        font-size: 0;
+
+        border-top: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-right: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-bottom: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
+        border-left: 0;
+
         border-top-right-radius: 0.3125rem;
         border-bottom-right-radius: 0.3125rem;
+
         cursor: pointer;
         color: #111;
         background: #eee;

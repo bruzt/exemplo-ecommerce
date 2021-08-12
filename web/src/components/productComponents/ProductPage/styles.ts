@@ -30,6 +30,10 @@ export const Container = styled.section`
 
     h1 {
         grid-area: title;
+
+        color: ${props => props.theme.color2};
+        font-size: 2rem;
+
         text-align: center;
         margin-bottom: 1.25rem;
     }
@@ -208,6 +212,9 @@ export const Container = styled.section`
 export const BuyedWithContainer = styled.div`
 
     h3 {
+        color: ${props => props.theme.color2};
+        font-size: 1.5rem;
+
         margin: 1rem 0;
     }
 

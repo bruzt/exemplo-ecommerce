@@ -244,7 +244,7 @@ export default function CategoriesAndSeachBar() {
 
                 <div 
                     className='switch-container'
-                    title={themeContext.getTheme.title === 'dark' ? 'Tema: Noite' : 'Tema: Dia'}
+                    title={themeContext.getTheme.title === 'dark' ? 'Tema: Escuro' : 'Tema: Claro'}
                 >
                     <Switch
                         id='react-switch'
@@ -252,10 +252,10 @@ export default function CategoriesAndSeachBar() {
                         
                         onChange={handleChangeTheme} 
                         checked={themeContext.getTheme.title === 'light'}
-                        checkedIcon={<FiSun size={20} />}
+                        checkedIcon={<FiSun size={20} color='#16324C' />}
                         uncheckedIcon={<FiMoon size={20} />}
                         offColor='#444'
-                        onColor='#eee'
+                        onColor='#ddd'
                     />
                 </div>
 

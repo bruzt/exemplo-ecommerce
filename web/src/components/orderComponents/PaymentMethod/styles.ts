@@ -7,6 +7,8 @@ export const Container = styled.section`
     h1 {
         text-align: center;
         margin-bottom: 1.5625rem;
+
+        color: ${props => props.theme.color2};
     }
 
     .back-button {
@@ -14,7 +16,7 @@ export const Container = styled.section`
         background: transparent;
         font-size: 1.875rem;
         cursor: pointer;
-        color: ${props => props.theme.color};
+        color: ${props => props.theme.color2};
     }
 
     .cc-boleto-buttons {

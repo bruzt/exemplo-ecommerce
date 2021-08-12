@@ -6,8 +6,10 @@ export const Container = styled.section`
     justify-content: center;
     align-items: center;
 
-    h2 {
+    h1 {
+        font-size: 1.875rem;
         margin-bottom: 3.125rem;
+        color: ${props => props.theme.color2};
     }
 
     div.order-card-container {

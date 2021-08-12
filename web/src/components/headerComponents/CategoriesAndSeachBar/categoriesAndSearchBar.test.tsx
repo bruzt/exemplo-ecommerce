@@ -129,7 +129,7 @@ describe('Categories and Search Bar Tests', () => {
         
         fireEvent.click(themeSwitch);
 
-        expect(categoryMenu).toHaveStyle('background: #ccc');
+        expect(categoryMenu).toHaveStyle('background: #16324C');
     });
 
     it('should change theme back to dark', async () => {

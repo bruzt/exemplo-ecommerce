@@ -20,7 +20,7 @@ export const Container = styled.div`
 
     &:hover {
         /*box-shadow: 0.1875rem 0.1875rem #16324C;*/
-        background: transparent;
+        background: ${props => props.theme.secondary};
     }
 
     a, 

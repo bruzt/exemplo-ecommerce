@@ -107,7 +107,7 @@ export default function AccountMyShoppings() {
 
                 {getIsFetching && <LoadingModal spinnerSize='10rem' />}
 
-                <h2>Minhas compras</h2>
+                <h1>Minhas compras</h1>
 
                 {getOrders.map((order) => (
 

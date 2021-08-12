@@ -6,6 +6,8 @@ export const Container = styled.div`
     h2 {
         text-align: center;
         margin: 1.5625rem;
+
+        color: ${props => props.theme.color2};
     }
 
     form.boleto-form {
@@ -35,6 +37,10 @@ export const Container = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    form.boleto-form .inputs .input-group label {
+        color: ${props => props.theme.color2};
     }
 
     form.boleto-form .inputs .input-group input {

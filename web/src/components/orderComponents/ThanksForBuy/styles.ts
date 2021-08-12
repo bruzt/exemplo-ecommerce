@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.section`
 
-    min-height: calc(100vh - 31.25rem);
+    min-height: calc(100vh - 32.25rem);
 
     display: flex;
     flex-direction: column;
@@ -14,6 +14,8 @@ export const Container = styled.section`
 
     h2 {
         text-align: center;
+
+        color: ${props => props.theme.color2};
     }
 
     a {

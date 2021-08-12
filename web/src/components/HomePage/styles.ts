@@ -15,6 +15,7 @@ export const Container = styled.section`
 
     h3 {
         margin: 1.25rem 0 0 0;
+        color: ${props => props.theme.color2};
     }
 
     @media (max-width: 1110px) {

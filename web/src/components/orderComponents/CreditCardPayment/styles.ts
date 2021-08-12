@@ -5,12 +5,18 @@ export const Container = styled.div`
     h2 {
         text-align: center;
         margin: 1.5625rem;
+
+        color: ${props => props.theme.color2};
     }
 
     .cc-form {
         background: ${props => props.theme.primary};
         border-radius: 0.3125rem;
         padding: 0.625rem;
+    }
+
+    .cc-form h2 {
+        color: ${props => props.theme.color};
     }
 
     form {
