@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '../styles/GlobalStyle';
@@ -20,10 +20,23 @@ export function ThemeContextProvider({ children }: ThemeContextProviderProps){
     
     const [getTheme, setTheme] = useState(darkTheme);
 
+    useEffect(() => {
+        const theme = localStorage.getItem('theme');
+
+        if(theme) changeThemeTo(theme);
+    }, []);
+
     function changeThemeTo(theme: string){
 
-        if(theme === 'dark') setTheme(darkTheme);
-        if(theme === 'light') setTheme(lightTheme);
+        if(theme === 'dark') {
+            localStorage.setItem('theme', 'dark');
+            setTheme(darkTheme);
+        }
+
+        if(theme === 'light') {
+            localStorage.setItem('theme', 'light');
+            setTheme(lightTheme);
+        }
     }
     
     return (
