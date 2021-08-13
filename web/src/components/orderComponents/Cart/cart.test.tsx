@@ -21,7 +21,7 @@ describe('Cart Tests', () => {
 
     it('should show that cart has no items', async () => {
 
-        const { queryByTestId } = render(
+        const { queryByTestId } = await waitFor(() => render(
             <CartContextProvider>
                 <UserContextProvider>
                     <OrderContextProvider>
@@ -29,7 +29,7 @@ describe('Cart Tests', () => {
                     </OrderContextProvider>
                 </UserContextProvider>
             </CartContextProvider>
-        );
+        ));
 
         const emptyH1 = queryByTestId('empty-h1');
 

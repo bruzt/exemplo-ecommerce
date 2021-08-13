@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -31,7 +31,7 @@ describe('Categories and Search Bar Tests', () => {
 
         const categoryDropDownLi = getByTestId('category-menu') as HTMLLIElement;
         const firstLevelCategoriesUl = getByTestId('first-level-categories') as HTMLUListElement;
-        
+
         fireEvent.click(categoryDropDownLi);
 
         expect(categoryDropDownLi).toHaveClass('active');
@@ -66,7 +66,7 @@ describe('Categories and Search Bar Tests', () => {
         ));
 
         const categoryDropDownLi = getByTestId('category-menu') as HTMLLIElement;
-        const [ categoryChildrenLi ] = getAllByTestId('category-children') as HTMLLIElement[];
+        const [categoryChildrenLi] = getAllByTestId('category-children') as HTMLLIElement[];
 
         fireEvent.click(categoryDropDownLi);
         fireEvent.click(categoryChildrenLi);
@@ -86,7 +86,7 @@ describe('Categories and Search Bar Tests', () => {
 
         const categoryDropDownLi = getByTestId('category-menu') as HTMLLIElement;
         const searchBarInput = getByTestId('search-bar') as HTMLInputElement;
-        
+
         fireEvent.click(categoryDropDownLi);
         fireEvent.click(searchBarInput);
 
@@ -107,8 +107,8 @@ describe('Categories and Search Bar Tests', () => {
 
         const searchBarInput = getByTestId('search-bar') as HTMLInputElement;
         const searchBarButton = getByTestId('search-bar-button') as HTMLButtonElement;
-        
-        fireEvent.change(searchBarInput, { target: { value: 'placa' }});
+
+        fireEvent.change(searchBarInput, { target: { value: 'placa' } });
         fireEvent.click(searchBarButton);
 
         expect(spyApi).toBeCalledTimes(1);
@@ -126,28 +126,30 @@ describe('Categories and Search Bar Tests', () => {
 
         const themeSwitch = getByTestId('theme-switch');
         const categoryMenu = getByTestId('category-menu');
-        
+
         fireEvent.click(themeSwitch);
 
         expect(categoryMenu).toHaveStyle('background: #16324C');
     });
 
     it('should change theme back to dark', async () => {
+        await act(async () => {
 
-        const { getByTestId } = await waitFor(() => render(
-            <FilterBarContextProvider>
-                <ThemeContextProvider>
-                    <CategoriesAndSearchBar />
-                </ThemeContextProvider>
-            </FilterBarContextProvider>
-        ));
+            const { getByTestId } = render(
+                <FilterBarContextProvider>
+                    <ThemeContextProvider>
+                        <CategoriesAndSearchBar />
+                    </ThemeContextProvider>
+                </FilterBarContextProvider>
+            );
 
-        const themeSwitch = getByTestId('theme-switch');
-        const categoryMenu = getByTestId('category-menu');
-        
-        fireEvent.click(themeSwitch);
-        fireEvent.click(themeSwitch);
+            const themeSwitch = getByTestId('theme-switch');
+            const categoryMenu = getByTestId('category-menu');
 
-        expect(categoryMenu).toHaveStyle('background: #0D2235');
+            fireEvent.click(themeSwitch);
+            fireEvent.click(themeSwitch);
+
+            expect(categoryMenu).toHaveStyle('background: #0D2235');
+        })
     });
 });
