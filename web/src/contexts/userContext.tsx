@@ -139,7 +139,7 @@ export function UserContextProvider({ children, _testUser, _testLogin }: IProps)
             
         } catch (error) {
             console.log(error);
-            alert('Erro ao logar');
+            //alert('Erro ao logar');
             
             return false;
         }

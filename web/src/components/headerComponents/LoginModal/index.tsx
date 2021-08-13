@@ -75,9 +75,10 @@ export default function LoginModal() {
 			setIsfetching(true);
 			const result = await userContext.logIn(getEmail, getPassword);
 
-			if (!result) {
-				setIsfetching(false);
+			if (result == false) {
+				setPassword('');
 				setNonoAnimation(true);
+				setIsfetching(false);
 			}
 		}
 	}
