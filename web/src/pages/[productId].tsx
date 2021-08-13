@@ -42,7 +42,7 @@ export interface IProduct {
     };
 }
 
-interface IAxiosResponse {
+export interface IShowProduct {
     product: IProduct;
     productsBuyedWith: IProduct[]
 }
@@ -70,7 +70,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         
-        const response = await api.get<IAxiosResponse>(`/products/${params.productId}`);
+        const response = await api.get<IShowProduct>(`/products/${params.productId}`);
     
         return {
             props: { 
