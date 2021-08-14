@@ -12,6 +12,7 @@
 - Integração com [Sonic](https://github.com/valeriansaliou/sonic), para buscas com relevância de titulos de produtos;
 - Background Jobs com [Bull](https://github.com/OptimalBits/bull) e [Redis](https://github.com/redis/redis) para gerenciar a fila de envio de emails;
 - Integração com a API de pagamentos [Pagar.me](https://pagar.me/), para pagamentos com cartão de crédito e boleto.
+- Testes unitários com Jest.
 
 ## Frontend
 - Menu dropdown de categorias de produtos, montada automaticamente a partir das categorias cadastradas no banco de dados;
@@ -25,6 +26,7 @@
 - Página para seleção do endereço de entrega, podendo cadastrar um novo endereço ou apagar um já cadastrado (podendo ter vários endereços cadastrados por usuário);
 - Tela de confirmação de compra, no caso de boleto exibe link para boleto;
 - Tela da conta do usuário, onde ele pode alterar suas informações de cadastro (nome, email, CPF e senha), adicionar ou remover endereços e visualizar suas ordens de compra.
+- Testes unitários com React Testing Library.
 
 <p align="center">
   <img src="https://github.com/bruzt/exemplo-ecommerce/blob/master/ecommerce1.gif?raw=true">
