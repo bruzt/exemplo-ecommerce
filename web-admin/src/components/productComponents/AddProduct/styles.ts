@@ -63,6 +63,14 @@ export const Container = styled.div`
 
     & > form > button {
         align-self: center;
+
+        &.is-fetching {
+            font-size: 0;
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
+        }
     }
 
     div.preview {

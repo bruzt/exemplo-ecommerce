@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
@@ -37,6 +38,8 @@ export default function AddProduct() {
     const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(null);
 
     const [getHtmlText, setHtmlText] = useState('');
+
+    const [getIsFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         fetchCategories();
@@ -87,7 +90,7 @@ export default function AddProduct() {
         }
 
         try {
-
+            setIsFetching(true);
             const response = await api.post('/products', product);
 
             if (getFiles.length > 0) {
@@ -99,6 +102,7 @@ export default function AddProduct() {
                 await api.post(`/products/${response.data.id}/images`, data);
             }
 
+            setIsFetching(false);
             alert('Produto cadastrado com sucesso');
 
             setTitle('');
@@ -291,8 +295,24 @@ export default function AddProduct() {
                     />
                 </div>
 
-                <Button type='submit'>
-                    Cadastrar
+                <Button 
+                    type='submit'
+                    className={`${getIsFetching && 'is-fetching'}`}
+                    disabled={getIsFetching}
+                >
+                    {getIsFetching
+                        ? (
+                            <Loader
+                                type="TailSpin"
+                                color="#0D2235"
+                                height={30}
+                                width={30}
+                            />
+                        )
+                        : (
+                            'Cadastrar'
+                        )
+                    }
                 </Button>
 
                 {(getHtmlText.length > 0) && (
