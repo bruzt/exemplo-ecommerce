@@ -159,7 +159,7 @@ export default function ListProducts(){
     return (
         <Container>
 
-            {getUpdeting && <UpdateProduct product={getUpdetingProduct} setUpdeting={setUpdeting} />}
+            {getUpdeting && <UpdateProduct product={getUpdetingProduct} setUpdateModalOpen={setUpdeting} />}
             
             <h2>Lista de produtos</h2>
 

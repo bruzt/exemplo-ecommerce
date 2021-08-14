@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
@@ -14,10 +15,10 @@ import { ICategory } from '../AddProduct';
 
 interface IProps {
     product: IProduct;
-    setUpdeting: React.Dispatch<React.SetStateAction<boolean>>;
+    setUpdateModalOpen: React.Dispatch<boolean>;
 }
 
-export default function UpdateProduct({ product, setUpdeting }: IProps) {
+export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
 
     const [getCategories, setCategories] = useState<ICategory[]>([]);
 
@@ -40,6 +41,8 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
     const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(product.discount_datetime_end ? serializeDateBr(product.discount_datetime_end) : null);
 
     const [getHtmlBody, setHtmlBody] = useState(product.html_body);
+
+    const [getIsFetching, setIsFetching] = useState(false);
     
     useEffect( () => {
         fetchCategories();
@@ -93,7 +96,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
         };
 
         try {
-
+            setIsFetching(true);
             await api.put(`/products/${product.id}`, data);
 
             if(getFiles.length > 0){
@@ -105,13 +108,15 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                 await api.post(`/products/${product.id}/images`, files);
             }
 
+            setIsFetching(false);
             alert('Produto atualizado com sucesso');
 
-            setUpdeting(false);
+            setUpdateModalOpen(false);
             
         } catch (error) {
             console.log(error);
             alert('Erro ao atualizar produto');
+            setIsFetching(false);
         }
     }
 
@@ -121,7 +126,7 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
             <form onSubmit={onSubmit}>
 
                 <header>
-                    <button type='button' onClick={() => setUpdeting(false)}>X</button>
+                    <button type='button' onClick={() => setUpdateModalOpen(false)}>X</button>
                 </header>
 
                 <ImagesGrid product={product} />
@@ -276,8 +281,24 @@ export default function UpdateProduct({ product, setUpdeting }: IProps) {
                     />
                 </section>
 
-                <Button type='submit'>
-                    Atualizar
+                <Button 
+                    type='submit'
+                    className={`${getIsFetching && 'is-fetching'}`}
+                    disabled={getIsFetching}
+                >
+                    {getIsFetching
+                        ? (
+                            <Loader
+                                type="TailSpin"
+                                color="#0D2235"
+                                height={30}
+                                width={30}
+                            />
+                        )
+                        : (
+                            'Atualizar'
+                        )
+                    }
                 </Button>
                 
                 <div className="preview">

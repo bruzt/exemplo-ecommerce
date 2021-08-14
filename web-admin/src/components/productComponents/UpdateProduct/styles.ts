@@ -110,8 +110,15 @@ export const Container = styled.div`
 
     button[type=submit] {
         margin-top: 16px;
-    }
 
+        &.is-fetching {
+            font-size: 0;
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
+        }
+    }
 
     div.preview {
         width: 100%;
