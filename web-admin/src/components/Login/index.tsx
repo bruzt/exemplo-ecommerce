@@ -1,5 +1,6 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import Head from 'next/head';
+import Loader from 'react-loader-spinner';
 
 import { Container } from './styles';
 
@@ -12,13 +13,31 @@ export default function Login(){
     const [getEmail, setEmail] = useState('');
     const [getPassword, setPassword] = useState('');
 
+    const [getIsSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+
     const loginLogoutContext = useLoginLogout();
 
-    function onSubmit(event: FormEvent) {
+    useEffect(() => {
+        if(
+            getEmail.length < 8
+            || getPassword.length < 6
+        ) {
+            setIsSubmitButtonDisabled(true);
+        } else {
+            setIsSubmitButtonDisabled(false);
+        }
+
+    }, [getEmail, getPassword])
+
+    async function onSubmit(event: FormEvent) {
         
         event.preventDefault();
 
-        loginLogoutContext.login(getEmail, getPassword);
+        const login = await loginLogoutContext.login(getEmail, getPassword);
+
+        if(login == false) {
+            setPassword('');
+        }
     }
 
     return (
@@ -44,8 +63,24 @@ export default function Login(){
                         <input type="password" id='password' value={getPassword} onChange={(event) => setPassword(event.target.value)} />
                     </div>
 
-                    <Button type='submit'>
-                        Entrar
+                    <Button 
+                        type='submit' 
+                        className={`${loginLogoutContext.isFetching && 'is-fetching'}`}
+                        disabled={getIsSubmitButtonDisabled || loginLogoutContext.isFetching}
+                    >
+                        {loginLogoutContext.isFetching
+                            ? (
+                                <Loader
+                                    type="TailSpin"
+                                    color="#0D2235"
+                                    height={30}
+                                    width={30}
+                                />
+                            )
+                            : (
+                                'Entrar'
+                            )
+                        }
                     </Button>
 
                 </form>

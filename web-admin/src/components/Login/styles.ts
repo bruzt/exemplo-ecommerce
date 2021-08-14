@@ -41,7 +41,14 @@ export const Container = styled.div`
     }
 
     form button {
-
         margin: 0 auto;
+
+        &.is-fetching {
+            font-size: 0;
+        }
+
+        &:disabled {
+            background: ${props => props.theme.danger};
+        }
     }
 `;

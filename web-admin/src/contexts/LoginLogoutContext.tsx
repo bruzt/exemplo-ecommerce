@@ -11,8 +11,9 @@ interface ITokenPayload {
 }
 
 interface ILoginLogoutHook {
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
+    isFetching: boolean;
 }
 
 interface ThemeContextProviderProps {
@@ -29,6 +30,8 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
     const [getToken, setToken] = useState('');
 
+    const [getIsFetching, setIsFetching] = useState(false);
+
     useEffect( () => {
         if(process.browser){
             const token = localStorage.getItem('token');
@@ -43,7 +46,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
     async function login(email: string, password: string) {
         try {
-
+            setIsFetching(true);
             const response = await api.post('/sessions', {
                 email,
                 password
@@ -51,9 +54,14 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
             session(response.data.token);
 
+            return true;
+
         } catch (error) {
             console.log(error);
             alert('Erro ao fazer login');
+            setIsFetching(false);
+
+            return false;
         }
     }
 
@@ -68,6 +76,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
             localStorage.setItem('token', token);
             api.defaults.headers.authorization = `Bearer ${token}`;
 
+            setIsFetching(true);
             // confirm if the token is valid
             await api.get(`/users/${tokenPayload.id}`);
 
@@ -82,9 +91,12 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
                 }
             });
 
+            setIsFetching(false);
+
         } catch (error) {
             console.error(error);
             logout();
+            setIsFetching(false);
         }
     }
 
@@ -101,7 +113,8 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
         <Context.Provider
             value={{
                 login,
-                logout
+                logout,
+                isFetching: getIsFetching,
             }}
         >
             {children}
