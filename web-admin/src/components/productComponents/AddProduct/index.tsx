@@ -122,6 +122,7 @@ export default function AddProduct() {
         } catch (error) {
             console.log(error);
             alert('Erro ao cadastrar produto');
+            setIsFetching(false);
         }
     }
 
