@@ -19,19 +19,20 @@ export default function Login(){
 
     useEffect(() => {
         if(
-            getEmail.length < 8
-            || getPassword.length < 6
+            getEmail.trim().length < 8
+            || getPassword.trim().length < 6
         ) {
             setIsSubmitButtonDisabled(true);
         } else {
             setIsSubmitButtonDisabled(false);
         }
-
     }, [getEmail, getPassword])
 
     async function onSubmit(event: FormEvent) {
         
         event.preventDefault();
+
+        if(getIsSubmitButtonDisabled) return;
 
         const login = await loginLogoutContext.login(getEmail, getPassword);
 
