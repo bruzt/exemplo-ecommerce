@@ -119,22 +119,4 @@ describe('Login Modal Tests', () => {
         expect(forgotPasswordAnchor).toBeInTheDocument();
         expect(backToLoginAnchor).not.toBeInTheDocument();
     });
-
-    /*
-    it('should send forgot password', async () => {
-
-        const { getByTestId } = await waitFor(() => render(
-            <UserContextProvider>
-                <LoginModal />
-            </UserContextProvider>
-        ));
-
-        const forgotPasswordAnchor = getByTestId('forgot-password');
-        
-        fireEvent.click(forgotPasswordAnchor);
-
-        const forgotPasswordComponent = getByTestId('forgot-password-component');
-
-        expect(forgotPasswordComponent).toBeInTheDocument();
-    });*/
 });

@@ -6,14 +6,12 @@ import MockAdapter from 'axios-mock-adapter';
 import ForgotPasswordModal from '.';
 import api from '../../../../services/api';
 
-describe('Forgot Password Modal Tests', () => {
+describe('Forgot Password Form Tests', () => {
+    
+    it('should call api to send email', async () => {
 
-    beforeAll(() => {
         const apiMock = new MockAdapter(api);
         apiMock.onPost('/reset-password').reply(204);
-    });
-
-    it('should call api to send email', async () => {
 
         const spyApi = jest.spyOn(api, 'post');
 
@@ -45,16 +43,5 @@ describe('Forgot Password Modal Tests', () => {
         
         expect(submitButton).toBeDisabled();
         expect(spyApi).toBeCalledTimes(0);
-    });
-
-    it('should go back to login modal', async () => {
-
-        const { getByTestId } = render(<ForgotPasswordModal />);
-
-        const backAnchor = getByTestId('back-anchor') as HTMLAnchorElement;
-
-        fireEvent.click(backAnchor);
-        
-        //expect(modalVar).toBe(false);
     });
 });

@@ -8,13 +8,6 @@ import { UserContextProvider } from '../../../../contexts/userContext';
 import api from '../../../../services/api';
 import { fakeCpfs, fakeUserJwt, fakeUser } from '../../../../testUtils/fakeData';
 
-    /*beforeAll(() => {
-        const apiMock = new MockAdapter(api);
-        apiMock.onPost('/sessions').reply(200, { token: fakeUserJwt });
-        apiMock.onGet('/users/1').reply(200, fakeUser);
-        apiMock.onPost('/users').reply(201, { token: fakeUserJwt });
-    });*/
-
 describe('Create User Form Tests', () => {
 
     it('should create new user', async () => {
