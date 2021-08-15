@@ -3,11 +3,11 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 
-import ForgotPassPage from './';
-import api from '../../../services/api';
-import { ThemeContextProvider } from '../../../contexts/themeContext';
-import { CartContextProvider } from '../../../contexts/cartContext';
-import { FilterBarContextProvider } from '../../../contexts/filterBarContext';
+import ForgotPassPage from '.';
+import api from '../../services/api';
+import { ThemeContextProvider } from '../../contexts/themeContext';
+import { CartContextProvider } from '../../contexts/cartContext';
+import { FilterBarContextProvider } from '../../contexts/filterBarContext';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
