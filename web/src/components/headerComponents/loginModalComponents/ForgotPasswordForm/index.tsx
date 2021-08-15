@@ -48,7 +48,7 @@ export default function ForgotPasswordForm() {
 	return (
 		<FormContainer
 			onSubmit={handleSubmit}
-			data-testid='forgot-password-component'
+			data-testid='forgot-password-form'
 		>
 			{(getEmailSended)
 				? <p className='forgot-password'>Enviado, verifique seu e-mail para trocar a senha.</p>

@@ -56,6 +56,7 @@ export default function CreateUserForm() {
     return (
         <FormContainer
             onSubmit={handleSubmit}
+            data-testid='create-user-form'
         >
             <div className="input-group">
                 <label htmlFor="login-name">Nome completo</label>

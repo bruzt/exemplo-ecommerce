@@ -26,6 +26,7 @@ export default function LoginModal() {
 					<button
 						type='button'
 						className='close-modal'
+						data-testid='close-modal-button'
 						onClick={() => userContext.handleSwitchModal()}
 					>
 						X

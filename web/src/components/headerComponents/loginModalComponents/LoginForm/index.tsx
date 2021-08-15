@@ -57,6 +57,7 @@ export default function LoginForm() {
             onSubmit={handleSubmit}
             className={`${getNonoAnimation && 'no-no-animation'}`}
             ref={(element) => formRef.current = element}
+            data-testid='login-form'
         >
 
             <div className="input-group">

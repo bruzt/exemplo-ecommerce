@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import LoginModal from './index';
 import { UserContextProvider } from '../../../../contexts/userContext';
 import api from '../../../../services/api';
-import { fakeUser, fakeUserJwt, fakeCpfs } from '../../../../testUtils/fakeData';
+import { fakeUser, fakeUserJwt } from '../../../../testUtils/fakeData';
 
 describe('Login Modal Tests', () => {
 
@@ -17,7 +17,120 @@ describe('Login Modal Tests', () => {
         apiMock.onPost('/users').reply(201, { token: fakeUserJwt });
     });
 
-    it('should log in', async () => {
+    it('should render login form by default', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(
+            <UserContextProvider>
+                <LoginModal />
+            </UserContextProvider>
+        ));
+
+        const loginForm = queryByTestId('login-form');
+        const createUserForm = queryByTestId('create-user-form');
+        const forgotPasswordForm = queryByTestId('forgot-password-form');
+
+        const createNewAccountAnchor = queryByTestId('create-new-account');
+        const forgotPasswordAnchor = queryByTestId('forgot-password');
+        const backToLoginAnchor = queryByTestId('back-to-login');
+
+        expect(loginForm).toBeInTheDocument();
+        expect(createUserForm).not.toBeInTheDocument();
+        expect(forgotPasswordForm).not.toBeInTheDocument();
+
+        expect(createNewAccountAnchor).toBeInTheDocument();
+        expect(forgotPasswordAnchor).toBeInTheDocument();
+        expect(backToLoginAnchor).not.toBeInTheDocument();
+    });
+
+    it('should render create user form', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(
+            <UserContextProvider>
+                <LoginModal />
+            </UserContextProvider>
+        ));
+
+        const createNewAccountAnchor = queryByTestId('create-new-account');
+
+        fireEvent.click(createNewAccountAnchor);
+
+        const createUserForm = queryByTestId('create-user-form');
+        const loginForm = queryByTestId('login-form');
+        const forgotPasswordForm = queryByTestId('forgot-password-form');
+
+        const forgotPasswordAnchor = queryByTestId('forgot-password');
+        const backToLoginAnchor = queryByTestId('back-to-login');
+
+        expect(createUserForm).toBeInTheDocument();
+        expect(loginForm).not.toBeInTheDocument();
+        expect(forgotPasswordForm).not.toBeInTheDocument();
+
+        expect(createNewAccountAnchor).not.toBeInTheDocument();
+        expect(forgotPasswordAnchor).not.toBeInTheDocument();
+        expect(backToLoginAnchor).toBeInTheDocument();
+    });
+
+    it('should render forgot password form', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(
+            <UserContextProvider>
+                <LoginModal />
+            </UserContextProvider>
+        ));
+
+        const forgotPasswordAnchor = queryByTestId('forgot-password');
+        
+        fireEvent.click(forgotPasswordAnchor);
+        
+        const loginForm = queryByTestId('login-form');
+        const createUserForm = queryByTestId('create-user-form');
+        const forgotPasswordForm = queryByTestId('forgot-password-form');
+        
+        const createNewAccountAnchor = queryByTestId('create-new-account');
+        const backToLoginAnchor = queryByTestId('back-to-login');
+
+        expect(createUserForm).not.toBeInTheDocument();
+        expect(loginForm).not.toBeInTheDocument();
+        expect(forgotPasswordForm).toBeInTheDocument();
+
+        expect(createNewAccountAnchor).not.toBeInTheDocument();
+        expect(forgotPasswordAnchor).not.toBeInTheDocument();
+        expect(backToLoginAnchor).toBeInTheDocument();
+    });
+
+    it('should go back to login form', async () => {
+
+        const { queryByTestId } = await waitFor(() => render(
+            <UserContextProvider>
+                <LoginModal />
+            </UserContextProvider>
+        ));
+
+        let createNewAccountAnchor = queryByTestId('create-new-account');
+        
+        fireEvent.click(createNewAccountAnchor);
+        
+        const backToLoginAnchor = queryByTestId('back-to-login');
+        
+        fireEvent.click(backToLoginAnchor);
+        
+        const loginForm = queryByTestId('login-form');
+        const createUserForm = queryByTestId('create-user-form');
+        const forgotPasswordForm = queryByTestId('forgot-password-form');
+        
+        createNewAccountAnchor = queryByTestId('create-new-account');
+        const forgotPasswordAnchor = queryByTestId('forgot-password');
+
+        expect(loginForm).toBeInTheDocument();
+        expect(createUserForm).not.toBeInTheDocument();
+        expect(forgotPasswordForm).not.toBeInTheDocument();
+
+        expect(createNewAccountAnchor).toBeInTheDocument();
+        expect(forgotPasswordAnchor).toBeInTheDocument();
+        expect(backToLoginAnchor).not.toBeInTheDocument();
+    });
+
+    /*it('should log in', async () => {
 
         const spyApi = jest.spyOn(api, 'post');
 
@@ -214,5 +327,5 @@ describe('Login Modal Tests', () => {
         const forgotPasswordComponent = getByTestId('forgot-password-component');
 
         expect(forgotPasswordComponent).toBeInTheDocument();
-    });
+    });*/
 });
