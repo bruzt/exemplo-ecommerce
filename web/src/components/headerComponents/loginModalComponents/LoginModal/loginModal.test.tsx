@@ -4,9 +4,9 @@ import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 
 import LoginModal from './index';
-import { UserContextProvider } from '../../../contexts/userContext';
-import api from '../../../services/api';
-import { fakeUser, fakeUserJwt, fakeCpfs } from '../../../testUtils/fakeData';
+import { UserContextProvider } from '../../../../contexts/userContext';
+import api from '../../../../services/api';
+import { fakeUser, fakeUserJwt, fakeCpfs } from '../../../../testUtils/fakeData';
 
 describe('Login Modal Tests', () => {
 

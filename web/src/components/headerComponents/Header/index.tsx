@@ -10,7 +10,7 @@ import { useUser } from '../../../contexts/userContext';
 //import { useOrder } from '../../../contexts/orderContext';
 import { useTheme } from '../../../contexts/themeContext';
 
-import LoginModal from '../LoginModal';
+import LoginModal from '../loginModalComponents/LoginModal';
 import CategoriesAndSeachBar from '../CategoriesAndSeachBar';
 
 import { Container } from './styles';

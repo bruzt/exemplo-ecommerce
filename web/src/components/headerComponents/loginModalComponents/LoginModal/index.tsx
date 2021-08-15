@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, FormEvent } from 'react';
 import Loader from 'react-loader-spinner';
 
-import formatCpf from '../../../utils/formatCpf';
-import { useUser } from '../../../contexts/userContext';
-import ForgotPasswordModal from '../../forgotPassComponents/ForgotPasswordModal';
+import formatCpf from '../../../../utils/formatCpf';
+import { useUser } from '../../../../contexts/userContext';
+import ForgotPasswordModal from '../../../forgotPassComponents/ForgotPasswordModal';
 
 import { Container } from './styles';
 
 export default function LoginModal() {
 
 	const [getName, setName] = useState('');
-	const [getEmail, setEmail] = useState('');
+	
 	const [getCpf, setCpf] = useState('');
-	const [getPassword, setPassword] = useState('');
+	
 	const [getConfirmPassword, setConfirmPassword] = useState('');
 
 	const [getDisabledButton, setDisabledButton] = useState(true);
@@ -70,17 +70,7 @@ export default function LoginModal() {
 
 			if (result == false) setIsfetching(false);
 
-		} else {
-
-			setIsfetching(true);
-			const result = await userContext.logIn(getEmail, getPassword);
-
-			if (result == false) {
-				setPassword('');
-				setNonoAnimation(true);
-				setIsfetching(false);
-			}
-		}
+		} 
 	}
 
 	function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>) {
@@ -127,17 +117,6 @@ export default function LoginModal() {
 									</div>
 								)}
 
-								<div className="input-group">
-									<label htmlFor="login-email">e-mail</label>
-									<input
-										type='email'
-										id="login-email"
-										data-testid="login-email"
-										value={getEmail}
-										onChange={(event) => setEmail(event.target.value.trim())}
-									/>
-								</div>
-
 								{(getCreateNewAccount) && (
 									<div className="input-group">
 										<label htmlFor="login-cpf">CPF</label>
@@ -153,18 +132,7 @@ export default function LoginModal() {
 									</div>
 								)}
 
-								<div className="input-group">
-									<label htmlFor="login-password">
-										Senha {(getCreateNewAccount) && <span>(no mínimo 6 dígitos)</span>}
-									</label>
-									<input
-										type='password'
-										id="login-password"
-										data-testid="login-password"
-										value={getPassword}
-										onChange={(event) => setPassword(event.target.value.trim())}
-									/>
-								</div>
+								
 
 								{(getCreateNewAccount) && (
 									<div className="input-group">
