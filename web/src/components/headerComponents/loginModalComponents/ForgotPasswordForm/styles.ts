@@ -3,38 +3,15 @@ import styled from 'styled-components';
 export const FormContainer = styled.form`
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    .forgot-password {
-        width: 100%;
-        max-width: 18.75rem;
-        height: 18.75rem;
+    padding: 0 2rem;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    p.forgot-password {
+    p {
         text-align: center;
-        margin: 0 auto;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    .forgot-password input#forgot-pass-input {
-        width: 100%;
-        height: 2.5rem;
-        border: ${props => props.theme.title === 'light' ? '1px solid #111' : 0};
-        border-radius: 0.3125rem;
-        margin: 0.625rem 0 0 0;
-        padding: 0.3125rem;
-        font-size: 1.25rem;
-        text-align: center;
+        margin: 2rem auto;
     }
 
     .forgot-password button {

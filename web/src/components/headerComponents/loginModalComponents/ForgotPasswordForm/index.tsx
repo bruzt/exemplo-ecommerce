@@ -2,6 +2,8 @@ import React, { useState, useEffect, FormEvent } from 'react';
 import Loading from 'react-loader-spinner';
 
 import api from '../../../../services/api';
+import Input from '../genericComponents/Input';
+import Button from '../genericComponents/Button';
 
 import { FormContainer } from './styles';
 
@@ -52,17 +54,18 @@ export default function ForgotPasswordForm() {
 				? <p className='forgot-password'>Enviado, verifique seu e-mail para trocar a senha.</p>
 				: (
 					<>
-						<label htmlFor="forgot-pass-input">e-mail cadastrado</label>
-						<input
-							type="email"
-							id='forgot-pass-input'
-							data-testid='forgot-pass-input'
-							placeholder='e-mail'
-							value={getEmail}
-							onChange={(event) => setEmail(event.target.value)}
-						/>
+						<div className="input-group">
+							<label htmlFor="forgot-pass-input">e-mail cadastrado</label>
+							<Input
+								type="email"
+								data-testid='forgot-pass-input'
+								placeholder='e-mail'
+								value={getEmail}
+								onChange={(event) => setEmail(event.target.value)}
+							/>
+						</div>
 
-						<button
+						<Button
 							type='submit'
 							data-testid='submit-button'
 							disabled={getDisabledSendButton}
@@ -75,7 +78,7 @@ export default function ForgotPasswordForm() {
 									width={30}
 								/>
 							) : 'Enviar'}
-						</button>
+						</Button>
 					</>
 				)
 			}
