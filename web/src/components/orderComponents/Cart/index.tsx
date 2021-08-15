@@ -39,7 +39,26 @@ export default function Cart() {
 
     async function fetchProducts() {
         try {
-            const promises = cartContext.getCart.map((product, index) => fetchProductPromise(index));
+            const promises = cartContext.getCart.map(async (product, index) => {
+
+                const response = await api.get<IShowProduct>(`/products/${cartContext.getCart[index].id}`);
+            
+                const cart = [...cartContext.getCart];
+                if (cartContext.getCart[index].qtd > response.data.product.quantity_stock) {
+            
+                    cart[index].qtd = response.data.product.quantity_stock;
+                }
+            
+                if (response.data.product.quantity_stock < 1) {
+                    setUnableToBuy([...getUnableToBuy, cartContext.getCart[index].id]);
+                }
+            
+                localStorage.setItem('cart', JSON.stringify(cart));
+            
+                cartContext.setCart(cart);
+            
+                return response.data.product;
+            });
 
             setIsFetching(true);
             const products = await Promise.all(promises);
@@ -54,27 +73,6 @@ export default function Cart() {
             cartContext.setProducts([]);
             setIsFetching(false);
         }
-    }
-
-    async function fetchProductPromise(index: number) {
-
-        const response = await api.get<IShowProduct>(`/products/${cartContext.getCart[index].id}`);
-
-        const cart = [...cartContext.getCart];
-        if (cartContext.getCart[index].qtd > response.data.product.quantity_stock) {
-
-            cart[index].qtd = response.data.product.quantity_stock;
-        }
-
-        if (response.data.product.quantity_stock < 1) {
-            setUnableToBuy([...getUnableToBuy, cartContext.getCart[index].id]);
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart));
-
-        cartContext.setCart(cart);
-
-        return response.data.product;
     }
 
     function handleZipCode(value: string) {
