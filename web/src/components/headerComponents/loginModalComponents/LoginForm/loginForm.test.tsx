@@ -8,14 +8,6 @@ import { UserContextProvider } from '../../../../contexts/userContext';
 import api from '../../../../services/api';
 import { fakeUser, fakeUserJwt } from '../../../../testUtils/fakeData';
 
-    /*beforeAll(() => {
-        const apiMock = new MockAdapter(api);
-        apiMock.onPost('/sessions').reply(200, { token: fakeUserJwt });
-        apiMock.onGet('/users/1').reply(200, fakeUser);
-        apiMock.onPost('/users').reply(201, { token: fakeUserJwt });
-    });*/
-
-
 describe('Login Form Tests', () => {
 
     it('should log in', async () => {
