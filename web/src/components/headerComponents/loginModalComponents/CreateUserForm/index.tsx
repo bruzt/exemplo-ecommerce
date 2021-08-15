@@ -3,6 +3,8 @@ import Loader from 'react-loader-spinner';
 
 import { useUser } from '../../../../contexts/userContext';
 import formatCpf from '../../../../utils/formatCpf';
+import Input from '../genericComponents/Input';
+import Button from '../genericComponents/Button';
 
 import { FormContainer } from './styles';
 
@@ -57,7 +59,7 @@ export default function CreateUserForm() {
         >
             <div className="input-group">
                 <label htmlFor="login-name">Nome completo</label>
-                <input
+                <Input
                     type='text'
                     id="login-name"
                     data-testid="login-name"
@@ -68,7 +70,7 @@ export default function CreateUserForm() {
 
             <div className="input-group">
                 <label htmlFor="login-email">e-mail</label>
-                <input
+                <Input
                     type='email'
                     id="login-email"
                     data-testid="login-email"
@@ -79,7 +81,7 @@ export default function CreateUserForm() {
 
             <div className="input-group">
                 <label htmlFor="login-cpf">CPF</label>
-                <input
+                <Input
                     type='text'
                     id="login-cpf"
                     data-testid="login-cpf"
@@ -94,7 +96,7 @@ export default function CreateUserForm() {
                 <label htmlFor="login-password">
                     Senha
                 </label>
-                <input
+                <Input
                     type='password'
                     id="login-password"
                     data-testid="login-password"
@@ -105,7 +107,7 @@ export default function CreateUserForm() {
 
             <div className="input-group">
                 <label htmlFor="login-confirm-password">Confirmar senha</label>
-                <input
+                <Input
                     type='password'
                     id="login-confirm-password"
                     data-testid="login-confirm-password"
@@ -114,9 +116,9 @@ export default function CreateUserForm() {
                 />
             </div>
 
-            <button
+            <Button
                 type="submit"
-                className={`create-button ${(getIsFetching) && 'is-fetching'}`}
+                className={`${(getIsFetching) && 'is-fetching'}`}
                 data-testid='create-button'
                 disabled={getDisabledSubmitButton || getIsFetching}
             >
@@ -131,7 +133,7 @@ export default function CreateUserForm() {
                     )
                     : 'Cadastrar'
                 }
-            </button>
+            </Button>
 
         </FormContainer>
     );
