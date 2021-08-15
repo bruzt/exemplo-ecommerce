@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const FormContainer = styled.form`
 
-    .center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .forgot-password {
         width: 100%;

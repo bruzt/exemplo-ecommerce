@@ -9,7 +9,7 @@ export const Container = styled.div`
     
     background-color: rgba(1, 1, 1, 0.9); 
 
-    .modal-content {
+    .modal-card {
         background-color: ${props => props.theme.primary};
         margin: 10% auto; /* 15% from the top and centered */
         padding: 1.25rem;
@@ -19,12 +19,12 @@ export const Container = styled.div`
         border-radius: 0.3125rem;
     }
 
-    .modal-content .modal-head {
+    .modal-card .modal-head {
         display: flex;
         justify-content: space-between;
     }
 
-    .modal-content .close-modal {
+    .modal-card .close-modal {
         width: 1.875rem;
         height: 1.875rem;
         border: 0;
@@ -39,7 +39,7 @@ export const Container = styled.div`
         }
     }
 
-    .create-forgot {
+    footer {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -48,7 +48,7 @@ export const Container = styled.div`
         margin: 0.625rem 0;
     }
 
-    .create-forgot a {
+    footer a {
         cursor: pointer;
         margin: 0.625rem 0 0 0;
     }

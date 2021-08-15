@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, FormEvent } from 'react';
 import Loader from 'react-loader-spinner';
 
 import { useUser } from '../../../../contexts/userContext';
+import Input from '../genericComponents/Input';
 
 import { FormContainer } from './styles';
 
@@ -10,7 +11,7 @@ export default function LoginForm() {
     const [getEmail, setEmail] = useState('');
     const [getPassword, setPassword] = useState('');
 
-    const [getIsfetching, setIsfetching] = useState(false);
+    const [getIsFetching, setIsfetching] = useState(false);
     const [getDisabledSubmitButton, setDisabledSubmitButton] = useState(true);
 
     const [getNonoAnimation, setNonoAnimation] = useState(false);
@@ -18,6 +19,10 @@ export default function LoginForm() {
     const userContext = useUser();
 
     const formRef = useRef(null);
+
+    useEffect(() => {
+        formRef.current.addEventListener('animationend', () => setNonoAnimation(false));
+    }, []);
 
     useEffect(() => {
         if (
@@ -36,16 +41,18 @@ export default function LoginForm() {
 
         setIsfetching(true);
         const result = await userContext.logIn(getEmail, getPassword);
+        setIsfetching(false);
 
         if (result == false) {
             setPassword('');
             setNonoAnimation(true);
-            setIsfetching(false);
+        } else {
+            userContext.handleSwitchModal();
         }
     }
 
     return (
-        <FormContainer 
+        <FormContainer
             onSubmit={handleSubmit}
             className={`${getNonoAnimation && 'no-no-animation'}`}
             ref={(element) => formRef.current = element}
@@ -53,7 +60,7 @@ export default function LoginForm() {
 
             <div className="input-group">
                 <label htmlFor="login-email">e-mail</label>
-                <input
+                <Input
                     type='email'
                     id="login-email"
                     data-testid="login-email"
@@ -66,7 +73,7 @@ export default function LoginForm() {
                 <label htmlFor="login-password">
                     Senha
                 </label>
-                <input
+                <Input
                     type='password'
                     id="login-password"
                     data-testid="login-password"
@@ -77,11 +84,11 @@ export default function LoginForm() {
 
             <button
                 type="submit"
-                className={`login-button ${(getIsfetching) && 'is-fetching'}`}
+                className={`login-button ${(getIsFetching) && 'is-fetching'}`}
                 data-testid='login-button'
-                disabled={getDisabledSubmitButton || getIsfetching}
+                disabled={getDisabledSubmitButton || getIsFetching}
             >
-                {(getIsfetching)
+                {(getIsFetching)
                     ? (
                         <Loader
                             type="TailSpin"
