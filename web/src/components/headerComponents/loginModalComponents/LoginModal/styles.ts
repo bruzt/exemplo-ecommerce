@@ -10,16 +10,20 @@ export const Container = styled.div`
     background-color: rgba(1, 1, 1, 0.9); 
 
     .modal-card {
-        background-color: ${props => props.theme.primary};
-        margin: 10% auto; /* 15% from the top and centered */
-        padding: 1.25rem;
         width: 100%;
         max-width: 25rem;
-        min-height: 21.875rem;
+        height: fit-content;
+
+        padding: 1.25rem;
+        margin: 10% auto; /* 10% from the top and centered */
+
+        background-color: ${props => props.theme.primary};
         border-radius: 0.3125rem;
     }
 
-    .modal-card .modal-head {
+    .modal-card header {
+        height: fit-content;
+
         display: flex;
         justify-content: space-between;
     }
@@ -37,6 +41,10 @@ export const Container = styled.div`
         &:hover {
             background: ${props => props.theme.dangerActive};
         }
+    }
+
+    .modal-card main {
+        padding-top: 2rem;
     }
 
     footer {

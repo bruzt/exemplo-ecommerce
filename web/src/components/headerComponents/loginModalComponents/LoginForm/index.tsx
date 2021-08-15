@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner';
 
 import { useUser } from '../../../../contexts/userContext';
 import Input from '../genericComponents/Input';
+import Button from '../genericComponents/Button';
 
 import { FormContainer } from './styles';
 
@@ -82,9 +83,9 @@ export default function LoginForm() {
                 />
             </div>
 
-            <button
+            <Button
                 type="submit"
-                className={`login-button ${(getIsFetching) && 'is-fetching'}`}
+                className={`${(getIsFetching) && 'is-fetching'}`}
                 data-testid='login-button'
                 disabled={getDisabledSubmitButton || getIsFetching}
             >
@@ -99,7 +100,7 @@ export default function LoginForm() {
                     )
                     : 'Entrar'
                 }
-            </button>
+            </Button>
 
         </FormContainer>
     );

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const FormContainer = styled.form`
     width: 100%;
     height: 100%;
-    padding: 3.75rem 0 0 0;
 
     display: flex;
     flex-direction: column;
@@ -29,42 +28,6 @@ export const FormContainer = styled.form`
 
     .input-group + .input-group {
         margin: 1.25rem 0 0 0;
-    }
-
-    .login-button {
-        margin: 1.875rem 0 0 0;
-        width: 18.75rem;
-        height: 3.125rem;
-        border: 0;
-        border-radius: 0.3125rem;
-        background: ${props => props.theme.success};
-        font-size: 1.25rem;
-        cursor: pointer;
-        color: ${props => props.theme.color};
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &.is-fetching {
-            font-size: 0;
-        }
-
-        &:hover {
-            background: ${props => props.theme.successActive};
-        }
-
-        &:active {
-            background: ${props => props.theme.success};
-        }
-
-        &:disabled {
-            background: ${props => props.theme.danger};
-        }
-
-        &:disabled:hover {
-            background: ${props => props.theme.dangerActive};
-        }
     }
 
     @keyframes no-no-animation {

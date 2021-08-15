@@ -18,7 +18,7 @@ export default function LoginModal() {
 
 			<div className='modal-card'>
 
-				<header className="modal-head">
+				<header>
 					{getModalOption == 'login' && <h1>Login</h1>}
 					{getModalOption == 'create' && <h1>Cadastrar</h1>}
 					{getModalOption == 'forgot' && <h1>Recuperar</h1>}
