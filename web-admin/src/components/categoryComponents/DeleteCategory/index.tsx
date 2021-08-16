@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
@@ -13,25 +14,36 @@ interface IProps {
     deleting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function DeleteCategory({ deletingCategory, deleting}: IProps) {
+export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
 
     const [getCategories, setCategories] = useState<ICategory[]>([]);
 
     const [getTrasferTo, setTrasferTo] = useState("0");
 
-    useEffect( () => {
+    const [getIsSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
+    const [getIsFetching, setIsFetching] = useState(false);
+
+    useEffect(() => {
         fetchCategories();
     }, []);
+
+    useEffect(() => {
+        if (getTrasferTo == '0') {
+            setIsSubmitButtonDisabled(true);
+        } else {
+            setIsSubmitButtonDisabled(false);
+        }
+    }, [getTrasferTo]);
 
     async function fetchCategories() {
         try {
 
             const response = await api.get<ICategory[]>('/categories');
 
-            const categories = response.data.filter( category => category.id != deletingCategory.id);
+            const categories = response.data.filter(category => category.id != deletingCategory.id);
 
             setCategories(categories);
-            
+
         } catch (error) {
             console.log(error);
             alert('Erro ao buscar categorias');
@@ -39,19 +51,21 @@ export default function DeleteCategory({ deletingCategory, deleting}: IProps) {
     }
 
     async function onSubmit(event: FormEvent) {
-        
+
         event.preventDefault();
 
-        if(getTrasferTo.trim() == "0") return alert('Você deve selecionar uma categoria para transferir os produtos, se houver.');
+        if (getIsSubmitButtonDisabled) return alert('Você deve selecionar uma categoria para transferir os produtos, se houver.');
 
-        if(confirm(`Tem certeza que deseja deletar "${deletingCategory.name}"?`)){
+        if (confirm(`Tem certeza que deseja deletar "${deletingCategory.name}"?`)) {
             try {
 
+                setIsFetching(true);
                 await api.delete(`/categories/${deletingCategory.id}`, {
                     data: {
                         transferToId: Number(getTrasferTo)
                     }
                 });
+                setIsFetching(false);
 
                 alert('Categoria deletada com sucesso');
 
@@ -60,6 +74,7 @@ export default function DeleteCategory({ deletingCategory, deleting}: IProps) {
             } catch (error) {
                 console.log(error);
                 alert('Erro ao deletar categoria');
+                setIsFetching(false);
             }
         }
     }
@@ -78,22 +93,40 @@ export default function DeleteCategory({ deletingCategory, deleting}: IProps) {
 
                     <div className="input-group">
                         <label htmlFor="transfer-to">Transferir produtos para:</label>
-                        <select 
+                        <select
                             id="transfer-to"
                             value={getTrasferTo}
                             onChange={(event) => setTrasferTo(event.target.value)}
                         >
                             <option value="0"></option>
-                            {getCategories.map( (category) => (
+                            {getCategories.map((category) => (
                                 <option key={category.id} value={String(category.id)}>{category.name}</option>
                             ))}
                         </select>
                     </div>
 
-                    <Button type='submit'>Deletar</Button>
+                    <Button
+                        type='submit'
+                        disabled={getIsSubmitButtonDisabled || getIsFetching}
+                        className={`${getIsFetching && 'is-fetching'}`}
+                    >
+                        {getIsFetching
+                            ? (
+                                <Loader
+                                    type="TailSpin"
+                                    color="#0D2235"
+                                    height={30}
+                                    width={30}
+                                />
+                            )
+                            : (
+                                'Deletar'
+                            )
+                        }
+                    </Button>
                 </main>
             </form>
-            
+
         </Container>
     );
 }

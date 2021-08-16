@@ -29,11 +29,16 @@ export const Container = styled.div`
 
     header button {
         cursor: pointer;
-        padding: 3px 6px;
+
+        padding: 6px 9px;
+
         border: 0;
         border-radius: 4px;
+
         background: ${props => props.theme.danger};
+
         color: ${props => props.theme.color};
+        font-weight: bold;
 
         display: flex;
         justify-content: center;
@@ -72,11 +77,19 @@ export const Container = styled.div`
     }
 
     div.input-group select {
-        width: 200px;
+        width: 250px;
         height: 40px;
         font-size: 20px;
 
         border: 0;
         border-radius: 4px;
+    }
+
+    main button {
+        width: 250px;
+
+        &.is-fetching {
+            font-size: 0;
+        }
     }
 `;
