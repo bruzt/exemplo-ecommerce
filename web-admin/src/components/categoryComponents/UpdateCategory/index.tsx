@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
@@ -20,20 +21,30 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
 
     const [getCategories, setCategories] = useState<ICategory[]>([]);
 
-    useEffect( () => {
+    const [getIsFetching, setIsFetching] = useState(false);
+    const [getIsSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(false);
+
+    useEffect(() => {
         fetchCategories();
     }, []);
 
+    useEffect(() => {
+        if(getName.trim().length < 3){
+            setIsSubmitButtonDisabled(true);
+        } else {
+            setIsSubmitButtonDisabled(false);
+        }
+    }, [getName]);
+
     async function fetchCategories() {
-        
         try {
 
             const response = await api.get<ICategory[]>('/categories');
 
-            const categories = response.data.filter( (category) => category.id != updatingCategory.id);
+            const categories = response.data.filter((category) => category.id != updatingCategory.id);
 
             setCategories(categories);
-            
+
         } catch (error) {
             console.error(error);
             alert('Erro ao buscar categorias');
@@ -41,30 +52,33 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
     }
 
     async function onSubmit(event: FormEvent) {
-        
+
         event.preventDefault();
 
-        const [parentCategory] = getCategories.filter( (category) => category.id == Number(getParentId));
-        if(parentCategory && updatingCategory.id == parentCategory.parent_id) return alert('Categorias não podem ser filhas umas das outras');
+        if(getIsSubmitButtonDisabled) return;
+
+        const [parentCategory] = getCategories.filter((category) => category.id == Number(getParentId));
+        if (parentCategory && updatingCategory.id == parentCategory.parent_id) return alert('Categorias não podem ser filhas umas das outras');
 
         try {
-
-            await api.put(`/categories/${updatingCategory.id}`,{
+            setIsFetching(true);
+            await api.put(`/categories/${updatingCategory.id}`, {
                 name: getName,
                 parent_id: getParentId
             });
-
+            setIsFetching(false);
             updating(false);
-            
+
         } catch (error) {
             console.error(error);
             alert('Erro a atualizar categoria');
+            setIsFetching(false);
         }
     }
 
     return (
         <Container>
-            
+
             <form onSubmit={onSubmit}>
 
                 <header>
@@ -81,16 +95,32 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
                         <label htmlFor="select-parent">Pai da categoria</label>
                         <select id="select-parent" value={getParentId} onChange={(event) => setParentId(event.target.value)}>
                             <option value="0"></option>
-                            {getCategories.map( (category, index) => (
+                            {getCategories.map((category, index) => (
                                 <option key={index} value={String(category.id)}>{category.name}</option>
                             ))}
                         </select>
                     </div>
 
-                    <Button type='submit'>Atualizar</Button>
-
+                    <Button
+                        type='submit'
+                        disabled={getIsFetching || getIsSubmitButtonDisabled}
+                        className={`${getIsFetching && 'is-fetching'}`}
+                    >
+                        {getIsFetching
+                            ? (
+                                <Loader
+                                    type="TailSpin"
+                                    color="#0D2235"
+                                    height={30}
+                                    width={30}
+                                />
+                            )
+                            : (
+                                'Atualizar'
+                            )
+                        }
+                    </Button>
                 </main>
-                
             </form>
 
         </Container>

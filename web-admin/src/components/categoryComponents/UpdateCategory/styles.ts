@@ -6,15 +6,14 @@ export const Container = styled.div`
 
     width: 100%;
     height: 100vh;
-
-    margin: -50px;
+    
     background: rgba(1,1,1,0.5);
 
     display: flex;
     justify-content: center;
 
     form {
-        margin-top: 100px;
+        margin-top: calc(100vh - 45%);
         background: ${props => props.theme.primary};
         border-radius: 4px;
 
@@ -29,12 +28,17 @@ export const Container = styled.div`
 
     header button {
         cursor: pointer;
+
         margin: 10px 10px 0 0;
-        padding: 3px 6px;
+        padding: 6px 9px;
+
         border: 0;
         border-radius: 4px;
+
         background: ${props => props.theme.danger};
+
         color: ${props => props.theme.color};
+        font-weight: bold;
 
         &:hover {
             background: ${props => props.theme.dangerActive};
@@ -72,5 +76,15 @@ export const Container = styled.div`
         border-radius: 4px;
         padding-left: 5px;
         font-size: 20px;
+    }
+
+    form button[type=submit] {
+        width: 300px;
+
+        margin-top: 9px;
+
+        &.is-fetching {
+            font-size: 0;
+        }
     }
 `;
