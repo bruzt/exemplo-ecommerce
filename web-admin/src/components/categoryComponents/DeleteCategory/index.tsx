@@ -3,11 +3,11 @@ import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
-import { Container } from './styles';
-
 import Button from '../../genericComponents/Button';
-
 import { ICategory } from '../ListCategories';
+import CategoriesReference from '../CategoriesReference';
+
+import { Container } from './styles';
 
 interface IProps {
     deletingCategory: ICategory;
@@ -125,6 +125,10 @@ export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
                         }
                     </Button>
                 </main>
+                
+                <footer>
+                    <CategoriesReference categories={getCategories} />
+                </footer>
             </form>
 
         </Container>

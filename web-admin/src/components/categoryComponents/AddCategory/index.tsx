@@ -3,11 +3,12 @@ import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
+import Button from '../../genericComponents/Button';
+import CategoriesReference from '../CategoriesReference';
+
 import { Container } from './styles';
 
-import Button from '../../genericComponents/Button';
-
-interface ICategory {
+export interface ICategory {
 	id: number;
 	name: string;
 	parent_id: number;
@@ -76,45 +77,6 @@ export default function AddCategory() {
 		}
 	}
 
-	function categoryTree() {
-		return getCategories.map(category => {
-
-			if (category.parent_id == null || category.parent_id == 0) {
-
-				const childs = getCategories.filter((othersCategory) => othersCategory.parent_id == category.id);
-				let hasChildren = false;
-				if (childs.length > 0) hasChildren = true;
-
-				return (
-					<details key={category.id}>
-						<summary className={hasChildren ? '' : 'last-child'}>{category.name} (id: {category.id})</summary>
-						{buildCategoryTree(category)}
-					</details>
-				);
-			}
-		});
-	}
-
-	function buildCategoryTree(fatherCategory: ICategory) {
-
-		const children = getCategories.filter(child => child.parent_id == fatherCategory.id)
-
-		return children.map(child => {
-
-			const childs = getCategories.filter((category) => child.id == category.parent_id);
-
-			let hasChildren = false;
-			if (childs.length > 0) hasChildren = true;
-
-			return (
-				<details key={child.id}>
-					<summary className={hasChildren ? '' : 'last-child'}>{child.name} (id: {child.id})</summary>
-					{hasChildren && buildCategoryTree(child)}
-				</details>
-			);
-		});
-	}
-
 	return (
 		<Container>
 
@@ -160,9 +122,7 @@ export default function AddCategory() {
 				</Button>
 			</form>
 
-			<div className="categoryTree">
-				{categoryTree()}
-			</div>
+			<CategoriesReference categories={getCategories} />
 
 		</Container>
 	);

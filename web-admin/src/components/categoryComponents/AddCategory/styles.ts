@@ -52,20 +52,4 @@ export const Container = styled.div`
             font-size: 0;
         }
     }
-
-    .categoryTree {
-        width: 500px;
-
-        margin-top: 50px;
-    }
-
-    .categoryTree details {
-        margin: 5px 0 5px 15px;
-    }
-
-    .categoryTree .last-child {
-        list-style: none;
-
-        //margin-left: 10px;
-    }
 `;

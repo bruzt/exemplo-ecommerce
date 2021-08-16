@@ -87,4 +87,8 @@ export const Container = styled.div`
             font-size: 0;
         }
     }
+
+    footer {
+        padding: 0 0 16px 100px;
+    }
 `;

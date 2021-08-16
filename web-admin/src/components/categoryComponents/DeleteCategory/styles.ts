@@ -92,4 +92,8 @@ export const Container = styled.div`
             font-size: 0;
         }
     }
+
+    footer {
+        padding-left: 7rem;
+    }
 `;

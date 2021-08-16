@@ -3,11 +3,11 @@ import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
-import { Container } from './styles';
-
 import Button from '../../genericComponents/Button';
-
 import { ICategory } from '../ListCategories';
+import CategoriesReference from '../CategoriesReference';
+
+import { Container } from './styles';
 
 interface IProps {
     updating: React.Dispatch<React.SetStateAction<boolean>>;
@@ -121,6 +121,10 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
                         }
                     </Button>
                 </main>
+
+                <footer>
+                    <CategoriesReference categories={getCategories} />
+                </footer>
             </form>
 
         </Container>
