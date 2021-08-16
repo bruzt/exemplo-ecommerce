@@ -47,6 +47,10 @@ export const Container = styled.div`
     form button {
         width: 300px;
         margin-top: 24px;
+
+        &.is-fetching {
+            font-size: 0;
+        }
     }
 
     .categoryTree {
