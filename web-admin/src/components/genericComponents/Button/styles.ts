@@ -17,4 +17,8 @@ export const StyledButton = styled.button`
     &:active {
         background: ${(props) => props.theme.success};
     }
+
+    &:disabled {
+        background: ${(props) => props.theme.danger};
+    }
 `;

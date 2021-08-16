@@ -42,6 +42,7 @@ export const Container = styled.div`
 
     form button {
         margin: 0 auto;
+        width: 100%;
 
         &.is-fetching {
             font-size: 0;

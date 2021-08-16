@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import Loader from 'react-loader-spinner';
 
 import api from '../../../services/api';
 
@@ -19,12 +20,22 @@ export default function AddCategory() {
 	const [getName, setName] = useState('');
 	const [getParent, setParent] = useState('0');
 
+	const [getIsFetching, setIsFetching] = useState(false);
+	const [getIsSubmitButtonDisable, setIsSubmitButtonDisable] = useState(true);
+
 	useEffect(() => {
 		fetchCategories();
 	}, []);
 
-	async function fetchCategories() {
+	useEffect(() => {
+		if(getName.trim().length < 3){
+			setIsSubmitButtonDisable(true);
+		} else {
+			setIsSubmitButtonDisable(false);
+		}
+	}, [getName]);
 
+	async function fetchCategories() {
 		try {
 
 			const response = await api.get('/categories');
@@ -41,12 +52,16 @@ export default function AddCategory() {
 
 		event.preventDefault();
 
+		if(getIsSubmitButtonDisable) return;
+
 		try {
 
+			setIsFetching(true);
 			await api.post('/categories', {
 				name: getName,
 				parent_id: Number(getParent)
 			});
+			setIsFetching(false);
 
 			alert('Categoria cadastrada com sucesso');
 
@@ -57,11 +72,11 @@ export default function AddCategory() {
 		} catch (error) {
 			console.log(error);
 			alert('Erro ao cadastrar categoria');
+			setIsFetching(false);
 		}
 	}
 
 	function categoryTree() {
-
 		return getCategories.map(category => {
 
 			if (category.parent_id == null || category.parent_id == 0) {
@@ -124,9 +139,25 @@ export default function AddCategory() {
 					</select>
 				</div>
 
-				<Button type='submit'>
-					Cadastrar
-                </Button>
+				<Button
+					type='submit'
+					disabled={getIsFetching || getIsSubmitButtonDisable}
+					className={`${getIsFetching && 'is-fetching'}`}
+				>
+					{getIsFetching
+						? (
+							<Loader
+								type="TailSpin"
+								color="#0D2235"
+								height={30}
+								width={30}
+							/>
+						)
+						: (
+							'Cadastrar'
+						)
+					}
+				</Button>
 			</form>
 
 			<div className="categoryTree">

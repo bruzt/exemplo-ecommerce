@@ -11,14 +11,19 @@ export const Container = styled.div`
 
     form {
         width: 500px;
-        height: 250px;
+        
+        padding: 32px;
+
         background: ${(props) => props.theme.primary};
         border-radius: 4px;
 
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-evenly;
+    }
+
+    form > * + * {
+        margin-top: 16px;
     }
 
     form div.input-box {
@@ -37,6 +42,11 @@ export const Container = styled.div`
         border-radius: 4px;
         font-size: 20px;
         padding: 4px;
+    }
+
+    form button {
+        width: 300px;
+        margin-top: 24px;
     }
 
     .categoryTree {
