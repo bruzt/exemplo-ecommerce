@@ -349,10 +349,10 @@ export default function Cart() {
                                                 ? <Loading
                                                     type="TailSpin"
                                                     color="black"
-                                                    height={20}
-                                                    width={20}
+                                                    height='1.25rem'
+                                                    width='1.25rem'
                                                 />
-                                                : <FaSearchLocation size={20} />
+                                                : <FaSearchLocation size='1.25rem' />
                                             }
                                         </button>
                                     </form>

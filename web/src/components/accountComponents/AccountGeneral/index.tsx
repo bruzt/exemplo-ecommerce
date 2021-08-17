@@ -189,8 +189,8 @@ export default function AccountGeneral() {
                                     <Loading
                                         type="TailSpin"
                                         color='#0D2235'
-                                        height={30}
-                                        width={30}
+                                        height='2rem'
+                                        width='2rem'
                                     />
 
                                 )

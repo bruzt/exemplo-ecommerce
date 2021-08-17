@@ -95,8 +95,8 @@ export default function LoginForm() {
                         <Loader
                             type="TailSpin"
                             color="#0D2235"
-                            height={30}
-                            width={30}
+                            height='1.875rem'
+                            width='1.875rem'
                         />
                     )
                     : 'Entrar'
