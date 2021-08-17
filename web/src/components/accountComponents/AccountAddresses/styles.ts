@@ -134,31 +134,43 @@ export const Container = styled.section`
     }
 
     form button[type='submit'] {
+        height: 3rem;
+
         margin-top: 1.25rem;
+
         border: 0;
         border-radius: 0.3125rem;
+
         padding: 0.625rem 1.25rem;
+
         font-size: 1.25rem;
-        background: ${props => props.theme.success};
         color: inherit;
-        cursor: pointer;
-    }
 
-    form button[type='submit']:hover {
-        background: ${props => props.theme.successActive};
-    }
-
-    form button[type='submit']:active {
         background: ${props => props.theme.success};
+
+        cursor: pointer;
+
+        &.is-fetching {
+            font-size: 0;
+        }
+
+        &:hover {
+            background: ${props => props.theme.successActive};
+        }
+    
+        &:active {
+            background: ${props => props.theme.success};
+        }
+    
+        &:disabled {
+            background: ${props => props.theme.danger};
+        }
+    
+        &:disabled:hover {
+            background: ${props => props.theme.dangerActive};
+        }
     }
 
-    form button[type='submit']:disabled {
-        background: ${props => props.theme.danger};
-    }
-
-    form button[type='submit']:disabled:hover {
-        background: ${props => props.theme.dangerActive};
-    }
 
     @media (max-width: 768px) {
         div.address-grid {
