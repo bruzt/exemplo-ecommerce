@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import Loading from 'react-loader-spinner';
 
 import api from '../../../services/api';
 import formatCpf from '../../../utils/formatCpf';
@@ -19,6 +20,7 @@ export default function AccountGeneral() {
     const [getConfirmNewPassword, setConfirmNewPassword] = useState('');
 
     const [getDisabledSubmitButton, setDisabledSubmitButton] = useState(true);
+    const [getIsFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
         if (
@@ -26,7 +28,7 @@ export default function AccountGeneral() {
                 getName.trim().length > 2) ||
             (getEmail.trim() != userContext.getUser.email &&
                 getEmail.trim().length > 7) ||
-            (getCpf.trim() != userContext.getUser.cpf && 
+            (getCpf.trim() != userContext.getUser.cpf &&
                 getCpf.trim().length == 11) ||
             getCurrentPassword.trim().length > 5 &&
             getNewPassword.trim().length > 5 &&
@@ -46,7 +48,7 @@ export default function AccountGeneral() {
         getConfirmNewPassword
     ]);
 
-    function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>){
+    function handleSetCpf(event: React.ChangeEvent<HTMLInputElement>) {
 
         const cpf = String(event.target.value).replace(/\.|-/g, '');
 
@@ -57,7 +59,7 @@ export default function AccountGeneral() {
 
         event.preventDefault();
 
-        setDisabledSubmitButton(true);
+        if (getDisabledSubmitButton || getIsFetching) return;
 
         const data = {
             name: (getName.trim() == userContext.getUser.name) ? undefined : getName.trim(),
@@ -69,6 +71,7 @@ export default function AccountGeneral() {
 
         try {
 
+            setIsFetching(true);
             await api.put('/users', data);
 
             const user = { ...userContext.getUser };
@@ -79,13 +82,14 @@ export default function AccountGeneral() {
             setCurrentPassword('');
             setNewPassword('');
             setConfirmNewPassword('');
+            setIsFetching(false);
             alert('Dados alterados')
 
         } catch (error) {
             console.log(error);
             console.log(error.response);
             alert('Erro ao atualizar dados');
-            setDisabledSubmitButton(false);
+            setIsFetching(false);
         }
     }
 
@@ -94,7 +98,7 @@ export default function AccountGeneral() {
             <Container data-testid='account-data-component'>
 
                 {(Object.keys(userContext.getUser).length) > 0 && (
-                    <form 
+                    <form
                         onSubmit={handleSubmit}
                     >
                         <h1>Dados da conta</h1>
@@ -176,10 +180,24 @@ export default function AccountGeneral() {
 
                         <button
                             type="submit"
-                            disabled={getDisabledSubmitButton}
+                            disabled={getDisabledSubmitButton || getIsFetching}
+                            className={`${getIsFetching && 'is-fetching'}`}
                             data-testid='save-button'
                         >
-                            Salvar
+                            {getIsFetching
+                                ? (
+                                    <Loading
+                                        type="TailSpin"
+                                        color='#0D2235'
+                                        height={30}
+                                        width={30}
+                                    />
+
+                                )
+                                : (
+                                    'Salvar'
+                                )
+                            }
                         </button>
 
                     </form>

@@ -68,21 +68,25 @@ export const Container = styled.section`
         background: ${props => props.theme.success};
         color: inherit;
         cursor: pointer;
-    }
 
-    button[type='submit']:hover {
-        background: ${props => props.theme.successActive};
-    }
+        &.is-fetching {
+            font-size: 0;
+        }
 
-    button[type='submit']:active {
-        background: ${props => props.theme.success};
-    }
-
-    button[type='submit']:disabled {
-        background: ${props => props.theme.danger};  
-    }
-
-    button[type='submit']:disabled:hover {
-        background: ${props => props.theme.dangerActive};  
+        &:hover {
+            background: ${props => props.theme.successActive};
+        }
+    
+        &:active {
+            background: ${props => props.theme.success};
+        }
+    
+        &:disabled {
+            background: ${props => props.theme.danger};  
+        }
+    
+        &:disabled:hover {
+            background: ${props => props.theme.dangerActive};  
+        }
     }
 `;
