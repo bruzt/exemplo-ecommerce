@@ -156,27 +156,29 @@ export const Container = styled.section`
         flex-direction: row;
         width: 100%;
     }
-
+    
     .flex-row input {
         margin: 0 0.3125rem;
     }
-
+    
     .flex-column {
         display: flex;
         flex-direction: column;
         
     }
-
+    
     .add-addr-form div {
         margin: 0 0 0.625rem 0;
     }
-
+    
     .add-addr-form label {
         margin: 0 0 0 0.3125rem;
     }
-
-    .add-addr-form input, select {
-        height: 1.875rem;
+    
+    .add-addr-form input, 
+    .add-addr-form select {
+        height: 2.5rem;
+        
         padding: 0.1875rem;
         font-size: 1.25rem;
         border: 0;
@@ -212,17 +214,26 @@ export const Container = styled.section`
         text-align: center;
     }
 
-    .addr-submit {
+    button.addr-submit {
         width: 100%; 
-        height: 2.5rem;
+        height: 3rem;
+
         margin-top: 0.625rem;
         align-self: center;
+
         border: 0;
         border-radius: 0.3125rem;
+
         background: ${props => props.theme.success};
+
         font-size: 1.25rem;
         cursor: pointer;
         color: inherit;
+
+        &.is-fetching {
+            font-size: 0;
+            padding-top: 0.5rem;
+        }
 
         &:hover {
             background: ${props => props.theme.successActive};

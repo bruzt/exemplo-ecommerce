@@ -2,9 +2,11 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import Head from 'next/head';
 import axios from 'axios';
+import Loading from 'react-loader-spinner';
 
 import formatZipCode from '../../../utils/formatZipCode';
 
+import LoadingModal from '../../LoadingModal';
 import { useUser } from '../../../contexts/userContext';
 import { useCart } from '../../../contexts/cartContext';
 import { useOrder } from '../../../contexts/orderContext';
@@ -32,9 +34,12 @@ export default function SelectAddress() {
 
     const [getDisabledGoToPaymentButton, setDisabledGoToPaymentButton] = useState(true);
 
+    const [getIsFetchingAddAddress, setIsFetchingAddAddress] = useState(false);
+    const [getIsFetchingDeleteAddress, setIsFetchingDeleteAddress] = useState(false);
+
     useEffect(() => {
-        if(process.browser) window.scrollTo({ top: 0 });
-    
+        if (process.browser) window.scrollTo({ top: 0 });
+
         cartContext.setAddressId(null);
         fetchUfs();
     }, []);
@@ -104,15 +109,14 @@ export default function SelectAddress() {
         else setShowAddAddr(true);
     }
 
-    function handleAddAddress(event: FormEvent) {
+    async function handleAddAddress(event: FormEvent) {
 
         event.preventDefault();
 
-        if(getDisableAddAddrButton) return;
+        if (getDisableAddAddrButton || getIsFetchingAddAddress) return;
 
-        setDisableAddAddrButton(true);
-
-        const add = userContext.addAddress({
+        setIsFetchingAddAddress(true);
+        const add = await userContext.addAddress({
             street: getStreet,
             number: getNumber,
             neighborhood: getNeighborhood,
@@ -120,6 +124,7 @@ export default function SelectAddress() {
             state: getUf,
             zipcode: getZipCode
         });
+        setIsFetchingAddAddress(false);
 
         if (add) {
             setShowAddAddr(false);
@@ -130,14 +135,16 @@ export default function SelectAddress() {
             setUf('0');
             setZipCode('');
 
-        } else setDisableAddAddrButton(false);
+        } else setIsFetchingAddAddress(false);
     }
 
-    function handleDeleteAddress(id: number) {
+    async function handleDeleteAddress(id: number) {
 
         if (cartContext.getAddressId == id) cartContext.setAddressId(null);
 
-        userContext.deleteAddress(id);
+        setIsFetchingDeleteAddress(true);
+        await userContext.deleteAddress(id);
+        setIsFetchingDeleteAddress(false);
     }
 
     function handleDisabledGoToPaymentButton(addrId: number) {
@@ -156,9 +163,9 @@ export default function SelectAddress() {
         }
     }
 
-    function handleGoToPayment(){
+    function handleGoToPayment() {
 
-        if(getDisabledGoToPaymentButton) return;
+        if (getDisabledGoToPaymentButton) return;
 
         orderContext.setOrderFlowNumber(3);
     }
@@ -169,6 +176,8 @@ export default function SelectAddress() {
                 <title>Selecione o endereço</title>
                 <meta name="robots" content="noindex" />
             </Head>
+
+            {getIsFetchingDeleteAddress && <LoadingModal spinnerSize='10rem' />}
 
             <Container>
 
@@ -254,34 +263,34 @@ export default function SelectAddress() {
 
                         <div className='flex-column'>
                             <label htmlFor="street">Logradouro: </label>
-                            <input 
-                                id='street' 
-                                data-testid='street-input' 
-                                type="text" 
-                                value={getStreet} 
-                                onChange={(event) => setStreet(event.target.value)} 
+                            <input
+                                id='street'
+                                data-testid='street-input'
+                                type="text"
+                                value={getStreet}
+                                onChange={(event) => setStreet(event.target.value)}
                             />
                         </div>
 
                         <div className='flex-row'>
                             <div className='flex-column'>
                                 <label htmlFor="number"> Nº: </label>
-                                <input 
-                                    id='number' 
-                                    data-testid='number-input' 
-                                    type="text" 
-                                    value={getNumber} 
-                                    onChange={(event) => setNumber(event.target.value)} 
+                                <input
+                                    id='number'
+                                    data-testid='number-input'
+                                    type="text"
+                                    value={getNumber}
+                                    onChange={(event) => setNumber(event.target.value)}
                                 />
                             </div>
                             <div className='flex-column'>
                                 <label htmlFor="district">Bairro: </label>
-                                <input 
-                                    id='district' 
-                                    data-testid='district-input' 
-                                    type="text" 
-                                    value={getNeighborhood} 
-                                    onChange={(event) => setNeighborhood(event.target.value)} 
+                                <input
+                                    id='district'
+                                    data-testid='district-input'
+                                    type="text"
+                                    value={getNeighborhood}
+                                    onChange={(event) => setNeighborhood(event.target.value)}
                                 />
                             </div>
                         </div>
@@ -346,12 +355,24 @@ export default function SelectAddress() {
                         </div>
 
                         <button
-                            className='addr-submit'
+                            className={`addr-submit ${getIsFetchingAddAddress && 'is-fetching'}`}
                             data-testid='add-addr-submit-button'
                             type='submit'
-                            disabled={getDisableAddAddrButton}
+                            disabled={getDisableAddAddrButton || getIsFetchingAddAddress}
                         >
-                            Adicionar
+                            {getIsFetchingAddAddress
+                                ? (
+                                    <Loading
+                                        type="TailSpin"
+                                        color='#0D2235'
+                                        height='1.875rem'
+                                        width='1.875rem'
+                                    />
+                                )
+                                : (
+                                    'Adicionar'
+                                )
+                            }
                         </button>
                     </form>
                 )}
