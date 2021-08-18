@@ -22,9 +22,9 @@ describe('productController Test Suit', () => {
         const product = await factories.create('Product', { category_id: category.id });
         
         const response = await supertest(app).get(`/products/${product.id}`);
-
+        
         expect(response.status).toBe(200);
-        expect(response.body.product.id).toBe(product.id);
+        expect(response.body.id).toBe(product.id);
     });
 
     it('should show an specific on sale product from db', async () => {
@@ -43,8 +43,8 @@ describe('productController Test Suit', () => {
         const response = await supertest(app).get(`/products/${product.id}`);
 
         expect(response.status).toBe(200);
-        expect(response.body.product.id).toBe(product.id);
-        expect(response.body.product.isOnSale).toBe(true);
+        expect(response.body.id).toBe(product.id);
+        expect(response.body.isOnSale).toBe(true);
     });
 
     it('should return code 400 for "product not found"', async () => {
@@ -82,7 +82,7 @@ describe('productController Test Suit', () => {
             product_id: product2.id,
         });
         
-        const response = await supertest(app).get(`/products/${product1.id}`);
+        const response = await supertest(app).get(`/products/${product1.id}?buyedWith=4`);
 
         expect(response.status).toBe(200);
         expect(response.body.productsBuyedWith.length).toBe(1);
