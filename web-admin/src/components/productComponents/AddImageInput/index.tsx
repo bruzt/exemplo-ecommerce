@@ -19,10 +19,10 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
 
             const concatFiles = [...getFiles, ...files];
 
-            const uniqueFiles = concatFiles.map( (file) => file['name'])
-                .map( (name, index, final) => final.indexOf(name) === index && index)
-                .filter( (index) => concatFiles[index])
-                .map( (file) => concatFiles[file])
+            const uniqueFiles = concatFiles.map((file) => file['name'])
+                .map((name, index, final) => final.indexOf(name) === index && index)
+                .filter((index) => concatFiles[index])
+                .map((file) => concatFiles[file])
             ;
 
             setFiles(uniqueFiles);
@@ -38,33 +38,35 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
 
     return (
         <Container>
-            
+
             <div className="input-group">
-                    <label htmlFor="file-input">Adicionar Imagens</label>
-                    <button type='button' id='file-input' onClick={() => inputElement.click()}>
-                        Selecione as imagens
-                    </button>
-                    <input
-                        ref={(element) => inputElement = element}
-                        type='file'
-                        accept="image/png,image/gif,image/jpeg"
-                        multiple
-                        onChange={handleFilesInput}
-                    />
-                    {getFiles.length > 0 && <br />}
-                    {getFiles.map((file, index) => (
-                        <p key={index}>
-                            {file.name}
-                            <button
-                                type='button'
-                                className='remove-file'
-                                onClick={() => handleRemoveFile(file.name)}
-                            >
-                                X
-                            </button>
-                        </p>
-                    ))}
-                </div>
+                <label htmlFor="file-input">Adicionar Imagens</label>
+                <button type='button' id='file-input' onClick={() => inputElement.click()}>
+                    Selecione as imagens
+                </button>
+                <input
+                    ref={(element) => inputElement = element}
+                    type='file'
+                    accept="image/png,image/gif,image/jpeg"
+                    multiple
+                    onChange={handleFilesInput}
+                />
+
+                {getFiles.length > 0 && <br />}
+                
+                {getFiles.map((file, index) => (
+                    <p key={index}>
+                        {file.name}
+                        <button
+                            type='button'
+                            className='remove-file'
+                            onClick={() => handleRemoveFile(file.name)}
+                        >
+                            X
+                        </button>
+                    </p>
+                ))}
+            </div>
 
         </Container>
     );
