@@ -40,16 +40,11 @@ export interface IProduct {
         name: string;
         parent_id: number;
     };
-}
-
-export interface IShowProduct {
-    product: IProduct;
-    productsBuyedWith: IProduct[]
+    productsBuyedWith: IProduct[];
 }
 
 interface IProps {
     product: IProduct;
-    productsBuyedWith: IProduct[];
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -70,12 +65,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         
-        const response = await api.get<IShowProduct>(`/products/${params.productId}`);
+        const response = await api.get<IProduct>(`/products/${params.productId}`);
     
         return {
             props: { 
-                product: response.data.product,
-                productsBuyedWith: response.data.productsBuyedWith
+                product: response.data
             },
             revalidate: 24 * 60 * 60, // 24 horas
         };
@@ -88,7 +82,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
 }
 
-export default function productId({ product, productsBuyedWith }: IProps) {
+export default function productId({ product }: IProps) {
 
     /*const router = useRouter();
 
@@ -102,6 +96,6 @@ export default function productId({ product, productsBuyedWith }: IProps) {
 
     } else {*/
 
-        return <ProductPage product={product} productsBuyedWith={productsBuyedWith} />;
+        return <ProductPage product={product} />;
     //}
 }

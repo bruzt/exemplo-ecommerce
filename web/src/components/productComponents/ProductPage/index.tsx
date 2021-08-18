@@ -17,15 +17,13 @@ import { IProduct } from '../../../pages/[productId]';
 
 interface IProps {
     product: IProduct;
-    productsBuyedWith: IProduct[];
 }
 
 let timeoutId: NodeJS.Timeout;
 
-export default function Product({ product, productsBuyedWith }: IProps) {
+export default function Product({ product }: IProps) {
 
     const [getProduct, setProduct] = useState<IProduct>(product);
-    const [getProductsBuyedWith, setProductsBuyedWith] = useState<IProduct[]>(productsBuyedWith);
 
     const [getQuantity, setQuantity] = useState(1);
     const [getBuyButtonDisabled, setBuyButtonDisabled] = useState(false);
@@ -53,10 +51,9 @@ export default function Product({ product, productsBuyedWith }: IProps) {
 
     async function fetchProduct() {
         try {
-            const response = await api.get(`/products/${product.id}`);
+            const response = await api.get(`/products/${product.id}?buyedWith=4`);
 
-            setProduct(response.data.product);
-            setProductsBuyedWith(response.data.productsBuyedWith);
+            setProduct(response.data);
 
         } catch (error) {
             console.error(error);
@@ -267,12 +264,12 @@ export default function Product({ product, productsBuyedWith }: IProps) {
 
                 </Container>
 
-                {getProductsBuyedWith.length > 0 && (
+                {getProduct.productsBuyedWith.length > 0 && (
                     <BuyedWithContainer data-testid='buyed-with-container'>
                         <h3>Frequentemente comprados juntos</h3>
 
                         <div className="buyed-with-grid">
-                            {getProductsBuyedWith.map((productBuyedWith) => (
+                            {getProduct.productsBuyedWith.map((productBuyedWith) => (
                                 <ProductCard 
                                     key={productBuyedWith.id} 
                                     product={productBuyedWith} 

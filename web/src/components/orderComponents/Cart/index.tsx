@@ -10,7 +10,7 @@ import { useUser } from '../../../contexts/userContext';
 import { useCart } from '../../../contexts/cartContext';
 import { useOrder } from '../../../contexts/orderContext';
 import LoadingModal from '../../LoadingModal';
-import { IShowProduct } from '../../../pages/[productId]';
+import { IProduct } from '../../../pages/[productId]';
 
 import { Container } from './styles';
 
@@ -41,15 +41,15 @@ export default function Cart() {
         try {
             const promises = cartContext.getCart.map(async (product, index) => {
 
-                const response = await api.get<IShowProduct>(`/products/${cartContext.getCart[index].id}`);
+                const response = await api.get<IProduct>(`/products/${cartContext.getCart[index].id}`);
             
                 const cart = [...cartContext.getCart];
-                if (cartContext.getCart[index].qtd > response.data.product.quantity_stock) {
+                if (cartContext.getCart[index].qtd > response.data.quantity_stock) {
             
-                    cart[index].qtd = response.data.product.quantity_stock;
+                    cart[index].qtd = response.data.quantity_stock;
                 }
             
-                if (response.data.product.quantity_stock < 1) {
+                if (response.data.quantity_stock < 1) {
                     setUnableToBuy([...getUnableToBuy, cartContext.getCart[index].id]);
                 }
             
@@ -57,7 +57,7 @@ export default function Cart() {
             
                 cartContext.setCart(cart);
             
-                return response.data.product;
+                return response.data;
             });
 
             setIsFetching(true);

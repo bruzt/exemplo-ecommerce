@@ -28,15 +28,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryAllByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -65,15 +64,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryAllByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -84,7 +82,7 @@ describe('Product Page Tests', () => {
 
         fireEvent.click(categoriesNames[0]);
 
-        expect(spyRouter).toBeCalledTimes(20);
+        expect(spyRouter).toBeCalledTimes(17);
     });
 
     it('should render product page as isOnSale', async () => {
@@ -104,15 +102,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -137,15 +134,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -170,15 +166,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -192,8 +187,6 @@ describe('Product Page Tests', () => {
         expect(quantityStockP.innerHTML).toBe('Disponível: 0');
     });
 
-    // qtd-input
-
     it('should not let select qtd more than in stock', async () => {
 
         const product = { 
@@ -203,15 +196,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -234,15 +226,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -265,15 +256,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -299,15 +289,14 @@ describe('Product Page Tests', () => {
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>
@@ -320,7 +309,7 @@ describe('Product Page Tests', () => {
         fireEvent.change(qtdInput, { target: { value: '1' }});
         fireEvent.click(addToCartPageButton);
         
-        expect(spyRouter).toBeCalledTimes(19);
+        expect(spyRouter).toBeCalledTimes(16);
     });
 
     it('should render frequently buyed with', async () => {
@@ -328,19 +317,19 @@ describe('Product Page Tests', () => {
         const product = { 
             ...fakeProduct, 
             quantity_stock: 2,
+            productsBuyedWith: [fakeProduct]
         };
 
         const apiMock = new MockAdapter(api);
         apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1').reply(200, { product, productsBuyedWith: [product] });
+        .onGet('/products/1?buyedWith=4').reply(200, product);
 
         const { queryByTestId } = await waitFor(() => render(
             <ThemeContextProvider>
                 <CartContextProvider>
                     <FilterBarContextProvider>
                         <ProductPage 
-                            product={product} 
-                            productsBuyedWith={[]} 
+                            product={product}
                         />
                     </FilterBarContextProvider>
                 </CartContextProvider>

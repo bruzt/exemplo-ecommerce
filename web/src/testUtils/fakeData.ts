@@ -72,7 +72,8 @@ export const fakeProduct = {
     "images": [],
     "isOnSale": false,
     "finalPrice": "149.99",
-    "dateNow": "2021-07-23T13:13:37.132Z"
+    "dateNow": "2021-07-23T13:13:37.132Z",
+    "productsBuyedWith": []
 }
 
 export const fakeProducts = {
