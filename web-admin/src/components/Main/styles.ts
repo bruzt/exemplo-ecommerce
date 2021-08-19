@@ -71,6 +71,8 @@ export const MainContainer = styled.main`
     width: 100%;
     min-width: 800px;
 
+    padding-bottom: 32px;
+
     div#content {
         width: 100%;
     }

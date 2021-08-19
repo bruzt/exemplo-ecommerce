@@ -13,6 +13,7 @@ export const Container = styled.div`
         width: 500px;
         
         padding: 32px;
+        margin-bottom: 32px;
 
         background: ${(props) => props.theme.primary};
         border-radius: 4px;
