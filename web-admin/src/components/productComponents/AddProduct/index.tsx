@@ -34,8 +34,8 @@ export default function AddProduct() {
     const [getWidth, setWidth] = useState('');
 
     const [getDiscount, setDiscount] = useState('0');
-    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(null);
-    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(null);
+    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string>('');
+    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string>('');
 
     const [getHtmlText, setHtmlText] = useState('');
 
@@ -127,7 +127,7 @@ export default function AddProduct() {
     }
 
     return (
-        <Container>
+        <Container data-testid='add-product-container'>
 
             <h2>Adicionar produto</h2>
 

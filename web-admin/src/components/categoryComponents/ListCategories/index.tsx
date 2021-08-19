@@ -58,7 +58,7 @@ export default function ListCategories(){
     }
 
 	return (
-		<Container>
+		<Container data-testid='list-categories-container'>
             
             {isUpdating && <UpdateCategory updatingCategory={getUpdatingCategory} updating={setUpdating} />}
             {isDeleting && <DeleteCategory deletingCategory={getDeletingCategory} deleting={setDeleting} />}

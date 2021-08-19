@@ -157,7 +157,7 @@ export default function ListProducts(){
     }
 
     return (
-        <Container>
+        <Container data-testid='list-products-container'>
 
             {getUpdeting && <UpdateProduct product={getUpdetingProduct} setUpdateModalOpen={setUpdeting} />}
             

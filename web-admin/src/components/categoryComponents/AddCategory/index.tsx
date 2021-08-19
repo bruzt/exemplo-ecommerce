@@ -78,7 +78,7 @@ export default function AddCategory() {
 	}
 
 	return (
-		<Container>
+		<Container data-testid='add-category-container'>
 
 			<h2>Adicionar categoria</h2>
 

@@ -112,7 +112,7 @@ export default function ListOrders() {
     }
 
     return (
-        <Container>
+        <Container data-testid='list-orders-component'>
 
             <h2>Lista de ordens de compra</h2>
 

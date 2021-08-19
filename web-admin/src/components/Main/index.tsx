@@ -19,6 +19,18 @@ export default function Main(){
 
     const router = useRouter();
 
+    function handleMenuRouter(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, menuQueryRoute: string){
+
+        event.preventDefault();
+
+        router.push({
+            pathname: '/admin',
+            query: {
+                menu: menuQueryRoute,
+            }
+        });
+    }
+
     return (
         <>
             <Head>
@@ -52,6 +64,7 @@ export default function Main(){
                                 <input 
                                     type="checkbox" 
                                     id='products-cb' 
+                                    data-testid='products-cb' 
                                     defaultChecked={router.query.menu == "products-list" || router.query.menu == 'add-product'} 
                                 /> 
                                 <div className='cb-label'>
@@ -63,19 +76,23 @@ export default function Main(){
                                 
                                 <ul>
                                     <li className={`${(router.query.menu == "products-list") ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=products-list'>
-                                            <a>
-                                                <span>Listar</span>
-                                            </a>
-                                        </Link>
+                                        <a 
+                                            data-testid='list-product-submenu'
+                                            onClick={(event) => handleMenuRouter(event, 'products-list')}
+                                            href='/admin?menu=products-list'
+                                        >
+                                            <span>Listar</span>
+                                        </a>
                                     </li>
 
                                     <li className={`${(router.query.menu == 'add-product') ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=add-product'>
-                                            <a>
-                                                <span>Adicionar</span>
-                                            </a>
-                                        </Link>
+                                        <a
+                                            data-testid='add-product-submenu'
+                                            onClick={(event) => handleMenuRouter(event, 'add-product')}
+                                            href='/admin?menu=products-list'
+                                        >
+                                            <span>Adicionar</span>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
@@ -84,6 +101,7 @@ export default function Main(){
                                 <input 
                                     type="checkbox" 
                                     id='categories-cb' 
+                                    data-testid='categories-cb' 
                                     defaultChecked={router.query.menu == 'categories-list' || router.query.menu == 'add-category'} 
                                 /> 
                                 <div className='cb-label' >
@@ -95,24 +113,33 @@ export default function Main(){
                                 
                                 <ul>
                                     <li className={`${(router.query.menu == 'categories-list') ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=categories-list'>
-                                            <a>
-                                                <span>Listar</span>
-                                            </a>
-                                        </Link>
+                                        <a
+                                            data-testid='list-categories-submenu'
+                                            onClick={(event) => handleMenuRouter(event, 'categories-list')}
+                                            href='/admin?menu=categories-list'
+                                        >
+                                            <span>Listar</span>
+                                        </a>
                                     </li>
                                     <li className={`${(router.query.menu == 'add-category') ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=add-category'>
-                                            <a>
-                                                <span>Adicionar</span>
-                                            </a>
-                                        </Link>
+                                        <a
+                                            data-testid='add-category-submenu'
+                                            onClick={(event) => handleMenuRouter(event, 'add-category')}
+                                            href='/admin?menu=add-category'
+                                        >
+                                            <span>Adicionar</span>
+                                        </a>
                                     </li>
                                 </ul>
                             </nav>
 
                             <nav>
-                                <input type="checkbox" id='orders-cb' defaultChecked={router.query.menu == 'orders-list'} /> 
+                                <input 
+                                    type="checkbox" 
+                                    id='orders-cb' 
+                                    data-testid='orders-cb' 
+                                    defaultChecked={router.query.menu == 'orders-list'} 
+                                /> 
                                 <div className='cb-label' >
                                     <div className="icon">
                                         <FaCaretRight /> 
@@ -125,7 +152,11 @@ export default function Main(){
                                 <ul>
                                     <li className={`${(router.query.menu == 'orders-list') ? 'active' : ''}`}>
                                         <Link href='/admin?menu=orders-list'>
-                                            <a>
+                                            <a
+                                                data-testid='list-orders-submenu'
+                                                onClick={(event) => handleMenuRouter(event, 'orders-list')}
+                                                href='/admin?menu=orders-list'
+                                            >
                                                 <span>Listar</span>
                                             </a>
                                         </Link>
