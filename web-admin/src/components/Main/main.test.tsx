@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
 
@@ -23,47 +23,6 @@ jest.mock('next/router', () => require('next-router-mock'));
 
 describe('Main Component Tests', () => {
 
-    it("shoud have 'Produtos' label", () => {
-
-        render(
-            <ThemeContextProvider>
-                <Main />
-            </ThemeContextProvider>
-        );
-
-        const labelText = screen.getByText('Produtos');
-        
-        expect(labelText).toBeInTheDocument();
-    });
-
-    it("shoud have 'Categorias' label", () => {
-
-        const { getByText } = render(
-            <ThemeContextProvider>
-                <Main />
-            </ThemeContextProvider>
-        );
-
-        const labelText = getByText('Categorias');
-        
-        expect(labelText).toBeInTheDocument();
-        expect(labelText).toBe(labelText);
-    });
-
-    it("shoud have 'Ordens' label", () => {
-
-        const { getByText } = render(
-            <ThemeContextProvider>
-                <Main />
-            </ThemeContextProvider>
-        );
-
-        const labelText = getByText('Ordens');
-        
-        expect(labelText).toBeInTheDocument();
-        expect(labelText).toBe(labelText);
-    });
-
     it('should render List Products component', async () => {
 
         const apiMock = new MockAdapter(api);
@@ -83,10 +42,22 @@ describe('Main Component Tests', () => {
         fireEvent.click(productInputCheckbox);
         await waitFor(() => fireEvent.click(listProductsAnchor));
 
-        const listProductsComponent = queryByTestId('list-products-container');
+        const listProductsLi = getByTestId('list-products-li');
+        const addProductLi = getByTestId('add-product-li');
+        const listCategoriesLi = getByTestId('list-categories-li');
+        const addCategoryLi = getByTestId('add-category-li');
+        const listOrdersLi = getByTestId('list-orders-li');
 
+        const listProductsComponent = queryByTestId('list-products-container');
+        
         expect(productInputCheckbox.checked).toBe(true);
         expect(listProductsComponent).toBeInTheDocument();
+
+        expect(listProductsLi).toHaveClass('active');
+        expect(addProductLi).not.toHaveClass('active');
+        expect(listCategoriesLi).not.toHaveClass('active');
+        expect(addCategoryLi).not.toHaveClass('active');
+        expect(listOrdersLi).not.toHaveClass('active');
     });
 
     it('should render Add Product component', async () => {
@@ -106,9 +77,21 @@ describe('Main Component Tests', () => {
 
         await waitFor(() => fireEvent.click(addProductsAnchor));
 
+        const listProductsLi = getByTestId('list-products-li');
+        const addProductLi = getByTestId('add-product-li');
+        const listCategoriesLi = getByTestId('list-categories-li');
+        const addCategoryLi = getByTestId('add-category-li');
+        const listOrdersLi = getByTestId('list-orders-li');
+
         const addProductsComponent = queryByTestId('add-product-container');
 
         expect(addProductsComponent).toBeInTheDocument();
+
+        expect(listProductsLi).not.toHaveClass('active');
+        expect(addProductLi).toHaveClass('active');
+        expect(listCategoriesLi).not.toHaveClass('active');
+        expect(addCategoryLi).not.toHaveClass('active');
+        expect(listOrdersLi).not.toHaveClass('active');
     });
 
     it('should render List Categories component', async () => {
@@ -128,10 +111,22 @@ describe('Main Component Tests', () => {
         fireEvent.click(categoryInputCheckbox);
         await waitFor(() => fireEvent.click(listCategoriesAnchor));
 
+        const listProductsLi = getByTestId('list-products-li');
+        const addProductLi = getByTestId('add-product-li');
+        const listCategoriesLi = getByTestId('list-categories-li');
+        const addCategoryLi = getByTestId('add-category-li');
+        const listOrdersLi = getByTestId('list-orders-li');
+
         const listCategoriesComponent = queryByTestId('list-categories-container');
 
         expect(categoryInputCheckbox.checked).toBe(true);
         expect(listCategoriesComponent).toBeInTheDocument();
+
+        expect(listProductsLi).not.toHaveClass('active');
+        expect(addProductLi).not.toHaveClass('active');
+        expect(listCategoriesLi).toHaveClass('active');
+        expect(addCategoryLi).not.toHaveClass('active');
+        expect(listOrdersLi).not.toHaveClass('active');
     });
 
     it('should render Add Category component', async () => {
@@ -149,9 +144,21 @@ describe('Main Component Tests', () => {
 
         await waitFor(() => fireEvent.click(addCategoryAnchor));
 
+        const listProductsLi = getByTestId('list-products-li');
+        const addProductLi = getByTestId('add-product-li');
+        const listCategoriesLi = getByTestId('list-categories-li');
+        const addCategoryLi = getByTestId('add-category-li');
+        const listOrdersLi = getByTestId('list-orders-li');
+
         const addCategoryComponent = queryByTestId('add-category-container');
 
         expect(addCategoryComponent).toBeInTheDocument();
+
+        expect(listProductsLi).not.toHaveClass('active');
+        expect(addProductLi).not.toHaveClass('active');
+        expect(listCategoriesLi).not.toHaveClass('active');
+        expect(addCategoryLi).toHaveClass('active');
+        expect(listOrdersLi).not.toHaveClass('active');
     });
 
     it('should render List Orders component', async () => {
@@ -173,9 +180,21 @@ describe('Main Component Tests', () => {
         fireEvent.click(ordersInputCheckbox);
         await waitFor(() => fireEvent.click(listOrdersAnchor));
 
+        const listProductsLi = getByTestId('list-products-li');
+        const addProductLi = getByTestId('add-product-li');
+        const listCategoriesLi = getByTestId('list-categories-li');
+        const addCategoryLi = getByTestId('add-category-li');
+        const listOrdersLi = getByTestId('list-orders-li');
+
         const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(ordersInputCheckbox.checked).toBe(true);
         expect(listOrdersComponent).toBeInTheDocument();
+
+        expect(listProductsLi).not.toHaveClass('active');
+        expect(addProductLi).not.toHaveClass('active');
+        expect(listCategoriesLi).not.toHaveClass('active');
+        expect(addCategoryLi).not.toHaveClass('active');
+        expect(listOrdersLi).toHaveClass('active');
     });
 });

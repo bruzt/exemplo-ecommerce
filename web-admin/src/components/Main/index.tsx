@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { Resizable } from 're-resizable';
 import { FaCaretRight } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 import { Container, Menu, MainContainer } from './styles';
 
@@ -75,7 +74,10 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li className={`${(router.query.menu == "products-list") ? 'active' : ''}`}>
+                                    <li 
+                                        className={`${(router.query.menu == "products-list") && 'active'}`}
+                                        data-testid='list-products-li'
+                                    >
                                         <a 
                                             data-testid='list-product-submenu'
                                             onClick={(event) => handleMenuRouter(event, 'products-list')}
@@ -85,7 +87,10 @@ export default function Main(){
                                         </a>
                                     </li>
 
-                                    <li className={`${(router.query.menu == 'add-product') ? 'active' : ''}`}>
+                                    <li 
+                                        className={`${(router.query.menu == 'add-product') && 'active'}`}
+                                        data-testid='add-product-li'
+                                    >
                                         <a
                                             data-testid='add-product-submenu'
                                             onClick={(event) => handleMenuRouter(event, 'add-product')}
@@ -112,7 +117,10 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li className={`${(router.query.menu == 'categories-list') ? 'active' : ''}`}>
+                                    <li 
+                                        className={`${(router.query.menu == 'categories-list') && 'active'}`}
+                                        data-testid='list-categories-li'
+                                    >
                                         <a
                                             data-testid='list-categories-submenu'
                                             onClick={(event) => handleMenuRouter(event, 'categories-list')}
@@ -121,7 +129,10 @@ export default function Main(){
                                             <span>Listar</span>
                                         </a>
                                     </li>
-                                    <li className={`${(router.query.menu == 'add-category') ? 'active' : ''}`}>
+                                    <li 
+                                        className={`${(router.query.menu == 'add-category') && 'active'}`}
+                                        data-testid='add-category-li'
+                                    >
                                         <a
                                             data-testid='add-category-submenu'
                                             onClick={(event) => handleMenuRouter(event, 'add-category')}
@@ -150,24 +161,18 @@ export default function Main(){
                                 </div>
                                 
                                 <ul>
-                                    <li className={`${(router.query.menu == 'orders-list') ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=orders-list'>
-                                            <a
-                                                data-testid='list-orders-submenu'
-                                                onClick={(event) => handleMenuRouter(event, 'orders-list')}
-                                                href='/admin?menu=orders-list'
-                                            >
-                                                <span>Listar</span>
-                                            </a>
-                                        </Link>
+                                    <li 
+                                        className={`${(router.query.menu == 'orders-list') && 'active'}`}
+                                        data-testid='list-orders-li'
+                                    >
+                                        <a
+                                            data-testid='list-orders-submenu'
+                                            onClick={(event) => handleMenuRouter(event, 'orders-list')}
+                                            href='/admin?menu=orders-list'
+                                        >
+                                            <span>Listar</span>
+                                        </a>
                                     </li>
-                                    {/*<li className={`${(router.query.menu == 'update-order') ? 'active' : ''}`}>
-                                        <Link href='/admin?menu=update-order'>
-                                            <a>
-                                                <span>Atualizar</span>
-                                            </a>
-                                        </Link>
-                                    </li>*/}
                                 </ul>
                             </nav>
                             
