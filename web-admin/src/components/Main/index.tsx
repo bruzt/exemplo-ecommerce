@@ -94,7 +94,7 @@ export default function Main(){
                                         <a
                                             data-testid='add-product-submenu'
                                             onClick={(event) => handleMenuRouter(event, 'add-product')}
-                                            href='/admin?menu=products-list'
+                                            href='/admin?menu=add-product'
                                         >
                                             <span>Adicionar</span>
                                         </a>

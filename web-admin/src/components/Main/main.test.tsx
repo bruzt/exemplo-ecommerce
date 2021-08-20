@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MockAdapter from 'axios-mock-adapter';
+import router from 'next/router';
 
 import Main from './index';
 import { ThemeContextProvider } from '../../contexts/ThemeContext';
@@ -54,8 +55,9 @@ describe('Main Component Tests', () => {
         const listCategoriesComponent = queryByTestId('list-categories-container');
         const addCategoryComponent = queryByTestId('add-category-container');
         const listOrdersComponent = queryByTestId('list-orders-component');
-        
+
         expect(productInputCheckbox.checked).toBe(true);
+        expect(router.query.menu).toBe('products-list');        
         
         expect(listProductsLi).toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
@@ -98,6 +100,8 @@ describe('Main Component Tests', () => {
         const listCategoriesComponent = queryByTestId('list-categories-container');
         const addCategoryComponent = queryByTestId('add-category-container');
         const listOrdersComponent = queryByTestId('list-orders-component');
+
+        expect(router.query.menu).toBe('add-product');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).toHaveClass('active');
@@ -142,6 +146,7 @@ describe('Main Component Tests', () => {
         const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(categoryInputCheckbox.checked).toBe(true);
+        expect(router.query.menu).toBe('categories-list');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
@@ -182,6 +187,8 @@ describe('Main Component Tests', () => {
         const listCategoriesComponent = queryByTestId('list-categories-container');
         const addCategoryComponent = queryByTestId('add-category-container');
         const listOrdersComponent = queryByTestId('list-orders-component');
+
+        expect(router.query.menu).toBe('add-category');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
@@ -228,6 +235,7 @@ describe('Main Component Tests', () => {
         const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(ordersInputCheckbox.checked).toBe(true);
+        expect(router.query.menu).toBe('orders-list');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
