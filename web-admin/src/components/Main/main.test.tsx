@@ -40,6 +40,7 @@ describe('Main Component Tests', () => {
         const listProductsAnchor = getByTestId('list-product-submenu');
 
         fireEvent.click(productInputCheckbox);
+
         await waitFor(() => fireEvent.click(listProductsAnchor));
 
         const listProductsLi = getByTestId('list-products-li');
@@ -49,15 +50,24 @@ describe('Main Component Tests', () => {
         const listOrdersLi = getByTestId('list-orders-li');
 
         const listProductsComponent = queryByTestId('list-products-container');
+        const addProductsComponent = queryByTestId('add-product-container');
+        const listCategoriesComponent = queryByTestId('list-categories-container');
+        const addCategoryComponent = queryByTestId('add-category-container');
+        const listOrdersComponent = queryByTestId('list-orders-component');
         
         expect(productInputCheckbox.checked).toBe(true);
-        expect(listProductsComponent).toBeInTheDocument();
-
+        
         expect(listProductsLi).toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
         expect(listCategoriesLi).not.toHaveClass('active');
         expect(addCategoryLi).not.toHaveClass('active');
         expect(listOrdersLi).not.toHaveClass('active');
+
+        expect(listProductsComponent).toBeInTheDocument();
+        expect(addProductsComponent).not.toBeInTheDocument();
+        expect(listCategoriesComponent).not.toBeInTheDocument();
+        expect(addCategoryComponent).not.toBeInTheDocument();
+        expect(listOrdersComponent).not.toBeInTheDocument();
     });
 
     it('should render Add Product component', async () => {
@@ -83,15 +93,23 @@ describe('Main Component Tests', () => {
         const addCategoryLi = getByTestId('add-category-li');
         const listOrdersLi = getByTestId('list-orders-li');
 
+        const listProductsComponent = queryByTestId('list-products-container');
         const addProductsComponent = queryByTestId('add-product-container');
-
-        expect(addProductsComponent).toBeInTheDocument();
+        const listCategoriesComponent = queryByTestId('list-categories-container');
+        const addCategoryComponent = queryByTestId('add-category-container');
+        const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).toHaveClass('active');
         expect(listCategoriesLi).not.toHaveClass('active');
         expect(addCategoryLi).not.toHaveClass('active');
         expect(listOrdersLi).not.toHaveClass('active');
+
+        expect(listProductsComponent).not.toBeInTheDocument();
+        expect(addProductsComponent).toBeInTheDocument();
+        expect(listCategoriesComponent).not.toBeInTheDocument();
+        expect(addCategoryComponent).not.toBeInTheDocument();
+        expect(listOrdersComponent).not.toBeInTheDocument();
     });
 
     it('should render List Categories component', async () => {
@@ -117,16 +135,25 @@ describe('Main Component Tests', () => {
         const addCategoryLi = getByTestId('add-category-li');
         const listOrdersLi = getByTestId('list-orders-li');
 
+        const listProductsComponent = queryByTestId('list-products-container');
+        const addProductsComponent = queryByTestId('add-product-container');
         const listCategoriesComponent = queryByTestId('list-categories-container');
+        const addCategoryComponent = queryByTestId('add-category-container');
+        const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(categoryInputCheckbox.checked).toBe(true);
-        expect(listCategoriesComponent).toBeInTheDocument();
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
         expect(listCategoriesLi).toHaveClass('active');
         expect(addCategoryLi).not.toHaveClass('active');
         expect(listOrdersLi).not.toHaveClass('active');
+
+        expect(listProductsComponent).not.toBeInTheDocument();
+        expect(addProductsComponent).not.toBeInTheDocument();
+        expect(listCategoriesComponent).toBeInTheDocument();
+        expect(addCategoryComponent).not.toBeInTheDocument();
+        expect(listOrdersComponent).not.toBeInTheDocument();
     });
 
     it('should render Add Category component', async () => {
@@ -150,15 +177,23 @@ describe('Main Component Tests', () => {
         const addCategoryLi = getByTestId('add-category-li');
         const listOrdersLi = getByTestId('list-orders-li');
 
+        const listProductsComponent = queryByTestId('list-products-container');
+        const addProductsComponent = queryByTestId('add-product-container');
+        const listCategoriesComponent = queryByTestId('list-categories-container');
         const addCategoryComponent = queryByTestId('add-category-container');
-
-        expect(addCategoryComponent).toBeInTheDocument();
+        const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
         expect(listCategoriesLi).not.toHaveClass('active');
         expect(addCategoryLi).toHaveClass('active');
         expect(listOrdersLi).not.toHaveClass('active');
+
+        expect(listProductsComponent).not.toBeInTheDocument();
+        expect(addProductsComponent).not.toBeInTheDocument();
+        expect(listCategoriesComponent).not.toBeInTheDocument();
+        expect(addCategoryComponent).toBeInTheDocument();
+        expect(listOrdersComponent).not.toBeInTheDocument();
     });
 
     it('should render List Orders component', async () => {
@@ -186,15 +221,24 @@ describe('Main Component Tests', () => {
         const addCategoryLi = getByTestId('add-category-li');
         const listOrdersLi = getByTestId('list-orders-li');
 
+        const listProductsComponent = queryByTestId('list-products-container');
+        const addProductsComponent = queryByTestId('add-product-container');
+        const listCategoriesComponent = queryByTestId('list-categories-container');
+        const addCategoryComponent = queryByTestId('add-category-container');
         const listOrdersComponent = queryByTestId('list-orders-component');
 
         expect(ordersInputCheckbox.checked).toBe(true);
-        expect(listOrdersComponent).toBeInTheDocument();
 
         expect(listProductsLi).not.toHaveClass('active');
         expect(addProductLi).not.toHaveClass('active');
         expect(listCategoriesLi).not.toHaveClass('active');
         expect(addCategoryLi).not.toHaveClass('active');
         expect(listOrdersLi).toHaveClass('active');
+
+        expect(listProductsComponent).not.toBeInTheDocument();
+        expect(addProductsComponent).not.toBeInTheDocument();
+        expect(listCategoriesComponent).not.toBeInTheDocument();
+        expect(addCategoryComponent).not.toBeInTheDocument();
+        expect(listOrdersComponent).toBeInTheDocument();
     });
 });
