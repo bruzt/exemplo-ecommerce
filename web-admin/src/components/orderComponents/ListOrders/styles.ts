@@ -17,7 +17,7 @@ export const Container = styled.div`
         line-height: 20px;
         font-size: 20px;
 
-        margin-top: 50px;
+        margin: 32px 0 32px 0;
     }
 
     table thead tr {

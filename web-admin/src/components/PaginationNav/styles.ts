@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 
+    margin-bottom: 24px;
+
     nav {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 10px;    
     }
 
     nav ul {

@@ -4,7 +4,8 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+
+    margin-bottom: 32px;
 
     h2 {
         margin: 50px 0;

@@ -40,10 +40,10 @@ export const Container = styled.section`
     }
 
     table {
-        margin-top: 20px;
-        margin-bottom: 5px;
         font-size: 20px;
         border-spacing: 0 1px;
+
+        margin: 16px 0 24px 0;
     }
 
     table thead tr {
