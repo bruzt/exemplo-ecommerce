@@ -53,7 +53,7 @@ export default function AddCategory() {
 
 		event.preventDefault();
 
-		if(getIsSubmitButtonDisable) return;
+		if(getIsFetching || getIsSubmitButtonDisable) return;
 
 		try {
 
@@ -86,13 +86,24 @@ export default function AddCategory() {
 
 				<div className="input-box">
 					<label htmlFor="category-name">Nova categoria</label>
-					<input type="text" id='category-name' value={getName} onChange={(event) => setName(event.target.value)} />
+					<input 
+						type="text" 
+						id='category-name' 
+						data-testid='category-name'
+						value={getName} 
+						onChange={(event) => setName(event.target.value)} 
+					/>
 				</div>
 
 				<div className="input-box">
 					<label htmlFor="category-parent">Pai</label>
 
-					<select id="category-parent" value={getParent} onChange={(event) => setParent(event.target.value)}>
+					<select 
+						id="category-parent" 
+						data-testid="category-parent" 
+						value={getParent} 
+						onChange={(event) => setParent(event.target.value)}
+					>
 						<option value={'0'}></option>
 						{getCategories.map((category, index) => {
 							return <option key={index} value={String(category.id)}>{category.id} - {category.name}</option>
@@ -103,6 +114,7 @@ export default function AddCategory() {
 
 				<Button
 					type='submit'
+					data-testid='submit-button'
 					disabled={getIsFetching || getIsSubmitButtonDisable}
 					className={`${getIsFetching && 'is-fetching'}`}
 				>
