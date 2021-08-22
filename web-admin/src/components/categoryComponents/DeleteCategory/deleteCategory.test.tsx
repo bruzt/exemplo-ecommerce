@@ -42,22 +42,16 @@ describe('Delete Category Tests', () => {
         
         await waitFor(() => fireEvent.click(submitButton));
 
-        expect(apiSpy).toBeCalledTimes(1);
         expect(categoryName).toBeInTheDocument();
+        expect(apiSpy).toBeCalledTimes(1);
     });
 
     it('should not call api to delete category - did not select "transfer to"', async () => {
 
         const apiMock = new MockAdapter(api);
-        apiMock
-            .onGet('/categories').reply(200, fakeCategories)
-            .onDelete('/categories/3').reply(204)
-        ;
+        apiMock.onGet('/categories').reply(200, fakeCategories);
 
         const apiSpy = jest.spyOn(api, 'delete');
-
-        const alertSpy = jest.spyOn(window, 'alert');
-        alertSpy.mockImplementation(jest.fn(() => true));
 
         function deletingMock(value: boolean) { return value }
 
@@ -72,9 +66,8 @@ describe('Delete Category Tests', () => {
         await waitFor(() => fireEvent.click(submitButton));
 
         expect(apiSpy).toBeCalledTimes(0);
+        expect(submitButton).toBeDisabled();
     });
-
-    
 
     it('should close delete modal', async () => {
 
