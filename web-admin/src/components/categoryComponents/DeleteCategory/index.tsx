@@ -55,6 +55,7 @@ export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
         event.preventDefault();
 
         if (getIsSubmitButtonDisabled) return alert('Você deve selecionar uma categoria para transferir os produtos, se houver.');
+        if(getIsFetching) return;
 
         if (confirm(`Tem certeza que deseja deletar "${deletingCategory.name}"?`)) {
             try {
@@ -84,7 +85,11 @@ export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
 
             <form onSubmit={onSubmit}>
                 <header>
-                    <button type='button' onClick={() => deleting(false)}>
+                    <button 
+                        type='button' 
+                        data-testid='close-button' 
+                        onClick={() => deleting(false)}
+                    >
                         X
                     </button>
                 </header>
@@ -95,18 +100,20 @@ export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
                         <label htmlFor="transfer-to">Transferir produtos para:</label>
                         <select
                             id="transfer-to"
+                            data-testid="transfer-to"
                             value={getTrasferTo}
                             onChange={(event) => setTrasferTo(event.target.value)}
                         >
                             <option value="0"></option>
                             {getCategories.map((category) => (
-                                <option key={category.id} value={String(category.id)}>{category.name}</option>
+                                <option key={category.id} value={String(category.id)}>{category.name} (id: {category.id})</option>
                             ))}
                         </select>
                     </div>
 
                     <Button
                         type='submit'
+                        data-testid='submit-button'
                         disabled={getIsSubmitButtonDisabled || getIsFetching}
                         className={`${getIsFetching && 'is-fetching'}`}
                     >
