@@ -22,6 +22,7 @@ if(process.env.NODE_ENV === 'production'){
         url: process.env.DATABASE_URL,
         entities: [path.join('build', 'src', 'models', '*.js')],
         migrations: [path.join('build', 'src', 'databases', 'typeorm', 'migrations', '*.js')],
+        seeds: [path.join('build', 'src', 'databases', 'typeorm', 'seeds', '*.js')],
         cli: {
             migrationsDir: path.join('build', 'src', 'databases', 'typeorm', 'migrations')
         }
@@ -33,6 +34,7 @@ if(process.env.NODE_ENV === 'production'){
         url: process.env.DATABASE_URL,
         entities: [path.join('src', 'models', '*.ts')],
         migrations: [path.join('src', 'databases', 'typeorm', 'migrations', '*.ts')],
+        seeds: [path.join('src', 'databases', 'typeorm', 'seeds', 'dev', '*.ts')],
         cli: {
             migrationsDir: path.join('src', 'databases', 'typeorm', 'migrations')
         },
