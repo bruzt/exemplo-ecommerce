@@ -25,9 +25,9 @@ module.exports = {
         category_id: 5,
         tangible: true,
         weight: (Math.random() * (1.500 - 0.500) + 0.500).toFixed(3),
-        length: (Math.random() * (30 - 10) + 10),
-        height: (Math.random() * (30 - 10) + 10),
-        width: (Math.random() * (30 - 10) + 10),
+        length: (Math.random() * (30 - 10) + 10).toFixed(1),
+        height: (Math.random() * (30 - 10) + 10).toFixed(1),
+        width: (Math.random() * (30 - 10) + 10).toFixed(1),
       };
 
       products.push(product);
@@ -52,9 +52,9 @@ module.exports = {
         category_id: 6,
         tangible: true,
         weight: (Math.random() * (1.500 - 0.500) + 0.500).toFixed(3),
-        length: Math.random() * (30 - 10) + 10,
-        height: Math.random() * (30 - 10) + 10,
-        width: Math.random() * (30 - 10) + 10,
+        length: (Math.random() * (30 - 10) + 10).toFixed(1),
+        height: (Math.random() * (30 - 10) + 10).toFixed(1),
+        width: (Math.random() * (30 - 10) + 10).toFixed(1),
       };
 
       products.push(product);
@@ -79,9 +79,9 @@ module.exports = {
         category_id: 8,
         tangible: true,
         weight: (Math.random() * (2.5 - 1) + 1).toFixed(3),
-        length: Math.random() * (50 - 15) + 15,
-        height: Math.random() * (50 - 15) + 15,
-        width: Math.random() * (50 - 15) + 15,
+        length: (Math.random() * (50 - 15) + 15).toFixed(1),
+        height: (Math.random() * (50 - 15) + 15).toFixed(1),
+        width: (Math.random() * (50 - 15) + 15).toFixed(1),
       };
 
       products.push(product);
@@ -106,9 +106,9 @@ module.exports = {
         category_id: 9,
         tangible: true,
         weight: (Math.random() * (2.5 - 1) + 1).toFixed(3),
-        length: Math.random() * (50 - 15) + 15,
-        height: Math.random() * (50 - 15) + 15,
-        width: Math.random() * (50 - 15) + 15,
+        length: (Math.random() * (50 - 15) + 15).toFixed(1),
+        height: (Math.random() * (50 - 15) + 15).toFixed(1),
+        width: (Math.random() * (50 - 15) + 15).toFixed(1),
       };
 
       products.push(product);
@@ -133,9 +133,9 @@ module.exports = {
         category_id: 3,
         tangible: true,
         weight: (Math.random() * (2.5 - 1) + 1).toFixed(3),
-        length: Math.random() * (50 - 15) + 15,
-        height: Math.random() * (50 - 15) + 15,
-        width: Math.random() * (30 - 15) + 15,
+        length: (Math.random() * (50 - 15) + 15).toFixed(1),
+        height: (Math.random() * (50 - 15) + 15).toFixed(1),
+        width: (Math.random() * (30 - 15) + 15).toFixed(1),
       };
 
       products.push(product);
@@ -160,9 +160,9 @@ module.exports = {
         category_id: 10,
         tangible: true,
         weight: (Math.random() * (0.800 - 0.100) + 0.100).toFixed(3),
-        length: Math.random() * (15 - 5) + 5,
-        height: Math.random() * (15 - 5) + 5,
-        width: Math.random() * (15 - 5) + 5,
+        length: (Math.random() * (15 - 5) + 5).toFixed(1),
+        height: (Math.random() * (15 - 5) + 5).toFixed(1),
+        width: (Math.random() * (15 - 5) + 5).toFixed(1),
       };
 
       products.push(product);
@@ -187,9 +187,9 @@ module.exports = {
         category_id: 11,
         tangible: true,
         weight: (Math.random() * (1 - 0.500) + 0.500).toFixed(3),
-        length: Math.random() * (50 - 25) + 25,
-        height: Math.random() * (15 - 5) + 5,
-        width: Math.random() * (15 - 5) + 5,
+        length: (Math.random() * (50 - 25) + 25).toFixed(1),
+        height: (Math.random() * (15 - 5) + 5).toFixed(1),
+        width: (Math.random() * (15 - 5) + 5).toFixed(1),
       };
 
       products.push(product);
