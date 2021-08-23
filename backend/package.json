@@ -19,7 +19,8 @@
     "posttest": "node src/testUtils/deleteDbFile.js",
     "dev:migrate": "cross-env NODE_ENV=development sequelize db:migrate",
     "prod:migrate": "cross-env NODE_ENV=production sequelize db:migrate",
-    "test:migrate": "cross-env NODE_ENV=test sequelize db:migrate"
+    "test:migrate": "cross-env NODE_ENV=test sequelize db:migrate",
+    "dev:seed": "cross-env NODE_ENV=development sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",

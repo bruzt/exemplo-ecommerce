@@ -20,7 +20,7 @@ postgres://dbuser1:123@localhost:5432/ecommerce-tests
 sudo docker exec -ti ecommerce-tests psql -d ecommerce-tests -U dbuser1 -W
 ```
 
-# Sequelize Migrations
+## Sequelize Migrations
 
 ```
 npx sequelize migration:create --name name-the-migration
@@ -28,6 +28,16 @@ npx sequelize migration:create --name name-the-migration
 npx sequelize db:migrate
 
 npx sequelize db:migrate:undo
+```
+
+## Sequelize Seeders
+
+```
+npx sequelize-cli seed:generate --name seedName
+
+npx sequelize-cli db:seed:all
+
+npx sequelize-cli db:seed:undo
 ```
 
 # Sonic

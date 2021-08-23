@@ -73,7 +73,7 @@ module.exports = {
             },
 
             weight: {
-                type: Sequelize.STRING,
+                type: Sequelize.DECIMAL,
                 allowNull: false,
             },
 

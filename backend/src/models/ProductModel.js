@@ -22,7 +22,7 @@ class ProductModel extends Model {
             discount_datetime_end: DataTypes.DATE,
             category_id: DataTypes.INTEGER,
             tangible: DataTypes.BOOLEAN,
-            weight: DataTypes.STRING,
+            weight: DataTypes.DECIMAL,
             length: DataTypes.DECIMAL,
             height: DataTypes.DECIMAL,
             width: DataTypes.DECIMAL,
