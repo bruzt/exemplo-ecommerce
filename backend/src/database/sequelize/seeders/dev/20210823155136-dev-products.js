@@ -17,7 +17,7 @@ module.exports = {
       const product = {
         title: `Processador AMD ${i}`,
         description: `Breve descrição do Processador AMD ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -44,7 +44,7 @@ module.exports = {
       const product = {
         title: `Processador Intel ${i}`,
         description: `Breve descrição do Processador Intel ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -71,7 +71,7 @@ module.exports = {
       const product = {
         title: `Placa de vídeo AMD ${i}`,
         description: `Breve descrição da Placa de vídeo AMD ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -98,7 +98,7 @@ module.exports = {
       const product = {
         title: `Placa de vídeo Nvidia ${i}`,
         description: `Breve descrição da Placa de vídeo Nvidia ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -125,7 +125,7 @@ module.exports = {
       const product = {
         title: `Monitor ${i}`,
         description: `Breve descrição de Monitor ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -152,7 +152,7 @@ module.exports = {
       const product = {
         title: `Mouse ${i}`,
         description: `Breve descrição de Mouse ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,
@@ -179,7 +179,7 @@ module.exports = {
       const product = {
         title: `Teclado ${i}`,
         description: `Breve descrição de Teclado ${i}`,
-        html_body: `${lorem}`,
+        html_body: `<p>${lorem}</p>`,
         price: Number(price + cents),
         quantity_stock: 100,
         quantity_sold: 0,

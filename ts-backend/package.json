@@ -15,11 +15,11 @@
     "prod:queue": "cross-env NODE_ENV=production pm2 start --name ecommerce-queue build/src/queue.js",
     "postprod": "pm2 logs",
     "start": "npm run build && npm run prod",
-    "dev:migration:run": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run",
+    "dev:migrate": "cross-env NODE_ENV=development ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "pretest": "cross-env NODE_ENV=test ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "test": "npm run test:queue & cross-env NODE_ENV=test jest",
     "copy-views": "copyfiles ./src/views/**/* ./build",
-    "dev:seed:run": "cross-env NODE_ENV=development ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "dev:seed": "cross-env NODE_ENV=development ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "keywords": [],
   "author": "",
