@@ -6,19 +6,19 @@ module.exports = {
     // 1
     await queryInterface.bulkInsert('categories', [{
       name: 'Hardware',
-      parent_id: null,
+      parent_id: 0,
     }]);
 
     // 2
     await queryInterface.bulkInsert('categories', [{
       name: 'Periféricos',
-      parent_id: null,
+      parent_id: 0,
     }]);
 
     // 3
     await queryInterface.bulkInsert('categories', [{
       name: 'Monitores',
-      parent_id: null,
+      parent_id: 0,
     }]);
 
     // 4

@@ -1,7 +1,29 @@
+
+const dotenv = require('dotenv');
+
+let env;
+if(process.env.NODE_ENV === 'production') env = '.env';
+else if(process.env.NODE_ENV === 'test') env = '.env.test';
+else env = '.env.dev';
+
+dotenv.config({
+    path: env
+});
+
+/////////////////////////////
+
 const path = require('path');
 
-module.exports = {
-    config: path.resolve(__dirname, 'src', 'config', 'databaseConfig.js'),
-    'migrations-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'migrations'),
-    'seeders-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'seeders'),
+if(process.env.NODE_ENV === 'production'){
+    module.exports = {
+        config: path.resolve(__dirname, 'src', 'config', 'databaseConfig.js'),
+        'migrations-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'migrations'),
+        'seeders-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'seeders'),
+    }
+} else {
+    module.exports = {
+        config: path.resolve(__dirname, 'src', 'config', 'databaseConfig.js'),
+        'migrations-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'migrations'),
+        'seeders-path': path.resolve(__dirname, 'src', 'database', 'sequelize', 'seeders', 'dev'),
+    }
 }

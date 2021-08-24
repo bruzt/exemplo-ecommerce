@@ -1,7 +1,7 @@
 'use strict';
 
-const { ingestProduct } = require('../../sonic/ingest');
-const { lorem } = require('../../../testUtils/fakeData');
+const { ingestProduct } = require('../../../sonic/ingest');
+const { lorem } = require('../../../../testUtils/fakeData');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
