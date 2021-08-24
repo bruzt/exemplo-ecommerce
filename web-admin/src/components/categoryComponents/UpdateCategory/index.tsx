@@ -77,7 +77,7 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
     }
 
     return (
-        <Container>
+        <Container data-testid='update-category-container'>
 
             <form onSubmit={onSubmit}>
 

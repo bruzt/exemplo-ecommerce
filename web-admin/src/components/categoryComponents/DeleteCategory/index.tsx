@@ -81,7 +81,7 @@ export default function DeleteCategory({ deletingCategory, deleting }: IProps) {
     }
 
     return (
-        <Container>
+        <Container data-testid='delete-category-container'>
 
             <form onSubmit={onSubmit}>
                 <header>

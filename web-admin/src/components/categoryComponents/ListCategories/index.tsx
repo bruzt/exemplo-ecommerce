@@ -32,7 +32,6 @@ export default function ListCategories(){
 	}, [isUpdating, isDeleting]);
 
 	async function fetchCategories(){
-
 		try {
 
 			const response = await api.get('/categories');
@@ -82,20 +81,28 @@ export default function ListCategories(){
                         const haveChildren = getCategories.filter( (categoryItem) => categoryItem.parent_id == category.id);
                         
                         return (
-                            <tr key={index}>
+                            <tr key={index} data-testid='category-table-row'>
                                 <td>{category.id}</td>
                                 <td className='name'>{category.name}</td>
                                 <td>{parentCategory && `${parentCategory.id} - ${parentCategory.name}`}</td>
                                 <td id='td-actions'>
                                     <div>
-                                        <button type='button' onClick={() => handleUpdate(category)}>
+                                        <button 
+                                            type='button' 
+                                            data-testid='open-update-button'
+                                            onClick={() => handleUpdate(category)}
+                                        >
                                             <PencilIcon title='Editar' />
                                         </button>
                                         {haveChildren.length > 0 
                                             ? (
                                                 <span></span>
                                             ) : (
-                                                <button type='button' onClick={() => handleDeleting(category)}>
+                                                <button 
+                                                    type='button' 
+                                                    data-testid='open-delete-button'
+                                                    onClick={() => handleDeleting(category)}
+                                                >
                                                     <TrashIcon title='Excluir' />
                                                 </button>
                                             )
