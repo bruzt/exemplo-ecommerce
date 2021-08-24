@@ -43,8 +43,7 @@ interface IFetchProducts {
     products: IProduct[];
 }
 
-interface IFetchProduct {
-    product: IProduct;
+interface IFetchProduct extends IProduct {
     productsBuyedWith: IProduct[]
 }
 
@@ -87,7 +86,7 @@ export default function ListProducts(){
                     ...res,
                     data: {
                         count: 1,
-                        products: [res.data.product]
+                        products: [res.data]
                     }
                 };
 
