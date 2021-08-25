@@ -15,6 +15,7 @@
 - Testes unitários com Jest.
 
 ## Frontend
+- Páginas responsivas;
 - Menu dropdown de categorias de produtos, montada automaticamente a partir das categorias cadastradas no banco de dados;
 - Busca recursiva de produtos cadastrados nas categorias filhas;
 - Barra de busca pelo nome do produto;
