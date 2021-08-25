@@ -131,6 +131,13 @@ export const fakeCategories = [
         "parent_id": 3,
         "created_at": "2021-08-09T15:05:36.061Z",
         "updated_at": "2021-08-09T15:05:36.061Z"
+    },
+    {
+        "id": 5,
+        "name": "Ryzen",
+        "parent_id": 0,
+        "created_at": "2021-08-09T15:05:40.061Z",
+        "updated_at": "2021-08-09T15:05:40.061Z"
     }
 ];
 

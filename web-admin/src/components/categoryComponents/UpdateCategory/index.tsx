@@ -82,18 +82,35 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
             <form onSubmit={onSubmit}>
 
                 <header>
-                    <button type='button' onClick={() => updating(false)}>X</button>
+                    <button 
+                        type='button' 
+                        data-testid='close-button' 
+                        onClick={() => updating(false)}
+                    >
+                        X
+                    </button>
                 </header>
                 <main>
 
                     <div className="input-group">
                         <label htmlFor="category-name">Nome da categoria</label>
-                        <input type="text" id='category-name' value={getName} onChange={(event) => setName(event.target.value)} />
+                        <input 
+                            type="text" 
+                            id='category-name' 
+                            data-testid='category-name' 
+                            value={getName} 
+                            onChange={(event) => setName(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="select-parent">Pai da categoria</label>
-                        <select id="select-parent" value={getParentId} onChange={(event) => setParentId(event.target.value)}>
+                        <select 
+                            id="select-parent" 
+                            data-testid="select-parent" 
+                            value={getParentId} 
+                            onChange={(event) => setParentId(event.target.value)}
+                        >
                             <option value="0"></option>
                             {getCategories.map((category, index) => (
                                 <option key={index} value={String(category.id)}>{category.name}</option>
@@ -103,6 +120,7 @@ export default function UpdateCategory({ updating, updatingCategory }: IProps) {
 
                     <Button
                         type='submit'
+                        data-testid='submit-button'
                         disabled={getIsFetching || getIsSubmitButtonDisabled}
                         className={`${getIsFetching && 'is-fetching'}`}
                     >
