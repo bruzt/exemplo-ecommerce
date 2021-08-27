@@ -18,6 +18,7 @@ export default function Header() {
                     ? (
                         <button 
                             type='button'
+                            data-testid='light-theme-button'
                             onClick={() => themeContext.changeThemeTo('light')}
                         >
                             Claro
@@ -25,6 +26,7 @@ export default function Header() {
                     ) : (
                         <button 
                             type='button'
+                            data-testid='dark-theme-button'
                             onClick={() => themeContext.changeThemeTo('dark')}
                         >
                             Escuro
@@ -35,7 +37,11 @@ export default function Header() {
             </div>
 
             <div>
-                <button type='button' onClick={() => loginLogoutContext.logout()}>
+                <button 
+                    type='button' 
+                    data-testid='logout-button' 
+                    onClick={() => loginLogoutContext.logout()}
+                >
                     Logout
                 </button>
             </div>
