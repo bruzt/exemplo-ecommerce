@@ -9,7 +9,7 @@ sudo docker run -d \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
     -p 5432:5432 \
-    postgres:13.3
+    postgres:13.4
 ```
 
 ```
@@ -70,7 +70,7 @@ sudo docker run -d --rm \
 sudo docker run -d \
     -p 6379:6379 \
     --name redis-dev \
-    redis:6.2.4
+    redis:6.2.5
 ```
 
 ## Redis Test
@@ -79,5 +79,5 @@ sudo docker run -d \
 sudo docker run -d --rm \
     -p 6380:6379 \
     --name redis-test \
-    redis:6.2.4
+    redis:6.2.5
 ```
