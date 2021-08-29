@@ -44,7 +44,7 @@ sudo docker run -d \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
     -p 5432:5432 \
-    postgres:13.3
+    postgres:13.4
 ```
 
 E [Sonic](https://github.com/valeriansaliou/sonic):
@@ -63,7 +63,7 @@ E o [Redis](https://github.com/redis/redis):
 sudo docker run -d \
     -p 6379:6379 \
     --name redis-dev \
-    redis:6.2.4
+    redis:6.2.5
 ```
 
 No diretório "backend", execute as migrations para criar as tabelas no banco de dados com o comando ``` npm run dev:migrate ```, execute as seeds para adicionar categorias e produtos no banco de dados com o camando ``` npm run dev:seed ``` e inicie a API com o comando ``` npm run dev ```, depois, no diretório "web", execute o comando ``` npm start ``` para iniciar a aplicação, acesse no navegador o endereço ``` http://localhost:3000 ``` e você deve ver a página inicial da loja com produtos sem imagens (você pode adicionar imagens no painel de controle).
@@ -71,9 +71,3 @@ No diretório "backend", execute as migrations para criar as tabelas no banco de
 ### Painel de controle
 
 Para adicionar ou alterar as categorias e produtos você pode iniciar o painel de controle do loja, entre no diretório "web-admin" e instale os pacotes com ``` npm install ``` e o inicie com o comando ``` npm start ```, depois acesse no navegador o endereço ``` http://localhost:3002 ```, se você executou as seeds no backend ele adicionou um usuário com permissões de administrador para entrar, email: ```test@test.com``` e senha: ```123456```.
-
-<!-- 
-VocCom o REST Client [Insomnia](https://insomnia.rest/), importe o workspace do projeto (o arquivo está na raiz desse projeto: "Insomnia_workspace.json"), execute a rota "session" (login) para te retornar uma JWT (JSON Web Token) para acessar as rotas, configure a Bearer token com o JWT na rota "store" de "categories" e "products", crie uma categoria de produto e depois um produto cadastrado ao id daquela categoria, recarregando a página web o card do produto deve aparecer.
--->
-
-
