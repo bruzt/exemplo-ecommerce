@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import jwt from 'jsonwebtoken';
 import queryString from 'query-string';
@@ -22,8 +22,6 @@ interface ThemeContextProviderProps {
 
 const Context = createContext({} as ILoginLogoutHook);
 
-let firstRender = true;
-
 export function LoginLogoutContextProvider({ children }: ThemeContextProviderProps) {
 
     const router = useRouter();
@@ -31,6 +29,8 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
     const [getToken, setToken] = useState('');
 
     const [getIsFetching, setIsFetching] = useState(false);
+
+    const firstRender = useRef(true);
 
     useEffect( () => {
         if(process.browser){
@@ -40,8 +40,8 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
     }, []);
 
     useEffect( () => {
-        if(firstRender === false) session(getToken);
-        firstRender = false;
+        if(firstRender.current === false) session(getToken);
+        else firstRender.current = false;
     }, [getToken])
 
     async function login(email: string, password: string) {
@@ -57,7 +57,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
             return true;
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             alert('Erro ao fazer login');
             setIsFetching(false);
 
@@ -71,7 +71,7 @@ export function LoginLogoutContextProvider({ children }: ThemeContextProviderPro
 
         try {
 
-            if (tokenPayload.admin == false) return alert('Conta não autorizada');
+            if (!tokenPayload || tokenPayload.admin == false) return alert('Conta não autorizada');
 
             localStorage.setItem('token', token);
             api.defaults.headers.authorization = `Bearer ${token}`;

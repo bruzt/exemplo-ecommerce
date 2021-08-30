@@ -32,7 +32,7 @@ export default function Login(){
         
         event.preventDefault();
 
-        if(getIsSubmitButtonDisabled) return;
+        if(getIsSubmitButtonDisabled || loginLogoutContext.isFetching) return;
 
         const login = await loginLogoutContext.login(getEmail, getPassword);
 
@@ -56,16 +56,29 @@ export default function Login(){
 
                     <div className="input-group">
                         <label htmlFor="email">e-mail</label>
-                        <input type="email" id='email' value={getEmail} onChange={(event) => setEmail(event.target.value)} />
+                        <input 
+                            type="email" 
+                            id='email' 
+                            data-testid='email-input' 
+                            value={getEmail} 
+                            onChange={(event) => setEmail(event.target.value)} 
+                        />
                     </div>
 
                     <div className="input-group">
                         <label htmlFor="password">Senha</label>
-                        <input type="password" id='password' value={getPassword} onChange={(event) => setPassword(event.target.value)} />
+                        <input 
+                            type="password" 
+                            id='password' 
+                            data-testid='password-input' 
+                            value={getPassword} 
+                            onChange={(event) => setPassword(event.target.value)} 
+                        />
                     </div>
 
                     <Button 
                         type='submit' 
+                        data-testid='submit-button' 
                         className={`${loginLogoutContext.isFetching && 'is-fetching'}`}
                         disabled={getIsSubmitButtonDisabled || loginLogoutContext.isFetching}
                     >
