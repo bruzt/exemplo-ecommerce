@@ -41,12 +41,17 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
 
             <div className="input-group">
                 <label htmlFor="file-input">Adicionar Imagens</label>
-                <button type='button' id='file-input' onClick={() => inputElement.current.click()}>
+                <button 
+                    type='button' 
+                    id='file-input' 
+                    onClick={() => inputElement.current.click()}
+                >
                     Selecione as imagens
                 </button>
                 <input
                     ref={(element) => inputElement.current = element}
                     type='file'
+                    data-testid='files-input'
                     accept="image/png,image/gif,image/jpeg"
                     multiple
                     onChange={handleFilesInput}
@@ -56,10 +61,16 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
                 
                 {getFiles.map((file, index) => (
                     <p key={index}>
-                        {file.name}
+                        <span
+                            data-testid='file-name-span'
+                        >
+                            {file.name}
+                        </span>
+
                         <button
                             type='button'
                             className='remove-file'
+                            data-testid='remove-file-button'
                             onClick={() => handleRemoveFile(file.name)}
                         >
                             X
