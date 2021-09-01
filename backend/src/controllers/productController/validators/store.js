@@ -18,7 +18,7 @@ module.exports = celebrate({
         discount_datetime_start: Joi.date(),
         discount_datetime_end: Joi.date(),
         tangible: Joi.boolean().required(),
-        weight: Joi.string().required(),
+        weight: Joi.number().required(),
         length: Joi.number().required(),
         height: Joi.number().required(),
         width: Joi.number().required(),
