@@ -27,10 +27,10 @@ export interface IProduct {
     quantity_stock: number;
     category: ICategory;
     tangible: boolean;
-    weight: string;
-    length: string;
-    height: string;
-    width: string;
+    weight: number;
+    length: number;
+    height: number;
+    width: number;
     html_body: string;
     images: Array<{
         id: number;

@@ -28,10 +28,10 @@ export default function AddProduct() {
     const [getCategory, setCategory] = useState('0');
     const [getTangible, setTangible] = useState(1);
     
-    const [getWeight, setWeight] = useState('');
-    const [getLength, setLength] = useState('');
-    const [getHeight, setHeight] = useState('');
-    const [getWidth, setWidth] = useState('');
+    const [getWeight, setWeight] = useState(0);
+    const [getLength, setLength] = useState(0);
+    const [getHeight, setHeight] = useState(0);
+    const [getWidth, setWidth] = useState(0);
 
     const [getDiscount, setDiscount] = useState('0');
     const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string>('');
@@ -67,10 +67,13 @@ export default function AddProduct() {
         if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
         if (getPrice.trim().length == 0) return alert('Preço não preenchido');
         if (getCategory == '0') return alert('Categoria não selecionada');
-        if (getWeight.trim().length == 0) return alert('Peso não preenchido');
-        if (getLength.trim().length == 0) return alert('Comprimento não preenchido');
-        if (getHeight.trim().length == 0) return alert('Altura não preenchido');
-        if (getWidth.trim().length == 0) return alert('Largura não preenchido');
+
+        if(getTangible){
+            if (getWeight == 0) return alert('Peso não preenchido');
+            if (getLength == 0) return alert('Comprimento não preenchido');
+            if (getHeight == 0) return alert('Altura não preenchido');
+            if (getWidth == 0) return alert('Largura não preenchido');
+        }
 
         const product = {
             title: getTitle,
@@ -79,10 +82,10 @@ export default function AddProduct() {
             quantity_stock: Number(getQtdStock),
             category_id: Number(getCategory),
             tangible: Boolean(Number(getTangible)),
-            weight: Number(getWeight.replace(',', '.')),
-            length: Number(getLength.replace(',', '.')),
-            height: Number(getHeight.replace(',', '.')),
-            width: Number(getWidth.replace(',', '.')),
+            weight: getWeight,
+            length: getLength,
+            height: getHeight,
+            width: getWidth,
             discount_percent: Number(getDiscount),
             discount_datetime_start: getDiscountDatetimeStart ? getDiscountDatetimeStart : undefined,
             discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
@@ -113,10 +116,10 @@ export default function AddProduct() {
             setDiscount('0');
             setCategory('0');
             setTangible(1);
-            setWeight('');
-            setLength('');
-            setHeight('');
-            setWidth('');
+            setWeight(0);
+            setLength(0);
+            setHeight(0);
+            setWidth(0);
             setHtmlText('');
 
         } catch (error) {
@@ -160,7 +163,7 @@ export default function AddProduct() {
                         <label htmlFor="product-price">Preço (R$)</label>
                         <input
                             type="number"
-                            min="0.00"
+                            min="0"
                             step="0.01"
                             id='product-price'
                             value={getPrice}
@@ -212,11 +215,11 @@ export default function AddProduct() {
                         <label htmlFor="product-weight">Peso (kg)</label>
                         <input
                             type="number"
-                            min="0.00"
-                            step="0.01"
+                            min="0"
+                            step="0.001"
                             id="product-weight"
                             value={getWeight}
-                            onChange={(event) => setWeight(event.target.value)}
+                            onChange={(event) => setWeight(Number(event.target.value))}
                         />
                     </div>
 
@@ -225,10 +228,10 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
-                            step="0.01"
+                            step="0.1"
                             id="product-length"
                             value={getLength}
-                            onChange={(event) => setLength(event.target.value)}
+                            onChange={(event) => setLength(Number(event.target.value))}
                         />
                     </div>
 
@@ -237,9 +240,9 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
-                            step="0.01"
+                            step="0.1"
                             id="product-height"
-                            value={getHeight} onChange={(event) => setHeight(event.target.value)}
+                            value={getHeight} onChange={(event) => setHeight(Number(event.target.value))}
                         />
                     </div>
 
@@ -248,10 +251,10 @@ export default function AddProduct() {
                         <input
                             type="number"
                             min="0"
-                            step="0.01"
+                            step="0.1"
                             id="product-width"
                             value={getWidth}
-                            onChange={(event) => setWidth(event.target.value)}
+                            onChange={(event) => setWidth(Number(event.target.value))}
                         />
                     </div>
                 </div>

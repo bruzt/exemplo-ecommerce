@@ -153,7 +153,7 @@ export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
                         <label htmlFor="product-price">Preço (R$)</label>
                         <input 
                             type="number" 
-                            min="0.00"
+                            min="0"
                             step="0.01"
                             id='product-price' 
                             value={getPrice} 
@@ -196,11 +196,11 @@ export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
                         <label htmlFor="product-weight">Peso (kg)</label>
                         <input 
                             type="number" 
-                            min="0.00"
-                            step="0.01"
+                            min="0"
+                            step="0.001"
                             id='product-weight' 
                             value={getWeight} 
-                            onChange={(event) => setWeight(event.target.value)} 
+                            onChange={(event) => setWeight(Number(event.target.value))} 
                         />
                     </div>
 
@@ -209,10 +209,10 @@ export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
                         <input 
                             type="number" 
                             min='0'
-                            step="0.01"
+                            step="0.1"
                             id='product-length' 
                             value={getLength} 
-                            onChange={(event) => setLength(event.target.value)} 
+                            onChange={(event) => setLength(Number(event.target.value))} 
                         />
                     </div>
 
@@ -221,10 +221,10 @@ export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
                         <input 
                             type="number" 
                             min='0'
-                            step="0.01"
+                            step="0.1"
                             id='product-height' 
                             value={getHeight} 
-                            onChange={(event) => setHeight(event.target.value)} 
+                            onChange={(event) => setHeight(Number(event.target.value))} 
                         />
                     </div>
 
@@ -233,10 +233,10 @@ export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
                         <input 
                             type="number" 
                             min='0'
-                            step="0.01"
+                            step="0.1"
                             id='product-width' 
                             value={getWidth} 
-                            onChange={(event) => setWidth(event.target.value)} 
+                            onChange={(event) => setWidth(Number(event.target.value))} 
                         />
                     </div>
                 </div>
