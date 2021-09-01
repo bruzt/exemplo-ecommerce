@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useRef } from 'react';
 
 import { Container } from './styles';
 
@@ -9,7 +9,7 @@ interface IProps {
 
 export default function AddImageInput({ getFiles, setFiles }: IProps) {
 
-    let inputElement: HTMLInputElement;
+    const inputElement = useRef<HTMLInputElement>(null);
 
     function handleFilesInput(event: FormEvent<HTMLInputElement>) {
 
@@ -41,11 +41,11 @@ export default function AddImageInput({ getFiles, setFiles }: IProps) {
 
             <div className="input-group">
                 <label htmlFor="file-input">Adicionar Imagens</label>
-                <button type='button' id='file-input' onClick={() => inputElement.click()}>
+                <button type='button' id='file-input' onClick={() => inputElement.current.click()}>
                     Selecione as imagens
                 </button>
                 <input
-                    ref={(element) => inputElement = element}
+                    ref={(element) => inputElement.current = element}
                     type='file'
                     accept="image/png,image/gif,image/jpeg"
                     multiple
