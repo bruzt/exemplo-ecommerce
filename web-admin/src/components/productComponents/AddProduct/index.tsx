@@ -15,12 +15,16 @@ export interface ICategory {
     parent_id: number;
 }
 
-export default function AddProduct() {
+interface IProps {
+    _testFiles?: File[];
+}
+
+export default function AddProduct({ _testFiles }: IProps) {
 
     const [getCategories, setCategories] = useState<ICategory[]>([]);
 
     const [getTitle, setTitle] = useState('');
-    const [getFiles, setFiles] = useState<File[]>([]);
+    const [getFiles, setFiles] = useState<File[]>(_testFiles || []);
     const [getDescription, setDescription] = useState('');
 
     const [getPrice, setPrice] = useState('');
@@ -97,12 +101,18 @@ export default function AddProduct() {
             const response = await api.post('/products', product);
 
             if (getFiles.length > 0) {
+                try {
+                    const data = new FormData();
+    
+                    getFiles.forEach((file) => data.append('file', file, file.name));
+    
+                    await api.post(`/products/${response.data.id}/images`, data);
 
-                const data = new FormData();
-
-                getFiles.forEach((file) => data.append('file', file, file.name));
-
-                await api.post(`/products/${response.data.id}/images`, data);
+                } catch (error) {
+                    console.log(error);
+                    alert('Erro ao adicionar as imagens');
+                    setIsFetching(false)
+                }
             }
 
             setIsFetching(false);
@@ -141,6 +151,7 @@ export default function AddProduct() {
                     <input
                         type="text"
                         id='product-title'
+                        data-testid='product-title-input'
                         value={getTitle}
                         onChange={(event) => setTitle(event.target.value)}
                     />
@@ -152,6 +163,7 @@ export default function AddProduct() {
                     <label htmlFor="product-description">Descrição</label>
                     <textarea
                         id="product-description"
+                        data-testid="product-description-input"
                         maxLength={255}
                         value={getDescription}
                         onChange={(event) => setDescription(event.target.value)}
@@ -166,6 +178,7 @@ export default function AddProduct() {
                             min="0"
                             step="0.01"
                             id='product-price'
+                            data-testid='product-price-input'
                             value={getPrice}
                             onChange={(event) => setPrice(event.target.value)}
                         />
@@ -177,6 +190,7 @@ export default function AddProduct() {
                             type="number"
                             min="0"
                             id='product-stock'
+                            data-testid='product-stock-input'
                             value={getQtdStock}
                             onChange={(event) => setQtdStock(event.target.value)}
                         />
@@ -186,6 +200,7 @@ export default function AddProduct() {
                         <label htmlFor="product-category">Categoria</label>
                         <select
                             id='product-category'
+                            data-testid='product-category-select'
                             value={getCategory}
                             onChange={(event) => setCategory(event.target.value)}
                         >
@@ -200,6 +215,7 @@ export default function AddProduct() {
                         <label htmlFor="product-tangible">Tangível</label>
                         <select
                             id='product-tangible'
+                            data-testid='product-tangible-select'
                             value={getTangible}
                             onChange={(event) => setTangible(Number(event.target.value))}
                         >
@@ -218,6 +234,7 @@ export default function AddProduct() {
                             min="0"
                             step="0.001"
                             id="product-weight"
+                            data-testid="product-weight-input"
                             value={getWeight}
                             onChange={(event) => setWeight(Number(event.target.value))}
                         />
@@ -230,6 +247,7 @@ export default function AddProduct() {
                             min="0"
                             step="0.1"
                             id="product-length"
+                            data-testid="product-length-input"
                             value={getLength}
                             onChange={(event) => setLength(Number(event.target.value))}
                         />
@@ -242,6 +260,7 @@ export default function AddProduct() {
                             min="0"
                             step="0.1"
                             id="product-height"
+                            data-testid="product-height-input"
                             value={getHeight} onChange={(event) => setHeight(Number(event.target.value))}
                         />
                     </div>
@@ -253,6 +272,7 @@ export default function AddProduct() {
                             min="0"
                             step="0.1"
                             id="product-width"
+                            data-testid="product-width-input"
                             value={getWidth}
                             onChange={(event) => setWidth(Number(event.target.value))}
                         />
@@ -267,6 +287,7 @@ export default function AddProduct() {
                             min="0"
                             max='100'
                             id='product-discount'
+                            data-testid='product-discount-input'
                             value={getDiscount}
                             onChange={(event) => setDiscount(event.target.value)}
                         />
@@ -276,15 +297,19 @@ export default function AddProduct() {
                         <label htmlFor="datetime-start">Início do desconto</label>
                         <input
                             type="datetime-local"
+                            id='datetime-start'
+                            data-testid='datetime-start-input'
                             value={getDiscountDatetimeStart}
                             onChange={(event) => setDiscountDatetimeStart(event.target.value)}
                         />
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="datetime-start">Fim do desconto</label>
+                        <label htmlFor="datetime-end">Fim do desconto</label>
                         <input
                             type="datetime-local"
+                            id='datetime-end'
+                            data-testid='datetime-end-input'
                             value={getDiscountDatetimeEnd}
                             onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
                         />
@@ -301,6 +326,7 @@ export default function AddProduct() {
 
                 <Button 
                     type='submit'
+                    data-testid='submit-button'
                     className={`${getIsFetching && 'is-fetching'}`}
                     disabled={getIsFetching}
                 >
