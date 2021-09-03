@@ -1,77 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { useUser } from '../../../../contexts/userContext';
-import LoginForm from '../LoginForm';
-import CreateUserForm from '../CreateUserForm';
-import ForgotPasswordForm from '../ForgotPasswordForm';
+import { useUser } from "../../../../contexts/userContext";
+import LoginForm from "../LoginForm";
+import CreateUserForm from "../CreateUserForm";
+import ForgotPasswordForm from "../ForgotPasswordForm";
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
 export default function LoginModal() {
+  const [getModalOption, setModalOption] = useState<
+    "login" | "create" | "forgot"
+  >("login");
 
-	const [getModalOption, setModalOption] = useState<'login' | 'create' | 'forgot'>('login');
+  const userContext = useUser();
 
-	const userContext = useUser();
+  return (
+    <Container data-testid="login-modal">
+      <div className="modal-card">
+        <header>
+          {getModalOption == "login" && <h1>Login</h1>}
+          {getModalOption == "create" && <h1>Cadastrar</h1>}
+          {getModalOption == "forgot" && <h1>Recuperar</h1>}
 
-	return (
-		<Container data-testid='login-modal'>
+          <button
+            type="button"
+            className="close-modal"
+            data-testid="close-modal-button"
+            onClick={() => userContext.handleSwitchModal()}
+          >
+            X
+          </button>
+        </header>
 
-			<div className='modal-card'>
+        <main>
+          {getModalOption == "login" && <LoginForm />}
+          {getModalOption == "create" && <CreateUserForm />}
+          {getModalOption == "forgot" && <ForgotPasswordForm />}
+        </main>
 
-				<header>
-					{getModalOption == 'login' && <h1>Login</h1>}
-					{getModalOption == 'create' && <h1>Cadastrar</h1>}
-					{getModalOption == 'forgot' && <h1>Recuperar</h1>}
+        <footer>
+          {getModalOption == "login" && (
+            <a
+              onClick={() => setModalOption("create")}
+              data-testid="create-new-account"
+            >
+              Criar nova conta
+            </a>
+          )}
 
-					<button
-						type='button'
-						className='close-modal'
-						data-testid='close-modal-button'
-						onClick={() => userContext.handleSwitchModal()}
-					>
-						X
-					</button>
-				</header>
+          {getModalOption == "login" && (
+            <a
+              onClick={() => setModalOption("forgot")}
+              data-testid="forgot-password"
+            >
+              Esqueci a senha
+            </a>
+          )}
 
-				<main>
-					{(getModalOption == 'login') && <LoginForm />}
-					{(getModalOption == 'create') && <CreateUserForm />}
-					{(getModalOption == 'forgot') && <ForgotPasswordForm  />}
-				</main>
-
-				<footer>
-					{(getModalOption == 'login') && (
-						<a
-							onClick={() => setModalOption('create')}
-							data-testid='create-new-account'
-						>
-							Criar nova conta
-						</a>
-					)}
-
-					{(getModalOption == 'login') && (
-						<a
-							onClick={() => setModalOption('forgot')}
-							data-testid='forgot-password'
-						>
-							Esqueci a senha
-						</a>
-					)}
-
-					{(
-						getModalOption == 'create'
-						|| getModalOption == 'forgot'
-					) && (
-						<a
-							onClick={() => setModalOption('login')}
-							data-testid='back-to-login'
-						>
-							Voltar para Login
-						</a>
-					)}
-				</footer>
-			</div>
-
-		</Container >
-	);
+          {(getModalOption == "create" || getModalOption == "forgot") && (
+            <a
+              onClick={() => setModalOption("login")}
+              data-testid="back-to-login"
+            >
+              Voltar para Login
+            </a>
+          )}
+        </footer>
+      </div>
+    </Container>
+  );
 }
