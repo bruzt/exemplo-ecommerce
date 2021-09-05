@@ -1,125 +1,134 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MockAdapter from 'axios-mock-adapter';
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import MockAdapter from "axios-mock-adapter";
 
-import MobileMenu from './';
-import { UserContextProvider } from '../../../contexts/userContext';
-import { FilterBarContextProvider } from '../../../contexts/filterBarContext';
-import { fakeUser, fakeCategories } from '../../../testUtils/fakeData';
-import api from '../../../services/api';
+import MobileMenu from "./";
+import { UserContextProvider } from "../../../contexts/userContext";
+import { FilterBarContextProvider } from "../../../contexts/filterBarContext";
+import { fakeUser, fakeCategories } from "../../../testUtils/fakeData";
+import api from "../../../services/api";
 
-jest.mock('next/router', () => require('next-router-mock'));
+jest.mock("next/router", () => require("next-router-mock"));
 
-describe('Mobile Menu Tests', () => {
+describe("Mobile Menu Tests", () => {
+  it("should open login modal", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, fakeCategories);
 
-    beforeAll(() => {
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories);
-    });
+    function setModal(value = true) {
+      return value;
+    }
 
-    it('should open login modal', async () => {
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider>
+          <FilterBarContextProvider>
+            <MobileMenu
+              setMobileMenuActive={setModal}
+              searchBar={() => <span />}
+            />
+          </FilterBarContextProvider>
+        </UserContextProvider>
+      )
+    );
 
-        function setModal(value = true){ return value; }
+    const loginModalButton = getByTestId("login-modal-button");
+    const userAccountButton = queryByTestId("user-account-button");
 
-        const { getByTestId, queryByTestId } = await waitFor(() => render(
-            <UserContextProvider>
-                <FilterBarContextProvider>
-                    <MobileMenu 
-                        setMobileMenuActive={setModal}
-                        searchBar={() => <span />}
-                    />
-                </FilterBarContextProvider>
-            </UserContextProvider>
-        ));
+    fireEvent.click(loginModalButton);
 
-        const loginModalButton = getByTestId('login-modal-button');
-        const userAccountButton = queryByTestId('user-account-button');
+    expect(loginModalButton).toBeInTheDocument();
+    expect(userAccountButton).not.toBeInTheDocument();
+  });
 
-        fireEvent.click(loginModalButton);
+  it("should render user account buton when logged", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, fakeCategories);
 
-        expect(loginModalButton).toBeInTheDocument();
-        expect(userAccountButton).not.toBeInTheDocument();
-    });
+    function setModal(value = true) {
+      return value;
+    }
 
-    it('should render user account buton when logged', async () => {
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+          <FilterBarContextProvider>
+            <MobileMenu
+              setMobileMenuActive={setModal}
+              searchBar={() => <span />}
+            />
+          </FilterBarContextProvider>
+        </UserContextProvider>
+      )
+    );
 
-        function setModal(value = true){ return value; }
+    const userAccountButton = getByTestId("user-account-button");
+    const loginModalButton = queryByTestId("login-modal-button");
 
-        const { getByTestId, queryByTestId } = await waitFor(() => render(
-            <UserContextProvider
-                _testUser={fakeUser}
-                _testLogin={true}
-            >
-                <FilterBarContextProvider>
-                    <MobileMenu 
-                        setMobileMenuActive={setModal}
-                        searchBar={() => <span />}
-                    />
-                </FilterBarContextProvider>
-            </UserContextProvider>
-        ));
-        
-        const userAccountButton = getByTestId('user-account-button');
-        const loginModalButton = queryByTestId('login-modal-button');
+    fireEvent.click(userAccountButton);
 
-        fireEvent.click(userAccountButton);
+    expect(userAccountButton).toBeInTheDocument();
+    expect(loginModalButton).not.toBeInTheDocument();
+  });
 
-        expect(userAccountButton).toBeInTheDocument();
-        expect(loginModalButton).not.toBeInTheDocument();
-    });
+  it("should logout when click in logout button", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, fakeCategories);
 
-    it('should logout when click in logout button', async () => {
+    function setModal(value = true) {
+      return value;
+    }
 
-        function setModal(value = true){ return value; }
+    const { getByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+          <FilterBarContextProvider>
+            <MobileMenu
+              setMobileMenuActive={setModal}
+              searchBar={() => <span />}
+            />
+          </FilterBarContextProvider>
+        </UserContextProvider>
+      )
+    );
 
-        const { getByTestId } = await waitFor(() => render(
-            <UserContextProvider
-                _testUser={fakeUser}
-                _testLogin={true}
-            >
-                <FilterBarContextProvider>
-                    <MobileMenu 
-                        setMobileMenuActive={setModal}
-                        searchBar={() => <span />}
-                    />
-                </FilterBarContextProvider>
-            </UserContextProvider>
-        ));
-        
-        const logoutButton = getByTestId('user-logout-button');
-        
-        fireEvent.click(logoutButton);
+    const logoutButton = getByTestId("user-logout-button");
 
-        const loginModalButton = getByTestId('login-modal-button');
+    fireEvent.click(logoutButton);
 
-        expect(logoutButton).not.toBeInTheDocument();
-        expect(loginModalButton).toBeInTheDocument();
-    });
+    const loginModalButton = getByTestId("login-modal-button");
 
-    it('should close modal on click', async () => {
+    expect(logoutButton).not.toBeInTheDocument();
+    expect(loginModalButton).toBeInTheDocument();
+  });
 
-        let closeModal = true;
-        function setModal(value = true){ closeModal = value; }
+  it("should close modal on click", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, fakeCategories);
 
-        const { getByTestId } = await waitFor(() => render(
-            <UserContextProvider
-                _testUser={fakeUser}
-                _testLogin={true}
-            >
-                <FilterBarContextProvider>
-                    <MobileMenu 
-                        setMobileMenuActive={setModal}
-                        searchBar={() => <span />}
-                    />
-                </FilterBarContextProvider>
-            </UserContextProvider>
-        ));
-        
-        const closeModalButton = getByTestId('exit-mobile-menu');
-        
-        fireEvent.click(closeModalButton);
+    let closeModal = true;
+    function setModal(value = true) {
+      closeModal = value;
+    }
 
-        expect(closeModal).toBe(false);
-    });
+    const { getByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+          <FilterBarContextProvider>
+            <MobileMenu
+              setMobileMenuActive={setModal}
+              searchBar={() => <span />}
+            />
+          </FilterBarContextProvider>
+        </UserContextProvider>
+      )
+    );
+
+    const closeModalButton = getByTestId("exit-mobile-menu");
+
+    fireEvent.click(closeModalButton);
+
+    expect(closeModal).toBe(false);
+  });
 });

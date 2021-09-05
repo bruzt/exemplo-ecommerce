@@ -1,148 +1,225 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 
-import AccountAddresses from './';
-import { UserContextProvider } from '../../../contexts/userContext';
-import api from '../../../services/api';
-import { fakeUser, fakeAddress, fakeAxiosUfs, fakeAxiosCitys } from '../../../testUtils/fakeData';
+import AccountAddresses from "./";
+import { UserContextProvider } from "../../../contexts/userContext";
+import api from "../../../services/api";
+import {
+  fakeUser,
+  fakeAddress,
+  fakeAxiosUfs,
+  fakeAxiosCitys,
+} from "../../../testUtils/fakeData";
 
-describe('Account Addresses Tests', () => {
+describe("Account Addresses Tests", () => {
+  it("should not have address card", async () => {
+    const axiosMock = new MockAdapter(axios);
+    axiosMock
+      .onGet("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .reply(200, fakeAxiosUfs);
+    axiosMock
+      .onGet(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+      )
+      .reply(200, fakeAxiosCitys);
 
-    beforeAll( () => {
-        const axiosMock = new MockAdapter(axios);
-        axiosMock.onGet('https://servicodados.ibge.gov.br/api/v1/localidades/estados').reply(200, fakeAxiosUfs);
-        axiosMock.onGet('https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios').reply(200, fakeAxiosCitys);
+    const apiMock = new MockAdapter(api);
+    apiMock.onPost("/addresses").reply(201, fakeAddress);
+    apiMock.onDelete("/addresses/1").reply(204);
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onPost('/addresses').reply(201, fakeAddress);
-        apiMock.onDelete('/addresses/1').reply(204);
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser}>
+          <AccountAddresses />
+        </UserContextProvider>
+      )
+    );
 
-    it('should not have address card', async () => {
+    const shouldNotHaveCard = queryByTestId("address-card");
 
-        const { queryByTestId } = await waitFor(() => render(
-            <UserContextProvider _testUser={fakeUser}>
-                <AccountAddresses />
-            </UserContextProvider>
-        ));
+    expect(shouldNotHaveCard).toBe(null);
+  });
 
-        const shouldNotHaveCard = queryByTestId('address-card');
+  it("should have address card", async () => {
+    const axiosMock = new MockAdapter(axios);
+    axiosMock
+      .onGet("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .reply(200, fakeAxiosUfs);
+    axiosMock
+      .onGet(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+      )
+      .reply(200, fakeAxiosCitys);
 
-        expect(shouldNotHaveCard).toBe(null);
-    });
+    const apiMock = new MockAdapter(api);
+    apiMock.onPost("/addresses").reply(201, fakeAddress);
+    apiMock.onDelete("/addresses/1").reply(204);
 
-    it('should have address card', async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider
+          _testUser={{
+            ...fakeUser,
+            addresses: [fakeAddress],
+          }}
+        >
+          <AccountAddresses />
+        </UserContextProvider>
+      )
+    );
 
-        const { queryByTestId } = await waitFor(() => render(
-            <UserContextProvider _testUser={{
-                ...fakeUser,
-                addresses: [fakeAddress],
-            }}>
-                <AccountAddresses />
-            </UserContextProvider>
-        ));
+    const shouldHaveCard = queryByTestId("address-card");
 
-        const shouldHaveCard = queryByTestId('address-card');
+    expect(shouldHaveCard).toBeInTheDocument();
+  });
 
-        expect(shouldHaveCard).toBeInTheDocument();
-    });
+  it("should fill address form", async () => {
+    const axiosMock = new MockAdapter(axios);
+    axiosMock
+      .onGet("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .reply(200, fakeAxiosUfs);
+    axiosMock
+      .onGet(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+      )
+      .reply(200, fakeAxiosCitys);
 
-    it('should fill address form', async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onPost("/addresses").reply(201, fakeAddress);
+    apiMock.onDelete("/addresses/1").reply(204);
 
-        const spyAxios = jest.spyOn(axios, 'get');
+    const spyAxios = jest.spyOn(axios, "get");
 
-        const { getByTestId } = await waitFor(() => render(
-            <UserContextProvider _testUser={fakeUser}>
-                <AccountAddresses />
-            </UserContextProvider>
-        ));
+    const { getByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser}>
+          <AccountAddresses />
+        </UserContextProvider>
+      )
+    );
 
-        const streetInput = getByTestId('street') as HTMLInputElement;
-        const numberInput = getByTestId('number') as HTMLInputElement;
-        const neighborhoodInput = getByTestId('neighborhood') as HTMLInputElement;
-        const cityInput = getByTestId('city') as HTMLInputElement;
-        const ufInput = getByTestId('uf') as HTMLInputElement;
-        const zipcodeInput = getByTestId('zipcode') as HTMLInputElement;
+    const streetInput = getByTestId("street") as HTMLInputElement;
+    const numberInput = getByTestId("number") as HTMLInputElement;
+    const neighborhoodInput = getByTestId("neighborhood") as HTMLInputElement;
+    const cityInput = getByTestId("city") as HTMLInputElement;
+    const ufInput = getByTestId("uf") as HTMLInputElement;
+    const zipcodeInput = getByTestId("zipcode") as HTMLInputElement;
 
-        fireEvent.change(streetInput, { target: { value: 'rua bla' } });
-        fireEvent.change(numberInput, { target: { value: '5a' } });
-        fireEvent.change(neighborhoodInput, { target: { value: 'bairro gg' } });
-        fireEvent.change(zipcodeInput, { target: { value: '12240650' } });
-        await waitFor(() => fireEvent.change(ufInput, { target: { value: 'SP' } }));
-        fireEvent.change(cityInput, { target: { value: 'Limeira' } });
+    fireEvent.change(streetInput, { target: { value: "rua bla" } });
+    fireEvent.change(numberInput, { target: { value: "5a" } });
+    fireEvent.change(neighborhoodInput, { target: { value: "bairro gg" } });
+    fireEvent.change(zipcodeInput, { target: { value: "12240650" } });
+    await waitFor(() => fireEvent.change(ufInput, { target: { value: "SP" } }));
+    fireEvent.change(cityInput, { target: { value: "Limeira" } });
 
-        expect(streetInput.value).toBe('rua bla');
-        expect(numberInput.value).toBe('5a');
-        expect(neighborhoodInput.value).toBe('bairro gg');
-        expect(ufInput.value).toBe('SP');
-        expect(cityInput.value).toBe('Limeira');
-        expect(zipcodeInput.value).toBe('12240-650');
-        expect(spyAxios).toBeCalledTimes(2);
-    });
+    expect(streetInput.value).toBe("rua bla");
+    expect(numberInput.value).toBe("5a");
+    expect(neighborhoodInput.value).toBe("bairro gg");
+    expect(ufInput.value).toBe("SP");
+    expect(cityInput.value).toBe("Limeira");
+    expect(zipcodeInput.value).toBe("12240-650");
+    expect(spyAxios).toBeCalledTimes(2);
+  });
 
-    it('should add an address', async () => {
+  it("should add an address", async () => {
+    const axiosMock = new MockAdapter(axios);
+    axiosMock
+      .onGet("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .reply(200, fakeAxiosUfs);
+    axiosMock
+      .onGet(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+      )
+      .reply(200, fakeAxiosCitys);
 
-        const spyApi = jest.spyOn(api, 'post');
+    const apiMock = new MockAdapter(api);
+    apiMock.onPost("/addresses").reply(201, fakeAddress);
+    apiMock.onDelete("/addresses/1").reply(204);
 
-        const { getByTestId } = await waitFor(() => render(
-            <UserContextProvider _testUser={fakeUser}>
-                <AccountAddresses />
-            </UserContextProvider>
-        ));
+    const spyApi = jest.spyOn(api, "post");
 
-        const streetInput = getByTestId('street') as HTMLInputElement;
-        const numberInput = getByTestId('number') as HTMLInputElement;
-        const neighborhoodInput = getByTestId('neighborhood') as HTMLInputElement;
-        const cityInput = getByTestId('city') as HTMLInputElement;
-        const ufInput = getByTestId('uf') as HTMLInputElement;
-        const zipcodeInput = getByTestId('zipcode') as HTMLInputElement;
-        const submitAddressButton = getByTestId('submit-address-button') as HTMLButtonElement;
+    const { getByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider _testUser={fakeUser}>
+          <AccountAddresses />
+        </UserContextProvider>
+      )
+    );
 
-        fireEvent.change(streetInput, { target: { value: 'rua bla' } });
-        fireEvent.change(numberInput, { target: { value: '5a' } });
-        fireEvent.change(neighborhoodInput, { target: { value: 'bairro gg' } });
-        fireEvent.change(zipcodeInput, { target: { value: '12240650' } });
-        await waitFor(() => fireEvent.change(ufInput, { target: { value: 'SP' } }));
-        fireEvent.change(cityInput, { target: { value: 'Limeira' } });
-        await waitFor(() => fireEvent.click(submitAddressButton));
+    const streetInput = getByTestId("street") as HTMLInputElement;
+    const numberInput = getByTestId("number") as HTMLInputElement;
+    const neighborhoodInput = getByTestId("neighborhood") as HTMLInputElement;
+    const cityInput = getByTestId("city") as HTMLInputElement;
+    const ufInput = getByTestId("uf") as HTMLInputElement;
+    const zipcodeInput = getByTestId("zipcode") as HTMLInputElement;
+    const submitAddressButton = getByTestId(
+      "submit-address-button"
+    ) as HTMLButtonElement;
 
-        expect(streetInput.value).toBe('');
-        expect(numberInput.value).toBe('');
-        expect(neighborhoodInput.value).toBe('');
-        expect(ufInput.value).toBe('0');
-        expect(cityInput.value).toBe('0');
-        expect(zipcodeInput.value).toBe('');
-        expect(spyApi).toBeCalledTimes(1);
-    });
+    fireEvent.change(streetInput, { target: { value: "rua bla" } });
+    fireEvent.change(numberInput, { target: { value: "5a" } });
+    fireEvent.change(neighborhoodInput, { target: { value: "bairro gg" } });
+    fireEvent.change(zipcodeInput, { target: { value: "12240650" } });
+    await waitFor(() => fireEvent.change(ufInput, { target: { value: "SP" } }));
+    fireEvent.change(cityInput, { target: { value: "Limeira" } });
+    await waitFor(() => fireEvent.click(submitAddressButton));
 
-    it('should delete address', async () => {
+    expect(streetInput.value).toBe("");
+    expect(numberInput.value).toBe("");
+    expect(neighborhoodInput.value).toBe("");
+    expect(ufInput.value).toBe("0");
+    expect(cityInput.value).toBe("0");
+    expect(zipcodeInput.value).toBe("");
+    expect(spyApi).toBeCalledTimes(1);
+  });
 
-        const spyApi = jest.spyOn(api, 'delete');
-        const confirmSpy = jest.spyOn(window, 'confirm');
-        confirmSpy.mockImplementation(jest.fn(() => true));
+  it("should delete address", async () => {
+    const axiosMock = new MockAdapter(axios);
+    axiosMock
+      .onGet("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .reply(200, fakeAxiosUfs);
+    axiosMock
+      .onGet(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados/SP/municipios"
+      )
+      .reply(200, fakeAxiosCitys);
 
-        const { getByTestId, queryByTestId } = await waitFor(() => render(
-            <UserContextProvider _testUser={{
-                ...fakeUser,
-                addresses: [fakeAddress]
-            }}>
-                <AccountAddresses />
-            </UserContextProvider>
-        ));
+    const apiMock = new MockAdapter(api);
+    apiMock.onPost("/addresses").reply(201, fakeAddress);
+    apiMock.onDelete("/addresses/1").reply(204);
 
-        const addressToBeRemoved = queryByTestId('address-card');
+    const spyApi = jest.spyOn(api, "delete");
+    const confirmSpy = jest.spyOn(window, "confirm");
+    confirmSpy.mockImplementation(jest.fn(() => true));
 
-        const removeAddressButton = getByTestId('remove-address-button') as HTMLButtonElement;
-        await waitFor(() => fireEvent.click(removeAddressButton));
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <UserContextProvider
+          _testUser={{
+            ...fakeUser,
+            addresses: [fakeAddress],
+          }}
+        >
+          <AccountAddresses />
+        </UserContextProvider>
+      )
+    );
 
-        const removedAddress = queryByTestId('address-card');
-        
-        expect(spyApi).toBeCalledTimes(1);
-        expect(confirmSpy).toBeCalledTimes(1);
-        expect(addressToBeRemoved).not.toBeNull();
-        expect(removedAddress).toBe(null);
-    });
+    const addressToBeRemoved = queryByTestId("address-card");
+
+    const removeAddressButton = getByTestId(
+      "remove-address-button"
+    ) as HTMLButtonElement;
+    await waitFor(() => fireEvent.click(removeAddressButton));
+
+    const removedAddress = queryByTestId("address-card");
+
+    expect(spyApi).toBeCalledTimes(1);
+    expect(confirmSpy).toBeCalledTimes(1);
+    expect(addressToBeRemoved).not.toBeNull();
+    expect(removedAddress).toBe(null);
+  });
 });

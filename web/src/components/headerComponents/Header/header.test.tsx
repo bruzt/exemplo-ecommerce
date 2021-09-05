@@ -1,110 +1,120 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MockAdapter from 'axios-mock-adapter';
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import MockAdapter from "axios-mock-adapter";
 
-jest.mock('next/router', () => require('next-router-mock'));
+jest.mock("next/router", () => require("next-router-mock"));
 
-import Header from './';
-import { ThemeContextProvider } from '../../../contexts/themeContext';
-import { CartContextProvider } from '../../../contexts/cartContext';
-import { FilterBarContextProvider } from '../../../contexts/filterBarContext';
-import { UserContextProvider } from '../../../contexts/userContext';
-import { fakeUser } from '../../../testUtils/fakeData';
-import api from '../../../services/api';
+import Header from "./";
+import { ThemeContextProvider } from "../../../contexts/themeContext";
+import { CartContextProvider } from "../../../contexts/cartContext";
+import { FilterBarContextProvider } from "../../../contexts/filterBarContext";
+import { UserContextProvider } from "../../../contexts/userContext";
+import { fakeUser } from "../../../testUtils/fakeData";
+import api from "../../../services/api";
 
-describe('Header Tests', () => {
+describe("Header Tests", () => {
+  it("should open login modal", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, []);
 
-    beforeAll(() => {
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, []);
-    });
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <CartContextProvider>
+            <FilterBarContextProvider>
+              <UserContextProvider>
+                <Header />
+              </UserContextProvider>
+            </FilterBarContextProvider>
+          </CartContextProvider>
+        </ThemeContextProvider>
+      )
+    );
 
-    it('should open login modal', async () => {
+    const loginButton = getByTestId("login-button");
 
-        const { getByTestId, queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <UserContextProvider>
-                            <Header />
-                        </UserContextProvider>
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
-            
-        const loginButton = getByTestId('login-button');
+    fireEvent.click(loginButton);
 
-        fireEvent.click(loginButton);
+    const loginModal = queryByTestId("login-modal");
 
-        const loginModal = queryByTestId('login-modal');
+    expect(loginModal).toBeInTheDocument();
+  });
 
-        expect(loginModal).toBeInTheDocument();
-    });
+  it("should render user dropdown on user logged", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, []);
 
-    it('should render user dropdown on user logged', async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <CartContextProvider>
+            <FilterBarContextProvider>
+              <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+                <Header />
+              </UserContextProvider>
+            </FilterBarContextProvider>
+          </CartContextProvider>
+        </ThemeContextProvider>
+      )
+    );
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
-                            <Header />
-                        </UserContextProvider>
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
-            
-        const userDropdown = queryByTestId('dropdown-user');
-        const loginButton = queryByTestId('login-button');
+    const userDropdown = queryByTestId("dropdown-user");
+    const loginButton = queryByTestId("login-button");
 
-        expect(userDropdown).toBeInTheDocument();
-        expect(loginButton).not.toBeInTheDocument();
-    });
+    expect(userDropdown).toBeInTheDocument();
+    expect(loginButton).not.toBeInTheDocument();
+  });
 
-    it('should go to account menu', async () => {
+  it("should go to account menu", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, []);
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
-                            <Header />
-                        </UserContextProvider>
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
-            
-        const userDropdown = queryByTestId('go-to-account');
-        
-        fireEvent.click(userDropdown);
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <CartContextProvider>
+            <FilterBarContextProvider>
+              <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+                <Header />
+              </UserContextProvider>
+            </FilterBarContextProvider>
+          </CartContextProvider>
+        </ThemeContextProvider>
+      )
+    );
 
-    it('should logout', async () => {
+    const userDropdown = queryByTestId("go-to-account");
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <UserContextProvider _testUser={fakeUser} _testLogin={true}>
-                            <Header />
-                        </UserContextProvider>
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
-            
-        const logout = queryByTestId('logout');
-        
-        fireEvent.click(logout);
+    fireEvent.click(userDropdown);
+  });
 
-        const userDropdown = queryByTestId('dropdown-user');
-        const loginButton = queryByTestId('login-button');
+  it("should logout", async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/categories").reply(200, []);
 
-        expect(loginButton).toBeInTheDocument();
-        expect(userDropdown).not.toBeInTheDocument();
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <CartContextProvider>
+            <FilterBarContextProvider>
+              <UserContextProvider _testUser={fakeUser} _testLogin={true}>
+                <Header />
+              </UserContextProvider>
+            </FilterBarContextProvider>
+          </CartContextProvider>
+        </ThemeContextProvider>
+      )
+    );
+
+    const logout = queryByTestId("logout");
+
+    fireEvent.click(logout);
+
+    const userDropdown = queryByTestId("dropdown-user");
+    const loginButton = queryByTestId("login-button");
+
+    expect(loginButton).toBeInTheDocument();
+    expect(userDropdown).not.toBeInTheDocument();
+  });
 });
