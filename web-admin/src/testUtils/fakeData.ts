@@ -28,7 +28,17 @@ export const fakeProducts = {
         created_at: "2021-07-16T15:03:18.173Z",
         updated_at: "2021-07-16T15:03:18.173Z",
       },
-      images: [],
+      images: [
+        {
+          id: 3,
+          product_id: 3,
+          url: "http://localhost:3001/uploads/7a7b718419a76f0982dc17e3a52e2a67-Captura de tela de 2021-03-02 09-18-24.png",
+          filename:
+            "7a7b718419a76f0982dc17e3a52e2a67-Captura de tela de 2021-03-02 09-18-24.png",
+          created_at: "2021-04-07T15:11:25.765Z",
+          updated_at: "2021-04-07T15:11:25.765Z",
+        },
+      ],
       isOnSale: false,
       finalPrice: "299.99",
       dateNow: "2021-08-11T11:47:14.681Z",
