@@ -1,73 +1,78 @@
-import React, { HTMLAttributes } from 'react';
-import dynamic from 'next/dynamic';
-import SunEditor from 'suneditor-react';
-import dompurify from 'dompurify';
+import React, { HTMLAttributes /*, useEffect, useRef*/ } from "react";
+import dynamic from "next/dynamic";
+import SunEditor from "suneditor-react";
+import dompurify from "dompurify";
 
-import 'suneditor/dist/css/suneditor.min.css';
+import "suneditor/dist/css/suneditor.min.css";
 
 //import sunEditorLangPtBr from '../../utils/sunEditorLangPtBr';
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
 interface IProps extends HTMLAttributes<HTMLElement> {
-    getContent: string;
-    setContent: React.Dispatch<React.SetStateAction<string>>;
+  getContent: string;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
 }
 
 let timeoutId: NodeJS.Timeout;
 
 function RichTextEditor({ getContent, setContent, ...rest }: IProps) {
+  //const editorRef = useRef<SunEditor>(null);
 
-    function setContentTimeOut(content: string){
+  /*useEffect(() => {
+    return () => editorRef.current.editor.destroy();
+  });*/
 
-        clearTimeout(timeoutId);
+  function setContentTimeOut(content: string) {
+    clearTimeout(timeoutId);
 
-        timeoutId = setTimeout( () => {
-            onEditorChange(content)
-        }, 1000);
-    }
+    timeoutId = setTimeout(() => {
+      onEditorChange(content);
+    }, 1000);
+  }
 
-    function onEditorChange(content: string) {
+  function onEditorChange(content: string) {
+    content = content.replace(
+      "height: 56.25%; padding-bottom: 56.25%;",
+      "height: 394px; padding-bottom: 0px;"
+    );
 
-        content = content.replace('height: 56.25%; padding-bottom: 56.25%;', 'height: 394px; padding-bottom: 0px;');
+    const purifiedContent = dompurify.sanitize(content, {
+      ADD_TAGS: ["iframe"],
+      ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
+    });
 
-        const purifiedContent = dompurify.sanitize(content, { 
-            ADD_TAGS: ["iframe"], 
-            ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling'] 
-        });
+    setContent(purifiedContent);
+  }
 
-        setContent(purifiedContent);
-    }
-
-    return (
-        <Container {...rest}>
-           
-            <SunEditor
-                lang="pt_br" /*sunEditorLangPtBr*/
-                setDefaultStyle={`
+  return (
+    <Container {...rest}>
+      <SunEditor
+        //ref={(element) => (editorRef.current = element)}
+        lang="pt_br" /*sunEditorLangPtBr*/
+        setDefaultStyle={`
                     width: 100%;
                     max-width: 800px;
                     height: 100%;
                     min-height: 500px;
                 `}
-                placeholder='Escreva aqui'
-                setContents={getContent}
-                onChange={(content) => setContentTimeOut(content)}
-                setOptions={{
-                    imageWidth: '100%',
-                    imageFileInput: false,
-                    formats: ['h1', 'h2', 'p'],
-                    buttonList: [
-                        ['undo', 'redo'],
-                        ['formatBlock', 'align', 'list'],
-                        ['bold', 'underline', 'italic', 'strike', 'removeFormat'],
-                        ['image', 'link', 'video'],
-                    ],
-                }}
-            />
-
-        </Container>
-    );
+        placeholder="Escreva aqui"
+        setContents={getContent}
+        onChange={(content) => setContentTimeOut(content)}
+        setOptions={{
+          imageWidth: "100%",
+          imageFileInput: false,
+          formats: ["h1", "h2", "p"],
+          buttonList: [
+            ["undo", "redo"],
+            ["formatBlock", "align", "list"],
+            ["bold", "underline", "italic", "strike", "removeFormat"],
+            ["image", "link", "video"],
+          ],
+        }}
+      />
+    </Container>
+  );
 }
 
 export default dynamic(Promise.resolve(RichTextEditor), { ssr: false });

@@ -1,318 +1,339 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import Loader from 'react-loader-spinner';
+import React, { FormEvent, useEffect, useState } from "react";
+import Loader from "react-loader-spinner";
 
-import api from '../../../services/api';
+import api from "../../../services/api";
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
-import Button from '../../genericComponents/Button';
-import AddImageInput from '../AddImageInput';
-import ImagesGrid from '../ImagesGrid';
-import RichTextEditor from '../../RichTextEditor';
+import Button from "../../genericComponents/Button";
+import AddImageInput from "../AddImageInput";
+import ImagesGrid from "../ImagesGrid";
+import RichTextEditor from "../../RichTextEditor";
 
-import { IProduct } from '../ListProducts';
-import { ICategory } from '../AddProduct';
+import { IProduct } from "../ListProducts";
+import { ICategory } from "../AddProduct";
 
 interface IProps {
-    product: IProduct;
-    setUpdateModalOpen: React.Dispatch<boolean>;
+  product: IProduct;
+  setUpdateModalOpen: React.Dispatch<boolean>;
 }
 
 export default function UpdateProduct({ product, setUpdateModalOpen }: IProps) {
+  const [getCategories, setCategories] = useState<ICategory[]>([]);
 
-    const [getCategories, setCategories] = useState<ICategory[]>([]);
+  const [getTitle, setTitle] = useState(product.title);
+  const [getFiles, setFiles] = useState<File[]>([]);
+  const [getDescription, setDescription] = useState(product.description);
 
-    const [getTitle, setTitle] = useState(product.title);
-    const [getFiles, setFiles] = useState<File[]>([]);
-    const [getDescription, setDescription] = useState(product.description);
+  const [getPrice, setPrice] = useState(String(product.price));
+  const [getQtdStock, setQtdStock] = useState(String(product.quantity_stock));
+  const [getCategoryId, setCategoryId] = useState(String(product.category.id));
+  const [getTangible, setTangible] = useState(product.tangible ? "1" : "0");
 
-    const [getPrice, setPrice] = useState(String(product.price));
-    const [getQtdStock, setQtdStock] = useState(String(product.quantity_stock));
-    const [getCategoryId, setCategoryId] = useState(String(product.category.id));
-    const [getTangible, setTangible] = useState((product.tangible) ? "1" : "0");
-    
-    const [getWeight, setWeight] = useState(product.weight);
-    const [getLength, setLength] = useState(product.length);
-    const [getHeight, setHeight] = useState(product.height);
-    const [getWidth, setWidth] = useState(product.width);
+  const [getWeight, setWeight] = useState(product.weight);
+  const [getLength, setLength] = useState(product.length);
+  const [getHeight, setHeight] = useState(product.height);
+  const [getWidth, setWidth] = useState(product.width);
 
-    const [getDiscount, setDiscount] = useState(String(product.discount_percent));
-    const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string | null>(product.discount_datetime_start ? serializeDateBr(product.discount_datetime_start): null);
-    const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string | null>(product.discount_datetime_end ? serializeDateBr(product.discount_datetime_end) : null);
+  const [getDiscount, setDiscount] = useState(String(product.discount_percent));
+  const [getDiscountDatetimeStart, setDiscountDatetimeStart] = useState<string>(
+    product.discount_datetime_start
+      ? serializeDateBr(product.discount_datetime_start)
+      : ""
+  );
+  const [getDiscountDatetimeEnd, setDiscountDatetimeEnd] = useState<string>(
+    product.discount_datetime_end
+      ? serializeDateBr(product.discount_datetime_end)
+      : ""
+  );
 
-    const [getHtmlBody, setHtmlBody] = useState(product.html_body);
+  const [getHtmlBody, setHtmlBody] = useState(product.html_body);
 
-    const [getIsFetching, setIsFetching] = useState(false);
-    
-    useEffect( () => {
-        fetchCategories();
-    }, []);
+  const [getIsFetching, setIsFetching] = useState(false);
 
-    function serializeDateBr(date: string) {
-        return new Date(new Date(date).setHours(new Date(date).getHours() - 3)).toJSON().slice(0,19);
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  function serializeDateBr(date: string) {
+    return new Date(new Date(date).setHours(new Date(date).getHours() - 3))
+      .toJSON()
+      .slice(0, 19);
+  }
+
+  async function fetchCategories() {
+    try {
+      const response = await api.get("/categories");
+
+      setCategories(response.data);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao buscar categorias");
     }
+  }
 
-    async function fetchCategories() {
-        try {
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault();
 
-            const response = await api.get('/categories');
+    if (getTitle.trim().length == 0) return alert("Título não preenchido");
+    if (getDescription.trim().length == 0)
+      return alert("Descrição não preenchida");
+    if (String(getPrice).trim().length == 0)
+      return alert("Preço não preenchido");
+    if (getCategoryId == "0") return alert("Categoria não selecionada");
+    if (String(getWeight).trim().length == 0)
+      return alert("Peso não preenchido");
+    if (String(getLength).trim().length == 0)
+      return alert("Comprimento não preenchido");
+    if (String(getHeight).trim().length == 0)
+      return alert("Altura não preenchido");
+    if (String(getWidth).trim().length == 0)
+      return alert("Largura não preenchido");
 
-            setCategories(response.data);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao buscar categorias');
-        }
+    const data = {
+      title: getTitle,
+      description: getDescription,
+      price: Number(getPrice),
+      quantity_stock: Number(getQtdStock),
+      discount_percent: Number(getDiscount),
+      discount_datetime_start: getDiscountDatetimeStart
+        ? getDiscountDatetimeStart
+        : undefined,
+      discount_datetime_end: getDiscountDatetimeEnd
+        ? getDiscountDatetimeEnd
+        : undefined,
+      category_id: Number(getCategoryId),
+      tangible: Boolean(Number(getTangible)),
+      weight: getWeight,
+      length: getLength,
+      height: getHeight,
+      width: getWidth,
+      html_body: getHtmlBody.trim().length > 0 ? getHtmlBody : undefined,
+    };
+
+    try {
+      setIsFetching(true);
+      await api.put(`/products/${product.id}`, data);
+
+      if (getFiles.length > 0) {
+        const files = new FormData();
+
+        getFiles.forEach((file) => files.append("file", file, file.name));
+
+        await api.post(`/products/${product.id}/images`, files);
+      }
+
+      setIsFetching(false);
+      alert("Produto atualizado com sucesso");
+
+      setUpdateModalOpen(false);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao atualizar produto");
+      setIsFetching(false);
     }
+  }
 
-    async function onSubmit(event: FormEvent) {
+  return (
+    <Container data-testid="update-modal-container">
+      <form onSubmit={onSubmit}>
+        <header>
+          <button type="button" onClick={() => setUpdateModalOpen(false)}>
+            X
+          </button>
+        </header>
 
-        event.preventDefault();
+        <ImagesGrid product={product} />
 
-        if (getTitle.trim().length == 0) return alert('Título não preenchido');
-        if (getDescription.trim().length == 0) return alert('Descrição não preenchida');
-        if (String(getPrice).trim().length == 0) return alert('Preço não preenchido');
-        if (getCategoryId == '0') return alert('Categoria não selecionada');
-        if (String(getWeight).trim().length == 0) return alert('Peso não preenchido');
-        if (String(getLength).trim().length == 0) return alert('Comprimento não preenchido');
-        if (String(getHeight).trim().length == 0) return alert('Altura não preenchido');
-        if (String(getWidth).trim().length == 0) return alert('Largura não preenchido');
-        
-        const data = {
-            title: getTitle,
-            description: getDescription,
-            price: Number(getPrice),
-            quantity_stock: Number(getQtdStock),
-            discount_percent: Number(getDiscount),
-            discount_datetime_start: getDiscountDatetimeStart ? getDiscountDatetimeStart : undefined,
-            discount_datetime_end: getDiscountDatetimeEnd ? getDiscountDatetimeEnd : undefined,
-            category_id: Number(getCategoryId),
-            tangible: Boolean(Number(getTangible)),
-            weight: getWeight,
-            length: getLength,
-            height: getHeight,
-            width: getWidth,
-            html_body: getHtmlBody.trim().length > 0 ? getHtmlBody : undefined
-        };
+        <div className="input-group">
+          <label htmlFor="product-title">Título</label>
+          <input
+            type="text"
+            id="product-title"
+            value={getTitle}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+        </div>
 
-        try {
-            setIsFetching(true);
-            await api.put(`/products/${product.id}`, data);
+        <AddImageInput getFiles={getFiles} setFiles={setFiles} />
 
-            if(getFiles.length > 0){
+        <div className="input-group">
+          <label htmlFor="product-description">Descrição</label>
+          <textarea
+            id="product-description"
+            maxLength={255}
+            value={getDescription}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+        </div>
 
-                const files = new FormData();
+        <div className="form-row">
+          <div className="input-group">
+            <label htmlFor="product-price">Preço (R$)</label>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              id="product-price"
+              value={getPrice}
+              onChange={(event) => setPrice(event.target.value)}
+            />
+          </div>
 
-                getFiles.forEach( (file) => files.append('file', file, file.name));
+          <div className="input-group">
+            <label htmlFor="product-stock">Qtd estoque</label>
+            <input
+              type="number"
+              min="0"
+              id="product-stock"
+              value={getQtdStock}
+              onChange={(event) => setQtdStock(event.target.value)}
+            />
+          </div>
 
-                await api.post(`/products/${product.id}/images`, files);
-            }
+          <div className="input-group">
+            <label htmlFor="product-category">Categoria</label>
+            <select
+              id="product-category"
+              value={getCategoryId}
+              onChange={(event) => setCategoryId(event.target.value)}
+            >
+              <option value="0"></option>
+              {getCategories.map((category, index) => (
+                <option key={index} value={`${category.id}`}>
+                  {category.id} - {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            setIsFetching(false);
-            alert('Produto atualizado com sucesso');
+          <div className="input-group product-tangible-group">
+            <label htmlFor="product-tangible">Tangível</label>
+            <select
+              id="product-tangible"
+              value={getTangible}
+              onChange={(event) => setTangible(event.target.value)}
+            >
+              <option value="1">Sim</option>
+              <option value="0">Não</option>
+            </select>
+          </div>
+        </div>
 
-            setUpdateModalOpen(false);
-            
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao atualizar produto');
-            setIsFetching(false);
-        }
-    }
+        <div className="form-row">
+          <div className="input-group">
+            <label htmlFor="product-weight">Peso (kg)</label>
+            <input
+              type="number"
+              min="0"
+              step="0.001"
+              id="product-weight"
+              value={getWeight}
+              onChange={(event) => setWeight(Number(event.target.value))}
+            />
+          </div>
 
-    return (
-        <Container>
-            
-            <form onSubmit={onSubmit}>
+          <div className="input-group">
+            <label htmlFor="product-length">Comprimento (cm)</label>
+            <input
+              type="number"
+              min="0"
+              step="0.1"
+              id="product-length"
+              value={getLength}
+              onChange={(event) => setLength(Number(event.target.value))}
+            />
+          </div>
 
-                <header>
-                    <button type='button' onClick={() => setUpdateModalOpen(false)}>X</button>
-                </header>
+          <div className="input-group">
+            <label htmlFor="product-height">Altura (cm)</label>
+            <input
+              type="number"
+              min="0"
+              step="0.1"
+              id="product-height"
+              value={getHeight}
+              onChange={(event) => setHeight(Number(event.target.value))}
+            />
+          </div>
 
-                <ImagesGrid product={product} />
+          <div className="input-group">
+            <label htmlFor="product-width">Largura (cm)</label>
+            <input
+              type="number"
+              min="0"
+              step="0.1"
+              id="product-width"
+              value={getWidth}
+              onChange={(event) => setWidth(Number(event.target.value))}
+            />
+          </div>
+        </div>
 
-                <div className="input-group">
-                    <label htmlFor="product-title">Título</label>
-                    <input type="text" id='product-title' value={getTitle} onChange={(event) => setTitle(event.target.value)} />
-                </div>
+        <div className="form-row">
+          <div className="input-group">
+            <label htmlFor="product-discount">Desconto (%)</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              id="product-discount"
+              value={getDiscount}
+              onChange={(event) => setDiscount(event.target.value)}
+            />
+          </div>
 
-                <AddImageInput getFiles={getFiles} setFiles={setFiles} />
+          <div className="input-group">
+            <label htmlFor="datetime-start">Início do desconto</label>
+            <input
+              type="datetime-local"
+              value={getDiscountDatetimeStart}
+              onChange={(event) => setDiscountDatetimeStart(event.target.value)}
+            />
+          </div>
 
-                <div className="input-group">
-                    <label htmlFor="product-description">Descrição</label>
-                    <textarea 
-                        id='product-description' 
-                        maxLength={255}
-                        value={getDescription} 
-                        onChange={(event) => setDescription(event.target.value)} 
-                    />
-                </div>
+          <div className="input-group">
+            <label htmlFor="datetime-start">Fim do desconto</label>
+            <input
+              type="datetime-local"
+              value={getDiscountDatetimeEnd}
+              onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
+            />
+          </div>
+        </div>
 
-                <div className="form-row">
-                    <div className="input-group">
-                        <label htmlFor="product-price">Preço (R$)</label>
-                        <input 
-                            type="number" 
-                            min="0"
-                            step="0.01"
-                            id='product-price' 
-                            value={getPrice} 
-                            onChange={(event) => setPrice(event.target.value)} 
-                        />
-                    </div>
+        <section className="text-editor">
+          <label>Corpo do anúncio</label>
+          {process.browser && (
+            <RichTextEditor getContent={getHtmlBody} setContent={setHtmlBody} />
+          )}
+        </section>
 
-                    <div className="input-group">
-                        <label htmlFor="product-stock">Qtd estoque</label>
-                        <input 
-                            type="number" 
-                            min='0'
-                            id='product-stock' 
-                            value={getQtdStock} 
-                            onChange={(event) => setQtdStock(event.target.value)} 
-                        />
-                    </div>
+        <Button
+          type="submit"
+          className={`${getIsFetching && "is-fetching"}`}
+          disabled={getIsFetching}
+        >
+          {getIsFetching ? (
+            <Loader type="TailSpin" color="#0D2235" height={30} width={30} />
+          ) : (
+            "Atualizar"
+          )}
+        </Button>
 
-                    <div className="input-group">
-                        <label htmlFor="product-category">Categoria</label>
-                        <select id="product-category" value={getCategoryId} onChange={(event) => setCategoryId(event.target.value)}>
-                            <option value="0"></option>
-                            {getCategories.map( (category, index) => (
-                                <option key={index} value={`${category.id}`}>{category.id} - {category.name}</option>
-                            ))}
-                        </select>
-                    </div>
+        <div className="preview">
+          <h2>Preview</h2>
 
-                    <div className="input-group product-tangible-group">
-                        <label htmlFor="product-tangible">Tangível</label>
-                        <select id="product-tangible" value={getTangible} onChange={(event) => setTangible(event.target.value)}>
-                            <option value="1">Sim</option>
-                            <option value="0">Não</option>
-                        </select>
-                    </div>
-                </div>
+          <hr />
 
-                <div className="form-row">
-                    <div className="input-group">
-                        <label htmlFor="product-weight">Peso (kg)</label>
-                        <input 
-                            type="number" 
-                            min="0"
-                            step="0.001"
-                            id='product-weight' 
-                            value={getWeight} 
-                            onChange={(event) => setWeight(Number(event.target.value))} 
-                        />
-                    </div>
+          <div
+            className="preview-content"
+            dangerouslySetInnerHTML={{ __html: getHtmlBody }}
+          />
 
-                    <div className="input-group">
-                        <label htmlFor="product-length">Comprimento (cm)</label>
-                        <input 
-                            type="number" 
-                            min='0'
-                            step="0.1"
-                            id='product-length' 
-                            value={getLength} 
-                            onChange={(event) => setLength(Number(event.target.value))} 
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="product-height">Altura (cm)</label>
-                        <input 
-                            type="number" 
-                            min='0'
-                            step="0.1"
-                            id='product-height' 
-                            value={getHeight} 
-                            onChange={(event) => setHeight(Number(event.target.value))} 
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="product-width">Largura (cm)</label>
-                        <input 
-                            type="number" 
-                            min='0'
-                            step="0.1"
-                            id='product-width' 
-                            value={getWidth} 
-                            onChange={(event) => setWidth(Number(event.target.value))} 
-                        />
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="input-group">
-                        <label htmlFor="product-discount">Desconto (%)</label>
-                        <input 
-                            type="number" 
-                            min="0"
-                            max='100'
-                            id='product-discount' 
-                            value={getDiscount} 
-                            onChange={(event) => setDiscount(event.target.value)} 
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="datetime-start">Início do desconto</label>
-                        <input
-                            type="datetime-local"                            
-                            value={getDiscountDatetimeStart}
-                            onChange={(event) => setDiscountDatetimeStart(event.target.value)}
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="datetime-start">Fim do desconto</label>
-                        <input
-                            type="datetime-local"
-                            value={getDiscountDatetimeEnd}
-                            onChange={(event) => setDiscountDatetimeEnd(event.target.value)}
-                        />
-                    </div>
-                </div>
-
-                <section className="text-editor">
-                    <label>Corpo do anúncio</label>
-                    <RichTextEditor
-                        getContent={getHtmlBody}
-                        setContent={setHtmlBody}
-                    />
-                </section>
-
-                <Button 
-                    type='submit'
-                    className={`${getIsFetching && 'is-fetching'}`}
-                    disabled={getIsFetching}
-                >
-                    {getIsFetching
-                        ? (
-                            <Loader
-                                type="TailSpin"
-                                color="#0D2235"
-                                height={30}
-                                width={30}
-                            />
-                        )
-                        : (
-                            'Atualizar'
-                        )
-                    }
-                </Button>
-                
-                <div className="preview">
-                    <h2>Preview</h2>
-
-                    <hr />
-
-                    <div className="preview-content" dangerouslySetInnerHTML={{ __html: getHtmlBody }} />
-
-                    <hr />
-                </div>
-
-            </form>
-
-        </Container>
-    );
+          <hr />
+        </div>
+      </form>
+    </Container>
+  );
 }
