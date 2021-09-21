@@ -3,6 +3,7 @@ import { In, MoreThan } from "typeorm";
 
 import ProductModel from "../../models/ProductModel";
 import OrderProductModel from "../../models/OrderProductModel";
+import sortIdsByFrequency from "../../utils/sortIdsByFrequency";
 
 interface IProductWithBuyed
   extends Omit<
@@ -17,16 +18,6 @@ interface IProductWithBuyed
     | "reload"
   > {
   productsBuyedWith: ProductModel[];
-}
-
-function SortIdsByFrequency(arr: number[]) {
-  const frequency = arr.reduce<{ [key: string]: number }>((obj, curr) => {
-    obj[curr] = (obj[curr] || 0) + 1;
-    return obj;
-  }, {});
-  const sorted = Object.entries(frequency).sort((a, b) => b[1] - a[1]);
-  const uniqueIds = sorted.map((id) => id[0]);
-  return uniqueIds.map(Number);
 }
 
 export default async function show(req: Request, res: Response) {
@@ -76,7 +67,7 @@ export default async function show(req: Request, res: Response) {
       );
 
       // sort by frequency
-      const sortedIds = SortIdsByFrequency(buyedWithProductsIds);
+      const sortedIds = sortIdsByFrequency(buyedWithProductsIds);
 
       // get products thas was most buyed with this product
       const productsBuyedWith = await ProductModel.find({
