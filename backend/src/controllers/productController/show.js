@@ -3,16 +3,7 @@ const { Op } = require("sequelize");
 
 const ProductModel = require("../../models/ProductModel");
 const OrdersProductsModel = require("../../models/OrdersProductsModel");
-
-function SortIdsByFrequency(arr) {
-  const frequency = arr.reduce((obj, curr) => {
-    obj[curr] = (obj[curr] || 0) + 1;
-    return obj;
-  }, {});
-  const sorted = Object.entries(frequency).sort((a, b) => b[1] - a[1]);
-  const uniqueIds = sorted.map((id) => id[0]);
-  return uniqueIds.map(Number);
-}
+const sortIdsByFrequency = require("../../util/sortIdsByFrequency");
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
@@ -74,7 +65,7 @@ module.exports = async (req, res) => {
       );
 
       // sort by frequency
-      const sortedIds = SortIdsByFrequency(buyedWithProductsIds);
+      const sortedIds = sortIdsByFrequency(buyedWithProductsIds);
 
       // get products thas was most buyed with this product
       const productsBuyedWith = await ProductModel.findAll({
