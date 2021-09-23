@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "start": "next build && next start -p 3002",
+    "next:start": "next start -p 3002",
+    "start": "npm-run-all build next:start",
     "test": "jest"
   },
   "dependencies": {
@@ -13,6 +14,7 @@
     "dompurify": "^2.2.9",
     "jsonwebtoken": "^8.5.1",
     "next": "^11.0.1",
+    "npm-run-all": "^4.1.5",
     "query-string": "^6.14.1",
     "re-resizable": "^6.9.0",
     "react": "^17.0.2",
