@@ -1,27 +1,26 @@
 // @ts-ignore
 //import axios from 'axios';
 //import correiosApi from 'node-correios';
-import frete from 'frete';
+import frete from "frete";
 
 interface IArgs {
-    destZipCode: string;
-    weight: string;
-    length: number;
-    height: number;
-    width: number;
+  destZipCode: string;
+  weight: string;
+  length: number;
+  height: number;
+  width: number;
 }
 
 export default async function correios({
-    destZipCode,
-    height,
-    length,
-    weight,
-    width
+  destZipCode,
+  height,
+  length,
+  weight,
+  width,
 }: IArgs) {
+  if (length < 15) length = 15;
 
-    if (length < 15) length = 15;
-
-    /*let response, pac, sedex;
+  /*let response, pac, sedex;
     
     try {
         const source = axios.CancelToken.source();
@@ -68,7 +67,7 @@ export default async function correios({
         sedex = { message: 'Não foi possivel obter frete' }
     }*/
 
-    /*let pac, sedex, response;
+  /*let pac, sedex, response;
 
     try {
         [ response ] = await correiosApi.calcPrecoPrazo({
@@ -124,51 +123,49 @@ export default async function correios({
         }
     }*/
 
-    let pac, sedex;
+  let pac, sedex;
 
-    try {
-        [ pac ] = await frete()
-            .servico(frete.servicos.pac)
-            .cepOrigem('13467460')
-            .cepDestino(destZipCode)
-            .formato(frete.formatos.caixaPacote)
-            .peso(Number(weight.replace(',', '.')))
-            .comprimento(length)
-            .altura(height)
-            .largura(width)
-            .diametro(0)
-            .maoPropria('N')
-            .valorDeclarado(0)
-            .avisoRecebimento('N')
-            .precoPrazo()
-        ;
-    } catch (error) {
-        pac = {
-            message: 'Não foi possível obter o frete'
-        }
-    }
+  try {
+    [pac] = await frete()
+      .servico(frete.servicos.pac)
+      .cepOrigem("13467460")
+      //.cepDestino(destZipCode)
+      .formato(frete.formatos.caixaPacote)
+      .peso(Number(weight.replace(",", ".")))
+      .comprimento(length)
+      .altura(height)
+      .largura(width)
+      .diametro(0)
+      .maoPropria("N")
+      .valorDeclarado(0)
+      .avisoRecebimento("N")
+      .precoPrazo(destZipCode);
+  } catch (error) {
+    pac = {
+      message: "Não foi possível obter o frete",
+    };
+  }
 
-    try {
-        [ sedex ] = await frete()
-            .servico(frete.servicos.sedex)
-            .cepOrigem('13467460')
-            .cepDestino(destZipCode)
-            .formato(frete.formatos.caixaPacote)
-            .peso(Number(weight.replace(',', '.')))
-            .comprimento(length)
-            .altura(height)
-            .largura(width)
-            .diametro(0)
-            .maoPropria('N')
-            .valorDeclarado(0)
-            .avisoRecebimento('N')
-            .precoPrazo()
-        ;
-    } catch (error) {
-        sedex = {
-            message: 'Não foi possível obter o frete'
-        }
-    }
+  try {
+    [sedex] = await frete()
+      .servico(frete.servicos.sedex)
+      .cepOrigem("13467460")
+      //.cepDestino(destZipCode)
+      .formato(frete.formatos.caixaPacote)
+      .peso(Number(weight.replace(",", ".")))
+      .comprimento(length)
+      .altura(height)
+      .largura(width)
+      .diametro(0)
+      .maoPropria("N")
+      .valorDeclarado(0)
+      .avisoRecebimento("N")
+      .precoPrazo(destZipCode);
+  } catch (error) {
+    sedex = {
+      message: "Não foi possível obter o frete",
+    };
+  }
 
-    return { pac, sedex };
+  return { pac, sedex };
 }
