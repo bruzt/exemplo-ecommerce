@@ -1,343 +1,389 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import * as router from 'next/router';
-import '@testing-library/jest-dom';
-import MockAdapter from 'axios-mock-adapter';
+import React, { FC } from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import router from "next/router";
+import "@testing-library/jest-dom";
+import MockAdapter from "axios-mock-adapter";
+import { SWRConfig } from "swr";
 
-import ProductPage from './';
-import { CartContextProvider } from '../../../contexts/cartContext';
-import { FilterBarContextProvider } from '../../../contexts/filterBarContext';
-import { ThemeContextProvider } from '../../../contexts/themeContext';
-import { fakeProduct, fakeCategories } from '../../../testUtils/fakeData';
-import api from '../../../services/api';
+import ProductPage from "./";
+import { CartContextProvider } from "../../../contexts/cartContext";
+import { FilterBarContextProvider } from "../../../contexts/filterBarContext";
+import { ThemeContextProvider } from "../../../contexts/themeContext";
+import { fakeProduct, fakeCategories } from "../../../testUtils/fakeData";
+import api from "../../../services/api";
 
-jest.mock('next/router', () => require('next-router-mock'));
+jest.mock("next/router", () => require("next-router-mock"));
 
-describe('Product Page Tests', () => {
+const SwrWithoutCache: FC = ({ children }) => (
+  <SWRConfig value={{ dedupingInterval: 0, provider: () => new Map() }}>
+    {children}
+  </SWRConfig>
+);
 
-    it('should mount breadcrumb', async () => {
+describe("Product Page Tests", () => {
+  it("should mount breadcrumb", async () => {
+    const product = {
+      ...fakeProduct,
+      category: {
+        ...fakeProduct.category,
+        id: 3,
+        parent_id: 2,
+      },
+    };
 
-        const product = { 
-            ...fakeProduct, 
-            category: { 
-                ...fakeProduct.category, 
-                id: 3, 
-                parent_id: 2 
-            }
-        };
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+    const { queryAllByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-        const { queryAllByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    const categoriesNames = queryAllByTestId("category-name");
+    const categoriesSpacer = queryAllByTestId("category-spacer");
 
-        const categoriesNames = queryAllByTestId('category-name');
-        const categoriesSpacer = queryAllByTestId('category-spacer');
+    expect(categoriesNames.length).toBe(3);
+    expect(categoriesSpacer.length).toBe(2);
+  });
 
-        expect(categoriesNames.length).toBe(3);
-        expect(categoriesSpacer.length).toBe(2);
-    });
+  it("should click on category breadcrumb", async () => {
+    const product = {
+      ...fakeProduct,
+      category: {
+        ...fakeProduct.category,
+        id: 3,
+        parent_id: 2,
+      },
+    };
 
-    it('should click on category breadcrumb', async () => {
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const spyRouter = jest.spyOn(router, 'useRouter');
+    const { queryAllByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-        const product = { 
-            ...fakeProduct, 
-            category: { 
-                ...fakeProduct.category, 
-                id: 3, 
-                parent_id: 2 
-            }
-        };
+    const categoriesNames = queryAllByTestId("category-name");
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+    fireEvent.click(categoriesNames[0]);
 
-        const { queryAllByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    expect(router.asPath).toBe("/search?categoryId=1&page=1&category=Hardware");
+  });
 
-        const categoriesNames = queryAllByTestId('category-name');
+  it("should render product page as isOnSale", async () => {
+    const now = new Date().toISOString();
+    const discountStart = new Date(
+      new Date().setDate(new Date().getDate() - 1)
+    ).toISOString();
+    const discountEnd = new Date(
+      new Date().setDate(new Date().getDate() + 1)
+    ).toISOString();
 
-        fireEvent.click(categoriesNames[0]);
+    const product = {
+      ...fakeProduct,
+      isOnSale: true,
+      discount_percent: 10,
+      dateNow: now,
+      discount_datetime_start: discountStart,
+      discount_datetime_end: discountEnd,
+    };
 
-        expect(spyRouter).toBeCalledTimes(17);
-    });
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-    it('should render product page as isOnSale', async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-        const now = new Date().toISOString();
-        const discountStart = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
-        const discountEnd = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString();
+    const countdownContainer = queryByTestId("countdown-container");
+    const originalPriceSpan = queryByTestId("original-price");
+    const discountPercentSpan = queryByTestId("discount-percent");
 
-        const product = { 
-            ...fakeProduct, 
-            isOnSale: true, 
-            discount_percent: 10,
-            dateNow: now,
-            discount_datetime_start: discountStart,
-            discount_datetime_end: discountEnd,
-        };
+    expect(countdownContainer).toBeInTheDocument();
+    expect(originalPriceSpan).toBeInTheDocument();
+    expect(discountPercentSpan).toBeInTheDocument();
+  });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+  it("should not render product page as isOnSale", async () => {
+    const product = {
+      ...fakeProduct,
+      isOnSale: false,
+    };
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const countdownContainer = queryByTestId('countdown-container');
-        const originalPriceSpan = queryByTestId('original-price');
-        const discountPercentSpan = queryByTestId('discount-percent');
-        
-        expect(countdownContainer).toBeInTheDocument();
-        expect(originalPriceSpan).toBeInTheDocument();
-        expect(discountPercentSpan).toBeInTheDocument();
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should not render product page as isOnSale', async () => {
+    const countdownContainer = queryByTestId("countdown-container");
+    const originalPriceSpan = queryByTestId("original-price");
+    const discountPercentSpan = queryByTestId("discount-percent");
 
-        const product = { 
-            ...fakeProduct, 
-            isOnSale: false, 
-        };
+    expect(countdownContainer).not.toBeInTheDocument();
+    expect(originalPriceSpan).not.toBeInTheDocument();
+    expect(discountPercentSpan).not.toBeInTheDocument();
+  });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+  it("should render product page as lacking", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 0,
+    };
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const countdownContainer = queryByTestId('countdown-container');
-        const originalPriceSpan = queryByTestId('original-price');
-        const discountPercentSpan = queryByTestId('discount-percent');
-        
-        expect(countdownContainer).not.toBeInTheDocument();
-        expect(originalPriceSpan).not.toBeInTheDocument();
-        expect(discountPercentSpan).not.toBeInTheDocument();
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should render product page as lacking', async () => {
+    const lackingP = queryByTestId("lacking");
+    const quantityStockP = queryByTestId("quantity-stock");
 
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 0,
-        };
+    expect(lackingP).toBeInTheDocument();
+    expect(quantityStockP.innerHTML).toBe("Disponível: 0");
+  });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+  it("should not let select qtd more than in stock", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 2,
+    };
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const lackingP = queryByTestId('lacking');
-        const quantityStockP = queryByTestId('quantity-stock');
-       
-        expect(lackingP).toBeInTheDocument();
-        expect(quantityStockP.innerHTML).toBe('Disponível: 0');
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should not let select qtd more than in stock', async () => {
+    const qtdInput = queryByTestId("qtd-input") as HTMLInputElement;
 
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 2,
-        };
+    fireEvent.change(qtdInput, { target: { value: "3" } });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+    expect(qtdInput.value).toBe("2");
+  });
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+  it("should not let select qtd less than zero", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 2,
+    };
 
-        const qtdInput = queryByTestId('qtd-input') as HTMLInputElement;
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        fireEvent.change(qtdInput, { target: { value: '3' }});
-        
-        expect(qtdInput.value).toBe('2');
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should not let select qtd less than zero', async () => {
+    const qtdInput = queryByTestId("qtd-input") as HTMLInputElement;
 
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 2,
-        };
+    fireEvent.change(qtdInput, { target: { value: "-1" } });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+    expect(qtdInput.value).toBe("0");
+  });
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+  it("should disable add to cart button if select zero in qtd", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 2,
+    };
 
-        const qtdInput = queryByTestId('qtd-input') as HTMLInputElement;
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        fireEvent.change(qtdInput, { target: { value: '-1' }});
-        
-        expect(qtdInput.value).toBe('0');
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should disable add to cart button if select zero in qtd', async () => {
+    const qtdInput = queryByTestId("qtd-input") as HTMLInputElement;
+    const addToCartPageButton = queryByTestId("add-to-cart-page-button");
 
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 2,
-        };
+    fireEvent.change(qtdInput, { target: { value: "0" } });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+    expect(addToCartPageButton).toBeDisabled();
+  });
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+  it("should go to cart when click in add to cart", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 2,
+    };
 
-        const qtdInput = queryByTestId('qtd-input') as HTMLInputElement;
-        const addToCartPageButton = queryByTestId('add-to-cart-page-button');
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        fireEvent.change(qtdInput, { target: { value: '0' }});
-        
-        expect(addToCartPageButton).toBeDisabled();
-    });
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-    it('should go to cart when click in add to cart', async () => {
+    const qtdInput = queryByTestId("qtd-input") as HTMLInputElement;
+    const addToCartPageButton = queryByTestId("add-to-cart-page-button");
 
-        const spyRouter = jest.spyOn(router, 'useRouter');
+    fireEvent.change(qtdInput, { target: { value: "1" } });
+    fireEvent.click(addToCartPageButton);
 
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 2,
-        };
+    expect(router.asPath).toBe("/order");
+  });
 
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
+  it("should render frequently buyed with", async () => {
+    const product = {
+      ...fakeProduct,
+      quantity_stock: 2,
+      productsBuyedWith: [fakeProduct],
+    };
 
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/products/1?buyedWith=4")
+      .reply(200, product);
 
-        const qtdInput = queryByTestId('qtd-input') as HTMLInputElement;
-        const addToCartPageButton = queryByTestId('add-to-cart-page-button');
+    const { queryByTestId } = await waitFor(() =>
+      render(
+        <SwrWithoutCache>
+          <ThemeContextProvider>
+            <CartContextProvider>
+              <FilterBarContextProvider>
+                <ProductPage product={product} />
+              </FilterBarContextProvider>
+            </CartContextProvider>
+          </ThemeContextProvider>
+        </SwrWithoutCache>
+      )
+    );
 
-        fireEvent.change(qtdInput, { target: { value: '1' }});
-        fireEvent.click(addToCartPageButton);
-        
-        expect(spyRouter).toBeCalledTimes(16);
-    });
+    const buyedWithContainer = queryByTestId("buyed-with-container");
 
-    it('should render frequently buyed with', async () => {
-
-        const product = { 
-            ...fakeProduct, 
-            quantity_stock: 2,
-            productsBuyedWith: [fakeProduct]
-        };
-
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/categories').reply(200, fakeCategories)
-        .onGet('/products/1?buyedWith=4').reply(200, product);
-
-        const { queryByTestId } = await waitFor(() => render(
-            <ThemeContextProvider>
-                <CartContextProvider>
-                    <FilterBarContextProvider>
-                        <ProductPage 
-                            product={product}
-                        />
-                    </FilterBarContextProvider>
-                </CartContextProvider>
-            </ThemeContextProvider>
-        ));
-
-        const buyedWithContainer = queryByTestId('buyed-with-container');
-        
-        expect(buyedWithContainer).toBeInTheDocument();
-    });
+    expect(buyedWithContainer).toBeInTheDocument();
+  });
 });
