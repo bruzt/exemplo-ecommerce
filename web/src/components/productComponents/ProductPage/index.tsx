@@ -6,15 +6,13 @@ import useSwr from "swr";
 import api from "../../../services/api";
 import { useCart } from "../../../contexts/cartContext";
 import { ICategory, useFilterBar } from "../../../contexts/filterBarContext";
-
-import { Container, BuyedWithContainer } from "./styles";
-
 import PageLayout from "../../PageLayout";
 import ImageSlider from "../ImageSlider";
 import OnSaleCountDown from "../OnSaleCountdown";
 import ProductCard from "../ProductCard";
+import { IProduct } from "../../../pages/product/[productId]";
 
-import { IProduct } from "../../../pages/[productId]";
+import { Container, BuyedWithContainer } from "./styles";
 
 interface IProps {
   product: IProduct;

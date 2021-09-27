@@ -1,25 +1,22 @@
-import React/*, { useState, useEffect }*/ from 'react';
-import Head from 'next/head'
-import Link from 'next/link';
+import React /*, { useState, useEffect }*/ from "react";
+import Head from "next/head";
+import Link from "next/link";
 
 //import api from '../../services/api';
+import PageLayout from "../PageLayout";
+import ProductCard from "../productComponents/ProductCard";
+import { IProduct } from "../../pages/product/[productId]";
 
-import { Container } from './styles';
-
-import PageLayout from '../PageLayout';
-import ProductCard from '../productComponents/ProductCard';
-
-import { IProduct } from '../../pages/[productId]';
+import { Container } from "./styles";
 
 interface IProps {
-    onSale: IProduct[];
-    bestSellers: IProduct[];
-    news: IProduct[];
+  onSale: IProduct[];
+  bestSellers: IProduct[];
+  news: IProduct[];
 }
- 
+
 export default function HomePage({ onSale, bestSellers, news }: IProps) {
-    
-    /*
+  /*
     const [onSale, setOnSale] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
     const [news, setNews] = useState([]);
@@ -49,66 +46,66 @@ export default function HomePage({ onSale, bestSellers, news }: IProps) {
     }
     */
 
-    return (
-        <>
-            <Head>
-                <title>Exemplo E-commerce</title>
-                <meta name="description" content="Exemplo de e-coomerce, página inicial"/>
-                <meta name="keywords" content="exemplo, e-commerce"/>
-                <meta name="author" content="Bruno Zutim" />
-            </Head>
+  return (
+    <>
+      <Head>
+        <title>Exemplo E-commerce</title>
+        <meta
+          name="description"
+          content="Exemplo de e-coomerce, página inicial"
+        />
+        <meta name="keywords" content="exemplo, e-commerce" />
+        <meta name="author" content="Bruno Zutim" />
+      </Head>
 
-            <PageLayout>
+      <PageLayout>
+        <Container>
+          {onSale.length > 0 && (
+            <>
+              <Link href="/search?page=1&section=on-sale">
+                <a>
+                  <h3>PROMOÇÕES</h3>
+                </a>
+              </Link>
+              <div className="product-grid" data-testid="on-sale-section">
+                {onSale.map((product) => (
+                  <ProductCard product={product} key={product.id} />
+                ))}
+              </div>
+            </>
+          )}
 
-                <Container>
+          {bestSellers.length > 0 && (
+            <>
+              <Link href="/search?page=1&section=best-sellers">
+                <a>
+                  <h3>MAIS VENDIDOS</h3>
+                </a>
+              </Link>
+              <div className="product-grid" data-testid="best-sellers-section">
+                {bestSellers.map((product) => (
+                  <ProductCard product={product} key={product.id} />
+                ))}
+              </div>
+            </>
+          )}
 
-                    {onSale.length > 0 && (
-                        <>
-                            <Link href='/search?page=1&section=on-sale'>
-                                <a>
-                                    <h3>PROMOÇÕES</h3>  
-                                </a>
-                            </Link>
-                            <div className="product-grid" data-testid='on-sale-section'>
-
-                                {onSale.map( (product) => <ProductCard product={product} key={product.id} />)}
-
-                            </div>
-                        </>
-                    )}
-
-                    {bestSellers.length > 0 && (
-                        <>
-                            <Link href='/search?page=1&section=best-sellers'>
-                                <a>
-                                    <h3>MAIS VENDIDOS</h3>
-                                </a>
-                            </Link>
-                            <div className="product-grid" data-testid='best-sellers-section'>
-
-                                {bestSellers.map( (product) => <ProductCard product={product} key={product.id} />)}
-
-                            </div>
-                        </>
-                    )}
-
-                    {news.length > 0 && (
-                        <>
-                            <Link href='/search?page=1&section=news'>
-                                <a>
-                                    <h3>NOVIDADES</h3>
-                                </a>
-                            </Link>
-                            <div className="product-grid" data-testid='news-section'>
-
-                                {news.map( (product) => <ProductCard product={product} key={product.id} />)}
-
-                            </div>
-                        </>
-                    )}
-                </Container>
-
-            </PageLayout>
-        </>
-    );
+          {news.length > 0 && (
+            <>
+              <Link href="/search?page=1&section=news">
+                <a>
+                  <h3>NOVIDADES</h3>
+                </a>
+              </Link>
+              <div className="product-grid" data-testid="news-section">
+                {news.map((product) => (
+                  <ProductCard product={product} key={product.id} />
+                ))}
+              </div>
+            </>
+          )}
+        </Container>
+      </PageLayout>
+    </>
+  );
 }

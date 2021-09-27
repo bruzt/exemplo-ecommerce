@@ -1,84 +1,82 @@
-import React, { useState, useEffect } from 'react';
-import { FaClock } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { FaClock } from "react-icons/fa";
 
-import { IProduct } from '../../../pages/[productId]';
+import { IProduct } from "../../../pages/product/[productId]";
 
-import { Container } from './styles';
+import { Container } from "./styles";
 
 interface IProps {
-	product: IProduct;
-	setIsOnSale: React.Dispatch<boolean>;
-	timeoutId: NodeJS.Timeout;
+  product: IProduct;
+  setIsOnSale: React.Dispatch<boolean>;
+  timeoutId: NodeJS.Timeout;
 }
 
-export default function OnSaleCountdown({ product, setIsOnSale, timeoutId }: IProps) {
+export default function OnSaleCountdown({
+  product,
+  setIsOnSale,
+  timeoutId,
+}: IProps) {
+  const [getDays, setDays] = useState(0);
+  const [getHours, setHours] = useState(0);
+  const [getMinutes, setMinutes] = useState(0);
+  const [getSeconds, setSeconds] = useState(0);
 
-	const [getDays, setDays] = useState(0);
-	const [getHours, setHours] = useState(0);
-	const [getMinutes, setMinutes] = useState(0);
-	const [getSeconds, setSeconds] = useState(0);
+  useEffect(() => {
+    calcCountdown();
 
-	useEffect(() => {
-		calcCountdown();
+    return () => clearTimeout(timeoutId);
+  }, []);
 
-		return () => clearTimeout(timeoutId);
-	}, []);
+  function calcCountdown() {
+    if (product.isOnSale) {
+      const startDate = new Date(product.discount_datetime_start);
+      const endDate = new Date(product.discount_datetime_end);
 
-	function calcCountdown() {
+      const milliseconds = Number(new Date(product.dateNow)) - Number(endDate);
 
-		if (product.isOnSale) {
+      clearTimeout(timeoutId);
 
-			const startDate = new Date(product.discount_datetime_start);
-			const endDate = new Date(product.discount_datetime_end);
+      loopCountdown(milliseconds, startDate, endDate);
+    }
+  }
 
-			const milliseconds = Number(new Date(product.dateNow)) - Number(endDate);
+  function loopCountdown(milliseconds: number, startDate: Date, endDate: Date) {
+    const dateNow = new Date(-milliseconds + Number(startDate));
 
-			clearTimeout(timeoutId);
+    if (startDate <= dateNow && endDate >= dateNow) {
+      const totalSeconds = -milliseconds / 1000;
+      setSeconds(Math.floor(totalSeconds % 60));
 
-			loopCountdown(milliseconds, startDate, endDate);
-		}
-	}
+      const totalMinutes = totalSeconds / 60;
+      setMinutes(Math.floor(totalMinutes % 60));
 
-	function loopCountdown(milliseconds: number, startDate: Date, endDate: Date) {
+      const totalHours = totalMinutes / 60;
+      setHours(Math.floor(totalHours % 24));
 
-		const dateNow = new Date(-milliseconds + Number(startDate));
+      const totalDays = totalHours / 24;
+      setDays(Math.floor(totalDays));
 
-		if (startDate <= dateNow && endDate >= dateNow) {
+      milliseconds += 1000;
+    } else return setIsOnSale(false);
 
-			const totalSeconds = -milliseconds / 1000;
-			setSeconds(Math.floor(totalSeconds % 60));
+    timeoutId = setTimeout(() => {
+      loopCountdown(milliseconds, startDate, endDate);
+    }, 1000);
+  }
 
-			const totalMinutes = totalSeconds / 60;
-			setMinutes(Math.floor(totalMinutes % 60));
+  return (
+    <Container data-testid="countdown-container">
+      <div className="countdown">
+        <FaClock size={25} />
+        <span data-testid="clock">
+          {getDays} Dia{getDays > 1 ? "s" : ""}{" "}
+          {getHours < 10 ? "0" + getHours : getHours}:
+          {getMinutes < 10 ? "0" + getMinutes : getMinutes}:
+          {getSeconds < 10 ? "0" + getSeconds : getSeconds}
+        </span>
+      </div>
 
-			const totalHours = totalMinutes / 60;
-			setHours(Math.floor(totalHours % 24));
-
-			const totalDays = totalHours / 24;
-			setDays(Math.floor(totalDays));
-
-			milliseconds += 1000;
-
-		}
-		else return setIsOnSale(false);
-
-		timeoutId = setTimeout(() => {
-
-			loopCountdown(milliseconds, startDate, endDate);
-
-		}, 1000);
-	}
-
-	return (
-		<Container data-testid='countdown-container'>
-
-			<div className="countdown">
-				<FaClock size={25} />
-				<span data-testid='clock'>{getDays} Dia{getDays > 1 ? 's' : ''} {getHours < 10 ? '0' + getHours : getHours}:{getMinutes < 10 ? '0' + getMinutes : getMinutes}:{getSeconds < 10 ? '0' + getSeconds : getSeconds}</span>
-			</div>
-
-			<hr />
-
-		</Container>
-	);
+      <hr />
+    </Container>
+  );
 }
