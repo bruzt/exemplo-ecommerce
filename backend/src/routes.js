@@ -17,6 +17,7 @@ const freightValidator = require("./controllers/freightController/validators");
 const imageValidator = require("./controllers/imageController/validators");
 const orderAdminValidator = require("./controllers/orderAdminController/validators");
 const orderValidator = require("./controllers/orderController/validators");
+const orderPaymentValidator = require("./controllers/orderPaymentController/validators");
 const productValidator = require("./controllers/productController/validators");
 const sessionValidator = require("./controllers/sessionController/validators");
 const userValidator = require("./controllers/userController/validators");
@@ -30,6 +31,7 @@ const freightController = require("./controllers/freightController");
 const imageController = require("./controllers/imageController");
 const orderAdminController = require("./controllers/orderAdminController");
 const orderController = require("./controllers/orderController");
+const orderPaymentController = require("./controllers/orderPaymentController");
 const productController = require("./controllers/productController");
 const sessionController = require("./controllers/sessionController");
 const userController = require("./controllers/userController");
@@ -105,7 +107,7 @@ router.post(
   installmentsController.show
 );
 
-// BUSCA E ADICIONA PEDIDOS DE UM USUÁRIO
+// BUSCA E ADICIONA ORDERS DE COMPRA DE UM USUÁRIO
 router.get(
   "/orders",
   orderValidator.list,
@@ -117,6 +119,14 @@ router.post(
   orderValidator.store,
   jwtAuthentication,
   orderController.store
+);
+
+// PAGA UMA ORDER DE COMPRA
+router.post(
+  "/orders/:id/payment",
+  orderPaymentValidator.store,
+  jwtAuthentication,
+  orderPaymentController.store
 );
 
 // BUSCA, ALTERA OU REMOVE PEDIDOS DE UM USUÁRIO POR UM ADMIN
