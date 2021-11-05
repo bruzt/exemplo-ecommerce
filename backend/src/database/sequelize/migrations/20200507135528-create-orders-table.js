@@ -38,7 +38,7 @@ module.exports = {
 
       payment_method: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
 
       status: {

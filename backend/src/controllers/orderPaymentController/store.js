@@ -115,6 +115,7 @@ module.exports = async function store(req, res) {
       pagarMeResponse = await payWithCreditCard(req.body.credit_card);
 
       order.status = pagarMeResponse.status;
+      order.payment_method = "credit_card";
 
       ////////////////////////////////////
       // PAGAMENTO BOLETO
@@ -141,6 +142,7 @@ module.exports = async function store(req, res) {
             });*/
 
       order.status = pagarMeResponse.status;
+      order.payment_method = "boleto";
       order.boleto_url = pagarMeResponse.boleto_url;
     }
 

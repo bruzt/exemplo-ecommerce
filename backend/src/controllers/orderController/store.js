@@ -74,7 +74,6 @@ module.exports = async (req, res) => {
         freight_price: Number(freight_price).toFixed(2),
         total_price,
         address_id,
-        payment_method: req.body.credit_card ? "credit_card" : "boleto",
       },
       {
         transaction,
