@@ -18,6 +18,7 @@ import imageController from "./controllers/imageController";
 import freightController from "./controllers/freightController";
 import resetPasswordController from "./controllers/resetPasswordController";
 import orderController from "./controllers/orderController";
+import orderPaymentController from "./controllers/orderPaymentController";
 import orderAdminController from "./controllers/orderAdminController";
 import installmentsController from "./controllers/installmentsController";
 
@@ -31,6 +32,7 @@ import imageValidator from "./controllers/imageController/validators";
 import freightValidator from "./controllers/freightController/validators";
 import resetPasswordValidator from "./controllers/resetPasswordController/validators";
 import orderValidator from "./controllers/orderController/validators";
+import orderPaymentValidator from "./controllers/orderPaymentController/validators";
 import orderAdminValidator from "./controllers/orderAdminController/validators";
 import installmentsValidator from "./controllers/installmentsController/validators";
 
@@ -197,6 +199,14 @@ router.post(
   orderValidator.store,
   jwtAuthentication,
   orderController.store
+);
+
+// ORDER PAYMENT
+router.post(
+  "/orders/:id/payment",
+  orderPaymentValidator.store,
+  jwtAuthentication,
+  orderPaymentController.store
 );
 
 // ORDER ADMIN
