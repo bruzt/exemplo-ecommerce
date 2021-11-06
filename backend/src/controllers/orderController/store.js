@@ -80,9 +80,6 @@ module.exports = async (req, res) => {
       }
     );
 
-    if (req.body.credit_card) req.body.credit_card.items = [];
-    else if (req.body.boleto) req.body.boleto.items = [];
-
     // add products to order and subtract from stock
     for (let i = 0; i < products.length; i++) {
       await order.addProduct(products[i], {
