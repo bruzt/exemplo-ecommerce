@@ -1,244 +1,209 @@
-import supertest from 'supertest';
+import supertest from "supertest";
 
-import typeormConnection from '../../../databases/typeorm/connection';
-import sonicConnection from '../../../databases/sonic/connection';
-import truncate from '../../../testUtils/truncateTypeorm';
-import app from '../../../app';
-import UserModel from '../../../models/UserModel';
-import AddressModel from '../../../models/AddressModel';
-import CategoryModel from '../../../models/CategoryModel';
-import ProductModel from '../../../models/ProductModel';
-import { 
-    fakeUser, 
-    fakeAddress, 
-    fakeCategory, 
-    fakeProduct, 
-    fakeCreditCard,
-    fakeBoleto, 
-} from '../../../testUtils/fakeData';
+import typeormConnection from "../../../databases/typeorm/connection";
+import sonicConnection from "../../../databases/sonic/connection";
+import truncate from "../../../testUtils/truncateTypeorm";
+import app from "../../../app";
+import UserModel from "../../../models/UserModel";
+import AddressModel from "../../../models/AddressModel";
+import CategoryModel from "../../../models/CategoryModel";
+import ProductModel from "../../../models/ProductModel";
+import {
+  fakeUser,
+  fakeAddress,
+  fakeCategory,
+  fakeProduct,
+} from "../../../testUtils/fakeData";
 
-describe('orderController Store Test Suit', () => {
+describe("orderController Store Test Suit", () => {
+  beforeAll(() => {
+    return typeormConnection;
+  });
 
-    beforeAll( () => {
+  beforeEach(() => {
+    return truncate();
+  });
 
-        return typeormConnection;
+  afterAll(async () => {
+    await sonicConnection.search.close();
+    await sonicConnection.ingest.close();
+
+    return (await typeormConnection).close();
+  });
+
+  it("should create an buy order", async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
+
+    const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
+    await address.save();
+
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
     });
+    await product.save();
 
-    beforeEach( () => {
-              
-        return truncate();
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 30.77,
+        quantity_buyed: [2],
+        products_id: [product.id],
+        address_id: address.id,
+      });
+    expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("id");
+  });
+
+  it('should return error for "user not found" - store', async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
+
+    const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
+    await address.save();
+
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
     });
+    await product.save();
 
-    afterAll( async () => {
+    await user.softRemove();
 
-        await sonicConnection.search.close();
-        await sonicConnection.ingest.close();
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 3077,
+        quantity_buyed: [2],
+        products_id: [product.id],
+        address_id: address.id,
+      });
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("user not found");
+  });
 
-        return (await typeormConnection).close();
+  it('should return error for "address not found" - store', async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
+
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
     });
+    await product.save();
 
-    it('should add an order paid by credit_card', async () => {
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 3077,
+        quantity_buyed: [2],
+        products_id: [product.id],
+        address_id: 11,
+      });
 
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("address not found");
+  });
 
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
+  it('should return error for "must have at least one product" - store', async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
 
-        const category = CategoryModel.create(fakeCategory);
-        await category.save();
+    const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
+    await address.save();
 
-        const product = ProductModel.create({ ...fakeProduct, category_id: category.id });
-        await product.save();
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 3077,
+        quantity_buyed: [2],
+        products_id: [],
+        address_id: address.id,
+      });
 
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 30.77,
-                quantity_buyed: [2],
-                products_id: [product.id],
-                address_id: address.id,
-                credit_card: fakeCreditCard,
-            })
-        ;
+    expect(response.status).toBe(400);
+    expect(response.body.message[0]).toBe(
+      '"products_id" does not contain 1 required value(s)'
+    );
+  });
 
-        expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('order');
-        expect(response.body).toHaveProperty('pagarme');
+  it('should return error for "product id not found" - store', async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
+
+    const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
+    await address.save();
+
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 3077,
+        quantity_buyed: [2],
+        products_id: [15],
+        address_id: address.id,
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("product id 15 not found");
+  });
+
+  it('should return error for "product dont have enough stock" - store', async () => {
+    const user = UserModel.create(fakeUser);
+    await user.save();
+    const token = user.generateJwt();
+
+    const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
+    await address.save();
+
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
+      quantity_stock: 2,
     });
+    await product.save();
 
-    it('should add an order paid by boleto', async () => {
+    const response = await supertest(app)
+      .post(`/orders`)
+      .set("authorization", "Bearer " + token)
+      .send({
+        freight_name: "sedex",
+        freight_price: 3077,
+        quantity_buyed: [5],
+        products_id: [product.id],
+        address_id: address.id,
+      });
 
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
-
-        const category = CategoryModel.create(fakeCategory);
-        await category.save();
-
-        const product = ProductModel.create({ ...fakeProduct, category_id: category.id });
-        await product.save();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 30.77,
-                quantity_buyed: [2],
-                products_id: [product.id],
-                address_id: address.id,
-                boleto: fakeBoleto,
-            })
-        ;
-
-        expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('order');
-        expect(response.body).toHaveProperty('pagarme');
-    });
-
-    it('should return error for "user not found" - store', async () => {
-
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
-
-        const category = CategoryModel.create(fakeCategory);
-        await category.save();
-
-        const product = ProductModel.create({ ...fakeProduct, category_id: category.id });
-        await product.save();
-
-        await user.softRemove();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 3077,
-                quantity_buyed: [2],
-                products_id: [product.id],
-                address_id: address.id,
-                credit_card: fakeCreditCard,
-            })
-        ;
-
-        expect(response.status).toBe(404);
-        expect(response.body.message).toBe("user not found");
-    });
-
-    it('should return erroe for "address not found" - store', async () => {
-
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const category = CategoryModel.create(fakeCategory);
-        await category.save();
-
-        const product = ProductModel.create({ ...fakeProduct, category_id: category.id });
-        await product.save();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 3077,
-                quantity_buyed: [2],
-                products_id: [product.id],
-                address_id: 11,
-                credit_card: fakeCreditCard,
-            })
-        ;
-
-        expect(response.status).toBe(404);
-        expect(response.body.message).toBe("address not found");
-    });
-
-    it('should return error for "must have at least one product" - store', async () => {
-
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 3077,
-                quantity_buyed: [2],
-                products_id: [],
-                address_id: address.id,
-                credit_card: fakeCreditCard,
-            })
-        ;
-
-        expect(response.status).toBe(400);
-        expect(response.body.message[0]).toBe("\"products_id\" does not contain 1 required value(s)");
-    });
-
-    it('should return error for "product id not found" - store', async () => {
-
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 3077,
-                quantity_buyed: [2],
-                products_id: [15],
-                address_id: address.id,
-                credit_card: fakeCreditCard,
-            })
-        ;
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("product id 15 not found");
-    });
-
-    it('should return error for "product dont have enough stock" - store', async () => {
-
-        const user = UserModel.create(fakeUser);
-        await user.save();
-        const token = user.generateJwt();
-
-        const address = AddressModel.create({ ...fakeAddress, user_id: user.id });
-        await address.save();
-
-        const category = CategoryModel.create(fakeCategory);
-        await category.save();
-
-        const product = ProductModel.create({ ...fakeProduct, category_id: category.id, quantity_stock: 2 });
-        await product.save();
-
-        const response = await supertest(app).post(`/orders`)
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                freight_name: 'sedex',
-                freight_price: 3077,
-                quantity_buyed: [5],
-                products_id: [product.id],
-                address_id: address.id,
-                credit_card: fakeCreditCard,
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe(`product id ${product.id} dont have enough stock`);
-    });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe(
+      `product id ${product.id} dont have enough stock`
+    );
+  });
 });
