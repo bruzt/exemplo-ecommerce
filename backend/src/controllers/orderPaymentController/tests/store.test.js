@@ -82,7 +82,7 @@ const boleto = {
   },
 };
 
-describe("orderController Test Suit", () => {
+describe("orderPaymentController Test Suit", () => {
   beforeEach(async () => {
     await exec("sequelize db:migrate:undo:all");
 
