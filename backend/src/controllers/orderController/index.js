@@ -1,7 +1,9 @@
-const list = require('./list');
-const store = require('./store');
+const list = require("./list");
+const show = require("./show");
+const store = require("./store");
 
 module.exports = {
-    list,
-    store,
+  list,
+  show,
+  store,
 };
