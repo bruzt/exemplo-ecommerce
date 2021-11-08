@@ -5,6 +5,7 @@ import Head from "next/head";
 
 import { useOrder } from "../../../contexts/orderContext";
 
+import OrderProgress from "../OrderProgress";
 import CreditCardPayment from "../CreditCardPayment";
 import BoletoPayment from "../BoletoPayment";
 import PageLayout from "../../PageLayout";
@@ -54,6 +55,7 @@ export default function PaymentMethodPage() {
   useEffect(() => {
     if (process.browser) window.scrollTo({ top: 0 });
 
+    orderContext.setOrderFlowNumber(3);
     orderContext.setOrderId(null);
     orderContext.setBoletoUrl("");
   }, []);
@@ -61,6 +63,10 @@ export default function PaymentMethodPage() {
   useEffect(() => {
     if (router.query.id) fetchOrder();
   }, [router.query.id]);
+
+  useEffect(() => {
+    if (showThanksForBuy == true) orderContext.setOrderFlowNumber(4);
+  }, [showThanksForBuy]);
 
   async function fetchOrder() {
     try {
@@ -82,6 +88,8 @@ export default function PaymentMethodPage() {
       </Head>
 
       <PageLayout>
+        <OrderProgress />
+
         {showThanksForBuy ? (
           <ThanksForBuy />
         ) : (
