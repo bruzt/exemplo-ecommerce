@@ -1,557 +1,594 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import Loading from 'react-loader-spinner';
+import React, { useState, useEffect, FormEvent } from "react";
+import { useRouter } from "next/router";
+import Loading from "react-loader-spinner";
+import axios from "axios";
 
-import api from '../../../services/api';
-import formatCpf from '../../../utils/formatCpf';
-import formatPhone from '../../../utils/formatPhone';
-import formatZipCode from '../../../utils/formatZipCode';
+import api from "../../../services/api";
+import formatCpf from "../../../utils/formatCpf";
+import formatPhone from "../../../utils/formatPhone";
+import formatZipCode from "../../../utils/formatZipCode";
+import { useUser } from "../../../contexts/userContext";
+import { useOrder } from "../../../contexts/orderContext";
+import LoadingModal from "../../LoadingModal";
+import { IUf } from "../SelectAddress";
 
-import { Container } from './styles';
-
-import { useUser } from '../../../contexts/userContext';
-import { useCart } from '../../../contexts/cartContext';
-import { useOrder } from '../../../contexts/orderContext';
-import LoadingModal from '../../LoadingModal';
+import { Container } from "./styles";
 
 interface IProps {
-    getDisabledBoletoButton: boolean;
-    setDisabledBoletoButton: React.Dispatch<boolean>;
+  getDisabledBoletoButton: boolean;
+  setDisabledBoletoButton: React.Dispatch<boolean>;
+  setShowThanksForBuy: React.Dispatch<boolean>;
 }
 
 interface IInstallmentsOptions {
-    freeInstallments: number;
-    maxInstallments: number;
-    interestRate: number;
-    installments: number[];
+  freeInstallments: number;
+  maxInstallments: number;
+  interestRate: number;
+  installments: number[];
 }
 
-export default function CreditCardPayment({ getDisabledBoletoButton, setDisabledBoletoButton }: IProps) {
+interface IOrder {
+  id: number;
+  freight_name: string;
+  freight_price: string;
+  total_price: string;
+  payment_method: "credit_card" | "boleto";
+  status: string;
+  boleto_url: null;
+  tracking_code: null;
+  createdAt: string;
+  updatedAt: string;
+  address_id: number;
+  user_id: number;
+  address: {
+    id: number;
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
+}
 
-    const [getCardHolderName, setCardHolderName] = useState('');
-    const [getCardNumber, setCardNumber] = useState('');
-    const [getCardCvv, setCardCvv] = useState('');
-    const [getCardExpirationMonth, setCardExpirationMonth] = useState('');
-    const [getCardExpirationYear, setCardExpirationYear] = useState('');
+export default function CreditCardPayment({
+  getDisabledBoletoButton,
+  setDisabledBoletoButton,
+  setShowThanksForBuy,
+}: IProps) {
+  const [getOrder, setOrder] = useState<IOrder>();
 
-    const [getInstallmentsOptions, setInstallmentsOptions] = useState<IInstallmentsOptions>();
-    const [getInstallments, setInstallments] = useState(1);
+  const [getCardHolderName, setCardHolderName] = useState("");
+  const [getCardNumber, setCardNumber] = useState("");
+  const [getCardCvv, setCardCvv] = useState("");
+  const [getCardExpirationMonth, setCardExpirationMonth] = useState("");
+  const [getCardExpirationYear, setCardExpirationYear] = useState("");
 
-    const [getIsFetching, setIsFetching] = useState(false);
+  const [getInstallmentsOptions, setInstallmentsOptions] =
+    useState<IInstallmentsOptions>();
+  const [getInstallments, setInstallments] = useState(1);
 
-    const [getPhone, setPhone] = useState('');
-    const [getCpf, setCpf] = useState('');
-    const [getValidCpf, setValidCpf] = useState(true);
+  const [getIsFetching, setIsFetching] = useState(false);
 
-    const [getStreet, setStreet] = useState('');
-    const [getNumber, setNumber] = useState('');
-    const [getNeighborhood, setNeighborhood] = useState('');
-    const [getCity, setCity] = useState('');
-    const [getState, setState] = useState('');
-    const [getZipCode, setZipCode] = useState('');
+  const [getPhone, setPhone] = useState("");
+  const [getCpf, setCpf] = useState("");
+  const [getValidCpf, setValidCpf] = useState(true);
 
-    const [getDisabledPayButton, setDisabledPayButton] = useState(true);
+  const [getUfs, setUfs] = useState<IUf[]>([]);
 
-    const userContext = useUser();
-    const cartContext = useCart();
-    const orderContext = useOrder();
+  const [getStreet, setStreet] = useState("");
+  const [getNumber, setNumber] = useState("");
+  const [getNeighborhood, setNeighborhood] = useState("");
+  const [getCity, setCity] = useState("");
+  const [getState, setState] = useState("");
+  const [getZipCode, setZipCode] = useState("");
 
-    useEffect(() => {
-        fetchInstallments();
-    }, []);
+  const [getDisabledPayButton, setDisabledPayButton] = useState(true);
 
-    useEffect(() => {
-        if (
-            getCardHolderName.length < 3 ||
-            getCardNumber.length < 19 ||
-            getCardCvv.length < 3 ||
-            getCardExpirationMonth.length < 1 ||
-            getCardExpirationYear.length < 1 ||
-            getPhone.length < 14 ||
-            getCpf.length < 14 ||
-            !getValidCpf ||
-            getStreet.length < 3 ||
-            getNumber.length < 1 ||
-            getNeighborhood.length < 3 ||
-            getCity.length < 3 ||
-            getState.length < 1 ||
-            getZipCode.length < 9
-        ) {
+  const userContext = useUser();
+  const orderContext = useOrder();
+  const router = useRouter();
 
-            setDisabledPayButton(true);
+  useEffect(() => {
+    fetchOrder();
+    fetchUfs();
+  }, []);
 
-        } else {
+  useEffect(() => {
+    if (
+      getCardHolderName.length < 3 ||
+      getCardNumber.length < 19 ||
+      getCardCvv.length < 3 ||
+      getCardExpirationMonth.length < 1 ||
+      getCardExpirationYear.length < 1 ||
+      getPhone.length < 14 ||
+      getCpf.length < 14 ||
+      !getValidCpf ||
+      getStreet.length < 3 ||
+      getNumber.length < 1 ||
+      getNeighborhood.length < 3 ||
+      getCity.length < 3 ||
+      getState.length < 1 ||
+      getZipCode.length < 9
+    ) {
+      setDisabledPayButton(true);
+    } else {
+      const year = String(new Date().getFullYear()).substr(-2);
+      const month = new Date().getMonth() + 1;
 
-            const year = String(new Date().getFullYear()).substr(-2);
-            const month = new Date().getMonth() + 1;
-
-            if (
-                year == getCardExpirationYear &&
-                month > Number(getCardExpirationMonth)
-            ) {
-                setDisabledPayButton(true);
-
-            } else {
-
-                setDisabledPayButton(false);
-            }
-        }
-    }, [
-        getCardHolderName,
-        getCardNumber,
-        getCardCvv,
-        getCardExpirationMonth,
-        getCardExpirationYear,
-        getPhone,
-        getCpf,
-        getStreet,
-        getNumber,
-        getNeighborhood,
-        getCity,
-        getState,
-        getZipCode
-    ]);
-
-    async function fetchInstallments() {
-        try {
-            setIsFetching(true);
-
-            const response = await api.post('/installments', {
-                amount: Number(cartContext.getTotalPrice).toFixed(2),
-            });
-
-            setInstallmentsOptions(response.data);
-            setIsFetching(false);
-
-        } catch (error) {
-            console.log(error);
-            alert('Erro ao buscar opções de parcela');
-            
-            orderContext.setOrderFlowNumber(2)
-        }
-    }
-
-    function handleCardNumber(value: string | number) {
-
-        let cardNumber = String(value);
-
-        cardNumber = cardNumber.replace(/[^0-9]/g, "");
-
-        if (cardNumber.length == 16) {
-
-            const part1 = cardNumber.slice(0, 4);
-            const part2 = cardNumber.slice(4, 8);
-            const part3 = cardNumber.slice(8, 12);
-            const part4 = cardNumber.slice(12, 16);
-
-            cardNumber = `${part1} ${part2} ${part3} ${part4}`;
-        }
-
-        setCardNumber(cardNumber);
-    }
-
-    function handleCardCvv(value: string | number) {
-
-        let cardCvv = String(value);
-
-        cardCvv = cardCvv.replace(/[^0-9]/g, "");
-
-        setCardCvv(cardCvv);
-    }
-
-    function handleCpf(value: string | number) {
-
-        const format = formatCpf(value);
-
-        setValidCpf(format.valid);
-        setCpf(format.cpf);
-    }
-
-    function handleSameAddressButton() {
-
-        const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
-
-        setStreet(address.street);
-        setNumber(address.number);
-        setNeighborhood(address.neighborhood);
-        setCity(address.city);
-        setState(address.state);
-        setZipCode(address.zipcode);
-    }
-
-    async function handlePaySubmit(event: FormEvent) {
-
-        event.preventDefault();
-
-        if(getDisabledPayButton) return;
-
+      if (
+        year == getCardExpirationYear &&
+        month > Number(getCardExpirationMonth)
+      ) {
         setDisabledPayButton(true);
-        setDisabledBoletoButton(true);
+      } else {
+        setDisabledPayButton(false);
+      }
+    }
+  }, [
+    getCardHolderName,
+    getCardNumber,
+    getCardCvv,
+    getCardExpirationMonth,
+    getCardExpirationYear,
+    getPhone,
+    getCpf,
+    getStreet,
+    getNumber,
+    getNeighborhood,
+    getCity,
+    getState,
+    getZipCode,
+  ]);
 
-        const card_expiration_date = String(getCardExpirationMonth) + String(getCardExpirationYear);
-        const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
-        const cpf = getCpf.replace(/\.|-/g, '');
-        const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
+  async function fetchOrder() {
+    try {
+      setIsFetching(true);
 
-        const products_id = cartContext.getCart.map((product) => product.id);
-        const quantity_buyed = cartContext.getCart.map((product) => product.qtd);
+      const response = await api.get<IOrder>(`/orders/${router.query.id}`);
 
-        try {
+      await fetchInstallments(response.data.total_price);
 
-            const response = await api.post('/orders', {
-                products_id,
-                quantity_buyed,
-                address_id: address.id,
-                freight_name: cartContext.getFreightSelected,
-                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')),
-                credit_card: {
-                    installments: Number(getInstallments),
-                    card_number: String(getCardNumber).replace(/ /g, ''),
-                    card_cvv: getCardCvv,
-                    card_expiration_date,
-                    card_holder_name: getCardHolderName,
-                    customer: {
-                        external_id: String(userContext.getUser.id),
-                        name: userContext.getUser.name,
-                        email: userContext.getUser.email,
-                        type: "individual",
-                        country: "br",
-                        phone_numbers: ["+55" + phone],
-                        documents: [
-                            {
-                                type: "cpf",
-                                number: cpf
-                            }
-                        ]
-                    },
-                    billing: {
-                        name: getCardHolderName,
-                        address: {
-                            street: getStreet,
-                            street_number: getNumber,
-                            neighborhood: getNeighborhood,
-                            city: getCity,
-                            state: getState.toLowerCase(),
-                            zipcode: getZipCode.replace('-', ''),
-                            country: "br",
-                        }
-                    },
-                    shipping: {
-                        name: userContext.getUser.name,
-                        address: {
-                            street: address.street,
-                            street_number: address.number,
-                            neighborhood: address.neighborhood,
-                            city: address.city,
-                            state: address.state.toLowerCase(),
-                            zipcode: address.zipcode.replace('-', ''),
-                            country: "br",
-                        }
-                    }
-                }
-            });
+      setOrder(response.data);
 
-            orderContext.setOrderId(response.data.order.id);
-            orderContext.setOrderFlowNumber(4);
+      setIsFetching(false);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao buscar order de compra");
+      router.push("/");
+    }
+  }
 
-            cartContext.cleanCart();
+  async function fetchInstallments(amount: string) {
+    try {
+      const response = await api.post("/installments", {
+        amount: Number(amount).toFixed(2),
+      });
 
-        } catch (error) {
-            console.error(error);
-            alert(error);
-            setDisabledPayButton(false);
-            setDisabledBoletoButton(false);
-        }
+      setInstallmentsOptions(response.data);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao buscar opções de parcela");
+
+      router.push("/");
+    }
+  }
+
+  async function fetchUfs() {
+    try {
+      const response = await axios.get<IUf[]>(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+      );
+
+      setUfs(response.data);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response);
+      alert("Erro ao buscar lista de estados");
+    }
+  }
+
+  function handleCardNumber(value: string | number) {
+    let cardNumber = String(value);
+
+    cardNumber = cardNumber.replace(/[^0-9]/g, "");
+
+    if (cardNumber.length == 16) {
+      const part1 = cardNumber.slice(0, 4);
+      const part2 = cardNumber.slice(4, 8);
+      const part3 = cardNumber.slice(8, 12);
+      const part4 = cardNumber.slice(12, 16);
+
+      cardNumber = `${part1} ${part2} ${part3} ${part4}`;
     }
 
-    return (
-        <Container data-testid='credit-card-component'>
+    setCardNumber(cardNumber);
+  }
 
-            {getIsFetching && <LoadingModal spinnerSize='10rem' />}
+  function handleCardCvv(value: string | number) {
+    let cardCvv = String(value);
 
-            <h2>Cartão de Crédito</h2>
+    cardCvv = cardCvv.replace(/[^0-9]/g, "");
 
-            <form onSubmit={handlePaySubmit}>
-                <div className="grid-columns">
+    setCardCvv(cardCvv);
+  }
 
-                    <div className='cc-form'>
-                        <div className='flex-column'>
-                            <label htmlFor="card-holder-name" className='holder-name-label'>Nome impresso no cartão</label>
-                            <input
-                                id='card-holder-name'
-                                data-testid='card-holder-name'
-                                type="text"
-                                placeholder='Nome'
-                                value={getCardHolderName}
-                                onChange={(event) => setCardHolderName(event.target.value)}
-                            />
-                        </div>
+  function handleCpf(value: string | number) {
+    const format = formatCpf(value);
 
-                        <div className='flex-row justify-center'>
-                            <div className='flex-column'>
-                                <label htmlFor="card-number">Numero do cartão</label>
-                                <input
-                                    id='card-number'
-                                    data-testid='card-number'
-                                    type="text"
-                                    placeholder='0000 0000 0000 0000'
-                                    maxLength={19}
-                                    value={getCardNumber}
-                                    onChange={(event) => handleCardNumber(event.target.value)}
-                                />
-                            </div>
+    setValidCpf(format.valid);
+    setCpf(format.cpf);
+  }
 
-                        </div>
+  function handleSameAddressButton() {
+    setStreet(getOrder.address.street);
+    setNumber(getOrder.address.number);
+    setNeighborhood(getOrder.address.neighborhood);
+    setCity(getOrder.address.city);
+    setState(getOrder.address.state);
+    setZipCode(getOrder.address.zipcode);
+  }
 
-                        <div className='flex-row justify-center'>
-                            <div className='flex-column'>
-                                <label htmlFor="card-cvv">CVV</label>
-                                <input
-                                    id='card-cvv'
-                                    data-testid='card-cvv'
-                                    type="text"
-                                    placeholder='000'
-                                    maxLength={3}
-                                    value={getCardCvv}
-                                    onChange={(event) => handleCardCvv(event.target.value)}
-                                />
-                            </div>
+  async function handlePaySubmit(event: FormEvent) {
+    event.preventDefault();
 
-                            <div className='flex-column'>
-                                <label htmlFor="card-expiration-month">Vencimento</label>
-                                <div className='flex-row-2'>
-                                    <select
-                                        id="card-expiration-month"
-                                        data-testid="card-expiration-month"
-                                        value={getCardExpirationMonth}
-                                        placeholder='Mês'
-                                        onChange={(event) => setCardExpirationMonth(event.target.value)}
-                                    >
-                                        <option value=""></option>
-                                        <option value="01">01</option>
-                                        <option value="02">02</option>
-                                        <option value="03">03</option>
-                                        <option value="04">04</option>
-                                        <option value="05">05</option>
-                                        <option value="06">06</option>
-                                        <option value="07">07</option>
-                                        <option value="08">08</option>
-                                        <option value="09">09</option>
-                                        <option value="10">10</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                    <p>/</p>
-                                    <select
-                                        id="card-expiration-year"
-                                        data-testid="card-expiration-year"
-                                        value={getCardExpirationYear}
-                                        placeholder='Ano'
-                                        onChange={(event) => setCardExpirationYear(event.target.value)}
-                                    >
-                                        <option value=""></option>
-                                        <option value={String(new Date().getFullYear()).substr(-2)}>{String(new Date().getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 2)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 2)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 3)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 3)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 4)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 4)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 5)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 5)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 6)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 6)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 7)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 7)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 8)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 8)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 9)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 9)).getFullYear()).substr(-2)}</option>
-                                        <option value={String(new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()).substr(-2)}>{String(new Date(new Date().setFullYear(new Date().getFullYear() + 10)).getFullYear()).substr(-2)}</option>
-                                    </select>
-                                </div>
-                            </div>
+    if (getDisabledPayButton) return;
 
-                        </div>
-                        <div className='flex-row justify-center'>
-                            <div className='flex-column'>
-                                <label htmlFor="tel">DDD + Telefone</label>
-                                <input
-                                    type="text"
-                                    id='tel'
-                                    data-testid='phone'
-                                    placeholder='(00) 0-0000-0000'
-                                    maxLength={16}
-                                    value={getPhone}
-                                    onChange={(event) => setPhone(formatPhone(event.target.value))}
-                                />
-                            </div>
-                            <div className='flex-column'>
-                                <label htmlFor="cpf">CPF</label>
-                                <input
-                                    id='cpf'
-                                    data-testid='cpf'
-                                    type="text"
-                                    placeholder='123-456-789-00'
-                                    className={`${(getValidCpf) ? '' : 'invalid-value'}`}
-                                    maxLength={14}
-                                    value={getCpf}
-                                    onChange={(event) => handleCpf(event.target.value)}
-                                />
-                            </div>
-                        </div>
+    setDisabledPayButton(true);
+    setDisabledBoletoButton(true);
 
-                    </div>
-                    <div className='cc-form'>
-                        <h2>Endereço de cobrança do cartão</h2>
+    const card_expiration_date =
+      String(getCardExpirationMonth) + String(getCardExpirationYear);
+    const phone = getPhone
+      .replace("(", "")
+      .replace(")", "")
+      .replace(" ", "")
+      .replace(/-/g, "");
+    const cpf = getCpf.replace(/\.|-/g, "");
 
-                        <div className='flex-column'>
-                            <label htmlFor="street">Logradouro</label>
-                            <input
-                                id='street'
-                                data-testid='street'
-                                type="text"
-                                value={getStreet}
-                                onChange={(event) => setStreet(event.target.value)}
-                            />
-                        </div>
+    try {
+      const response = await api.post(`/orders/${router.query.id}/payment`, {
+        credit_card: {
+          installments: Number(getInstallments),
+          card_number: String(getCardNumber).replace(/ /g, ""),
+          card_cvv: getCardCvv,
+          card_expiration_date,
+          card_holder_name: getCardHolderName,
+          customer: {
+            external_id: String(userContext.getUser.id),
+            name: userContext.getUser.name,
+            email: userContext.getUser.email,
+            type: "individual",
+            country: "br",
+            phone_numbers: ["+55" + phone],
+            documents: [
+              {
+                type: "cpf",
+                number: cpf,
+              },
+            ],
+          },
+          billing: {
+            name: getCardHolderName,
+            address: {
+              street: getStreet,
+              street_number: getNumber,
+              neighborhood: getNeighborhood,
+              city: getCity,
+              state: getState.toLowerCase(),
+              zipcode: getZipCode.replace("-", ""),
+              country: "br",
+            },
+          },
+          shipping: {
+            name: userContext.getUser.name,
+            address: {
+              street: getOrder.address.street,
+              street_number: getOrder.address.number,
+              neighborhood: getOrder.address.neighborhood,
+              city: getOrder.address.city,
+              state: getOrder.address.state.toLowerCase(),
+              zipcode: getOrder.address.zipcode.replace("-", ""),
+              country: "br",
+            },
+          },
+        },
+      });
 
-                        <div className='flex-row flex-justify-start'>
-                            <div className='flex-column'>
-                                <label htmlFor="number"> Nº</label>
-                                <input
-                                    id='number'
-                                    data-testid='number-input'
-                                    type="text"
-                                    value={getNumber}
-                                    onChange={(event) => setNumber(event.target.value)}
-                                />
-                            </div>
-                            <div className='flex-column w-100'>
-                                <label htmlFor="neighborhood">Bairro</label>
-                                <input
-                                    id='neighborhood'
-                                    data-testid='neighborhood'
-                                    type="text"
-                                    value={getNeighborhood}
-                                    onChange={(event) => setNeighborhood(event.target.value)}
-                                />
-                            </div>
-                        </div>
+      orderContext.setOrderId(response.data.order.id);
 
-                        <div className='flex-row'>
-                            <div className='flex-column'>
-                                <label htmlFor="city">Cidade</label>
-                                <input
-                                    id='city'
-                                    data-testid='city'
-                                    type="text"
-                                    value={getCity}
-                                    onChange={(event) => setCity(event.target.value)}
-                                />
-                            </div>
+      setShowThanksForBuy(true);
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao pagar com cartão de crédito");
+      setDisabledPayButton(false);
+      setDisabledBoletoButton(false);
+    }
+  }
 
-                            <div className='flex-column'>
-                                <label htmlFor="state"> Estado</label>
-                                <select
-                                    id="state"
-                                    data-testid="state"
-                                    value={getState}
-                                    onChange={(event) => setState(event.target.value)}
-                                >
-                                    <option value=""></option>
-                                    <option value="AC">AC</option>
-                                    <option value="AL">AL</option>
-                                    <option value="AP">AP</option>
-                                    <option value="AM">AM</option>
-                                    <option value="BA">BA</option>
-                                    <option value="CE">CE</option>
-                                    <option value="DF">DF</option>
-                                    <option value="ES">ES</option>
-                                    <option value="GO">GO</option>
-                                    <option value="MA">MA</option>
-                                    <option value="MT">MT</option>
-                                    <option value="MS">MS</option>
-                                    <option value="MG">MG</option>
-                                    <option value="PA">PA</option>
-                                    <option value="PB">PB</option>
-                                    <option value="PR">PR</option>
-                                    <option value="PE">PE</option>
-                                    <option value="PI">PI</option>
-                                    <option value="RJ">RJ</option>
-                                    <option value="RN">RN</option>
-                                    <option value="RS">RS</option>
-                                    <option value="RO">RO</option>
-                                    <option value="RR">RR</option>
-                                    <option value="SC">SC</option>
-                                    <option value="SP">SP</option>
-                                    <option value="SE">SE</option>
-                                    <option value="TO">TO</option>
-                                </select>
-                            </div>
+  return (
+    <Container data-testid="credit-card-component">
+      {getIsFetching && <LoadingModal spinnerSize="10rem" />}
 
-                            <div className='flex-column'>
-                                <label htmlFor="zipcode">CEP </label>
-                                <input
-                                    id='zipcode'
-                                    data-testid='zipcode'
-                                    type="text"
-                                    maxLength={9}
-                                    value={getZipCode}
-                                    onChange={(event) => setZipCode(formatZipCode(event.target.value))}
-                                />
-                            </div>
-                        </div>
-                        <div className='flex-row same-addr-button'>
-                            <button
-                                type='button'
-                                data-testid='same-address-button'
-                                onClick={handleSameAddressButton}
-                            >
-                                Mesmo da entrega
-                            </button>
-                        </div>
-                    </div>
+      <h2>Cartão de Crédito</h2>
+
+      <form onSubmit={handlePaySubmit}>
+        <div className="grid-columns">
+          <div className="cc-form">
+            <div className="flex-column">
+              <label htmlFor="card-holder-name" className="holder-name-label">
+                Nome impresso no cartão
+              </label>
+              <input
+                id="card-holder-name"
+                data-testid="card-holder-name"
+                type="text"
+                placeholder="Nome"
+                value={getCardHolderName}
+                onChange={(event) => setCardHolderName(event.target.value)}
+              />
+            </div>
+
+            <div className="flex-row justify-center">
+              <div className="flex-column">
+                <label htmlFor="card-number">Numero do cartão</label>
+                <input
+                  id="card-number"
+                  data-testid="card-number"
+                  type="text"
+                  placeholder="0000 0000 0000 0000"
+                  maxLength={19}
+                  value={getCardNumber}
+                  onChange={(event) => handleCardNumber(event.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="flex-row justify-center">
+              <div className="flex-column">
+                <label htmlFor="card-cvv">CVV</label>
+                <input
+                  id="card-cvv"
+                  data-testid="card-cvv"
+                  type="text"
+                  placeholder="000"
+                  maxLength={3}
+                  value={getCardCvv}
+                  onChange={(event) => handleCardCvv(event.target.value)}
+                />
+              </div>
+
+              <div className="flex-column">
+                <label htmlFor="card-expiration-month">Vencimento</label>
+                <div className="flex-row-2">
+                  <select
+                    id="card-expiration-month"
+                    data-testid="card-expiration-month"
+                    value={getCardExpirationMonth}
+                    placeholder="Mês"
+                    onChange={(event) =>
+                      setCardExpirationMonth(event.target.value)
+                    }
+                  >
+                    <option value=""></option>
+                    {Array.from(Array(12)).map((_, index) => (
+                      <option
+                        key={index}
+                        value={index < 9 ? `0${index + 1}` : index + 1}
+                      >
+                        {index < 9 ? `0${index + 1}` : index + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <p>/</p>
+                  <select
+                    id="card-expiration-year"
+                    data-testid="card-expiration-year"
+                    value={getCardExpirationYear}
+                    placeholder="Ano"
+                    onChange={(event) =>
+                      setCardExpirationYear(event.target.value)
+                    }
+                  >
+                    <option value=""></option>
+                    {Array.from(Array(10)).map((_, index) => (
+                      <option
+                        key={index}
+                        value={String(
+                          new Date(
+                            new Date().setFullYear(
+                              new Date().getFullYear() + index
+                            )
+                          ).getFullYear()
+                        ).substr(-2)}
+                      >
+                        {String(
+                          new Date(
+                            new Date().setFullYear(
+                              new Date().getFullYear() + index
+                            )
+                          ).getFullYear()
+                        ).substr(-2)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+            </div>
+            <div className="flex-row justify-center">
+              <div className="flex-column">
+                <label htmlFor="tel">DDD + Telefone</label>
+                <input
+                  type="text"
+                  id="tel"
+                  data-testid="phone"
+                  placeholder="(00) 0-0000-0000"
+                  maxLength={16}
+                  value={getPhone}
+                  onChange={(event) =>
+                    setPhone(formatPhone(event.target.value))
+                  }
+                />
+              </div>
+              <div className="flex-column">
+                <label htmlFor="cpf">CPF</label>
+                <input
+                  id="cpf"
+                  data-testid="cpf"
+                  type="text"
+                  placeholder="123-456-789-00"
+                  className={`${getValidCpf ? "" : "invalid-value"}`}
+                  maxLength={14}
+                  value={getCpf}
+                  onChange={(event) => handleCpf(event.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="cc-form">
+            <h2>Endereço de cobrança do cartão</h2>
 
-                <div className="button-total">
+            <div className="flex-column">
+              <label htmlFor="street">Logradouro</label>
+              <input
+                id="street"
+                data-testid="street"
+                type="text"
+                value={getStreet}
+                onChange={(event) => setStreet(event.target.value)}
+              />
+            </div>
 
-                    <div className='freight-total'>
-                        <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                        <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')).toFixed(2)}</p>
-                        <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
-                    </div>
+            <div className="flex-row flex-justify-start">
+              <div className="flex-column">
+                <label htmlFor="number"> Nº</label>
+                <input
+                  id="number"
+                  data-testid="number-input"
+                  type="text"
+                  value={getNumber}
+                  onChange={(event) => setNumber(event.target.value)}
+                />
+              </div>
+              <div className="flex-column w-100">
+                <label htmlFor="neighborhood">Bairro</label>
+                <input
+                  id="neighborhood"
+                  data-testid="neighborhood"
+                  type="text"
+                  value={getNeighborhood}
+                  onChange={(event) => setNeighborhood(event.target.value)}
+                />
+              </div>
+            </div>
 
-                    <select
-                        id='installments'
-                        onChange={(event) => setInstallments(Number(event.target.value))}
-                    >
-                        {getInstallmentsOptions?.installments.map( (installment, index) => (
-                           <option 
-                                key={index} 
-                                value={index+1}
-                            >
-                               {index+1}x de R${Number(installment).toFixed(2)} 
-                               {index+1 > 1 && (
-                                   (index+1 <= getInstallmentsOptions.freeInstallments) 
-                                   ? ' (sem juros)' 
-                                   : ` (${getInstallmentsOptions.interestRate}% R$${(installment*(index+1)).toFixed(2)})`
-                                )}
-                           </option>
-                        ))}
-                        
-                    </select>
+            <div className="flex-row">
+              <div className="flex-column">
+                <label htmlFor="city">Cidade</label>
+                <input
+                  id="city"
+                  data-testid="city"
+                  type="text"
+                  value={getCity}
+                  onChange={(event) => setCity(event.target.value)}
+                />
+              </div>
 
-                    <button
-                        type='submit'
-                        data-testid='pay-submit-button'
-                        disabled={getDisabledPayButton}
-                    >
-                        {(getDisabledBoletoButton)
-                            ? <Loading
-                                type="TailSpin"
-                                color='#0D2235'
-                                height='1.875rem'
-                                width='1.875rem'
-                            />
-                            : 'PAGAR'
-                        }
-                    </button>
-                </div>
+              <div className="flex-column">
+                <label htmlFor="state"> Estado</label>
+                <select
+                  id="state"
+                  data-testid="state"
+                  value={getState}
+                  onChange={(event) => setState(event.target.value)}
+                >
+                  <option value=""></option>
+                  {getUfs.map((uf) => (
+                    <option key={uf.id} value={uf.sigla}>
+                      {uf.sigla}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            </form>
-        </Container>
-    );
+              <div className="flex-column">
+                <label htmlFor="zipcode">CEP </label>
+                <input
+                  id="zipcode"
+                  data-testid="zipcode"
+                  type="text"
+                  maxLength={9}
+                  value={getZipCode}
+                  onChange={(event) =>
+                    setZipCode(formatZipCode(event.target.value))
+                  }
+                />
+              </div>
+            </div>
+            <div className="flex-row same-addr-button">
+              <button
+                type="button"
+                data-testid="same-address-button"
+                onClick={handleSameAddressButton}
+              >
+                Mesmo da entrega
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {getOrder && (
+          <div className="button-total">
+            <div className="freight-total">
+              <p>Subtotal: R$ {Number(getOrder.total_price).toFixed(2)}</p>
+              <p>Frete: R$ {Number(getOrder.freight_price).toFixed(2)}</p>
+              <p>
+                Total: R${" "}
+                {(
+                  Number(getOrder.total_price) + Number(getOrder.freight_price)
+                ).toFixed(2)}
+              </p>
+            </div>
+
+            <select
+              id="installments"
+              onChange={(event) => setInstallments(Number(event.target.value))}
+            >
+              {getInstallmentsOptions?.installments.map(
+                (installment, index) => (
+                  <option key={index} value={index + 1}>
+                    {index + 1}x de R${Number(installment).toFixed(2)}
+                    {index + 1 > 1 &&
+                      (index + 1 <= getInstallmentsOptions.freeInstallments
+                        ? " (sem juros)"
+                        : ` (${getInstallmentsOptions.interestRate}% R$${(
+                            installment *
+                            (index + 1)
+                          ).toFixed(2)})`)}
+                  </option>
+                )
+              )}
+            </select>
+
+            <button
+              type="submit"
+              data-testid="pay-submit-button"
+              disabled={getDisabledPayButton}
+            >
+              {getDisabledBoletoButton ? (
+                <Loading
+                  type="TailSpin"
+                  color="#0D2235"
+                  height="1.875rem"
+                  width="1.875rem"
+                />
+              ) : (
+                "PAGAR"
+              )}
+            </button>
+          </div>
+        )}
+      </form>
+    </Container>
+  );
 }

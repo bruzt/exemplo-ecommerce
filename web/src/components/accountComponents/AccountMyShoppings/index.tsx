@@ -17,13 +17,14 @@ interface IOrderProduct extends IProduct {
   };
 }
 
-interface IOrder {
+export interface IOrder {
   id: number;
   freight_name: string;
   freight_price: string;
   total_price: string;
   payment_method: string;
   status:
+    | "select_payment_method"
     | "processing"
     | "waiting_payment"
     | "paid"

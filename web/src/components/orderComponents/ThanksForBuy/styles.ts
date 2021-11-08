@@ -1,36 +1,36 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.section`
+  min-height: calc(100vh - 22.9rem);
 
-    min-height: calc(100vh - 32.25rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-                
-    * {
-        margin: 1.25rem 0;
+  * {
+    margin: 1.25rem 0;
+  }
+
+  h2 {
+    text-align: center;
+
+    color: ${(props) => props.theme.color2};
+  }
+
+  a {
+    background: ${(props) => props.theme.primary};
+    color: ${(props) => props.theme.color};
+    font-size: 1.25rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.3125rem;
+
+    &:hover {
+      background: ${(props) => props.theme.secondary};
     }
 
-    h2 {
-        text-align: center;
-
-        color: ${props => props.theme.color2};
+    &:active {
+      background: ${(props) => props.theme.primary};
     }
-
-    a {
-        background: ${props => props.theme.primary};
-        color: ${props => props.theme.color};
-        font-size: 1.25rem;
-        padding: 0.625rem 1.25rem;
-        border-radius: 0.3125rem;
-
-        &:hover {
-            background: ${props => props.theme.secondary};
-        }
-
-        &:active {
-            background: ${props => props.theme.primary};
-        }
-    }
+  }
 `;
