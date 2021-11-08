@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
         user_id,
         freight_name,
         freight_price: Number(freight_price).toFixed(2),
-        total_price,
+        total_price: total_price.toFixed(2),
         address_id,
       },
       {

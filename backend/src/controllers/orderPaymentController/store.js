@@ -28,12 +28,6 @@ module.exports = async function store(req, res) {
           },
           required: false,
           paranoid: false,
-          include: {
-            association: "images",
-            attributes: { exclude: ["product_id", "createdAt", "updatedAt"] },
-            limit: 1,
-            required: false,
-          },
         },
       ],
     });
@@ -111,7 +105,7 @@ module.exports = async function store(req, res) {
       req.body.credit_card.shipping.fee = shippingFee;
 
       req.body.credit_card.reference_key = reference_key;
-      //console.log(req.body.credit_card);
+
       pagarMeResponse = await payWithCreditCard(req.body.credit_card);
 
       order.status = pagarMeResponse.status;
