@@ -1,172 +1,161 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from "react";
 
-import api from '../../../services/api';
-import formatCpf from '../../../utils/formatCpf';
-import formatPhone from '../../../utils/formatPhone';
+import api from "../../../services/api";
+import formatCpf from "../../../utils/formatCpf";
+import formatPhone from "../../../utils/formatPhone";
+import { useUser } from "../../../contexts/userContext";
+import { useOrder } from "../../../contexts/orderContext";
+import { IOrder } from "../PaymentMethodPage";
 
-import { Container, LoadingSpinner } from './styles';
-
-import { useCart } from '../../../contexts/cartContext';
-import { useUser } from '../../../contexts/userContext';
-import { useOrder } from '../../../contexts/orderContext';
+import { Container, LoadingSpinner } from "./styles";
 
 interface IProps {
-    getDisabledCreditCardButton: boolean;
-    setDisabledCreditCardButton: React.Dispatch<React.SetStateAction<boolean>>;
+  order: IOrder;
+  getDisabledCreditCardButton: boolean;
+  setDisabledCreditCardButton: React.Dispatch<boolean>;
+  setShowThanksForBuy: React.Dispatch<boolean>;
 }
 
-export default function BoletoPayment({ getDisabledCreditCardButton, setDisabledCreditCardButton }: IProps) {
+export default function BoletoPayment({
+  order,
+  getDisabledCreditCardButton,
+  setDisabledCreditCardButton,
+  setShowThanksForBuy,
+}: IProps) {
+  const [getDisabledCreateBoletoButton, setDisabledCreateBoletoButton] =
+    useState(true);
 
-    const [getDisabledCreateBoletoButton, setDisabledCreateBoletoButton] = useState(true);
+  const [getValidCpf, setValidCpf] = useState(true);
 
-    const [getValidCpf, setValidCpf] = useState(true);
+  const [getCpf, setCpf] = useState("");
+  const [getPhone, setPhone] = useState("");
 
-    const [getCpf, setCpf] = useState('');
-    const [getPhone, setPhone] = useState('');
+  const userContext = useUser();
+  const orderContext = useOrder();
 
-    const cartContext = useCart();
-    const userContext = useUser();
-    const orderContext = useOrder();
+  useEffect(() => {
+    if (getCpf.length == 14 && getValidCpf && getPhone.length > 13) {
+      setDisabledCreateBoletoButton(false);
+    } else setDisabledCreateBoletoButton(true);
+  }, [getCpf, getPhone]);
 
-    useEffect( () => {
-        if(
-            getCpf.length == 14 &&
-            getValidCpf &&
-            getPhone.length > 13
-        ) {
+  function handleCpf(value) {
+    const format = formatCpf(value);
 
-            setDisabledCreateBoletoButton(false);
-        } else setDisabledCreateBoletoButton(true);
+    setValidCpf(format.valid);
+    setCpf(format.cpf);
+  }
 
-    }, [getCpf, getPhone])
+  async function handleCreateBoleto(event: FormEvent) {
+    event.preventDefault();
 
-    function handleCpf(value){
+    setDisabledCreateBoletoButton(true);
+    setDisabledCreditCardButton(true);
 
-        const format = formatCpf(value);
+    const phone = getPhone
+      .replace("(", "")
+      .replace(")", "")
+      .replace(" ", "")
+      .replace(/-/g, "");
+    const cpf = getCpf.replace(".", "").replace(".", "").replace("-", "");
 
-        setValidCpf(format.valid);
-        setCpf(format.cpf);
+    try {
+      const response = await api.post(`/orders/${order.id}/payment`, {
+        boleto: {
+          customer: {
+            external_id: String(userContext.getUser.id),
+            name: userContext.getUser.name,
+            email: userContext.getUser.email,
+            type: "individual",
+            country: "br",
+            phone_numbers: ["+55" + phone],
+            documents: [
+              {
+                type: "cpf",
+                number: cpf,
+              },
+            ],
+          },
+          shipping: {
+            name: userContext.getUser.name,
+            address: {
+              street: order.address.street,
+              street_number: order.address.number,
+              neighborhood: order.address.neighborhood,
+              city: order.address.city,
+              state: order.address.state.toLowerCase(),
+              zipcode: order.address.zipcode.replace("-", ""),
+              country: "br",
+            },
+          },
+        },
+      });
+
+      orderContext.setOrderId(response.data.order.id);
+      orderContext.setBoletoUrl(response.data.pagarme.boleto_url);
+
+      setShowThanksForBuy(true);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao gerar boleto");
+      setDisabledCreateBoletoButton(false);
+      setDisabledCreditCardButton(false);
     }
+  }
 
-    async function handleCreateBoleto(event: FormEvent) {
+  return (
+    <Container data-testid="boleto-component">
+      <h2>Boleto</h2>
 
-        event.preventDefault();
+      {order && (
+        <form className="boleto-form" onSubmit={handleCreateBoleto}>
+          <div className="freight-total">
+            <p>Subtotal: R$ {Number(order.total_price).toFixed(2)}</p>
+            <p>Frete: R$ {Number(order.freight_price).toFixed(2)}</p>
+            <p>
+              Total: R${" "}
+              {(
+                Number(order.total_price) + Number(order.freight_price)
+              ).toFixed(2)}
+            </p>
+          </div>
 
-        setDisabledCreateBoletoButton(true);
-        setDisabledCreditCardButton(true);
+          <div className="inputs">
+            <div className="input-group">
+              <label htmlFor="cpf">CPF</label>
+              <input
+                id="cpf"
+                data-testid="cpf"
+                type="text"
+                className={`${getValidCpf ? "" : "invalid-cpf"}`}
+                maxLength={14}
+                value={getCpf}
+                onChange={(event) => handleCpf(event.target.value)}
+              />
+            </div>
 
-        const phone = getPhone.replace('(', '').replace(')', '').replace(' ', '').replace(/-/g, '');
-        const cpf = getCpf.replace('.', '').replace('.', '').replace('-', '');
-        const [address] = userContext.getUser.addresses.filter((address) => address.id == cartContext.getAddressId);
+            <div className="input-group">
+              <label htmlFor="phone">DDD + Telefone</label>
+              <input
+                id="phone"
+                data-testid="phone"
+                type="text"
+                maxLength={16}
+                value={getPhone}
+                onChange={(event) => setPhone(formatPhone(event.target.value))}
+              />
+            </div>
+          </div>
 
-        const products_id = cartContext.getCart.map((product) => product.id);
-        const quantity_buyed = cartContext.getCart.map((product) => product.qtd);
-
-        try {
-
-            const response = await api.post('/orders', {
-                products_id,
-                quantity_buyed,
-                address_id: address.id,
-                freight_name: cartContext.getFreightSelected,
-                freight_price: Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')),
-                boleto: {
-                    customer: {
-                        external_id: String(userContext.getUser.id),
-                        name: userContext.getUser.name,
-                        email: userContext.getUser.email,
-                        type: "individual",
-                        country: "br",
-                        phone_numbers: ["+55" + phone],
-                        documents: [
-                            {
-                                type: "cpf",
-                                number: cpf
-                            }
-                        ]
-                    },
-                    shipping: {
-                        name: userContext.getUser.name,
-                        address: {
-                            street: address.street,
-                            street_number: address.number,
-                            neighborhood: address.neighborhood,
-                            city: address.city,
-                            state: address.state.toLowerCase(),
-                            zipcode: address.zipcode.replace('-', ''),
-                            country: "br",
-                        }
-                    }
-                }
-            });
-
-            orderContext.setOrderId(response.data.order.id);
-            orderContext.setBoletoUrl(response.data.pagarme.boleto_url);
-            orderContext.setOrderFlowNumber(4);
-            
-            cartContext.cleanCart();
-
-        } catch (error) {
-            console.log(error);
-            alert('Erro, tente novamente');
-            setDisabledCreateBoletoButton(false);
-            setDisabledCreditCardButton(false);
-        }
-    }
-
-    return (
-        <Container data-testid='boleto-component'>
-            <h2>Boleto</h2>
-
-            <form 
-                className="boleto-form"
-                onSubmit={handleCreateBoleto}
-            >
-
-                <div className='freight-total'>
-                    <p>Subtotal: R$ {Number(cartContext.getSubtotalPrice).toFixed(2)}</p>
-                    <p>Frete: R$ {Number((cartContext.getFreightPrice[cartContext.getFreightSelected].valor).replace(',', '.')).toFixed(2)}</p>
-                    <p>Total: R$ {Number(cartContext.getTotalPrice).toFixed(2)}</p>
-                </div>
-            
-                <div className='inputs'>
-                    <div className='input-group'>
-                        <label htmlFor="cpf">CPF</label>
-                        <input 
-                            id='cpf' 
-                            data-testid='cpf' 
-                            type="text" 
-                            className={`${(getValidCpf) ? '' : 'invalid-cpf'}`}
-                            maxLength={14}
-                            value={getCpf}
-                            onChange={(event) => handleCpf(event.target.value)}
-                        />
-                    </div>
-
-                    <div className='input-group'>
-                        <label htmlFor="phone">DDD + Telefone</label>
-                        <input 
-                            id='phone' 
-                            data-testid='phone' 
-                            type="text" 
-                            maxLength={16}
-                            value={getPhone}
-                            onChange={(event) => setPhone(formatPhone(event.target.value))}
-                        />
-                    </div>
-                </div>
-
-                <button
-                    type='submit'
-                    data-testid='boleto-submit-button'
-                    disabled={getDisabledCreateBoletoButton}
-                >
-                    {(getDisabledCreditCardButton)
-                        ? <LoadingSpinner />
-                        : 'GERAR BOLETO'
-                    }
-                </button>
-            </form>
-        </Container>
-    );
+          <button
+            type="submit"
+            data-testid="boleto-submit-button"
+            disabled={getDisabledCreateBoletoButton}
+          >
+            {getDisabledCreditCardButton ? <LoadingSpinner /> : "GERAR BOLETO"}
+          </button>
+        </form>
+      )}
+    </Container>
+  );
 }

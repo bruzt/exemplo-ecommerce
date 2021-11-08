@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { FaArrowLeft } from "react-icons/fa";
 import Head from "next/head";
 
@@ -8,10 +9,37 @@ import CreditCardPayment from "../CreditCardPayment";
 import BoletoPayment from "../BoletoPayment";
 import PageLayout from "../../PageLayout";
 import ThanksForBuy from "../ThanksForBuy";
+import api from "../../../services/api";
 
 import { Container } from "./styles";
 
+export interface IOrder {
+  id: number;
+  freight_name: string;
+  freight_price: string;
+  total_price: string;
+  payment_method: "credit_card" | "boleto";
+  status: string;
+  boleto_url: null;
+  tracking_code: null;
+  createdAt: string;
+  updatedAt: string;
+  address_id: number;
+  user_id: number;
+  address: {
+    id: number;
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+    zipcode: string;
+  };
+}
+
 export default function PaymentMethodPage() {
+  const [getOrder, setOrder] = useState<IOrder>();
+
   const [getPaymentMethod, setPaymentMethod] = useState(null);
 
   const [getDisabledCreditCardButton, setDisabledCreditCardButton] =
@@ -20,6 +48,7 @@ export default function PaymentMethodPage() {
 
   const [showThanksForBuy, setShowThanksForBuy] = useState(false);
 
+  const router = useRouter();
   const orderContext = useOrder();
 
   useEffect(() => {
@@ -28,6 +57,22 @@ export default function PaymentMethodPage() {
     orderContext.setOrderId(null);
     orderContext.setBoletoUrl("");
   }, []);
+
+  useEffect(() => {
+    if (router.query.id) fetchOrder();
+  }, [router.query.id]);
+
+  async function fetchOrder() {
+    try {
+      const response = await api.get<IOrder>(`/orders/${router.query.id}`);
+
+      setOrder(response.data);
+    } catch (error) {
+      console.log(error);
+      alert("Erro ao buscar order de compra");
+      router.push("/");
+    }
+  }
 
   return (
     <>
@@ -81,6 +126,7 @@ export default function PaymentMethodPage() {
 
             {getPaymentMethod == "cc" && (
               <CreditCardPayment
+                order={getOrder}
                 getDisabledBoletoButton={getDisabledBoletoButton}
                 setDisabledBoletoButton={setDisabledBoletoButton}
                 setShowThanksForBuy={setShowThanksForBuy}
@@ -88,8 +134,10 @@ export default function PaymentMethodPage() {
             )}
             {getPaymentMethod == "boleto" && (
               <BoletoPayment
+                order={getOrder}
                 getDisabledCreditCardButton={getDisabledCreditCardButton}
                 setDisabledCreditCardButton={setDisabledCreditCardButton}
+                setShowThanksForBuy={setShowThanksForBuy}
               />
             )}
           </Container>

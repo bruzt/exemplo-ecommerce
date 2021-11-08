@@ -11,10 +11,12 @@ import { useUser } from "../../../contexts/userContext";
 import { useOrder } from "../../../contexts/orderContext";
 import LoadingModal from "../../LoadingModal";
 import { IUf } from "../SelectAddress";
+import { IOrder } from "../PaymentMethodPage";
 
 import { Container } from "./styles";
 
 interface IProps {
+  order: IOrder;
   getDisabledBoletoButton: boolean;
   setDisabledBoletoButton: React.Dispatch<boolean>;
   setShowThanksForBuy: React.Dispatch<boolean>;
@@ -27,37 +29,12 @@ interface IInstallmentsOptions {
   installments: number[];
 }
 
-interface IOrder {
-  id: number;
-  freight_name: string;
-  freight_price: string;
-  total_price: string;
-  payment_method: "credit_card" | "boleto";
-  status: string;
-  boleto_url: null;
-  tracking_code: null;
-  createdAt: string;
-  updatedAt: string;
-  address_id: number;
-  user_id: number;
-  address: {
-    id: number;
-    street: string;
-    number: string;
-    neighborhood: string;
-    city: string;
-    state: string;
-    zipcode: string;
-  };
-}
-
 export default function CreditCardPayment({
+  order,
   getDisabledBoletoButton,
   setDisabledBoletoButton,
   setShowThanksForBuy,
 }: IProps) {
-  const [getOrder, setOrder] = useState<IOrder>();
-
   const [getCardHolderName, setCardHolderName] = useState("");
   const [getCardNumber, setCardNumber] = useState("");
   const [getCardCvv, setCardCvv] = useState("");
@@ -90,7 +67,7 @@ export default function CreditCardPayment({
   const router = useRouter();
 
   useEffect(() => {
-    fetchOrder();
+    fetchInstallments();
     fetchUfs();
   }, []);
 
@@ -141,31 +118,18 @@ export default function CreditCardPayment({
     getZipCode,
   ]);
 
-  async function fetchOrder() {
+  async function fetchInstallments() {
     try {
       setIsFetching(true);
 
-      const response = await api.get<IOrder>(`/orders/${router.query.id}`);
-
-      await fetchInstallments(response.data.total_price);
-
-      setOrder(response.data);
-
-      setIsFetching(false);
-    } catch (error) {
-      console.log(error);
-      alert("Erro ao buscar order de compra");
-      router.push("/");
-    }
-  }
-
-  async function fetchInstallments(amount: string) {
-    try {
       const response = await api.post("/installments", {
-        amount: Number(amount).toFixed(2),
+        amount: (
+          Number(order.total_price) + Number(order.freight_price)
+        ).toFixed(2),
       });
 
       setInstallmentsOptions(response.data);
+      setIsFetching(false);
     } catch (error) {
       console.log(error);
       alert("Erro ao buscar opções de parcela");
@@ -221,12 +185,12 @@ export default function CreditCardPayment({
   }
 
   function handleSameAddressButton() {
-    setStreet(getOrder.address.street);
-    setNumber(getOrder.address.number);
-    setNeighborhood(getOrder.address.neighborhood);
-    setCity(getOrder.address.city);
-    setState(getOrder.address.state);
-    setZipCode(getOrder.address.zipcode);
+    setStreet(order.address.street);
+    setNumber(order.address.number);
+    setNeighborhood(order.address.neighborhood);
+    setCity(order.address.city);
+    setState(order.address.state);
+    setZipCode(order.address.zipcode);
   }
 
   async function handlePaySubmit(event: FormEvent) {
@@ -247,7 +211,7 @@ export default function CreditCardPayment({
     const cpf = getCpf.replace(/\.|-/g, "");
 
     try {
-      const response = await api.post(`/orders/${router.query.id}/payment`, {
+      const response = await api.post(`/orders/${order.id}/payment`, {
         credit_card: {
           installments: Number(getInstallments),
           card_number: String(getCardNumber).replace(/ /g, ""),
@@ -283,12 +247,12 @@ export default function CreditCardPayment({
           shipping: {
             name: userContext.getUser.name,
             address: {
-              street: getOrder.address.street,
-              street_number: getOrder.address.number,
-              neighborhood: getOrder.address.neighborhood,
-              city: getOrder.address.city,
-              state: getOrder.address.state.toLowerCase(),
-              zipcode: getOrder.address.zipcode.replace("-", ""),
+              street: order.address.street,
+              street_number: order.address.number,
+              neighborhood: order.address.neighborhood,
+              city: order.address.city,
+              state: order.address.state.toLowerCase(),
+              zipcode: order.address.zipcode.replace("-", ""),
               country: "br",
             },
           },
@@ -537,15 +501,15 @@ export default function CreditCardPayment({
           </div>
         </div>
 
-        {getOrder && (
+        {order && (
           <div className="button-total">
             <div className="freight-total">
-              <p>Subtotal: R$ {Number(getOrder.total_price).toFixed(2)}</p>
-              <p>Frete: R$ {Number(getOrder.freight_price).toFixed(2)}</p>
+              <p>Subtotal: R$ {Number(order.total_price).toFixed(2)}</p>
+              <p>Frete: R$ {Number(order.freight_price).toFixed(2)}</p>
               <p>
                 Total: R${" "}
                 {(
-                  Number(getOrder.total_price) + Number(getOrder.freight_price)
+                  Number(order.total_price) + Number(order.freight_price)
                 ).toFixed(2)}
               </p>
             </div>
