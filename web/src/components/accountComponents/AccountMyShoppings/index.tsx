@@ -107,6 +107,17 @@ export default function AccountMyShoppings() {
     router.push(href);
   }
 
+  function handleSelectPayAnchor(
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    orderId: number
+  ) {
+    event.stopPropagation();
+
+    event.preventDefault();
+
+    router.push(`/order/${orderId}/payment`);
+  }
+
   return (
     <>
       <Container data-testid="my-shopping-component">
@@ -137,7 +148,25 @@ export default function AccountMyShoppings() {
                       new Date(order.createdAt)
                     )}
                   </span>
-                  <span>Total: R$ {Number(order.total_price).toFixed(2)}</span>
+                  <span>
+                    Total: R${" "}
+                    {(
+                      Number(order.total_price) + Number(order.freight_price)
+                    ).toFixed(2)}
+                  </span>
+
+                  {order.status == "select_payment_method" && (
+                    <a
+                      href={`/order/${order.id}/payment`}
+                      className="pay-link"
+                      title={"Pagar"}
+                      onClick={(event) =>
+                        handleSelectPayAnchor(event, order.id)
+                      }
+                    >
+                      <span>Pagar</span>
+                    </a>
+                  )}
 
                   {order.status == "processing" && (
                     <span className="processing">Processando</span>
