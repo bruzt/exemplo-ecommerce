@@ -97,7 +97,9 @@ export default function Product({ product }: IProps) {
   function addToCartButton() {
     cartContext.addToCart({ id: productData.id, qtd: getQuantity });
 
-    router.push("/order");
+    router.push({
+      pathname: "/order",
+    });
   }
 
   function findCategoryFather(fatherId: number) {

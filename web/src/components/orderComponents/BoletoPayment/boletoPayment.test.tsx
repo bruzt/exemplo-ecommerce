@@ -22,7 +22,9 @@ jest.mock("next/router", () => require("next-router-mock"));
 describe("Boleto Payment Tests", () => {
   beforeAll(() => {
     const apiMock = new MockAdapter(api);
-    apiMock.onPost("/orders").reply(200, fakeBoletoOrder);
+    apiMock
+      .onPost(`/orders/${fakeOrder.id}/payment`)
+      .reply(200, fakeBoletoOrder);
   });
 
   it("should call api to create boleto", async () => {
