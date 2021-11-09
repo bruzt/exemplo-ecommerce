@@ -1,68 +1,74 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import MockAdapter from 'axios-mock-adapter';
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import MockAdapter from "axios-mock-adapter";
 
-import AccountMyShoppings from './';
-import api from '../../../services/api';
-import { fakeOrder } from '../../../testUtils/fakeData';
+import AccountMyShoppings from "./";
+import api from "../../../services/api";
+import { fakeOrders } from "../../../testUtils/fakeData";
 
-jest.mock('next/router', () => require('next-router-mock'));
-jest.mock('next/link', () => ({ children }) => children);
+jest.mock("next/router", () => require("next-router-mock"));
+jest.mock(
+  "next/link",
+  () =>
+    ({ children }) =>
+      children
+);
 
-describe('Account My Shoppings Tests', () => {
+describe("Account My Shoppings Tests", () => {
+  beforeAll(() => {
+    const apiMock = new MockAdapter(api);
+    apiMock.onGet("/orders?limit=5&offset=0").reply(200, fakeOrders);
+  });
 
-    beforeAll(() => {
-        const apiMock = new MockAdapter(api);
-        apiMock.onGet('/orders?limit=5&offset=0').reply(200, fakeOrder);
-    });
+  it("should render an order card", async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(<AccountMyShoppings />)
+    );
 
-    it('should render an order card', async () => {
+    const orderCard = queryByTestId("order-card-container");
 
-        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+    expect(orderCard).toBeInTheDocument();
+  });
 
-        const orderCard = queryByTestId('order-card-container');
+  it("should open order details on click", async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(<AccountMyShoppings />)
+    );
 
-        expect(orderCard).toBeInTheDocument();
-    });
+    const orderCardButton = queryByTestId("order-card-button");
 
-    it('should open order details on click', async () => {
+    fireEvent.click(orderCardButton);
 
-        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+    const orderDetails = queryByTestId("order-content");
 
-        const orderCardButton = queryByTestId('order-card-button');
+    expect(orderDetails).toBeInTheDocument();
+  });
 
-        fireEvent.click(orderCardButton);
+  it("should close order details on click second click", async () => {
+    const { queryByTestId } = await waitFor(() =>
+      render(<AccountMyShoppings />)
+    );
 
-        const orderDetails = queryByTestId('order-content');
+    const orderCardButton = queryByTestId("order-card-button");
 
-        expect(orderDetails).toBeInTheDocument();
-    });
+    fireEvent.click(orderCardButton);
+    fireEvent.click(orderCardButton);
 
-    it('should close order details on click second click', async () => {
+    const orderDetails = queryByTestId("order-content");
 
-        const { queryByTestId } = await waitFor(() => render(<AccountMyShoppings />));
+    expect(orderDetails).not.toBeInTheDocument();
+  });
 
-        const orderCardButton = queryByTestId('order-card-button');
+  it("should navigate to product page when clicking in product tab", async () => {
+    const { getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
 
-        fireEvent.click(orderCardButton);
-        fireEvent.click(orderCardButton);
+    const orderCardButton = getByTestId("order-card-button");
 
-        const orderDetails = queryByTestId('order-content');
+    fireEvent.click(orderCardButton);
 
-        expect(orderDetails).not.toBeInTheDocument();
-    });
+    const orderCardDetails = getByTestId("order-card-details");
 
-    it('should navigate to product page when clicking in product tab', async () => {
-
-        const { getByTestId } = await waitFor(() => render(<AccountMyShoppings />));
-
-        const orderCardButton = getByTestId('order-card-button');
-
-        fireEvent.click(orderCardButton);
-
-        const orderCardDetails = getByTestId('order-card-details');
-
-        await waitFor(() => fireEvent.click(orderCardDetails));
-    });
+    await waitFor(() => fireEvent.click(orderCardDetails));
+  });
 });
