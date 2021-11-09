@@ -19,7 +19,7 @@ export interface IOrder {
   freight_name: string;
   freight_price: string;
   total_price: string;
-  payment_method: "credit_card" | "boleto";
+  payment_method: string | null;
   status: string;
   boleto_url: null;
   tracking_code: null;

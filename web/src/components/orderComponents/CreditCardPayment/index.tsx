@@ -190,7 +190,7 @@ export default function CreditCardPayment({
     setNeighborhood(order.address.neighborhood);
     setCity(order.address.city);
     setState(order.address.state);
-    setZipCode(order.address.zipcode);
+    setZipCode(formatZipCode(order.address.zipcode));
   }
 
   async function handlePaySubmit(event: FormEvent) {
