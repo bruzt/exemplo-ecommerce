@@ -1,10 +1,11 @@
 const app = require("../../app");
 const { io } = require("socket.io-client");
 const axios = require("axios");
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
-const truncate = require("../../testUtils/truncate");
+//const truncate = require("../../testUtils/truncate");
 const sonicConnection = require("../../database/sonic/connection");
-const { fakeCreditCard } = require("../../testUtils/fakeData");
 const factories = require("../../testUtils/factories");
 
 function sleep(timeout) {
@@ -20,8 +21,11 @@ describe("Socket.io Tests", () => {
     app.listen(3001);
   });
 
-  beforeEach(() => {
-    return truncate();
+  beforeEach(async () => {
+    await exec("sequelize db:migrate:undo:all");
+
+    return exec("sequelize db:migrate");
+    //return truncate();
   });
 
   afterAll(async () => {
@@ -120,7 +124,7 @@ describe("Socket.io Tests", () => {
       address_id: address.id,
     });
 
-    expect(response.data.id).toBe(order?.id);
+    expect(response.data.id).toBe(order.id);
     socket.disconnect();
   });
 });

@@ -15,8 +15,7 @@ const Bull = require("bull");
 
 const sendEmailJob = require("./jobs/sendEmailJob");
 
-const sendEmailQueue = new Bull("SendEmailQueue", {
-  redis: process.env.REDIS_URL,
+const sendEmailQueue = new Bull("SendEmailQueue", process.env.REDIS_URL, {
   limiter: {
     // envia no maximo 8 emails por minuto
     max: 8,
