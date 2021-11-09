@@ -100,6 +100,16 @@ describe("orderPaymentController Test Suit", () => {
       address_id: address.id,
     });
 
+    const category = await factories.create("Category");
+    const product = await factories.create("Product", {
+      category_id: category.id,
+    });
+
+    await factories.create("OrdersProducts", {
+      order_id: order.id,
+      product_id: product.id,
+    });
+
     const response = await supertest(app)
       .post(`/orders/${order.id}/payment`)
       .set("authorization", "Bearer " + token)
@@ -120,6 +130,16 @@ describe("orderPaymentController Test Suit", () => {
     const order = await factories.create("Order", {
       user_id: user.id,
       address_id: address.id,
+    });
+
+    const category = await factories.create("Category");
+    const product = await factories.create("Product", {
+      category_id: category.id,
+    });
+
+    await factories.create("OrdersProducts", {
+      order_id: order.id,
+      product_id: product.id,
     });
 
     const response = await supertest(app)
