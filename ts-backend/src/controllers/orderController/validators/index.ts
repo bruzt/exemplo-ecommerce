@@ -1,7 +1,9 @@
-import list from './list';
-import store from './store';
+import list from "./list";
+import show from "./show";
+import store from "./store";
 
 export default {
-    list,
-    store,
-}
+  list,
+  show,
+  store,
+};

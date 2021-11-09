@@ -194,6 +194,12 @@ router.get(
   jwtAuthentication,
   orderController.list
 );
+router.get(
+  "/orders/:id",
+  orderValidator.show,
+  jwtAuthentication,
+  orderController.show
+);
 router.post(
   "/orders",
   orderValidator.store,
