@@ -88,27 +88,4 @@ describe("Payment Method Tests", () => {
     expect(boletoComponent).toBeInTheDocument();
     expect(creditCardComponent).not.toBeInTheDocument();
   });
-
-  it("should have back button", async () => {
-    const { queryByTestId } = render(
-      <OrderContextProvider>
-        <CartContextProvider
-          _testFreightPrice={fakeFreightPrice}
-          _testFreightSelected="pac"
-          _testAddressId={fakeAddress.id}
-        >
-          <UserContextProvider
-            _testUser={{ ...fakeUser, addresses: [fakeAddress] }}
-            _testLogin={true}
-          >
-            <PaymentMethodPage />
-          </UserContextProvider>
-        </CartContextProvider>
-      </OrderContextProvider>
-    );
-
-    const paymentMethodBackButton = queryByTestId("payment-method-back-button");
-
-    expect(paymentMethodBackButton).toBeInTheDocument();
-  });
 });

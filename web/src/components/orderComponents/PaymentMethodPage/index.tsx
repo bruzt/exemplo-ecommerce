@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { FaArrowLeft } from "react-icons/fa";
 import Head from "next/head";
 
 import { useOrder } from "../../../contexts/orderContext";
@@ -94,16 +93,6 @@ export default function PaymentMethodPage() {
           <ThanksForBuy />
         ) : (
           <Container>
-            <button
-              type="button"
-              className="back-button"
-              data-testid="payment-method-back-button"
-              title="Voltar"
-              onClick={() => orderContext.setOrderFlowNumber(2)}
-            >
-              <FaArrowLeft />
-            </button>
-
             <h1>Método de pagamento</h1>
 
             <div className="cc-boleto-buttons">
