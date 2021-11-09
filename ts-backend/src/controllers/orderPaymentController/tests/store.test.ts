@@ -6,14 +6,18 @@ import truncate from "../../../testUtils/truncateTypeorm";
 import app from "../../../app";
 import UserModel from "../../../models/UserModel";
 import AddressModel from "../../../models/AddressModel";
-
 import OrderModel from "../../../models/OrderModel";
+import CategoryModel from "../../../models/CategoryModel";
+import ProductModel from "../../../models/ProductModel";
+import OrderProductModel from "../../../models/OrderProductModel";
 import {
   fakeUser,
   fakeAddress,
   fakeCreditCard,
   fakeBoleto,
   fakeCpfs,
+  fakeCategory,
+  fakeProduct,
 } from "../../../testUtils/fakeData";
 
 describe("orderPaymentController Store Test Suit", () => {
@@ -49,6 +53,24 @@ describe("orderPaymentController Store Test Suit", () => {
     });
     await order.save();
 
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
+    });
+    await product.save();
+
+    const orderProduct = OrderProductModel.create({
+      order_id: order.id,
+      product_id: product.id,
+      product_price: 111.1,
+      quantity_buyed: 2,
+      product_discount_percent: 0,
+    });
+    await orderProduct.save();
+
     const response = await supertest(app)
       .post(`/orders/${order.id}/payment`)
       .set("authorization", "Bearer " + token)
@@ -77,6 +99,24 @@ describe("orderPaymentController Store Test Suit", () => {
       total_price: 29.77,
     });
     await order.save();
+
+    const category = CategoryModel.create(fakeCategory);
+    await category.save();
+
+    const product = ProductModel.create({
+      ...fakeProduct,
+      category_id: category.id,
+    });
+    await product.save();
+
+    const orderProduct = OrderProductModel.create({
+      order_id: order.id,
+      product_id: product.id,
+      product_price: 111.1,
+      quantity_buyed: 2,
+      product_discount_percent: 0,
+    });
+    await orderProduct.save();
 
     const response = await supertest(app)
       .post(`/orders/${order.id}/payment`)
