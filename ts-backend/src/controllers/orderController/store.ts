@@ -142,7 +142,7 @@ export default async function store(req: Request, res: Response) {
         user_id: id,
         freight_name: body.freight_name,
         freight_price: Number(Number(body.freight_price).toFixed(2)),
-        total_price,
+        total_price: Number(total_price.toFixed(2)),
         address_id: body.address_id,
       });
 
