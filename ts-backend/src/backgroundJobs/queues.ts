@@ -15,25 +15,28 @@ import Bull from "bull";
 
 import sendEmailJob, { ISendEmailJob } from "./jobs/sendEmailJob";
 
-export const sendEmailQueue = new Bull<ISendEmailJob>("SendEmailQueue", {
-  redis: process.env.REDIS_URL,
-  limiter: {
-    // envia no maximo 8 emails por minuto
-    max: 8,
-    duration: 60000,
-  },
-  defaultJobOptions: {
-    priority: 2,
-    removeOnComplete: true,
-    // tenta reenviar 3 vezes com um minuto de diferença e falha se demorar mais de 10 segundos
-    attempts: 3,
-    backoff: {
-      type: "fixed",
-      delay: 60000,
+export const sendEmailQueue = new Bull<ISendEmailJob>(
+  "SendEmailQueue",
+  String(process.env.REDIS_URL),
+  {
+    limiter: {
+      // envia no maximo 8 emails por minuto
+      max: 8,
+      duration: 60000,
     },
-    timeout: 10000,
-  },
-});
+    defaultJobOptions: {
+      priority: 2,
+      removeOnComplete: true,
+      // tenta reenviar 3 vezes com um minuto de diferença e falha se demorar mais de 10 segundos
+      attempts: 3,
+      backoff: {
+        type: "fixed",
+        delay: 60000,
+      },
+      timeout: 10000,
+    },
+  }
+);
 
 export default [
   {
