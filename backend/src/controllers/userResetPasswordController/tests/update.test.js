@@ -1,105 +1,104 @@
-const supertest = require('supertest');
+const supertest = require("supertest");
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
-const truncate = require('../../../testUtils/truncate');
-const factories = require('../../../testUtils/factories');
-const app = require('../../../app');
+//const truncate = require("../../../testUtils/truncate");
+const factories = require("../../../testUtils/factories");
+const app = require("../../../app");
 
-describe('userResetPasswordController Test Suit', () => {
+describe("userResetPasswordController Test Suit", () => {
+  beforeEach(async () => {
+    await exec("sequelize db:migrate:undo:all");
 
-    beforeEach( () => {
-              
-        return truncate();
+    return exec("sequelize db:migrate");
+    //return truncate();
+  });
+
+  it("should change the password with valid token", async () => {
+    const user = await factories.create("User");
+
+    const token = "testetoken";
+    user.reset_password_token = token;
+
+    const date = new Date();
+    date.setHours(date.getHours() + 1);
+    user.reset_password_expires = date;
+
+    await user.save();
+
+    const response = await supertest(app)
+      .put("/reset-password")
+      .send({
+        token: user.id + "$" + token,
+        password: "123456",
+      });
+
+    expect(response.status).toBe(200);
+  });
+
+  it('should return code 400 for "user not found" - update', async () => {
+    const response = await supertest(app).put("/reset-password").send({
+      token: "2$df95h495df4h9dh",
+      password: "123456",
     });
 
-    it('should change the password with valid token', async () => {
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("user not found");
+  });
 
-        const user = await factories.create('User');
+  it('should return code 400 for "invalid token"', async () => {
+    const user = await factories.create("User");
 
-        const token = 'testetoken';
-        user.reset_password_token = token;
+    const token = "testetoken";
+    user.reset_password_token = token;
 
-        const date = new Date();
-        date.setHours(date.getHours() + 1);
-        user.reset_password_expires = date;
+    const date = new Date();
+    date.setHours(date.getHours() + 1);
+    user.reset_password_expires = date;
 
-        await user.save();
+    await user.save();
 
-        const response = await supertest(app).put('/reset-password')
-            .send({
-                token: user.id + '$' + token,
-                password: '123456'
-            });
+    const response = await supertest(app)
+      .put("/reset-password")
+      .send({
+        token: user.id + "$df4gd54g",
+        password: "123456",
+      });
 
-        expect(response.status).toBe(200);
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("invalid token");
+  });
+
+  it('should return code 400 for "invalid token" (invalid id)', async () => {
+    const response = await supertest(app).put("/reset-password").send({
+      token: "a$df4gd54g",
+      password: "123456",
     });
 
-    it('should return code 400 for "user not found" - update', async () => {
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("invalid token");
+  });
 
-        const response = await supertest(app).put('/reset-password')
-            .send({
-                token: '2$df95h495df4h9dh',
-                password: '123456'
-            });
+  it('should return code 400 for "token expired"', async () => {
+    const user = await factories.create("User");
 
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('user not found');
-    });
+    const token = "testetoken";
+    user.reset_password_token = token;
 
-    it('should return code 400 for "invalid token"', async () => {
+    const date = new Date();
+    date.setHours(date.getHours() - 1);
+    user.reset_password_expires = date;
 
-        const user = await factories.create('User');
+    await user.save();
 
-        const token = 'testetoken';
-        user.reset_password_token = token;
+    const response = await supertest(app)
+      .put("/reset-password")
+      .send({
+        token: user.id + "$" + token,
+        password: "123456",
+      });
 
-        const date = new Date();
-        date.setHours(date.getHours() + 1);
-        user.reset_password_expires = date;
-
-        await user.save();
-
-        const response = await supertest(app).put('/reset-password')
-            .send({
-                token: user.id + '$df4gd54g',
-                password: '123456'
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('invalid token');
-    });
-
-    it('should return code 400 for "invalid token" (invalid id)', async () => {
-
-        const response = await supertest(app).put('/reset-password')
-            .send({
-                token: 'a$df4gd54g',
-                password: '123456'
-            });
-
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('invalid token');
-    });
-
-    it('should return code 400 for "token expired"', async () => {
-
-        const user = await factories.create('User');
-
-        const token = 'testetoken';
-        user.reset_password_token = token;
-
-        const date = new Date();
-        date.setHours(date.getHours() - 1);
-        user.reset_password_expires = date;
-
-        await user.save();
-
-        const response = await supertest(app).put('/reset-password')
-            .send({
-                token: user.id + '$' + token,
-                password: '123456'
-            });
-        
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe('token expired');
-    });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("token expired");
+  });
 });

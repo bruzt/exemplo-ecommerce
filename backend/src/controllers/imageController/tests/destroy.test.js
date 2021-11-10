@@ -1,56 +1,69 @@
-const supertest = require('supertest');
-const path = require('path');
-const fs = require('fs');
-const { promisify } = require('util');
+const supertest = require("supertest");
+const path = require("path");
+const fs = require("fs");
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
-const truncate = require('../../../testUtils/truncate');
-const factories = require('../../../testUtils/factories');
-const app = require('../../../app');
+//const truncate = require("../../../testUtils/truncate");
+const factories = require("../../../testUtils/factories");
+const app = require("../../../app");
 
 const copyFileAsync = promisify(fs.copyFile);
 
-const filePath = path.resolve(__dirname, '../../../testUtils/files/test-img.png');
+const filePath = path.resolve(
+  __dirname,
+  "../../../testUtils/files/test-img.png"
+);
 
-describe('imageController Test Suit', () => {
+describe("imageController Test Suit", () => {
+  beforeEach(async () => {
+    await exec("sequelize db:migrate:undo:all");
 
-    beforeEach( () => {
-       
-        return truncate();
+    return exec("sequelize db:migrate");
+    //return truncate();
+  });
+
+  it("should erase an image", async () => {
+    const copyFilePath = path.resolve(
+      __dirname,
+      "../../../../uploads/test-img.png"
+    );
+
+    const category = await factories.create("Category");
+    const product = await factories.create("Product", {
+      category_id: category.id,
+    });
+    const image = await factories.create("Image", {
+      url: copyFilePath,
+      filename: "test-img.png",
+      product_id: product.id,
     });
 
-    it('should erase an image', async () => {
+    const user = await factories.create("User");
+    user.admin = true;
+    const token = user.generateToken();
 
-        const copyFilePath = path.resolve(__dirname, '../../../../uploads/test-img.png');
+    if (process.env.IMG_STORAGE_LOCATION == "local") {
+      await copyFileAsync(filePath, copyFilePath);
+    }
 
-        const category = await factories.create('Category');
-        const product = await factories.create('Product', { category_id: category.id });
-        const image = await factories.create('Image', { url: copyFilePath, filename: 'test-img.png', product_id: product.id });
-        
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
+    const response = await supertest(app)
+      .delete(`/products/images/${image.id}`)
+      .set("authorization", "Bearer " + token);
 
-        if(process.env.IMG_STORAGE_LOCATION == 'local'){
+    expect(response.status).toBe(200);
+  });
 
-            await copyFileAsync(filePath, copyFilePath);
-        }
+  it('should return code 400 for "image not found"', async () => {
+    const user = await factories.create("User");
+    user.admin = true;
+    const token = user.generateToken();
 
-        const response = await supertest(app).delete(`/products/images/${image.id}`)
-            .set('authorization', 'Bearer ' + token);
-        
-        expect(response.status).toBe(200);
-    });
+    const response = await supertest(app)
+      .delete(`/products/images/5`)
+      .set("authorization", "Bearer " + token);
 
-    it('should return code 400 for "image not found"', async () => {
-        
-        const user = await factories.create('User');
-        user.admin = true;
-        const token = user.generateToken();
-
-        const response = await supertest(app).delete(`/products/images/5`)
-            .set('authorization', 'Bearer ' + token);
-        
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("image not found");
-    });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("image not found");
+  });
 });

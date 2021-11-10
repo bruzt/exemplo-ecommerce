@@ -1,43 +1,49 @@
-const supertest = require('supertest');
+const supertest = require("supertest");
+const { promisify } = require("util");
+const exec = promisify(require("child_process").exec);
 
-const truncate = require('../../../testUtils/truncate');
-const factories = require('../../../testUtils/factories');
-const app = require('../../../app');
+//const truncate = require("../../../testUtils/truncate");
+const factories = require("../../../testUtils/factories");
+const app = require("../../../app");
 
-describe('userController Update Test Suit', () => {
+describe("userController Update Test Suit", () => {
+  beforeEach(async () => {
+    await exec("sequelize db:migrate:undo:all");
 
-    beforeEach( () => {
-              
-        return truncate();
-    });
+    return exec("sequelize db:migrate");
+    //return truncate();
+  });
 
-    it('should update a user on db', async () => {
+  it("should update a user on db", async () => {
+    const newName = "test";
 
-        const user = await factories.create('User');
-        const token = user.generateToken();
+    const user = await factories.create("User");
+    const token = user.generateToken();
 
-        const response = await supertest(app).put('/users')
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                name: 'test'
-            });
-        
-        expect(response.status).toBe(200);
-    });
+    const response = await supertest(app)
+      .put("/users")
+      .set("authorization", "Bearer " + token)
+      .send({
+        name: newName,
+      });
 
-    it('should return code 400 for "user not found"', async () => {
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe(newName);
+  });
 
-        const user = await factories.create('User');
-        const token = user.generateToken();
-        await user.destroy({ where: { id: user.id }});
+  it('should return code 400 for "user not found"', async () => {
+    const user = await factories.create("User");
+    const token = user.generateToken();
+    await user.destroy({ where: { id: user.id } });
 
-        const response = await supertest(app).put('/users')
-            .set('authorization', 'Bearer ' + token)
-            .send({
-                name: 'test'
-            });
-        
-        expect(response.status).toBe(400);
-        expect(response.body.message).toBe("user not found");
-    });
+    const response = await supertest(app)
+      .put("/users")
+      .set("authorization", "Bearer " + token)
+      .send({
+        name: "test",
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe("user not found");
+  });
 });

@@ -8,7 +8,7 @@
     "dev": "npm-run-all --parallel dev:queue dev:server",
     "dev:server": "cross-env NODE_ENV=development nodemon src/server.js",
     "dev:queue": "cross-env NODE_ENV=development nodemon src/queue.js",
-    "test:queue": "cross-env NODE_ENV=test nodemon src/queue.js",
+    "test:queue": "cross-env NODE_ENV=test node src/queue.js",
     "preprod": "npm run prod:migrate",
     "prod": "npm-run-all prod:queue prod:server",
     "postprod": "pm2 logs",
