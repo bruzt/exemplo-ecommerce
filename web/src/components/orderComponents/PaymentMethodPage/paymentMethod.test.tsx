@@ -2,6 +2,7 @@ import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import MockAdapter from "axios-mock-adapter";
+import router from "next/router";
 
 import PaymentMethodPage from "./";
 import { OrderContextProvider } from "../../../contexts/orderContext";
@@ -15,31 +16,40 @@ import {
   fakeUser,
   fakeFreightPrice,
   fakeInstallments,
+  fakeOrder,
+  fakeCategories,
 } from "../../../testUtils/fakeData";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
 describe("Payment Method Tests", () => {
   it("should render credit card component", async () => {
-    const { getByTestId, queryByTestId } = render(
-      <ThemeContextProvider>
-        <FilterBarContextProvider>
-          <OrderContextProvider>
-            <CartContextProvider
-              _testFreightPrice={fakeFreightPrice}
-              _testFreightSelected="pac"
-              _testAddressId={fakeAddress.id}
-            >
-              <UserContextProvider
-                _testUser={{ ...fakeUser, addresses: [fakeAddress] }}
-                _testLogin={true}
-              >
-                <PaymentMethodPage />
-              </UserContextProvider>
+    router.query.id = "1";
+
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/orders/1")
+      .reply(200, { ...fakeOrder, status: "select_payment_method" });
+
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <FilterBarContextProvider>
+            <CartContextProvider>
+              <OrderContextProvider>
+                <UserContextProvider
+                  _testUser={{ ...fakeUser, addresses: [fakeAddress] }}
+                  _testLogin={true}
+                >
+                  <PaymentMethodPage />
+                </UserContextProvider>
+              </OrderContextProvider>
             </CartContextProvider>
-          </OrderContextProvider>
-        </FilterBarContextProvider>
-      </ThemeContextProvider>
+          </FilterBarContextProvider>
+        </ThemeContextProvider>
+      )
     );
 
     const apiInstallmentsMock = new MockAdapter(api);
@@ -57,25 +67,36 @@ describe("Payment Method Tests", () => {
   });
 
   it("should render boleto component", async () => {
-    const { getByTestId, queryByTestId } = render(
-      <ThemeContextProvider>
-        <FilterBarContextProvider>
-          <OrderContextProvider>
-            <CartContextProvider
-              _testFreightPrice={fakeFreightPrice}
-              _testFreightSelected="pac"
-              _testAddressId={fakeAddress.id}
-            >
-              <UserContextProvider
-                _testUser={{ ...fakeUser, addresses: [fakeAddress] }}
-                _testLogin={true}
+    router.query.id = "1";
+
+    const apiMock = new MockAdapter(api);
+    apiMock
+      .onGet("/categories")
+      .reply(200, fakeCategories)
+      .onGet("/orders/1")
+      .reply(200, { ...fakeOrder, status: "select_payment_method" });
+
+    const { getByTestId, queryByTestId } = await waitFor(() =>
+      render(
+        <ThemeContextProvider>
+          <FilterBarContextProvider>
+            <OrderContextProvider>
+              <CartContextProvider
+                _testFreightPrice={fakeFreightPrice}
+                _testFreightSelected="pac"
+                _testAddressId={fakeAddress.id}
               >
-                <PaymentMethodPage />
-              </UserContextProvider>
-            </CartContextProvider>
-          </OrderContextProvider>
-        </FilterBarContextProvider>
-      </ThemeContextProvider>
+                <UserContextProvider
+                  _testUser={{ ...fakeUser, addresses: [fakeAddress] }}
+                  _testLogin={true}
+                >
+                  <PaymentMethodPage />
+                </UserContextProvider>
+              </CartContextProvider>
+            </OrderContextProvider>
+          </FilterBarContextProvider>
+        </ThemeContextProvider>
+      )
     );
 
     const boletoButton = getByTestId("select-boleto-button");

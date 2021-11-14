@@ -49,3 +49,9 @@ export const Container = styled.section`
     }
   }
 `;
+
+export const LoadingCenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

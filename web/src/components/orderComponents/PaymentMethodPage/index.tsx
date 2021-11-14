@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Loading from "react-loader-spinner";
 
 import { useOrder } from "../../../contexts/orderContext";
 
@@ -11,7 +12,7 @@ import PageLayout from "../../PageLayout";
 import ThanksForBuy from "../ThanksForBuy";
 import api from "../../../services/api";
 
-import { Container } from "./styles";
+import { Container, LoadingCenterContainer } from "./styles";
 
 export interface IOrder {
   id: number;
@@ -71,6 +72,9 @@ export default function PaymentMethodPage() {
     try {
       const response = await api.get<IOrder>(`/orders/${router.query.id}`);
 
+      if (response.data.status != "select_payment_method")
+        throw new Error("Invalid status");
+
       setOrder(response.data);
     } catch (error) {
       console.log(error);
@@ -91,6 +95,15 @@ export default function PaymentMethodPage() {
 
         {showThanksForBuy ? (
           <ThanksForBuy />
+        ) : getOrder == null ? (
+          <LoadingCenterContainer>
+            <Loading
+              type="TailSpin"
+              color="#0D2235"
+              height="4.6875rem"
+              width="4.6875rem"
+            />
+          </LoadingCenterContainer>
         ) : (
           <Container>
             <h1>Método de pagamento</h1>
