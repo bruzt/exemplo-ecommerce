@@ -6,6 +6,7 @@ import api from "../../../services/api";
 import { useUser } from "../../../contexts/userContext";
 import { useCart } from "../../../contexts/cartContext";
 import { IOrder } from "../../accountComponents/AccountMyShoppings";
+import OrderProgress from "../OrderProgress";
 
 import { Container } from "./styles";
 
@@ -51,13 +52,17 @@ export default function CreateBuyOrder() {
   }
 
   return (
-    <Container>
-      <Loading
-        type="TailSpin"
-        color="#0D2235"
-        height="4.6875rem"
-        width="4.6875rem"
-      />
-    </Container>
+    <>
+      <OrderProgress />
+
+      <Container>
+        <Loading
+          type="TailSpin"
+          color="#0D2235"
+          height="4.6875rem"
+          width="4.6875rem"
+        />
+      </Container>
+    </>
   );
 }
