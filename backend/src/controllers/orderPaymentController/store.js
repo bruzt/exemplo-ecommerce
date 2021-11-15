@@ -149,7 +149,7 @@ module.exports = async function store(req, res) {
     if (error.response) {
       console.log(error.response);
     } else {
-      console.log(error);
+      console.error(new Date().toGMTString(), "-", error);
     }
 
     return res.status(500).json({ message: "internal error" });
