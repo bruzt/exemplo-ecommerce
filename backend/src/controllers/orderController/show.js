@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
     return res.json(order);
   } catch (error) {
-    console.log(error);
+    console.error(new Date().toGMTString(), "-", error);
     return res.status(500).json({ message: "Error searching order" });
   }
 };
