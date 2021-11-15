@@ -9,7 +9,6 @@ const validateCpf = require("../../util/validateCpf");
 module.exports = async (req, res) => {
   const { name, email, cpf, password } = req.body;
   try {
-    if (name) throw new Error("teste");
     const user = await UserModel.findOne({ where: { email } });
 
     if (user) return res.status(400).json({ message: "email already in use" });
