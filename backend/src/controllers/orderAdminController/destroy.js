@@ -1,26 +1,23 @@
-const express = require('express');
+const express = require("express");
 
-const OrderModel = require('../../models/OrderModel');
+const OrderModel = require("../../models/OrderModel");
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
+  const { id } = req.params;
 
-    const { id } = req.params;
+  try {
+    const order = await OrderModel.findByPk(id);
 
-    try {
+    if (!order) return res.status(400).json({ message: "order not found" });
 
-        const order = await OrderModel.findByPk(id);
+    order.status = "canceled";
 
-        if(!order) return res.status(400).json({ message: 'order not found' });
+    await order.save();
 
-        order.status = 'canceled';
-
-        await order.save();
-
-        return res.sendStatus(200);
-        
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'internal error' });
-    }
-} 
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error(new Date().toGMTString(), "-", error);
+    return res.status(500).json({ message: "internal error" });
+  }
+};
