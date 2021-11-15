@@ -1,44 +1,41 @@
-const express = require('express');
-const crypto = require('crypto');
+const express = require("express");
+const crypto = require("crypto");
 
-const UserModel = require('../../models/UserModel');
-const { sendEmailQueue } = require('../../backgroundJobs/queues');
-const resetPasswordTemplate = require('../../services/mailer/templates/resetPasswordTemplate');
+const UserModel = require("../../models/UserModel");
+const { sendEmailQueue } = require("../../backgroundJobs/queues");
+const resetPasswordTemplate = require("../../services/mailer/templates/resetPasswordTemplate");
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
+  const { email } = req.body;
 
-    const { email } = req.body;
+  try {
+    const user = await UserModel.findOne({ where: { email } });
 
-    try {
+    if (!user) return res.status(400).json({ message: "user not found" });
 
-        const user = await UserModel.findOne({ where: { email }});
+    const rawToken = crypto.randomBytes(20).toString("hex");
 
-        if(!user) return res.status(400).json({ message: 'user not found' });
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1);
 
-        const rawToken = crypto.randomBytes(20).toString('hex');
+    user.reset_password_token = rawToken;
+    user.reset_password_expires = expires;
 
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
+    await user.save();
 
-        user.reset_password_token = rawToken;
-        user.reset_password_expires = expires;
+    const template = resetPasswordTemplate(user);
 
-        await user.save();
+    sendEmailQueue.add({
+      from: "donotreply@companydomain.com",
+      to: email,
+      subject: "Reset Password",
+      template,
+    });
 
-        const template = resetPasswordTemplate(user);
-
-        sendEmailQueue.add({
-            from: 'donotreply@companydomain.com',
-            to: email,
-            subject: 'Reset Password',
-            template,
-        });
-
-        return res.sendStatus(204);
-        
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'internal error' });
-    }
-}
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(new Date().toGMTString(), "-", error);
+    return res.status(500).json({ message: "internal error" });
+  }
+};
