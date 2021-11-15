@@ -1,24 +1,21 @@
-const express = require('express');
+const express = require("express");
 
-const UserModel = require('../../models/UserModel');
+const UserModel = require("../../models/UserModel");
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
+  const { id } = req.tokenPayload;
 
-    const { id } = req.tokenPayload;
-        
-    try {
+  try {
+    const user = await UserModel.findByPk(id, {
+      include: { association: "addresses" },
+    });
 
-        const user = await UserModel.findByPk(id, {
-            include: { association: 'addresses' }
-        });
+    if (!user) return res.status(400).json({ message: "user not found" });
 
-        if(! user) return res.status(400).json({ message: 'user not found' });
-    
-        return res.json(user.addresses);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "internal error" });
-    }
-}
+    return res.json(user.addresses);
+  } catch (error) {
+    console.error(new Date().toGMTString(), "-", error);
+    res.status(500).json({ message: "internal error" });
+  }
+};
