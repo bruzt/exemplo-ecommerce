@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
 
     return res.json(updated);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "internal error" });
+    console.error(new Date().toGMTString(), "-", error);
+    return res.status(500).json({ message: "internal error" });
   }
 };
