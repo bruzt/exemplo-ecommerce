@@ -122,9 +122,9 @@ export default async function store(req: Request, res: Response) {
     // @ts-ignore
     if (error.response) {
       // @ts-ignore
-      console.log(error.response);
+      console.error(error.response);
     } else {
-      console.log(error);
+      console.error(new Date().toUTCString(), "-", error);
     }
 
     return res.status(500).json({ message: "Internal error" });

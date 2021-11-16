@@ -160,7 +160,7 @@ export default async function list(req: Request, res: Response) {
 
     return res.json({ count, products: products });
   } catch (error) {
-    console.error(error);
+    console.error(new Date().toUTCString(), "-", error);
     return res.status(500).json({ message: "internal error" });
   }
 }

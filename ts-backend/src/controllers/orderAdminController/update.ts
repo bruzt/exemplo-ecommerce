@@ -1,26 +1,24 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
-import OrderModel from '../../models/OrderModel';
+import OrderModel from "../../models/OrderModel";
 
 export default async function update(req: Request, res: Response) {
+  const { id } = req.params;
+  const { status } = req.body;
 
-    const { id } = req.params;
-    const { status } = req.body;
+  try {
+    const order = await OrderModel.findOne(id);
 
-    try {
+    if (order == null)
+      return res.status(404).json({ message: "order not found" });
 
-        const order = await OrderModel.findOne(id);
+    if (status) order.status = status;
 
-        if(order == null) return res.status(404).json({ message: 'order not found' });
+    await order.save();
 
-        if(status) order.status = status;
-
-        await order.save();
-
-        return res.json(order);
-        
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'internal error' });
-    }
+    return res.json(order);
+  } catch (error) {
+    console.error(new Date().toUTCString(), "-", error);
+    return res.status(500).json({ message: "internal error" });
+  }
 }

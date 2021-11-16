@@ -1,45 +1,45 @@
-import { Request, Response } from 'express';
-import crypto from 'crypto';
+import { Request, Response } from "express";
+import crypto from "crypto";
 
-import UserModel from '../../models/UserModel';
-import resetPasswordTemplate from '../../services/mailer/templates/resetPasswordTemplate';
-import { sendEmailQueue } from '../../backgroundJobs/queues';
+import UserModel from "../../models/UserModel";
+import resetPasswordTemplate from "../../services/mailer/templates/resetPasswordTemplate";
+import { sendEmailQueue } from "../../backgroundJobs/queues";
 
 export default async function store(req: Request, res: Response) {
+  const { email } = req.body;
 
-    const { email } = req.body;
+  try {
+    const user = await UserModel.findOne({ where: { email } });
 
-    try {
+    if (!user) return res.status(404).json({ message: "user not found" });
 
-        const user = await UserModel.findOne({ where: { email }});
+    const rawToken = crypto.randomBytes(20).toString("hex");
 
-        if(!user) return res.status(404).json({ message: 'user not found' });
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1);
 
-        const rawToken = crypto.randomBytes(20).toString('hex');
+    user.reset_password_token = rawToken;
+    user.reset_password_expires = expires;
 
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
+    await user.save();
 
-        user.reset_password_token = rawToken;
-        user.reset_password_expires = expires;
+    const template = resetPasswordTemplate(user);
 
-        await user.save();
+    await sendEmailQueue.add(
+      {
+        from: "donotreply@companydomain.com",
+        to: user.email,
+        subject: "E-Commerce - Reset Password",
+        template,
+      },
+      {
+        priority: 1,
+      }
+    );
 
-        const template = resetPasswordTemplate(user);
-
-        await sendEmailQueue.add({
-            from: 'donotreply@companydomain.com',
-            to: user.email,
-            subject: 'E-Commerce - Reset Password',
-            template,
-        }, { 
-            priority: 1,
-        });
-
-        return res.sendStatus(204);
-        
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'internal error' });
-    }
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(new Date().toUTCString(), "-", error);
+    return res.status(500).json({ message: "internal error" });
+  }
 }

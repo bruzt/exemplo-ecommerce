@@ -191,7 +191,7 @@ export default async function store(req: Request, res: Response) {
       return res.status(201).json(order);
     });
   } catch (error) {
-    console.error(error);
+    console.error(new Date().toUTCString(), "-", error);
     return res.status(500).json({ message: "internal error" });
   }
 }
