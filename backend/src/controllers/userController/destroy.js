@@ -1,22 +1,19 @@
-const express = require('express');
+const express = require("express");
 
-const UserModel = require('../../models/UserModel');
+const UserModel = require("../../models/UserModel");
 
 /** @param {express.Request} req * @param {express.Response} res */
 module.exports = async (req, res) => {
+  const { id } = req.tokenPayload;
 
-    const { id } = req.tokenPayload;
+  try {
+    const user = await UserModel.destroy({ where: { id } });
 
-    try {
+    if (user === 0) return res.status(400).json({ message: "user not found" });
 
-        const user = await UserModel.destroy({ where: { id } });
-
-        if(user === 0) return res.status(400).json({ message: 'user not found'});
-
-        return res.sendStatus(200);
-        
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "internal error" });
-    }
-}
+    return res.sendStatus(200);
+  } catch (error) {
+    console.error(new Date().toUTCString(), "-", error);
+    res.status(500).json({ message: "internal error" });
+  }
+};

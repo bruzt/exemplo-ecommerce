@@ -122,7 +122,7 @@ module.exports = async (req, res) => {
 
     return res.json(productWithBuyed);
   } catch (error) {
-    console.error(new Date().toGMTString(), "-", error);
+    console.error(new Date().toUTCString(), "-", error);
     return res.status(500).json({ message: "internal error" });
   }
 };
