@@ -44,7 +44,7 @@ sudo docker run -d \
     -e POSTGRES_PASSWORD=F83ai8qD \
     -e POSTGRES_DB=ecommerce-dev \
     -p 5432:5432 \
-    postgres:13.4
+    postgres:14.1
 ```
 
 E [Sonic](https://github.com/valeriansaliou/sonic):
@@ -54,7 +54,7 @@ sudo docker run -d \
     -e AUTH_PASSWORD=a8uY3TgP \
     -p 1491:1491 \
     --name sonic-dev \
-    bruzt/sonic-env:v1.3.0
+    bruzt/sonic-env:v1.3.2
 ```
 
 E o [Redis](https://github.com/redis/redis):
@@ -63,7 +63,7 @@ E o [Redis](https://github.com/redis/redis):
 sudo docker run -d \
     -p 6379:6379 \
     --name redis-dev \
-    redis:6.2.5
+    redis:6.2.6
 ```
 
 No diretório "backend", execute as migrations para criar as tabelas no banco de dados com o comando ``` npm run dev:migrate ```, execute as seeds para adicionar categorias e produtos no banco de dados com o camando ``` npm run dev:seed ``` e inicie a API com o comando ``` npm run dev ```, depois, no diretório "web", execute o comando ``` npm start ``` para iniciar a aplicação, acesse no navegador o endereço ``` http://localhost:3000 ``` e você deve ver a página inicial da loja com produtos sem imagens (você pode adicionar imagens no painel de controle).
